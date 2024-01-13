@@ -6,19 +6,23 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.CTREConfigs;
+import frc.robot.utils.CTREConfig;
 
 public class SwerveModule extends SubsystemBase {
 
   private final TalonFX drivingMotor;
-  private final TalonFX steeringMotor;
+  private final TalonFX steerMotor;
   private final CANcoder steerEncoder;
+
+  private final TalonFXConfigurator drivingConfigurator;
+  private final TalonFXConfigurator steeringConfigurator;
 
   private final int drivingCANId;
   private final int steeringCANId;
@@ -34,15 +38,19 @@ public class SwerveModule extends SubsystemBase {
 
     // Setup Driving Motor
     drivingMotor = new TalonFX(drivingCANId);
-    drivingConfig
+    drivingConfigurator = drivingMotor.getConfigurator();
+    drivingConfigurator.apply(CTREConfig.drivingConfig);
 
 
 
 
+    // Setup Driving Motor
+    steerMotor = new TalonFX(steeringCANId);
+    steeringConfigurator = steerMotor.getConfigurator();
+    drivingConfigurator.apply(CTREConfig.drivingConfig);
 
 
-    steeringMotor = new TalonFX(steeringCANId);
-
+    // Encoder Setup
     steerEncoder = new CANcoder(CANCoderId);
   }
 

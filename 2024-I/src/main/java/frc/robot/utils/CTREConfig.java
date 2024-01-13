@@ -6,9 +6,9 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import frc.robot.utils.Constants.*;
 
 public final class CTREConfig {
-    private final TalonFXConfiguration drivingConfig;
-    private final TalonFXConfiguration steeringConfig;
-    private final CANcoderConfiguration cancoderConfig;
+    public static TalonFXConfiguration drivingConfig;
+    public static TalonFXConfiguration steeringConfig;
+    public static CANcoderConfiguration cancoderConfig;
 
     public CTREConfig(){
         drivingConfig = new TalonFXConfiguration();
