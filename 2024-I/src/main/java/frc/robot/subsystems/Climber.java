@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.DriverOI;
+import frc.robot.utils.DriverOI;
 
 public class Climber extends SubsystemBase {
     private static Climber instance;

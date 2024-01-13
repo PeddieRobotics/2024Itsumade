@@ -1,4 +1,4 @@
-package frc.robot.util;
+package frc.robot.utils;
 
 public final class Constants {
     public static class GlobalConstants{
@@ -11,7 +11,8 @@ public final class Constants {
     }
 
     public static class DriveConstants{
-        
+        public static final int kDriveCurrentLimit = 30;
+        public static final int kTurningCurrentLimit = 30;
     }
 
     public static class ModuleConstants{
