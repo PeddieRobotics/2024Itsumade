@@ -41,9 +41,6 @@ public class SwerveModule extends SubsystemBase {
     drivingConfigurator = drivingMotor.getConfigurator();
     drivingConfigurator.apply(CTREConfig.drivingConfig);
 
-
-
-
     // Setup Driving Motor
     steerMotor = new TalonFX(steeringCANId);
     steeringConfigurator = steerMotor.getConfigurator();
