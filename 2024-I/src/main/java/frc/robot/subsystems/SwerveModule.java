@@ -46,8 +46,7 @@ public class SwerveModule extends SubsystemBase {
     steeringConfigurator = steerMotor.getConfigurator();
     drivingConfigurator.apply(CTREConfig.drivingConfig);
 
-
-    // Encoder Setup
+    // Steer Encoder Setup
     steerEncoder = new CANcoder(CANCoderId);
   }
 
