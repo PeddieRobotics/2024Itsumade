@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.CTREConfig;
+import frc.robot.utils.Constants.DriveConstants;
 
 public class SwerveModule extends SubsystemBase {
 

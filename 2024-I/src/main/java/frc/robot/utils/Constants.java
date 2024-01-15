@@ -13,6 +13,9 @@ public final class Constants {
     public static class DriveConstants{
         public static final int kDriveCurrentLimit = 30;
         public static final int kTurningCurrentLimit = 30;
+
+        public static final double kDrivingMotorGearRatio = 0;
+        public static final double kWheelRadius = 2.0; 
     }
 
     public static class ModuleConstants{
