@@ -60,6 +60,8 @@ public class SwerveModule extends SubsystemBase {
 
     SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(desiredModuleState, new Rotation2d(steerEncoder.getPosition().getValueAsDouble()));
 
+    double desiredVelocity = optimizedDesiredState.speedMetersPerSecond * DriveConstants.kDrivingMotorGearRatio / (2 * DriveConstants.kWheelRadius);
+    double desiredAngle = desiredState.angle.getDegrees();
   }
 
 
