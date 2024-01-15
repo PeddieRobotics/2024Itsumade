@@ -59,7 +59,6 @@ public class SwerveModule extends SubsystemBase {
     desiredState = desiredModuleState;
 
     SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(desiredModuleState, new Rotation2d(steerEncoder.getPosition().getValueAsDouble()));
-    
 
   }
 
