@@ -11,6 +11,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.CTREConfig;
@@ -29,7 +30,7 @@ public class SwerveModule extends SubsystemBase {
   private final int CANCoderId;
   
   private SwerveModuleState state;
-  private SwerveModuleState desired_state = new SwerveModuleState(0.0, new Rotation2d(0));
+  private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d(0));
 
   public SwerveModule(int drivingCANId, int steeringCANId, int CANCoderId) {
     this.drivingCANId = drivingCANId;
@@ -48,6 +49,18 @@ public class SwerveModule extends SubsystemBase {
 
     // Steer Encoder Setup
     steerEncoder = new CANcoder(CANCoderId);
+  }
+
+  public SwerveModuleState getState(){
+    return state;
+  }
+
+  public void setDesiredState(SwerveModuleState desiredModuleState){
+    desiredState = desiredModuleState;
+
+    SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(desiredModuleState, new Rotation2d(steerEncoder.getPosition().getValueAsDouble()));
+    
+
   }
 
 
