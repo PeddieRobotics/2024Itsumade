@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package frc.robot.utils;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -15,5 +15,21 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    
   }
+
+
+    public static final int ARM_PRIMARY_MOTOR_LIMIT = 0;
+    public static final int ARM_SECONDARY_MOTOR_LIMIT = 0;
+    public static final int ARM_P = 0;
+    public static final int ARM_I = 0;
+    public static final int ARM_D = 0;
+    public static final int ARM_FF = 0;
+    public static final int ARM_IZONE = 0;
+   
+    
+    public static final int FLYWHEEL_PRIMARY_MOTOR_LIMIT = 0;
+    public static final int FLYWHEEL_SECONDARY_MOTOR_LIMIT = 0;
+    public static final int HOPPER_MOTOR_LIIMT = 0;
+    public static final int INTAKE_MOTOR_LIMIT = 0;
 }
