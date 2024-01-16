@@ -28,11 +28,6 @@ public class Kraken {
         this.canbusName = canbusName;
         this.talon = new TalonFX(deviceID, canbusName);
         this.config = new TalonFXConfiguration();
-        initializeMotor();
-    }
-
-    public void initializeMotor() {
-        // Motor initialization code here
     }
 
     public void setBrake() {
