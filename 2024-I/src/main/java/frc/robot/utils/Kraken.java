@@ -107,5 +107,9 @@ public class Kraken {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
         talon.setControl(request.withVelocity(velocity).withFeedForward(feedForward));
     }
+
+    public void setForwardSoftLimit(double limitValue){
+         
+    }
     
 }
