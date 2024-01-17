@@ -1,10 +1,16 @@
 package frc.robot.utils;
 
+import java.lang.invoke.VolatileCallSite;
+
+import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -20,7 +26,6 @@ public class Kraken {
     private double velocityConversionFactor = 1.0; // Conversion factor for velocity
 
     // Open Loop Control
-    private DutyCycleOut motorRequest = new DutyCycleOut(0.0);
     private double feedForward = 0.0;
 
     public Kraken(int deviceID, String canbusName) {
@@ -28,6 +33,11 @@ public class Kraken {
         this.canbusName = canbusName;
         this.talon = new TalonFX(deviceID, canbusName);
         this.config = new TalonFXConfiguration();
+        factoryReset();
+    }
+
+    public void factoryReset(){
+        talon.getConfigurator().apply(new TalonFXConfiguration());
     }
 
     public void setBrake() {
@@ -67,33 +77,48 @@ public class Kraken {
         configurator.apply(config);
     }
 
+    public void setClosedLoopRampRate(double rampRate){
+        ClosedLoopRampsConfigs closedLoopRampRateConfig = new ClosedLoopRampsConfigs();
+        closedLoopRampRateConfig.DutyCycleClosedLoopRampPeriod = rampRate;
+        closedLoopRampRateConfig.TorqueClosedLoopRampPeriod = rampRate;
+        closedLoopRampRateConfig.VoltageClosedLoopRampPeriod = rampRate; 
+        config.ClosedLoopRamps = closedLoopRampRateConfig;
+
+        configurator.apply(config);
+
+    }
+
+    public void setForwardSoftLimit(double limitValue){
+         
+    }
+
     public void setMotor(double percentOutput) {
+        final DutyCycleOut request = new DutyCycleOut(0);
         // Ensure the percentOutput is within the acceptable range [-1.0, 1.0]
         percentOutput = Math.max(-1.0, Math.min(1.0, percentOutput));
-
-        // Update the DutyCycleOut control request with the percent output
-        motorRequest.withOutput(percentOutput);
-
+        
         // Set the control request to the motor controller
-        talon.setControl(motorRequest);
+        talon.setControl(request.withOutput(percentOutput));
+
     }
 
     public void setPIDValues(double kP, double kI, double kD, double kF) {
-        feedForward = kF;
+        var pidSlotConfigs = new Slot0Configs();
 
-        config.Slot0.kP = kP;
-        config.Slot0.kI = kI;
-        config.Slot0.kD = kD;
-        configurator.apply(config);
+        feedForward = kF;
+        pidSlotConfigs.kP = kP;
+        pidSlotConfigs.kI = kI;
+        pidSlotConfigs.kD = kD;
+        configurator.apply(pidSlotConfigs);
     }
 
-    public void setControlPosition(double position) {
-        final PositionVoltage request = new PositionVoltage(0).withSlot(0);
+    public void setControlPosition(double position, int slot) {
+        final PositionVoltage request = new PositionVoltage(0).withSlot(slot);
         talon.setControl(request.withPosition(position));
     }
 
-    public void setControlVelocity(double velocity) {
-        final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
+    public void setControlVelocity(double velocity, int slot) {
+        final VelocityVoltage request = new VelocityVoltage(0).withSlot(slot);
         talon.setControl(request.withVelocity(velocity));
     }
 
@@ -101,15 +126,10 @@ public class Kraken {
         final PositionVoltage request = new PositionVoltage(0).withSlot(0);
         talon.setControl(request.withPosition(position).withFeedForward(feedForward));
     }
-    
 
     public void setVelocityWithFeedForward(double velocity) {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
         talon.setControl(request.withVelocity(velocity).withFeedForward(feedForward));
-    }
-
-    public void setForwardSoftLimit(double limitValue){
-         
     }
     
 }

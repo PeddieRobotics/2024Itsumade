@@ -19,7 +19,18 @@ public final class Constants {
     }
 
     public static class ModuleConstants{
-        
+        public static final double kDrivingMotorCurrentLimit = 50;
+        public static final double kTurningMotorCurrentLimit = 50;
+
+        public static final double kDrivingP = 0.0;
+        public static final double kDrivingI = 0.0;
+        public static final double kDrivingD = 0.0;
+        public static final double kDrivingFF = 0.0;
+
+        public static final double kTurningP = 0.0;
+        public static final double kTurningI = 0.0;
+        public static final double kTurningD = 0.0;
+        public static final double kTurningFF = 0.0;
     }
 
     public static class AutoConstants{
