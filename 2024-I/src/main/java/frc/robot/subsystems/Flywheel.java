@@ -4,24 +4,38 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.*;
+import frc.robot.utils.Constants;
+import frc.robot.utils.RobotMap;
 
-public class Climber extends SubsystemBase {
+public class Flywheel extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
-  private static Climber climber;
+  private static Flywheel flywheel;
+  private CANSparkMax flywheelPrimaryMotor, flywheelSecondaryMotor;
 
-  public Climber() {
+  public Flywheel() {
+    flywheelPrimaryMotor = new CANSparkMax(RobotMap.FLYWHEEL_PRIMARY_MOTOR, MotorType.kBrushless);
+    flywheelSecondaryMotor = new CANSparkMax(RobotMap.FLYWHEEL_SECONDARY_MOTOR, MotorType.kBrushless);
+
+    flywheelPrimaryMotor.setSmartCurrentLimit(Constants.FLYWHEEL_PRIMARY_MOTOR_LIMIT);
+    flywheelSecondaryMotor.setSmartCurrentLimit(Constants.FLYWHEEL_SECONDARY_MOTOR_LIMIT);
+
+    flywheelSecondaryMotor.follow(flywheelPrimaryMotor);
   }
 
-  public static Climber getInstance(){
-    if(climber == null){
-      climber = new Climber();
-    }return climber;
+  public static Flywheel getInstance(){
+    if (flywheel == null){
+      flywheel = new Flywheel();
+    }return flywheel;
+  }
+
+  public void runFlywheelMotor(double speed){
+    flywheelPrimaryMotor.set(speed);
   }
 
 

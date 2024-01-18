@@ -4,26 +4,31 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.*;
+import frc.robot.utils.Constants;
+import frc.robot.utils.RobotMap;
 
-public class Climber extends SubsystemBase {
+
+public class Intake extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
-  private static Climber climber;
+  public static Intake intake;
+  public CANSparkMax intakeMotor;
 
-  public Climber() {
+  public Intake() {
+    intakeMotor = new CANSparkMax(RobotMap.INTAKE_MOTOR, MotorType.kBrushless);
+    intakeMotor.setSmartCurrentLimit(Constants.INTAKE_MOTOR_LIMIT);
   }
 
-  public static Climber getInstance(){
-    if(climber == null){
-      climber = new Climber();
-    }return climber;
+  public static Intake getInstance(){
+    if(intake == null){
+      intake = new Intake();
+    }return intake;
   }
-
 
   /**
    * Example command factory method.

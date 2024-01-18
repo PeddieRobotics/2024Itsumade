@@ -4,24 +4,23 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-public class DriverOI {
-    private static DriverOI instance;
-    private PS4Controller controller;
+public class DriverOI{
 
-    public static DriverOI getInstance(){
-        if (instance == null){
-            instance = new DriverOI();
-        }
-        return instance;
-    }
+    private PS4Controller controller;
+    private static DriverOI driverOI;
 
     public DriverOI(){
-        configureController();
+
     }
+
+    public static DriverOI getInstance(){
+        if(driverOI == null){
+            driverOI = new DriverOI();
+        }return driverOI;
+    }
+
     public void configureController(){
         controller = new PS4Controller(0);
-        Trigger xbutton = new JoystickButton(controller, 0);
+        Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
     }
 }
-
-
