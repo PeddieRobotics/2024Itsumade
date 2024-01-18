@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
 import frc.robot.utils.RobotMap;
+import frc.robot.utils.Constants.FlywheelConstants;
 
 public class Flywheel extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -22,8 +23,8 @@ public class Flywheel extends SubsystemBase {
     flywheelPrimaryMotor = new CANSparkMax(RobotMap.FLYWHEEL_PRIMARY_MOTOR, MotorType.kBrushless);
     flywheelSecondaryMotor = new CANSparkMax(RobotMap.FLYWHEEL_SECONDARY_MOTOR, MotorType.kBrushless);
 
-    flywheelPrimaryMotor.setSmartCurrentLimit(Constants.FLYWHEEL_PRIMARY_MOTOR_LIMIT);
-    flywheelSecondaryMotor.setSmartCurrentLimit(Constants.FLYWHEEL_SECONDARY_MOTOR_LIMIT);
+    flywheelPrimaryMotor.setSmartCurrentLimit(FlywheelConstants.FLYWHEEL_PRIMARY_MOTOR_LIMIT);
+    flywheelSecondaryMotor.setSmartCurrentLimit(FlywheelConstants.FLYWHEEL_SECONDARY_MOTOR_LIMIT);
 
     flywheelSecondaryMotor.follow(flywheelPrimaryMotor);
   }

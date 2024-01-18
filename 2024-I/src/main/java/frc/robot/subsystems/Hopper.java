@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
 import frc.robot.utils.RobotMap;
+import frc.robot.utils.Constants.IntakeConstants;
 
 
 public class Hopper extends SubsystemBase {
@@ -21,7 +22,7 @@ public class Hopper extends SubsystemBase {
 
   public Hopper() {
     hopperMotor = new CANSparkMax(RobotMap.HOPPER_MOTOR, MotorType.kBrushless);
-    hopperMotor.setSmartCurrentLimit(Constants.HOPPER_MOTOR_LIIMT);
+    hopperMotor.setSmartCurrentLimit(IntakeConstants.HOPPER_MOTOR_LIIMT);
   }
 
   public static Hopper getInstance(){

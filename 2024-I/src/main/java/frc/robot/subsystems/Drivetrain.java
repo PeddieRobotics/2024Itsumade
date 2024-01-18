@@ -28,6 +28,10 @@ public class Drivetrain extends SubsystemBase {
         backLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_LEFT_MODULE_DRIVE_ID, RobotMap.BACK_LEFT_MODULE_TURN_ID, RobotMap.BACK_LEFT_MODULE_CANCODER_ID);
         backRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_RIGHT_MODULE_DRIVE_ID, RobotMap.BACK_RIGHT_MODULE_TURN_ID, RobotMap.BACK_RIGHT_MODULE_CANCODER_ID);
 
+        swerveModules = new SwerveModule[] {frontLeftModule, frontRightModule, backLeftModule, backRightModule};
+
+        gyro = new Pigeon2(RobotMap.GYRO, RobotMap.CANIVORE_NAME);
+
         
 
     }

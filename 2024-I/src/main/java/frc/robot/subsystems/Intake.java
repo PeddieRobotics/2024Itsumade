@@ -9,8 +9,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.Constants;
 import frc.robot.utils.RobotMap;
+import frc.robot.utils.Constants.IntakeConstants;
 
 
 public class Intake extends SubsystemBase {
@@ -21,7 +21,7 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     intakeMotor = new CANSparkMax(RobotMap.INTAKE_MOTOR, MotorType.kBrushless);
-    intakeMotor.setSmartCurrentLimit(Constants.INTAKE_MOTOR_LIMIT);
+    intakeMotor.setSmartCurrentLimit(IntakeConstants.INTAKE_MOTOR_LIMIT);
   }
 
   public static Intake getInstance(){
