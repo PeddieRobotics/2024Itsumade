@@ -90,4 +90,20 @@ public final class Constants {
     public static final int INTAKE_MOTOR_LIMIT = 0;
     public static final int HOPPER_MOTOR_LIIMT = 0;
   }
+
+  public static class PIDConstants{
+    public static final double VELOCITY_S = 0.05;
+    public static final double VELOCITY_V = 0.12;
+    public static final double VELOCITY_P = 0.08;
+    public static final double VELOCITY_I = 0;
+    public static final double VELOCITY_D = 0;
+    public static final double VELOCITY_FF = 0;
+
+    public static final double POSITION_P = 0;
+    public static final double POSITION_I = 0;
+    public static final double POSITION_D = 0;
+    public static final double POSITION_FF = 0;
+  }
+
+  
 }

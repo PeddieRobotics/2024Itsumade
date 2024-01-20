@@ -23,11 +23,14 @@ public class Octopus extends SubsystemBase {
         SmartDashboard.putNumber("RUN: Kraken Percent Output", 0);
         SmartDashboard.putBoolean("Run Kraken PID", false);
 
+        SmartDashboard.putNumber("Kraken kS Value", 0);
+        SmartDashboard.putNumber("Kraken kV Value", 0);
+        SmartDashboard.putNumber("Kraken kA Value", 0);
         SmartDashboard.putNumber("Kraken P Value", 0);
         SmartDashboard.putNumber("Kraken I Value", 0);
         SmartDashboard.putNumber("Kraken D Value", 0);
         SmartDashboard.putNumber("Kraken FF Value", 0);
-        SmartDashboard.putNumber("Kraken RPM Setpoint", 0);
+        SmartDashboard.putNumber("Kraken Position Setpoint", 0);
     }
 
     public static Octopus getInstance(){
@@ -39,26 +42,24 @@ public class Octopus extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Kraken Motor Supply Current", kraken.getSupplyCurrent());
+        SmartDashboard.putNumber("Kraken sMotor Supply Current", kraken.getSupplyCurrent());
         SmartDashboard.putNumber("Kraken Encoder Position", kraken.getPosition());
         SmartDashboard.putNumber("Kraken Encoder Velocity", kraken.getVelocity());
         SmartDashboard.putNumber("Kraken RPM", kraken.getRPM());
-        SmartDashboard.putNumber("Kraken Temperature", kraken.getMotorTemperature());
-
-        kraken.setPIDValues(
-            SmartDashboard.getNumber("Kraken P Value", 0),
-            SmartDashboard.getNumber("Kraken I Value", 0),
-            SmartDashboard.getNumber("Kraken D Value", 0),
-            SmartDashboard.getNumber("Kraken FF Value", 0)
-        );
-
-        
-        
+        SmartDashboard.putNumber("Kraken Temperature", kraken.getMotorTemperature());        
 
         if(SmartDashboard.getBoolean("Run Kraken Percent Output", false)){
             kraken.setMotor(SmartDashboard.getNumber("RUN: Kraken Percent Output", 0));
         } else if (SmartDashboard.getBoolean("Run Kraken PID", false)){
-            kraken.setVelocityWithFeedForward(SmartDashboard.getNumber("Kraken RPM Setpoint", 0));
+            kraken.setVelocityPIDValues(
+                SmartDashboard.getNumber("Kraken kS Value", 0),
+                SmartDashboard.getNumber("Kraken kV Value", 0),
+                SmartDashboard.getNumber("Kraken kA Value", 0),         
+                SmartDashboard.getNumber("Kraken P Value", 0),
+                SmartDashboard.getNumber("Kraken I Value", 0),
+                SmartDashboard.getNumber("Kraken D Value", 0),
+                SmartDashboard.getNumber("Kraken FF Value", 0));
+            kraken.setPositionWithFeedForward(SmartDashboard.getNumber("Kraken Position Setpoint", 0));
         }
         
     }

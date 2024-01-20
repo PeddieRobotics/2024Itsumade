@@ -35,6 +35,7 @@ public class Kraken {
         this.canbusName = canbusName;
         this.configurator = talon.getConfigurator();
         this.config = new TalonFXConfiguration();
+        configurator.setPosition(0);
         factoryReset();
     }
 
@@ -99,6 +100,10 @@ public class Kraken {
          
     }
 
+    public void resetEncoder(){
+        configurator.setPosition(0);
+    }
+
     public void setMotor(double percentOutput) {
         final DutyCycleOut request = new DutyCycleOut(0);
         // Ensure the percentOutput is within the acceptable range [-1.0, 1.0]
@@ -113,6 +118,19 @@ public class Kraken {
         var pidSlotConfigs = new Slot0Configs();
 
         feedForward = kF;
+        pidSlotConfigs.kP = kP;
+        pidSlotConfigs.kI = kI;
+        pidSlotConfigs.kD = kD;
+        configurator.apply(pidSlotConfigs);
+    }
+
+    public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF){
+        var pidSlotConfigs = new Slot0Configs();
+
+        feedForward = kF;
+        pidSlotConfigs.kS = kS;
+        pidSlotConfigs.kV = kV;
+        pidSlotConfigs.kA = kA;
         pidSlotConfigs.kP = kP;
         pidSlotConfigs.kI = kI;
         pidSlotConfigs.kD = kD;

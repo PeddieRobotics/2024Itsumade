@@ -4,30 +4,29 @@
 
 package frc.robot;
 
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Octopus;
 
 
 public class RobotContainer {
-  private final Climber climber; 
-  private final Arm arm; 
-  private final Autonomous autonomous;
+  // private final Climber climber; 
+  // private final Arm arm; 
+  private final Octopus bubbles;
+  // private final Autonomous autonomous;
 
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autonomous.getAutonomousCommand();
+    // return Autonomous.getAutonomousCommand();
+    return null;
   }
 
   public RobotContainer(){
-    arm = Arm.getInstance();
-    climber = Climber.getInstance();
-    autonomous = Autonomous.getInstance();
+    // arm = Arm.getInstance();
+    // climber = Climber.getInstance();
+    bubbles = Octopus.getInstance();
+    // autonomous = Autonomous.getInstance();
   }
 }
