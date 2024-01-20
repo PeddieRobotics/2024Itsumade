@@ -12,26 +12,28 @@ import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.DeviceIdentifier;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class Kraken {
-    private TalonFX talon;
-    private TalonFXConfigurator configurator;
+    private final TalonFX talon;
+    private final TalonFXConfigurator configurator;
     private TalonFXConfiguration config;
     private int deviceID;
     private String canbusName;
 
     private double positionConversionFactor = 1.0; // Conversion factor for position
-    private double velocityConversionFactor = 1.0; // Conversion factor for velocity
+    private double velocityConversionFactor = 1.0 / 60.0; // Conversion factor for velocity
 
     // Open Loop Control
     private double feedForward = 0.0;
 
     public Kraken(int deviceID, String canbusName) {
+        this.talon = new TalonFX(deviceID, canbusName);
         this.deviceID = deviceID;
         this.canbusName = canbusName;
-        this.talon = new TalonFX(deviceID, canbusName);
+        this.configurator = talon.getConfigurator();
         this.config = new TalonFXConfiguration();
         factoryReset();
     }
@@ -60,12 +62,17 @@ public class Kraken {
 
     public double getPosition() {
         // Get position from TalonFX and apply position conversion factor
-        return talon.get() * positionConversionFactor;
+        return talon.getPosition().getValueAsDouble() * positionConversionFactor;
     }
+
 
     public double getVelocity() {
         // Get velocity from TalonFX and apply velocity conversion factor
         return talon.get() * velocityConversionFactor;
+    }
+
+    public double getRPM(){
+        return talon.getRotorVelocity().getValueAsDouble() * 60;
     }
 
     public void setCurrentLimit(double currentLimit) {
@@ -119,7 +126,7 @@ public class Kraken {
 
     public void setControlVelocity(double velocity, int slot) {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(slot);
-        talon.setControl(request.withVelocity(velocity));
+        talon.setControl(request.withVelocity(velocity * velocityConversionFactor));
     }
 
     public void setPositionWithFeedForward(double position) {
@@ -129,7 +136,15 @@ public class Kraken {
 
     public void setVelocityWithFeedForward(double velocity) {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
-        talon.setControl(request.withVelocity(velocity).withFeedForward(feedForward));
+        talon.setControl(request.withVelocity(velocity * velocityConversionFactor).withFeedForward(feedForward));
+    }
+
+    public double getSupplyCurrent(){
+        return talon.getSupplyCurrent().getValueAsDouble();
+    }
+
+    public double getMotorTemperature(){
+        return talon.getDeviceTemp().getValueAsDouble();
     }
     
 }
