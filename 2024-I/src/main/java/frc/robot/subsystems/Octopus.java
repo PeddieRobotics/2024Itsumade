@@ -28,9 +28,6 @@ public class Octopus extends SubsystemBase {
         SmartDashboard.putNumber("Kraken D Value", 0);
         SmartDashboard.putNumber("Kraken FF Value", 0);
         SmartDashboard.putNumber("Kraken RPM Setpoint", 0);
-        
-
-        
     }
 
     public static Octopus getInstance(){
