@@ -18,6 +18,8 @@ public class Octopus extends SubsystemBase {
 
         kraken = new Kraken(6, "canivore");
         kraken.setCurrentLimit(10);
+        kraken.setBrake();
+        kraken.setSoftLimits(true, 500, -500);
 
         SmartDashboard.putBoolean("Run Kraken Percent Output", false);
         SmartDashboard.putNumber("RUN: Kraken Percent Output", 0);
