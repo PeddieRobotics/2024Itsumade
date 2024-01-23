@@ -4,7 +4,10 @@ import java.lang.invoke.VolatileCallSite;
 
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -14,11 +17,11 @@ import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.DeviceIdentifier;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class Kraken {
     private final TalonFX talon;
-    private final TalonFXConfigurator configurator;
     private TalonFXConfiguration config;
     private int deviceID;
     private String canbusName;
@@ -33,22 +36,30 @@ public class Kraken {
         this.talon = new TalonFX(deviceID, canbusName);
         this.deviceID = deviceID;
         this.canbusName = canbusName;
-        this.configurator = talon.getConfigurator();
         this.config = new TalonFXConfiguration();
-        configurator.setPosition(0);
-        factoryReset();
+        talon.getConfigurator().setPosition(0);
+        // factoryReset();
     }
 
-    public void factoryReset(){
+    public void factoryReset() {
         talon.getConfigurator().apply(new TalonFXConfiguration());
     }
 
     public void setBrake() {
-        talon.setNeutralMode(NeutralModeValue.Brake);
+        MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
+        motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
+        config.MotorOutput = motorOutputConfigs;
+
+        talon.getConfigurator().apply(config);
     }
 
     public void setCoast() {
-        talon.setNeutralMode(NeutralModeValue.Coast);
+        MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
+        motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
+        config.MotorOutput = motorOutputConfigs;
+        // p
+
+        talon.getConfigurator().apply(config);
     }
 
     public void setPositionConversionFactor(double conversionFactor) {
@@ -66,49 +77,75 @@ public class Kraken {
         return talon.getPosition().getValueAsDouble() * positionConversionFactor;
     }
 
-
     public double getVelocity() {
         // Get velocity from TalonFX and apply velocity conversion factor
         return talon.get() * velocityConversionFactor;
     }
 
-    public double getRPM(){
+    public double getRPM() {
         return talon.getRotorVelocity().getValueAsDouble() * 60;
     }
 
     public void setCurrentLimit(double currentLimit) {
         CurrentLimitsConfigs currentLimitsConfig = new CurrentLimitsConfigs();
         currentLimitsConfig.SupplyCurrentLimitEnable = true;
+        // currentLimitsConfig.StatorCurrentLimitEnable = true;
         currentLimitsConfig.SupplyCurrentLimit = currentLimit;
+        // currentLimitsConfig.StatorCurrentLimit = currentLimit;
         config.CurrentLimits = currentLimitsConfig;
 
-        configurator.apply(config);
+        talon.getConfigurator().apply(config);
+
     }
 
-    public void setClosedLoopRampRate(double rampRate){
+    public void setClosedLoopRampRate(double rampRate) {
         ClosedLoopRampsConfigs closedLoopRampRateConfig = new ClosedLoopRampsConfigs();
         closedLoopRampRateConfig.DutyCycleClosedLoopRampPeriod = rampRate;
         closedLoopRampRateConfig.TorqueClosedLoopRampPeriod = rampRate;
-        closedLoopRampRateConfig.VoltageClosedLoopRampPeriod = rampRate; 
+        closedLoopRampRateConfig.VoltageClosedLoopRampPeriod = rampRate;
         config.ClosedLoopRamps = closedLoopRampRateConfig;
 
-        configurator.apply(config);
+        talon.getConfigurator().apply(config);
 
     }
 
-    public void setForwardSoftLimit(double limitValue){
-         
+    public void setMagicMotionParameters(double cruiseVelocity, double maxAcceleration, double maxJerk) {
+        MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs();
+        motionMagicConfigs.MotionMagicCruiseVelocity = cruiseVelocity;
+        motionMagicConfigs.MotionMagicAcceleration = maxAcceleration;
+        motionMagicConfigs.MotionMagicJerk = maxJerk;
+        config.MotionMagic = motionMagicConfigs;
+
+        talon.getConfigurator().apply(config);
     }
 
-    public void resetEncoder(){
-        configurator.setPosition(0);
+    public void setSoftLimits(boolean enableSoftLimit, double forwardLimitValue, double reverseLimitValue) {
+        SoftwareLimitSwitchConfigs softwareLimitConfigs = new SoftwareLimitSwitchConfigs();
+
+        if (enableSoftLimit) {
+            softwareLimitConfigs.ForwardSoftLimitEnable = true;
+            softwareLimitConfigs.ReverseSoftLimitEnable = true;
+            softwareLimitConfigs.ForwardSoftLimitThreshold = forwardLimitValue;
+            softwareLimitConfigs.ReverseSoftLimitThreshold = reverseLimitValue;
+        } else {
+            softwareLimitConfigs.ForwardSoftLimitEnable = false;
+            softwareLimitConfigs.ReverseSoftLimitEnable = false;
+        }
+
+        config.SoftwareLimitSwitch = softwareLimitConfigs;
+
+        talon.getConfigurator().apply(config);
+    }
+
+    public void resetEncoder() {
+        talon.getConfigurator().setPosition(0);
     }
 
     public void setMotor(double percentOutput) {
         final DutyCycleOut request = new DutyCycleOut(0);
         // Ensure the percentOutput is within the acceptable range [-1.0, 1.0]
         percentOutput = Math.max(-1.0, Math.min(1.0, percentOutput));
-        
+
         // Set the control request to the motor controller
         talon.setControl(request.withOutput(percentOutput));
 
@@ -121,10 +158,10 @@ public class Kraken {
         pidSlotConfigs.kP = kP;
         pidSlotConfigs.kI = kI;
         pidSlotConfigs.kD = kD;
-        configurator.apply(pidSlotConfigs);
+        talon.getConfigurator().apply(pidSlotConfigs);
     }
 
-    public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF){
+    public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF) {
         var pidSlotConfigs = new Slot0Configs();
 
         feedForward = kF;
@@ -134,7 +171,7 @@ public class Kraken {
         pidSlotConfigs.kP = kP;
         pidSlotConfigs.kI = kI;
         pidSlotConfigs.kD = kD;
-        configurator.apply(pidSlotConfigs);
+        talon.getConfigurator().apply(pidSlotConfigs);
     }
 
     public void setControlPosition(double position, int slot) {
@@ -157,12 +194,12 @@ public class Kraken {
         talon.setControl(request.withVelocity(velocity * velocityConversionFactor).withFeedForward(feedForward));
     }
 
-    public double getSupplyCurrent(){
+    public double getSupplyCurrent() {
         return talon.getSupplyCurrent().getValueAsDouble();
     }
 
-    public double getMotorTemperature(){
+    public double getMotorTemperature() {
         return talon.getDeviceTemp().getValueAsDouble();
     }
-    
+
 }
