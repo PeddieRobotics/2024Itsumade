@@ -2,6 +2,7 @@ package frc.robot.utils;
 
 import java.lang.invoke.VolatileCallSite;
 
+import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
@@ -17,6 +18,7 @@ import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.DeviceIdentifier;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -27,7 +29,7 @@ public class Kraken {
     private String canbusName;
 
     private double positionConversionFactor = 1.0; // Conversion factor for position
-    private double velocityConversionFactor = 1.0 / 60.0; // Conversion factor for velocity
+    private double velocityConversionFactor = 1.0; // Conversion factor for velocity
 
     // Open Loop Control
     private double feedForward = 0.0;
@@ -43,6 +45,16 @@ public class Kraken {
 
     public void factoryReset() {
         talon.getConfigurator().apply(new TalonFXConfiguration());
+    }
+
+    public void setPosition(double position){
+        talon.getConfigurator().setPosition(position);
+    }
+
+    public void setFeedbackDevice(){
+        config.Feedback.FeedbackRemoteSensorID = 1;
+        config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+        talon.getConfigurator().apply(config);
     }
 
     public void setBrake() {
@@ -174,9 +186,17 @@ public class Kraken {
         talon.getConfigurator().apply(pidSlotConfigs);
     }
 
+    public void setClosedLoopContinuousInput(){
+        ClosedLoopGeneralConfigs closedLoopGeneralConfigs = new ClosedLoopGeneralConfigs();
+        closedLoopGeneralConfigs.ContinuousWrap = true;
+        config.ClosedLoopGeneral = closedLoopGeneralConfigs;
+        
+        talon.getConfigurator().apply(config);
+    }
+
     public void setControlPosition(double position, int slot) {
         final PositionVoltage request = new PositionVoltage(0).withSlot(slot);
-        talon.setControl(request.withPosition(position));
+        talon.setControl(request.withPosition(position * positionConversionFactor));
     }
 
     public void setControlVelocity(double velocity, int slot) {
@@ -186,7 +206,7 @@ public class Kraken {
 
     public void setPositionWithFeedForward(double position) {
         final PositionVoltage request = new PositionVoltage(0).withSlot(0);
-        talon.setControl(request.withPosition(position).withFeedForward(feedForward));
+        talon.setControl(request.withPosition(position * positionConversionFactor).withFeedForward(feedForward));
     }
 
     public void setVelocityWithFeedForward(double velocity) {
