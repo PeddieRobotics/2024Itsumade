@@ -57,6 +57,7 @@ public class Kraken {
         MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
         motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
         config.MotorOutput = motorOutputConfigs;
+        // p
 
         talon.getConfigurator().apply(config);
     }
