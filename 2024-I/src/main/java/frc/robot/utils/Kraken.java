@@ -5,6 +5,7 @@ import java.lang.invoke.VolatileCallSite;
 import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -28,11 +29,10 @@ public class Kraken {
     private int deviceID;
     private String canbusName;
 
-    private double positionConversionFactor = 1.0; // Conversion factor for position
-    private double velocityConversionFactor = 1.0; // Conversion factor for velocity
-
     // Open Loop Control
     private double feedForward = 0.0;
+
+    private double velocityConversionFactor = 1.0 / 60;
 
     public Kraken(int deviceID, String canbusName) {
         this.talon = new TalonFX(deviceID, canbusName);
@@ -51,12 +51,6 @@ public class Kraken {
         talon.getConfigurator().setPosition(position);
     }
 
-    public void setFeedbackDevice(){
-        config.Feedback.FeedbackRemoteSensorID = 1;
-        config.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-        talon.getConfigurator().apply(config);
-    }
-
     public void setBrake() {
         MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
         motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
@@ -69,24 +63,13 @@ public class Kraken {
         MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
         motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
         config.MotorOutput = motorOutputConfigs;
-        // p
 
         talon.getConfigurator().apply(config);
     }
 
-    public void setPositionConversionFactor(double conversionFactor) {
-        this.positionConversionFactor = conversionFactor;
-        // Apply conversion factor for position
-    }
-
-    public void setVelocityConversionFactor(double conversionFactor) {
-        this.velocityConversionFactor = conversionFactor;
-        // Apply conversion factor for velocity
-    }
-
     public double getPosition() {
         // Get position from TalonFX and apply position conversion factor
-        return talon.getPosition().getValueAsDouble() * positionConversionFactor;
+        return talon.getPosition().getValueAsDouble();
     }
 
     public double getVelocity() {
@@ -149,6 +132,14 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
+    public void setContinuousOutput(){
+        ClosedLoopGeneralConfigs closedLoopsGeneralConfigs = new ClosedLoopGeneralConfigs();
+        closedLoopsGeneralConfigs.ContinuousWrap = true;
+
+        config.ClosedLoopGeneral = closedLoopsGeneralConfigs;
+        talon.getConfigurator().apply(config);
+    }
+
     public void resetEncoder() {
         talon.getConfigurator().setPosition(0);
     }
@@ -186,17 +177,17 @@ public class Kraken {
         talon.getConfigurator().apply(pidSlotConfigs);
     }
 
-    public void setClosedLoopContinuousInput(){
-        ClosedLoopGeneralConfigs closedLoopGeneralConfigs = new ClosedLoopGeneralConfigs();
-        closedLoopGeneralConfigs.ContinuousWrap = true;
-        config.ClosedLoopGeneral = closedLoopGeneralConfigs;
-        
+    public void setClosedLoopConversionFactor(double conversionFactor){
+        FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
+        feedbackConfigs.SensorToMechanismRatio = 1 / conversionFactor;
+
+        config.Feedback = feedbackConfigs;
         talon.getConfigurator().apply(config);
     }
 
     public void setControlPosition(double position, int slot) {
         final PositionVoltage request = new PositionVoltage(0).withSlot(slot);
-        talon.setControl(request.withPosition(position * positionConversionFactor));
+        talon.setControl(request.withPosition(position));
     }
 
     public void setControlVelocity(double velocity, int slot) {
@@ -206,12 +197,18 @@ public class Kraken {
 
     public void setPositionWithFeedForward(double position) {
         final PositionVoltage request = new PositionVoltage(0).withSlot(0);
-        talon.setControl(request.withPosition(position * positionConversionFactor).withFeedForward(feedForward));
+        talon.setControl(request.withPosition(position).withFeedForward(feedForward));
     }
 
     public void setVelocityWithFeedForward(double velocity) {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
         talon.setControl(request.withVelocity(velocity * velocityConversionFactor).withFeedForward(feedForward));
+    }
+
+    public void setFeedbackDevice(int deviceID, FeedbackSensorSourceValue feedbackType){
+        config.Feedback.FeedbackRemoteSensorID = deviceID;
+        config.Feedback.FeedbackSensorSource = feedbackType;
+        talon.getConfigurator().apply(config);
     }
 
     public double getSupplyCurrent() {

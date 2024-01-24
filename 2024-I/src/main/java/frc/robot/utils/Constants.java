@@ -55,7 +55,7 @@ public final class Constants {
     public static final double kDrivingEncoderVelocityFactor = (Units.inchesToMeters(WHEEL_DIAMETER_IN) * Math.PI)/kDriveMotorReduction/60;
 
     public static final double kTurningMotorReduction = 150.0 / 7.0;
-    public static final double kTurningEncoderPositonFactor = 2 * Math.PI / kTurningMotorReduction;
+    public static final double kTurningEncoderPositonFactor = 2 * Math.PI  / kTurningMotorReduction;
     public static final double kTurningEncoderVelocityFactor = (2 * Math.PI)/60;
 
     public static final double kDrivingMotorCurrentLimit = 50;
@@ -69,7 +69,7 @@ public final class Constants {
     public static final double kDrivingD = 0.0;
     public static final double kDrivingFF = 0.0;
 
-    public static final double kTurningP = 0.0;
+    public static final double kTurningP = 2.3;
     public static final double kTurningI = 0.0;
     public static final double kTurningD = 0.0;
     public static final double kTurningFF = 0.0;
