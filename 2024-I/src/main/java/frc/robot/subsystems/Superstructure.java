@@ -2,25 +2,28 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Shoulder.SmartMotionArmSpeed;
 import frc.robot.utils.Constants;
-import frc.robot.utils.Constants.ShoulderConstants;
 import frc.robot.utils.Logger;
 
 public class Superstructure extends SubsystemBase {
     private static Superstructure superstructure;
     private Arm arm;
     private Flywheel flywheel;
+    private Limelight limelight;
     private double stateDuration;
     private double internalStateTimer;
 
     public enum SuperstructureState{
-        NEUTRAL,
+        STOW,
         GROUND_INTAKE,
         HP_INTAKE,
-        SHOOTING,
-        AMP,
-        CLIMBING,
+        AMP_PREP,
+        AMP_SCORING,
+        LAYUP_PREP,
+        LAYUP_SCORING,
+        LL_PREP,
+        LL_SCORING,
+        CLIMBING
     }
 
     SuperstructureState systemState;
@@ -31,8 +34,8 @@ public class Superstructure extends SubsystemBase {
         flywheel = Flywheel.getInstance();
         
 
-        systemState = SuperstructureState.NEUTRAL;
-        requestedSystemState = SuperstructureState.NEUTRAL;
+        systemState = SuperstructureState.STOW;
+        requestedSystemState = SuperstructureState.STOW;
 
         stateDuration = 0;
         internalStateTimer = 0;
@@ -60,34 +63,54 @@ public class Superstructure extends SubsystemBase {
         switch(systemState){
 
             //idle state of robot, arm is in stow position
-            case NEUTRAL:
+            case STOW:
 
-                if(requestedSystemState != SuperstructureState.NEUTRAL){
+                if(requestedSystemState != SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 }
                 break;   
             case GROUND_INTAKE:
-                if(requestedSystemState == SuperstructureState.NEUTRAL){
+                if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 }
                 break; 
             case HP_INTAKE:
-                if(requestedSystemState == SuperstructureState.NEUTRAL){
+                if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 }
                 break; 
-            case SHOOTING:
-                if(requestedSystemState == SuperstructureState.NEUTRAL){
+            case AMP_PREP:
+                if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 }
                 break; 
-            case AMP:
-                if(requestedSystemState == SuperstructureState.NEUTRAL){
+            case AMP_SCORING:
+                if(requestedSystemState == SuperstructureState.STOW){
+                    nextSystemState = requestedSystemState;
+                }
+                break; 
+            case LAYUP_PREP:
+                if(requestedSystemState == SuperstructureState.STOW){
+                    nextSystemState = requestedSystemState;
+                }
+                break; 
+            case LAYUP_SCORING:
+                if(requestedSystemState == SuperstructureState.STOW){
+                    nextSystemState = requestedSystemState;
+                }
+                break; 
+            case LL_PREP:
+                if(requestedSystemState == SuperstructureState.STOW){
+                    nextSystemState = requestedSystemState;
+                }
+                break; 
+            case LL_SCORING:
+                if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 }
                 break; 
             case CLIMBING:
-                if(requestedSystemState == SuperstructureState.NEUTRAL){
+                if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 }
                 break; 

@@ -1,4 +1,4 @@
-package frc.robot.util;
+package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.Constants.OIConstants;
+//import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure;
-import frc.robot.util.Constants.OIConstants;
 
 public class DriverOI {
     public enum AlignGoalColumn {
@@ -62,11 +62,11 @@ public class DriverOI {
         if(xButton.getAsBoolean()){
             superstructure.requestState(SuperstructureState.GROUND_INTAKE);
         } else if(muteButton.getAsBoolean()){
-            superstructure.requestState(SuperstructureState.NEUTRAL);
+            superstructure.requestState(SuperstructureState.STOW);
         } else if(circleButton.getAsBoolean()){
             superstructure.requestState(SuperstructureState.HP_INTAKE);
         } else if(triangleButton.getAsBoolean()){
-                superstructure.requestState(SuperstructureState.SHOOTING);
+                superstructure.requestState(SuperstructureState.LL_SCORING); //CHANGE THIS LATER BECAUSE THERE IS DEEPER LOGIC REQUIRED
         } else if(squareButton.getAsBoolean()){
                 //drive to note command here
         } else if(L1Bumper.getAsBoolean()){
