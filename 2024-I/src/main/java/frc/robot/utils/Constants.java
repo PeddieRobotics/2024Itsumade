@@ -52,7 +52,7 @@ public final class Constants {
 
     public static final double kDriveMotorReduction = 6.12;
     public static final double kDrivingEncoderPostionFactor = (Units.inchesToMeters(WHEEL_DIAMETER_IN) * Math.PI)/kDriveMotorReduction;
-    public static final double kDrivingEncoderVelocityFactor = (Units.inchesToMeters(WHEEL_DIAMETER_IN) * Math.PI)/kDriveMotorReduction/60;
+    public static final double kDrivingEncoderVelocityFactor = (Units.inchesToMeters(WHEEL_DIAMETER_IN) * Math.PI/kDriveMotorReduction);
 
     public static final double kTurningMotorReduction = 150.0 / 7.0;
     public static final double kTurningEncoderPositonFactor = 2 * Math.PI  / kTurningMotorReduction;

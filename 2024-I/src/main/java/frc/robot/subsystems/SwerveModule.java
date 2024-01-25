@@ -56,7 +56,7 @@ public class SwerveModule extends SubsystemBase {
     // driveMotor.setBrake();
     // steerMotor.setBrake();
 
-    driveMotor.setClosedLoopRampRate(0.05);
+    // driveMotor.setClosedLoopRampRate(0.05);
     steerMotor.setClosedLoopRampRate(0.05);
 
     driveMotor.setPosition(0);
@@ -68,26 +68,8 @@ public class SwerveModule extends SubsystemBase {
 
     steerMotor.setFeedbackDevice(1, FeedbackSensorSourceValue.SyncCANcoder);
 
-    // TODO: test
-    // driveMotor.setClosedLoopConversionFactor(1.0 / 60);
-    steerMotor.setClosedLoopConversionFactor(ModuleConstants.kTurningEncoderPositonFactor);
-
-    // SmartDashboard.putNumber("turning p", 0);
-    // SmartDashboard.putNumber("turning i", 0);
-    // SmartDashboard.putNumber("turning d", 0);
-    // SmartDashboard.putNumber("turning ff", 0);
-    // SmartDashboard.putBoolean("use turn position pid", false);
-    // SmartDashboard.putNumber("turning setpoint", 0);
-
-    SmartDashboard.putNumber("driving s", 0);
-    SmartDashboard.putNumber("driving v", 0);
-    SmartDashboard.putNumber("driving a", 0);
-    SmartDashboard.putNumber("driving p", 0);
-    SmartDashboard.putNumber("driving i", 0);
-    SmartDashboard.putNumber("driving d", 0);
-    SmartDashboard.putNumber("driving ff", 0);
-    SmartDashboard.putBoolean("use drive velocity pid", false);
-    SmartDashboard.putNumber("drive velocity setpoint", 0);
+    driveMotor.setVelocityConversionFactor(ModuleConstants.kDrivingEncoderVelocityFactor);
+    steerMotor.setPositionConversionFactor(ModuleConstants.kTurningEncoderPositonFactor);
   }
 
   public SwerveModuleState getState() {
@@ -143,20 +125,48 @@ public class SwerveModule extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    // This method will be called once per scheduler run during simulation
+  }
+
+  public void putSmartDashboard(){
+    SmartDashboard.putNumber("turning p", 0);
+    SmartDashboard.putNumber("turning i", 0);
+    SmartDashboard.putNumber("turning d", 0);
+    SmartDashboard.putNumber("turning ff", 0);
+    SmartDashboard.putBoolean("use turn position pid", false);
+    SmartDashboard.putNumber("turning setpoint", 0);
+
+    SmartDashboard.putNumber("driving s", 0.05);
+    SmartDashboard.putNumber("driving v", 0.12);
+    SmartDashboard.putNumber("driving a", 0);
+    SmartDashboard.putNumber("driving p", 0.1);
+    SmartDashboard.putNumber("driving i", 0);
+    SmartDashboard.putNumber("driving d", 0);
+    SmartDashboard.putNumber("driving ff", 0);
+    SmartDashboard.putBoolean("use drive velocity pid", false);
+    SmartDashboard.putNumber("drive mps setpoint", 0);
+  }
+
+  public void updateSmartdashBoard(){
     SmartDashboard.putNumber("drive motor position", driveMotor.getPosition());
     SmartDashboard.putNumber("turn motor position", steerMotor.getPosition());
-    SmartDashboard.putNumber("drive motor velocity", driveMotor.getVelocity());
+    SmartDashboard.putNumber("drive motor mps", driveMotor.getMPS());
     SmartDashboard.putNumber("cancoder position", getCANCoderReading());
     SmartDashboard.putNumber("drive motor temperature", driveMotor.getMotorTemperature());
     SmartDashboard.putNumber("drive motor current", driveMotor.getSupplyCurrent());
     SmartDashboard.putNumber("turning motor output current", steerMotor.getSupplyCurrent());
     SmartDashboard.putNumber("turn motor temperature", steerMotor.getMotorTemperature());
 
-    // if (SmartDashboard.getBoolean("use turn position pid", false)) {
-    //   steerMotor.setPIDValues(SmartDashboard.getNumber("turning p", 0), SmartDashboard.getNumber("turning i", 0),
-    //       SmartDashboard.getNumber("turning d", 0), SmartDashboard.getNumber("turning ff", 0));
-    //   steerMotor.setPositionWithFeedForward(SmartDashboard.getNumber("turning setpoint", 0));
-    // }  
+    if (SmartDashboard.getBoolean("use turn position pid", false)) {
+      steerMotor.setPIDValues(SmartDashboard.getNumber("turning p", 0), SmartDashboard.getNumber("turning i", 0),
+          SmartDashboard.getNumber("turning d", 0), SmartDashboard.getNumber("turning ff", 0));
+      steerMotor.setPositionWithFeedForward(SmartDashboard.getNumber("turning setpoint", 0));
+    }
+
     if (SmartDashboard.getBoolean("use drive velocity pid", false)) {
       driveMotor.setVelocityPIDValues(
         SmartDashboard.getNumber("driving s", 0),
@@ -167,12 +177,8 @@ public class SwerveModule extends SubsystemBase {
         SmartDashboard.getNumber("driving d", 0),
         SmartDashboard.getNumber("driving ff", 0)
         );
-      driveMotor.setVelocityWithFeedForward(SmartDashboard.getNumber("drive velocity setpoint", 0));
+      driveMotor.setVelocityWithFeedForward(SmartDashboard.getNumber("drive mps setpoint", 0));
     }
   }
 
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-  }
 }
