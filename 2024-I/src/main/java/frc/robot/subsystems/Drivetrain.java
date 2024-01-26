@@ -88,7 +88,14 @@ public class Drivetrain extends SubsystemBase {
         }
 
         swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds, centerOfRotation);
+        optimizeModuleStates();
         setSwerveModuleStates(swerveModuleStates);
+    }
+
+    public void optimizeModuleStates(){
+        for (int i = 0; i < 4; i++){
+            swerveModuleStates[i] = SwerveModuleState.optimize(swerveModuleStates[i], new Rotation2d(swerveModules[i].getCANCoderReading()));
+        }
     }
 
     public void stop(){
