@@ -23,17 +23,12 @@ public final class Constants {
     public static final double kBaseRadius = Math.sqrt(Math.pow(kTrackWidth, 2) + Math.pow(kWheelBase, 2)) / 2;
 
     public static final Translation2d[] swerveModuleLocations = {
-        new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
-        new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
-        new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
         new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0)
     };
 
     public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-        swerveModuleLocations[0],
-        swerveModuleLocations[1],
-        swerveModuleLocations[2],
-        swerveModuleLocations[3]);
+        swerveModuleLocations[0]
+        );
 
     // TODO: Change this value
     public static final double kMaxFloorSpeed = 3.0; // meters per second
@@ -62,10 +57,10 @@ public final class Constants {
     public static final double kDrivingMotorCurrentLimit = 50;
     public static final double kTurningMotorCurrentLimit = 50;
 
-    public static final double kDrivingS = 0.0;
-    public static final double kDrivingV = 0.0;
+    public static final double kDrivingS = 0.05;
+    public static final double kDrivingV = 0.13;
     public static final double kDrivingA = 0.0;
-    public static final double kDrivingP = 0.0;
+    public static final double kDrivingP = 0.11;
     public static final double kDrivingI = 0.0;
     public static final double kDrivingD = 0.0;
     public static final double kDrivingFF = 0.0;

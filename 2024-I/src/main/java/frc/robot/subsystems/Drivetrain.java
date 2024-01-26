@@ -19,7 +19,7 @@ public class Drivetrain extends SubsystemBase {
     public static Drivetrain instance;
 
     private final SwerveModule[] swerveModules;
-    private final SwerveModule frontLeftModule, frontRightModule, backLeftModule, backRightModule;
+    private final SwerveModule frontLeftModule, frontRightModule;
 
     private SwerveModuleState[] swerveModuleStates;
     private SwerveModulePosition[] swerveModulePositions;
@@ -31,11 +31,10 @@ public class Drivetrain extends SubsystemBase {
     public Drivetrain() {
         frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID, RobotMap.FRONT_LEFT_MODULE_TURN_ID, RobotMap.FRONT_LEFT_MODULE_CANCODER_ID);
         frontRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_RIGHT_MODULE_DRIVE_ID, RobotMap.FRONT_RIGHT_MODULE_TURN_ID, RobotMap.FRONT_RIGHT_MODULE_CANCODER_ID);
-        backLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_LEFT_MODULE_DRIVE_ID, RobotMap.BACK_LEFT_MODULE_TURN_ID, RobotMap.BACK_LEFT_MODULE_CANCODER_ID);
-        backRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_RIGHT_MODULE_DRIVE_ID, RobotMap.BACK_RIGHT_MODULE_TURN_ID, RobotMap.BACK_RIGHT_MODULE_CANCODER_ID);
 
-        swerveModules = new SwerveModule[] {frontLeftModule, frontRightModule, backLeftModule, backRightModule};
-        swerveModulePositions = new SwerveModulePosition[] {frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition()};
+
+        swerveModules = new SwerveModule[] {frontLeftModule, frontRightModule};
+        swerveModulePositions = new SwerveModulePosition[] {frontLeftModule.getPosition(), frontRightModule.getPosition()};
 
         gyro = new Pigeon2(RobotMap.GYRO, RobotMap.CANIVORE_NAME);
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, gyro.getRotation2d(), swerveModulePositions, new Pose2d());
@@ -61,7 +60,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void updateModulePositions(){
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < swerveModulePositions.length; i++){
             swerveModulePositions[i] = swerveModules[i].getPosition();
         }
     }
