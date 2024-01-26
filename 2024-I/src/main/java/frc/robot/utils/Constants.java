@@ -49,14 +49,15 @@ public final class Constants {
   public static class ModuleConstants {
     public static final double WHEEL_DIAMETER_IN = 4.0;
 
-
     public static final double kDriveMotorReduction = 6.12;
-    public static final double kDrivingEncoderPostionFactor = (Units.inchesToMeters(WHEEL_DIAMETER_IN) * Math.PI)/kDriveMotorReduction;
-    public static final double kDrivingEncoderVelocityFactor = (Units.inchesToMeters(WHEEL_DIAMETER_IN) * Math.PI/kDriveMotorReduction);
+    public static final double kDrivingEncoderPostionFactor = (Units.inchesToMeters(WHEEL_DIAMETER_IN) * Math.PI)
+        / kDriveMotorReduction;
+    public static final double kDrivingEncoderVelocityFactor = (Units.inchesToMeters(WHEEL_DIAMETER_IN) * Math.PI
+        / kDriveMotorReduction);
 
     public static final double kTurningMotorReduction = 150.0 / 7.0;
-    public static final double kTurningEncoderPositonFactor = 2 * Math.PI  / kTurningMotorReduction;
-    public static final double kTurningEncoderVelocityFactor = (2 * Math.PI)/60;
+    public static final double kTurningEncoderPositonFactor = 2 * Math.PI / kTurningMotorReduction;
+    public static final double kTurningEncoderVelocityFactor = (2 * Math.PI) / 60;
 
     public static final double kDrivingMotorCurrentLimit = 50;
     public static final double kTurningMotorCurrentLimit = 50;
@@ -105,7 +106,7 @@ public final class Constants {
     public static final int HOPPER_MOTOR_LIIMT = 0;
   }
 
-  public static class PIDConstants{
+  public static class PIDConstants {
     public static final double VELOCITY_S = 0.05;
     public static final double VELOCITY_V = 0.12;
     public static final double VELOCITY_P = 0.08;
@@ -118,6 +119,4 @@ public final class Constants {
     public static final double POSITION_D = 0;
     public static final double POSITION_FF = 0;
   }
-
-  
 }

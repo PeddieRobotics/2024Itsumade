@@ -23,18 +23,20 @@ public class Logger {
         }
         return instance;
     }
+
     public Logger(){
         booleanLog = new BooleanLogEntry(log, "/Data/BooleanLog");
-        doubleLog = new DoubleLogEntry(log, "/Data/DoubleLog");
-        stringLog = new StringLogEntry(log, "/Data/StringLog");
-        doubleArrayLog = new DoubleArrayLogEntry(log, "/Data/DoubleArrayLog");
-    }
+        doubleLog = new DoubleLogEntry(log,"/Data/DoubleLog");
+        stringLog = new StringLogEntry(log,"/Data/StringLog");
+        doubleArrayLog = new DoubleArrayLogEntry(log,"/Data/DoubleArrayLog");
 
+    }
     public void LogEvent(String event, Boolean isStart){
         stringLog.append(event + (isStart? " Started": " Ended"));
+
     }
 
-    public void UpdateLog(){
+    public void UpdateLogs(){
 
     }
 
