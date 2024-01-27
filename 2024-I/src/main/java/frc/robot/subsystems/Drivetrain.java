@@ -67,7 +67,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void updateModulePositions() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < swerveModulePositions.length; i++) {
             swerveModulePositions[i] = swerveModules[i].getPosition();
         }
     }
@@ -101,7 +101,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void optimizeModuleStates() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < swerveModuleStates.length; i++) {
             swerveModuleStates[i] = SwerveModuleState.optimize(swerveModuleStates[i],
                     new Rotation2d(swerveModules[i].getCANCoderReading()));
         }
