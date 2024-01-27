@@ -9,7 +9,7 @@ import frc.robot.subsystems.Drivetrain;
 public class RobotContainer {
   // private final Climber climber; 
   // private final Arm arm; 
-  private final Drivetrain drivetrain;
+  //private final Drivetrain drivetrain;
   // private final Autonomous autonomous;
 
   public Command getAutonomousCommand() {
@@ -21,9 +21,9 @@ public class RobotContainer {
   public RobotContainer(){
     // arm = Arm.getInstance();
     // climber = Climber.getInstance();
-    drivetrain = Drivetrain.getInstance();
+    //drivetrain = Drivetrain.getInstance();
     // autonomous = Autonomous.getInstance();
 
-    drivetrain.setDefaultCommand(new SwerveDriveCommand());
+    //drivetrain.setDefaultCommand(new SwerveDriveCommand());
   }
 }

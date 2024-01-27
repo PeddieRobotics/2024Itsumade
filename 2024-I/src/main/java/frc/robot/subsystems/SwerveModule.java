@@ -70,6 +70,9 @@ public class SwerveModule extends SubsystemBase {
 
     driveMotor.setVelocityConversionFactor(ModuleConstants.kDrivingEncoderVelocityFactor);
     steerMotor.setPositionConversionFactor(ModuleConstants.kTurningEncoderPositonFactor);
+
+
+    SmartDashboard.putBoolean("play music", false);
   }
 
   public SwerveModuleState getState() {
@@ -125,6 +128,7 @@ public class SwerveModule extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    driveMotor.playMusic(SmartDashboard.getBoolean("play music", false));
   }
 
   @Override

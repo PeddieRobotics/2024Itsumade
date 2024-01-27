@@ -2,6 +2,7 @@ package frc.robot.utils;
 
 import java.lang.invoke.VolatileCallSite;
 
+import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -32,6 +33,7 @@ public class Kraken {
     private TalonFXConfiguration config;
     private int deviceID;
     private String canbusName;
+    private Orchestra orchestra;
 
     // Open Loop Control
     private double feedForward = 0.0;
@@ -43,6 +45,11 @@ public class Kraken {
         this.canbusName = canbusName;
         this.config = new TalonFXConfiguration();
         talon.getConfigurator().setPosition(0);
+
+        orchestra = new Orchestra();
+        orchestra.addInstrument(talon);
+
+        var status = orchestra.loadMusic("output.chrp");
         // factoryReset();
     }
 
@@ -223,6 +230,14 @@ public class Kraken {
 
     public double getMotorTemperature() {
         return talon.getDeviceTemp().getValueAsDouble();
+    }
+
+    public void playMusic(boolean on){
+        if(on){
+            orchestra.play();
+        } else {
+            orchestra.pause();
+        }
     }
 
 }
