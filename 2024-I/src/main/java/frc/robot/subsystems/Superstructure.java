@@ -62,51 +62,105 @@ public class Superstructure extends SubsystemBase {
 
         switch(systemState){
 
-            //idle state of robot, arm is in stow position
+            //idle state of robot, arm is in stow position, 
             case STOW:
 
                 if(requestedSystemState != SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
-                }
+                } 
                 break;   
             case GROUND_INTAKE:
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.AMP_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState; 
+                } else if(requestedSystemState == SuperstructureState.LL_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState; 
                 }
                 break; 
             case HP_INTAKE:
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.AMP_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState; 
+                } else if(requestedSystemState == SuperstructureState.LL_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState; 
                 }
                 break; 
             case AMP_PREP:
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.AMP_SCORING){
+                    nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.LL_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState; 
                 }
                 break; 
             case AMP_SCORING:
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
+                    nextSystemState = requestedSystemState; 
+                } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
+                    nextSystemState = requestedSystemState; 
                 }
                 break; 
             case LAYUP_PREP:
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.LAYUP_SCORING){
+                    nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.LL_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.AMP_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState; 
                 }
                 break; 
             case LAYUP_SCORING:
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
+                    nextSystemState = requestedSystemState; 
+                } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
+                    nextSystemState = requestedSystemState; 
                 }
                 break; 
             case LL_PREP:
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.LL_SCORING){
+                    nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.AMP_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
+                    //check if intake has gamepiece
+                    nextSystemState = requestedSystemState; 
                 }
                 break; 
             case LL_SCORING:
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
+                    nextSystemState = requestedSystemState; 
+                } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
+                    nextSystemState = requestedSystemState; 
                 }
                 break; 
             case CLIMBING:
