@@ -96,6 +96,7 @@ public class Drivetrain extends SubsystemBase {
         }
 
         swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds, centerOfRotation);
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxAngularSpeed);
         optimizeModuleStates();
         setSwerveModuleStates(swerveModuleStates);
     }

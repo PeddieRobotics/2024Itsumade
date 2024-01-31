@@ -1,7 +1,5 @@
 package frc.robot.utils;
 
-import java.lang.invoke.VolatileCallSite;
-
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
@@ -12,21 +10,14 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.VelocityDutyCycle;
-import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.hardware.DeviceIdentifier;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
-import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import frc.robot.utils.Constants.DriveConstants;
-import frc.robot.utils.Constants.ModuleConstants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Kraken {
     private final TalonFX talon;
@@ -49,7 +40,7 @@ public class Kraken {
         orchestra = new Orchestra();
         orchestra.addInstrument(talon);
 
-        var status = orchestra.loadMusic("output.chrp");
+        // var status = orchestra.loadMusic("output.chrp");
         // factoryReset();
     }
 
@@ -230,6 +221,10 @@ public class Kraken {
 
     public double getMotorTemperature() {
         return talon.getDeviceTemp().getValueAsDouble();
+    }
+
+    public void updateSmartdashBoard(){
+        SmartDashboard.putNumber(canbusName + " " + deviceID + " motor", 1);
     }
 
     public void playMusic(boolean on){

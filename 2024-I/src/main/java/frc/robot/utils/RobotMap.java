@@ -14,10 +14,10 @@ public class RobotMap {
     public static final int BACK_LEFT_MODULE_TURN_ID = 31;
     public static final int BACK_RIGHT_MODULE_TURN_ID = 41;
 
-    public static final int FRONT_LEFT_MODULE_CANCODER_ID = 11;
-    public static final int FRONT_RIGHT_MODULE_CANCODER_ID = 21;
-    public static final int BACK_LEFT_MODULE_CANCODER_ID = 31;
-    public static final int BACK_RIGHT_MODULE_CANCODER_ID = 41;
+    public static final int FRONT_LEFT_MODULE_CANCODER_ID = 12;
+    public static final int FRONT_RIGHT_MODULE_CANCODER_ID = 22;
+    public static final int BACK_LEFT_MODULE_CANCODER_ID = 32;
+    public static final int BACK_RIGHT_MODULE_CANCODER_ID = 42;
 
 
     public static final int ARM_PRIMARY_MOTOR = 0;
