@@ -59,9 +59,11 @@ public class SwerveModule extends SubsystemBase {
 
     steerMotor.setFeedbackDevice(1, FeedbackSensorSourceValue.RemoteCANcoder);
 
+    // Need to set continuous input before the conversion factors, almost sure this is why it didn't work. Check docs for explanation. :p
+    steerMotor.setContinuousOutput();
     driveMotor.setVelocityConversionFactor(ModuleConstants.kDrivingEncoderVelocityFactor);
     steerMotor.setPositionConversionFactor(ModuleConstants.kTurningEncoderPositonFactor);
-    // steerMotor.setContinuousOutput();
+    
 
     driveMotor.setVelocityPIDValues(ModuleConstants.kDrivingS, ModuleConstants.kDrivingV, ModuleConstants.kDrivingA,
         ModuleConstants.kDrivingP, ModuleConstants.kDrivingI, ModuleConstants.kDrivingD, ModuleConstants.kDrivingFF);
