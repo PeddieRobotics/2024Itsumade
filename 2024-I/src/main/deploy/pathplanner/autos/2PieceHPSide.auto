@@ -16,6 +16,24 @@
           "data": {
             "pathName": "2PieceHPSide"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2PieceHPSideBack"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SideLayup"
+          }
         }
       ]
     }
