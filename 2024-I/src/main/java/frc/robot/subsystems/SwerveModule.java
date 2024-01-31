@@ -46,7 +46,7 @@ public class SwerveModule extends SubsystemBase {
     // driveMotor.setBrake();
     // steerMotor.setBrake();
 
-    // driveMotor.setClosedLoopRampRate(0.05);
+    driveMotor.setClosedLoopRampRate(0.05);
     steerMotor.setClosedLoopRampRate(0.05);
 
     driveMotor.setPosition(0);
@@ -59,11 +59,13 @@ public class SwerveModule extends SubsystemBase {
 
     steerMotor.setFeedbackDevice(1, FeedbackSensorSourceValue.RemoteCANcoder);
 
-    // Need to set continuous input before the conversion factors, almost sure this is why it didn't work. Check docs for explanation. :p
-    steerMotor.setContinuousOutput();
     driveMotor.setVelocityConversionFactor(ModuleConstants.kDrivingEncoderVelocityFactor);
-    steerMotor.setPositionConversionFactor(ModuleConstants.kTurningEncoderPositonFactor);
-    
+
+    // steerMotor.setRotorToSensorRatio(ModuleConstants.kTurningEncoderPositonFactor);
+    // steerMotor.setPositionConversionFactor(ModuleConstants.kTurningEncoderPositonFactor);
+    steerMotor.setPositionConversionFactor(1);
+
+    steerMotor.setContinuousOutput();
 
     driveMotor.setVelocityPIDValues(ModuleConstants.kDrivingS, ModuleConstants.kDrivingV, ModuleConstants.kDrivingA,
         ModuleConstants.kDrivingP, ModuleConstants.kDrivingI, ModuleConstants.kDrivingD, ModuleConstants.kDrivingFF);
@@ -112,7 +114,8 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public double getCANCoderReading() {
-    return Math.IEEEremainder(steerEncoder.getPosition().getValueAsDouble() * 2 * Math.PI, 2 * Math.PI) ;
+    return Math.IEEEremainder(steerEncoder.getPosition().getValueAsDouble(), 1) ;
+    // return steerEncoder.getPosition().getValueAsDouble();
   }
 
   public void resetCANCoder() {
@@ -179,7 +182,9 @@ public class SwerveModule extends SubsystemBase {
     // steerMotor.setMotor(SmartDashboard.getNumber(steeringCANId + " Steer Motor
     // Percent Output ", 0));
     // }
+
     SmartDashboard.putNumber(CANCoderId + " canCoder position", getCANCoderReading());
+    SmartDashboard.putNumber(CANCoderId + " steer motor raw position", steerMotor.getPosition());
 
     if (SmartDashboard.getBoolean(drivingCANId + " Use PID Output", false)) {
       driveMotor.setVelocityWithFeedForward(SmartDashboard.getNumber(drivingCANId + " Drive Motor PID Output ", 0));

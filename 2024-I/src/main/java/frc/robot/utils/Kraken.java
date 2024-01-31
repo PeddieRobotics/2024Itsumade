@@ -179,7 +179,7 @@ public class Kraken {
 
     public void setPositionConversionFactor(double conversionFactor){
         FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
-        feedbackConfigs.SensorToMechanismRatio = 1 / conversionFactor;
+        feedbackConfigs.SensorToMechanismRatio = conversionFactor;
 
         config.Feedback = feedbackConfigs;
         talon.getConfigurator().apply(config);
@@ -187,6 +187,14 @@ public class Kraken {
 
     public void setVelocityConversionFactor(double conversionFactor){
         velocityConversionFactor = conversionFactor;
+    }
+
+    public void setRotorToSensorRatio(double conversionRatio){
+        FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
+        feedbackConfigs.RotorToSensorRatio = conversionRatio;
+
+        config.Feedback = feedbackConfigs;
+        talon.getConfigurator().apply(config);
     }
 
     public void setControlPosition(double position, int slot) {
