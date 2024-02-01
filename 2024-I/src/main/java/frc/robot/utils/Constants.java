@@ -55,7 +55,7 @@ public final class Constants {
         / kDriveMotorReduction);
 
     public static final double kTurningMotorReduction = 150.0 / 7.0;
-    public static final double kTurningEncoderPositonFactor = 2 * Math.PI / kTurningMotorReduction;
+    public static final double kTurningEncoderPositonFactor = kTurningMotorReduction / (2 * Math.PI);
     public static final double kTurningEncoderVelocityFactor = (2 * Math.PI) / 60;
 
     public static final double kDrivingMotorCurrentLimit = 50;
