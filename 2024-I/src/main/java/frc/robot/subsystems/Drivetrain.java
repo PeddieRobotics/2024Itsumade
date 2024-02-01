@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -10,6 +13,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.DriveConstants;
@@ -28,6 +32,9 @@ public class Drivetrain extends SubsystemBase {
     private final Pigeon2 gyro;
     private double heading;
 
+    private TalonSRX phoenixFiveMotor;
+    private TalonSRXConfiguration motorConfig;
+
     public Drivetrain() {
         frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
                 RobotMap.FRONT_LEFT_MODULE_TURN_ID, RobotMap.FRONT_LEFT_MODULE_CANCODER_ID);
@@ -45,6 +52,17 @@ public class Drivetrain extends SubsystemBase {
         gyro = new Pigeon2(RobotMap.GYRO, RobotMap.CANIVORE_NAME);
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, gyro.getRotation2d(), swerveModulePositions,
                 new Pose2d());
+
+        phoenixFiveMotor = new TalonSRX(7);
+        motorConfig = new TalonSRXConfiguration();
+
+        motorConfig.peakCurrentLimit = 30;
+        phoenixFiveMotor.configAllSettings(motorConfig);
+
+        SmartDashboard.putNumber("Talon SRX percent output", 0); 
+        SmartDashboard.putBoolean("Talon SRX use percent output", false);
+
+        phoenixFiveMotor.enableCurrentLimit(true);
     }
 
     public static Drivetrain getInstance() {
@@ -59,6 +77,10 @@ public class Drivetrain extends SubsystemBase {
         // This method will be called once per scheduler run
         updateModulePositions();
         updateOdometry();
+
+        if (SmartDashboard.getBoolean("Talon SRX use percent output", false)){
+            phoenixFiveMotor.set(TalonSRXControlMode.PercentOutput, SmartDashboard.getNumber("Talon SRX percent output", 0));
+        }
     }
 
     @Override

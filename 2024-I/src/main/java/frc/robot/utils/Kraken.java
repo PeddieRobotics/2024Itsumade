@@ -133,10 +133,7 @@ public class Kraken {
     }
 
     public void setContinuousOutput(){
-        ClosedLoopGeneralConfigs closedLoopsGeneralConfigs = new ClosedLoopGeneralConfigs();
-        closedLoopsGeneralConfigs.ContinuousWrap = true;
-
-        config.ClosedLoopGeneral = closedLoopsGeneralConfigs;
+        config.ClosedLoopGeneral.ContinuousWrap = true;
         talon.getConfigurator().apply(config);
     }
 
@@ -178,10 +175,7 @@ public class Kraken {
     }
 
     public void setPositionConversionFactor(double conversionFactor){
-        FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
-        feedbackConfigs.SensorToMechanismRatio = conversionFactor;
-
-        config.Feedback = feedbackConfigs;
+        config.Feedback.SensorToMechanismRatio = conversionFactor;
         talon.getConfigurator().apply(config);
     }
 
@@ -190,10 +184,7 @@ public class Kraken {
     }
 
     public void setRotorToSensorRatio(double conversionRatio){
-        FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
-        feedbackConfigs.RotorToSensorRatio = conversionRatio;
-
-        config.Feedback = feedbackConfigs;
+        config.Feedback.RotorToSensorRatio = conversionRatio;
         talon.getConfigurator().apply(config);
     }
 
