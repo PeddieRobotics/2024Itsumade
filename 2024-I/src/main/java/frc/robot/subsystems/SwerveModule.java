@@ -47,8 +47,8 @@ public class SwerveModule extends SubsystemBase {
     // driveMotor.setBrake();
     // steerMotor.setBrake();
 
-    driveMotor.setClosedLoopRampRate(0.05);
-    steerMotor.setClosedLoopRampRate(0.05);
+    driveMotor.setClosedLoopRampRate(0.1);
+    steerMotor.setClosedLoopRampRate(0.1);
 
     driveMotor.setPosition(0);
     steerMotor.setPosition(0);
