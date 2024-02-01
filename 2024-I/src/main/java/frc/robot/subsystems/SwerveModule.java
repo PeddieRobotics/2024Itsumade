@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
@@ -54,16 +55,24 @@ public class SwerveModule extends SubsystemBase {
 
     // Steer Encoder Setup
     steerEncoder = new CANcoder(CANCoderId, canbusName);
-    steerEncoder.setPosition(0);
     configureCANcoder();
+    steerEncoder.setPosition(0);
+
+    // ------------------------------------------------------------
 
     steerMotor.setFeedbackDevice(1, FeedbackSensorSourceValue.RemoteCANcoder);
 
     driveMotor.setVelocityConversionFactor(ModuleConstants.kDrivingEncoderVelocityFactor);
 
-    // steerMotor.setRotorToSensorRatio(ModuleConstants.kTurningEncoderPositonFactor);
+    // REMOTE CANCODER
+    steerMotor.setPositionConversionFactor(1 / (2 * Math.PI));
+
+    // INTERNAL SENSOR
     // steerMotor.setPositionConversionFactor(ModuleConstants.kTurningEncoderPositonFactor);
-    steerMotor.setPositionConversionFactor(1);
+
+    // FUSED CANCODER
+    // steerMotor.setRotorToSensorRatio(ModuleConstants.kTurningEncoderPositonFactor);
+    // steerMotor.setPositionConversionFactor(1.0);
 
     steerMotor.setContinuousOutput();
 
@@ -92,7 +101,7 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putNumber(drivingCANId + " desired velocity", desiredState.speedMetersPerSecond);
     SmartDashboard.putNumber(steeringCANId + " desired position", desiredState.angle.getRadians());
 
-    SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(desiredState, new Rotation2d(steerMotor.getPosition()));
+    SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(desiredState, new Rotation2d(getCANCoderReading()));
 
     double desiredVelocity = optimizedDesiredState.speedMetersPerSecond * ModuleConstants.kDriveMotorReduction
         / (2 * DriveConstants.kWheelRadius);
@@ -103,7 +112,7 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putNumber(drivingCANId + " optimized desired velocity", desiredVelocity);
     SmartDashboard.putNumber(steeringCANId + " optimized desired position", desiredAngle);
 
-    SmartDashboard.putNumber(steeringCANId + " steering motor position", steerMotor.getPosition());
+    SmartDashboard.putNumber(steeringCANId + " steering motor position", getCANCoderReading());
     driveMotor.setVelocityWithFeedForward(desiredVelocity);
     steerMotor.setPositionWithFeedForward(desiredAngle);
   }
@@ -114,8 +123,7 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public double getCANCoderReading() {
-    return Math.IEEEremainder(steerEncoder.getPosition().getValueAsDouble(), 1) ;
-    // return steerEncoder.getPosition().getValueAsDouble();
+    return steerEncoder.getPosition().getValueAsDouble(); // Multiply by 2 PI Maybe?
   }
 
   public void resetCANCoder() {
@@ -133,6 +141,7 @@ public class SwerveModule extends SubsystemBase {
   public void configureCANcoder() {
     CANcoderConfiguration canCoderConfiguration = new CANcoderConfiguration();
     canCoderConfiguration.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
+    canCoderConfiguration.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
     steerEncoder.getConfigurator().apply(canCoderConfiguration);
   }
 
