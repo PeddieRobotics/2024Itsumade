@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.Hashtable;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -28,5 +30,11 @@ public class Autonomous extends SubsystemBase {
 
     public static Command getAutonomousCommand(){
         return autoChooser.getSelected();
+    }
+
+    //EDIT THIS METHOD LATER, FILLER METHOD FOR THE OPERATOR TAB THAT NEEDS ATTENTION!!!
+    public Hashtable<String, Command> getAutoRoutines() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAutoRoutines'");
     }
 }
