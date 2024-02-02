@@ -19,8 +19,8 @@ public class Autonomous extends SubsystemBase {
 
     public Autonomous(){
         NamedCommands.registerCommand("Intake", new InstantCommand( () -> {superstructure.requestState(SuperstructureState.GROUND_INTAKE);} ) );
-        NamedCommands.registerCommand("SideLayup", new InstantCommand( () -> {superstructure.shoot(Constants.FlywheelConstants.SideLayupFlywheelSpeed);} ) );
-        NamedCommands.registerCommand("FrontLayup", new InstantCommand( () -> {superstructure.shoot(Constants.FlywheelConstants.FrontLayupFlywheelSpeed);} ) );
+        // NamedCommands.registerCommand("SideLayup", new InstantCommand( () -> {superstructure.shoot(Constants.FlywheelConstants.SideLayupFlywheelSpeed);} ) );
+        // NamedCommands.registerCommand("FrontLayup", new InstantCommand( () -> {superstructure.shoot(Constants.FlywheelConstants.FrontLayupFlywheelSpeed);} ) );
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
