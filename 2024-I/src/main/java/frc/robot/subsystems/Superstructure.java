@@ -148,7 +148,7 @@ public class Superstructure extends SubsystemBase {
                 } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
                     nextSystemState = requestedSystemState; 
                 }
-                break; 
+                break;
             case LL_PREP:
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
