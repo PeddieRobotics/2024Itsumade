@@ -40,7 +40,7 @@ public class Kraken {
         orchestra = new Orchestra();
         orchestra.addInstrument(talon);
 
-        // var status = orchestra.loadMusic("output.chrp");
+        var status = orchestra.loadMusic("output.chrp");
         // factoryReset();
     }
 
@@ -53,18 +53,13 @@ public class Kraken {
     }
 
     public void setBrake() {
-        MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
-        motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
-        config.MotorOutput = motorOutputConfigs;
-
+        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         talon.getConfigurator().apply(config);
+
     }
 
     public void setCoast() {
-        MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
-        motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
-        config.MotorOutput = motorOutputConfigs;
-
+        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         talon.getConfigurator().apply(config);
     }
 
@@ -83,52 +78,42 @@ public class Kraken {
     }
 
     public void setCurrentLimit(double currentLimit) {
-        CurrentLimitsConfigs currentLimitsConfig = new CurrentLimitsConfigs();
-        currentLimitsConfig.SupplyCurrentLimitEnable = true;
-        // currentLimitsConfig.StatorCurrentLimitEnable = true;
-        currentLimitsConfig.SupplyCurrentLimit = currentLimit;
-        // currentLimitsConfig.StatorCurrentLimit = currentLimit;
-        config.CurrentLimits = currentLimitsConfig;
-
+        config.CurrentLimits.SupplyCurrentLimitEnable = true;
+        config.CurrentLimits.SupplyCurrentLimit = currentLimit;
+        // config.CurrentLimits.StatorCurrentLimitEnable = true;
+        // config.CurrentLimits.StatorCurrentLimit = currentLimit;
+        
         talon.getConfigurator().apply(config);
-
     }
 
     public void setClosedLoopRampRate(double rampRate) {
-        ClosedLoopRampsConfigs closedLoopRampRateConfig = new ClosedLoopRampsConfigs();
-        closedLoopRampRateConfig.DutyCycleClosedLoopRampPeriod = rampRate;
-        closedLoopRampRateConfig.TorqueClosedLoopRampPeriod = rampRate;
-        closedLoopRampRateConfig.VoltageClosedLoopRampPeriod = rampRate;
-        config.ClosedLoopRamps = closedLoopRampRateConfig;
+        config.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = rampRate;
+        config.ClosedLoopRamps.TorqueClosedLoopRampPeriod = rampRate;
+        config.ClosedLoopRamps.VoltageClosedLoopRampPeriod = rampRate;
 
         talon.getConfigurator().apply(config);
     }
 
     public void setMagicMotionParameters(double cruiseVelocity, double maxAcceleration, double maxJerk) {
-        MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs();
-        motionMagicConfigs.MotionMagicCruiseVelocity = cruiseVelocity;
-        motionMagicConfigs.MotionMagicAcceleration = maxAcceleration;
-        motionMagicConfigs.MotionMagicJerk = maxJerk;
-        config.MotionMagic = motionMagicConfigs;
+        config.MotionMagic.MotionMagicJerk = maxJerk;
+        config.MotionMagic.MotionMagicAcceleration = maxAcceleration;
+        config.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;
 
         talon.getConfigurator().apply(config);
     }
 
     public void setSoftLimits(boolean enableSoftLimit, double forwardLimitValue, double reverseLimitValue) {
-        SoftwareLimitSwitchConfigs softwareLimitConfigs = new SoftwareLimitSwitchConfigs();
-
+        
         if (enableSoftLimit) {
-            softwareLimitConfigs.ForwardSoftLimitEnable = true;
-            softwareLimitConfigs.ReverseSoftLimitEnable = true;
-            softwareLimitConfigs.ForwardSoftLimitThreshold = forwardLimitValue;
-            softwareLimitConfigs.ReverseSoftLimitThreshold = reverseLimitValue;
+            config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+            config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+            config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = forwardLimitValue;
+            config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = reverseLimitValue;
         } else {
-            softwareLimitConfigs.ForwardSoftLimitEnable = false;
-            softwareLimitConfigs.ReverseSoftLimitEnable = false;
+            config.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
+            config.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
         }
-
-        config.SoftwareLimitSwitch = softwareLimitConfigs;
-
+        
         talon.getConfigurator().apply(config);
     }
 

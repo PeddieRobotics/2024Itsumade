@@ -58,8 +58,6 @@ public class SwerveModule extends SubsystemBase {
     configureCANcoder();
     steerEncoder.setPosition(0);
 
-    // ------------------------------------------------------------
-
     steerMotor.setContinuousOutput();
     steerMotor.setFeedbackDevice(CANCoderId, FeedbackSensorSourceValue.RemoteCANcoder);
 
@@ -105,7 +103,7 @@ public class SwerveModule extends SubsystemBase {
 
     double desiredVelocity = optimizedDesiredState.speedMetersPerSecond * ModuleConstants.kDriveMotorReduction
         / (2 * DriveConstants.kWheelRadius);
-    double desiredAngle = optimizedDesiredState.angle.getRadians();
+    double desiredAngle = optimizedDesiredState.angle.getRadians() / (2 * Math.PI);
 
     SmartDashboard.putNumber(CANCoderId + " cancoder reading (RAW)", getCANCoderReading());
     SmartDashboard.putNumber(CANCoderId + " cancoder reading", getCANCoderReading());
@@ -113,8 +111,8 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putNumber(steeringCANId + " optimized desired position", desiredAngle);
 
     SmartDashboard.putNumber(steeringCANId + " steering motor position", getCANCoderReading());
-    // driveMotor.setVelocityWithFeedForward(desiredVelocity);
-    // steerMotor.setPositionWithFeedForward(desiredAngle);
+    driveMotor.setVelocityWithFeedForward(desiredVelocity);
+    steerMotor.setPositionWithFeedForward(desiredAngle);
   }
 
   public void stop() {
@@ -123,7 +121,7 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public double getCANCoderReading() {
-    return steerEncoder.getAbsolutePosition().getValueAsDouble(); // * 2 * Math.PI
+    return steerEncoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI; // * 2 * Math.PI
   }
 
   public void resetCANCoder() {
@@ -197,7 +195,7 @@ public class SwerveModule extends SubsystemBase {
 
     if (SmartDashboard.getBoolean(drivingCANId + " Use PID Output", false)) {
       driveMotor.setVelocityWithFeedForward(SmartDashboard.getNumber(drivingCANId + " Drive Motor PID Output ", 0));
-      steerMotor.setPositionWithFeedForward(SmartDashboard.getNumber(steeringCANId + " Steer Motor PID Output ", 0));
+      steerMotor.setPositionWithFeedForward(SmartDashboard.getNumber(steeringCANId + " Steer Motor PID Output ", 0)/ (2 * Math.PI));
 
       steerMotor.setPIDValues(
         SmartDashboard.getNumber(steeringCANId + " turning p", 0),
@@ -205,7 +203,7 @@ public class SwerveModule extends SubsystemBase {
         SmartDashboard.getNumber(steeringCANId + " turning d", 0),
         SmartDashboard.getNumber(steeringCANId + " turning ff", 0));
     }
-    
+
     // SmartDashboard.putNumber("drive motor position", driveMotor.getPosition());
     // SmartDashboard.putNumber("turn motor position", steerMotor.getPosition());
     // SmartDashboard.putNumber("drive motor mps", driveMotor.getMPS());

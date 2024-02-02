@@ -24,6 +24,6 @@ public class RobotContainer {
     drivetrain = Drivetrain.getInstance();
     // autonomous = Autonomous.getInstance();
 
-    // drivetrain.setDefaultCommand(new SwerveDriveCommand());
+    drivetrain.setDefaultCommand(new SwerveDriveCommand());
   }
 }
