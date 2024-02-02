@@ -86,36 +86,32 @@ public final class Constants {
   }
 
   public static class ArmConstants {
-    public static final int ARM_PRIMARY_MOTOR_LIMIT = 0;
-    public static final int ARM_SECONDARY_MOTOR_LIMIT = 0;
-    public static final int ARM_P = 0;
-    public static final int ARM_I = 0;
-    public static final int ARM_D = 0;
-    public static final int ARM_FF = 0;
-    public static final int ARM_IZONE = 0;
+    public static final int kArmPrimaryCurrentLimit = 0;
+    public static final int kArmSecondaryCurrentLimit = 0;
+    public static final double kArmP = 0;
+    public static final double kArmI = 0;
+    public static final double kArmD = 0;
+    public static final double kArmFF = 0;
+    public static final double kArmIZone = 0;
   }
 
   public static class FlywheelConstants {
-    public static final int FLYWHEEL_PRIMARY_MOTOR_LIMIT = 0;
-    public static final int FLYWHEEL_SECONDARY_MOTOR_LIMIT = 0;
+    public static final int kFlywheelLeftCurrentLimit = 0;
+    public static final int kFlywheelRightCurrentLimit = 0;
+    
+    public static final double kFlywheelS = 0;
+    public static final double kFlywheelV = 0;
+    public static final double kFlywheelA = 0;
+    public static final double kFlywheelP = 0;
+    public static final double kFlywheelI = 0;
+    public static final double kFlywheelD = 0;
+    public static final double kFlywheelFF = 0;
   }
 
   public static class IntakeConstants {
-    public static final int INTAKE_MOTOR_LIMIT = 0;
-    public static final int HOPPER_MOTOR_LIIMT = 0;
-  }
-
-  public static class PIDConstants {
-    public static final double VELOCITY_S = 0.05;
-    public static final double VELOCITY_V = 0.12;
-    public static final double VELOCITY_P = 0.08;
-    public static final double VELOCITY_I = 0;
-    public static final double VELOCITY_D = 0;
-    public static final double VELOCITY_FF = 0;
-
-    public static final double POSITION_P = 0;
-    public static final double POSITION_I = 0;
-    public static final double POSITION_D = 0;
-    public static final double POSITION_FF = 0;
+    public static final int kIntakeCurrentLimit = 0;
+    public static final int kHopperCurrentLimit = 0;
+    public static final double kIntakeSensorThreshold = 0;
+    public static final double kHopperSensorThreshold = 0;
   }
 }

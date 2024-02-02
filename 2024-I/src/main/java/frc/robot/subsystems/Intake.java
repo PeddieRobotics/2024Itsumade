@@ -4,9 +4,14 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.RobotMap;
@@ -17,11 +22,20 @@ public class Intake extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
   public static Intake intake;
-  public CANSparkMax intakeMotor;
+  public TalonSRX intakeMotor;
+  public TalonSRXConfiguration config;
+
+  public LaserCan intakeSensor;
 
   public Intake() {
-    intakeMotor = new CANSparkMax(RobotMap.INTAKE_MOTOR, MotorType.kBrushless);
-    intakeMotor.setSmartCurrentLimit(IntakeConstants.INTAKE_MOTOR_LIMIT);
+    intakeMotor = new TalonSRX(RobotMap.INTAKE_MOTOR_CAN_ID);
+    intakeSensor = new LaserCan(RobotMap.INTAKE_SENSOR_ID);
+
+    config = new TalonSRXConfiguration();
+    config.peakCurrentLimit = IntakeConstants.kIntakeCurrentLimit;
+    intakeMotor.configAllSettings(config);
+
+    intakeMotor.enableCurrentLimit(true);
   }
 
   public static Intake getInstance(){
@@ -30,28 +44,24 @@ public class Intake extends SubsystemBase {
     }return intake;
   }
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
+  public void SetIntake(double speed){
+    intakeMotor.set(TalonSRXControlMode.PercentOutput, speed);
   }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
+  public void StopIntake(){
+    intakeMotor.set(TalonSRXControlMode.PercentOutput, 0);
+  }
+
+  public boolean getSensorReading(){
+    if(getSensorMeasurement() < IntakeConstants.kIntakeSensorThreshold){
+      return true;
+    }
     return false;
+  }
+
+  public double getSensorMeasurement(){
+    //returns sensor distance in mm
+    return intakeSensor.getMeasurement().distance_mm;
   }
 
   @Override
