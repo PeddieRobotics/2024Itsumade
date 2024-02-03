@@ -1,15 +1,15 @@
 package frc.robot.utils;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
+import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.OIConstants;
 //import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure;
@@ -38,7 +38,7 @@ public class DriverOI {
     private AlignGoalColumn alignGoalColumn = AlignGoalColumn.kCenter;
 
     private Arm arm;
-    private Superstructure superstructure;    
+    private Superstructure superstructure;
 
     private boolean usePreScorePose;
 
@@ -58,22 +58,23 @@ public class DriverOI {
         return alignGoalColumn;
     }
 
-    public void controlLoop(){
-        if(xButton.getAsBoolean()){
+    public void controlLoop() {
+        if (xButton.getAsBoolean()) {
             superstructure.requestState(SuperstructureState.GROUND_INTAKE);
-        } else if(muteButton.getAsBoolean()){
+        } else if (muteButton.getAsBoolean()) {
             superstructure.requestState(SuperstructureState.STOW);
-        } else if(circleButton.getAsBoolean()){
+        } else if (circleButton.getAsBoolean()) {
             superstructure.requestState(SuperstructureState.HP_INTAKE);
-        } else if(triangleButton.getAsBoolean()){
-                superstructure.requestState(SuperstructureState.LL_SCORING); //CHANGE THIS LATER BECAUSE THERE IS DEEPER LOGIC REQUIRED
-        } else if(squareButton.getAsBoolean()){
-                //drive to note command here
-        } else if(L1Bumper.getAsBoolean()){
-                //align command here
-        } else if(R1Bumper.getAsBoolean()){
-               superstructure.requestState(SuperstructureState.CLIMBING);  
-        }   
+        } else if (triangleButton.getAsBoolean()) {
+            superstructure.requestState(SuperstructureState.LL_SCORING); // CHANGE THIS LATER BECAUSE THERE IS DEEPER
+                                                                         // LOGIC REQUIRED
+        } else if (squareButton.getAsBoolean()) {
+            // drive to note command here
+        } else if (L1Bumper.getAsBoolean()) {
+            // align command here
+        } else if (R1Bumper.getAsBoolean()) {
+            superstructure.requestState(SuperstructureState.CLIMBING);
+        }
     }
 
     public void configureController(boolean usePreScorePose) {
@@ -106,10 +107,12 @@ public class DriverOI {
         // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
 
-        // Press and hold for outtaking slow (gamepiece adjustment), with down arrow this becomes full speed.
+        // Press and hold for outtaking slow (gamepiece adjustment), with down arrow
+        // this becomes full speed.
         Trigger startButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
 
-        // Press and hold for intaking slow (gamepiece adjustment), with down arrow this becomes full speed.
+        // Press and hold for intaking slow (gamepiece adjustment), with down arrow this
+        // becomes full speed.
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
         // Game piece selection / LED indication requests to human player
@@ -136,19 +139,19 @@ public class DriverOI {
         return leftTriggerHeld() & rightTriggerHeld();
     }
 
-    private boolean leftTriggerHeld(){
+    private boolean leftTriggerHeld() {
         return controller.getL2Button();
     }
 
-    private boolean onlyLeftTriggerHeld(){
+    private boolean onlyLeftTriggerHeld() {
         return leftTriggerHeld() && !rightTriggerHeld();
     }
 
-    private boolean rightTriggerHeld(){
+    private boolean rightTriggerHeld() {
         return controller.getR2Button();
     }
 
-    private boolean onlyRightTriggerHeld(){
+    private boolean onlyRightTriggerHeld() {
         return !leftTriggerHeld() && rightTriggerHeld();
     }
 
@@ -156,7 +159,7 @@ public class DriverOI {
         return leftTriggerHeld() ^ rightTriggerHeld();
     }
 
-    public boolean dPadDownHeld(){
+    public boolean dPadDownHeld() {
         return controller.getPOV() == 180;
     }
 
@@ -165,13 +168,99 @@ public class DriverOI {
     }
 
     // Only update the boolean for using the pre-score pose if it is a state change
-    // This is especially important since this requires configuring the controller mapping
+    // This is especially important since this requires configuring the controller
+    // mapping
     // for the operator, which should be done infrequently/minimally.
     public void setUsePreScorePose(boolean usePreScorePose) {
-        if(this.usePreScorePose != usePreScorePose){
+        if (this.usePreScorePose != usePreScorePose) {
             this.usePreScorePose = usePreScorePose;
             configureController(usePreScorePose);
         }
+    }
+
+    public void configureController() {
+        controller = new PS4Controller(0);
+        Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
+    }
+
+    public double getForward() {
+        double input = controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
+        if (Math.abs(input) < 0.9) {
+            input *= 0.7777;
+        } else {
+            input = Math.pow(input, 3);
+        }
+        return input;
+    }
+
+    public double getStrafe() {
+        double input = controller.getRawAxis(PS4Controller.Axis.kLeftX.value);
+        if (Math.abs(input) < 0.9) {
+            input *= 0.7777;
+        } else {
+            input = Math.pow(input, 3);
+        }
+        return input;
+    }
+
+    public Translation2d getSwerveTranslation() {
+        double xSpeed = getForward();
+        double ySpeed = getStrafe();
+
+        double xSpeedCommanded;
+        double ySpeedCommanded;
+
+        xSpeedCommanded = xSpeed;
+        ySpeedCommanded = ySpeed;
+
+        Translation2d next_translation = new Translation2d(xSpeedCommanded, ySpeedCommanded);
+
+        double norm = next_translation.getNorm();
+        if (norm < OIConstants.kDrivingDeadband) {
+            return new Translation2d();
+        } else {
+            Rotation2d deadband_direction = new Rotation2d(next_translation.getX(), next_translation.getY());
+            Translation2d deadband_vector = fromPolar(deadband_direction, OIConstants.kDrivingDeadband);
+
+            double new_translation_x = next_translation.getX()
+                    - (deadband_vector.getX()) / (1 - deadband_vector.getX());
+            double new_translation_y = next_translation.getY()
+                    - (deadband_vector.getY()) / (1 - deadband_vector.getY());
+
+            next_translation = new Translation2d(
+                    new_translation_x * DriveConstants.kMaxFloorSpeed,
+                    new_translation_y * DriveConstants.kMaxFloorSpeed);
+
+            return next_translation;
+        }
+    }
+
+    public double getRotation() {
+        double leftRotation = controller.getRawAxis(PS4Controller.Axis.kL2.value);
+        double rightRotation = controller.getRawAxis(PS4Controller.Axis.kR2.value);
+
+        double combinedRotation;
+        combinedRotation = (rightRotation - leftRotation) / 2.0;
+
+        return combinedRotation * DriveConstants.kMaxAngularSpeed;
+    }
+
+    public Translation2d getCenterOfRotation() {
+        double rotX = controller.getRawAxis(2) * DriveConstants.kWheelBase;
+        double rotY = controller.getRawAxis(5) * DriveConstants.kTrackWidth;
+
+        if (rotX * rotY > 0) {
+            rotX = -rotX;
+            rotY = -rotY;
+        }
+        rotX *= 0.75;
+        rotY *= 0.75;
+        Translation2d output = new Translation2d(rotX, rotY);
+        return output;
+    }
+
+    public Translation2d fromPolar(Rotation2d direction, double magnitude) {
+        return new Translation2d(direction.getCos() * magnitude, direction.getSin() * magnitude);
     }
 
 }

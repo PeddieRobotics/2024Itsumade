@@ -17,7 +17,6 @@ public class Logger {
     private DataLog log = DataLogManager.getLog();
     private double lastTeleopEnable;
 
-
     public static Logger getInstance(){
         if (instance == null){
             instance = new Logger();

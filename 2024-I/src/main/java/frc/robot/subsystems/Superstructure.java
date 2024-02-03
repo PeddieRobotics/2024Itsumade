@@ -12,6 +12,7 @@ public class Superstructure extends SubsystemBase {
     private Limelight limelight;
     private double stateDuration;
     private double internalStateTimer;
+    private double shootingSpeed;
 
     public enum SuperstructureState{
         STOW,
@@ -38,6 +39,7 @@ public class Superstructure extends SubsystemBase {
         requestedSystemState = SuperstructureState.STOW;
 
         stateDuration = 0;
+        shootingSpeed=0;
         internalStateTimer = 0;
     }
 
@@ -50,6 +52,12 @@ public class Superstructure extends SubsystemBase {
 
     public void requestState(SuperstructureState request){
         requestedSystemState = request;
+    }
+
+    public void shoot(double flywheelspeed){
+        requestedSystemState=SuperstructureState.LAYUP_PREP;
+        shootingSpeed=flywheelspeed;
+
     }
 
     public String getRobotState(){
@@ -140,7 +148,7 @@ public class Superstructure extends SubsystemBase {
                 } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
                     nextSystemState = requestedSystemState; 
                 }
-                break; 
+                break;
             case LL_PREP:
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
