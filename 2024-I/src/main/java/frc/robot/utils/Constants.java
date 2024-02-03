@@ -80,9 +80,20 @@ public final class Constants {
   }
 
   public static class LimelightConstants {
-    public static final double limelightHeight = 0;
-    public static final double limelightPanningAngle = 0;
-    public static final double limelightAngle = 0;
+    public static final double kLimelightHeight = 0;
+    public static final double kLimelightPanningAngle = 0;
+    public static final double kLimelightAngle = 0;
+
+    public static final double kTurnP = 0;
+    public static final double kTurnI = 0;
+    public static final double kTurnD = 0;
+    public static final double kIZone = 0;
+
+    public static final double kMoveP = 0;
+    public static final double kMoveI = 0;
+    public static final double kMoveD = 0;
+    public static final double kMoveFF = 0;
+    public static final double kMoveThreshhold = 0;
   }
 
   public static class ArmConstants {
