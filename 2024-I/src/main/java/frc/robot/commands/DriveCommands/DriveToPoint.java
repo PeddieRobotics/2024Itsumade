@@ -12,7 +12,7 @@ import frc.robot.utils.DriverOI;
 
 public class DriveToPoint extends Command{
     private Drivetrain drivetrain;
-    private Limelight limelightBack; // TODO: figure out front or back LL
+    private LimelightBack limelightBack; // TODO: figure out front or back LL
     private DriverOI oi;
 
     //turn
@@ -28,18 +28,24 @@ public class DriveToPoint extends Command{
         drivetrain = Drivetrain.getInstance();
         limelightBack = LimelightBack.getInstance();
 
-        turnController = new PIDController(Constants.LimelightConstants.kTurnP, Constants.LimelightConstants.kTurnI, 
-            Constants.LimelightConstants.kTurnD);
-        turnController.setIZone(Constants.LimelightConstants.kIZone);
+        turnController = new PIDController(Constants.LimelightConstants.kDriveToTargetTurnP, Constants.LimelightConstants.kDriveToTargetTurnI, 
+            Constants.LimelightConstants.kDriveToTargetTurnD);
+        turnController.setIZone(Constants.LimelightConstants.kDriveToTargetIZone);
+        turnController.enableContinuousInput(-180, 180);
+        turnThreshold = Constants.LimelightConstants.kDriveToTargetTurnThreshold; 
+        turnFF = Constants.LimelightConstants.kDriveToTargetTurnFF; 
         turnTarget = theta;
 
-        xController = new PIDController(Constants.LimelightConstants.kMoveP, Constants.LimelightConstants.kMoveI, 
-            Constants.LimelightConstants.kMoveD);
+        xController = new PIDController(Constants.LimelightConstants.kDriveToTargetMoveP, Constants.LimelightConstants.kDriveToTargetMoveI, 
+            Constants.LimelightConstants.kDriveToTargetMoveD);
         xTarget = x;
 
-        yController = new PIDController(Constants.LimelightConstants.kMoveP, Constants.LimelightConstants.kMoveI, 
-            Constants.LimelightConstants.kMoveD);
+        yController = new PIDController(Constants.LimelightConstants.kDriveToTargetMoveP, Constants.LimelightConstants.kDriveToTargetMoveI, 
+            Constants.LimelightConstants.kDriveToTargetMoveD);
         yTarget = y;
+
+        moveThreshold = Constants.LimelightConstants.kDriveToTargetMoveThreshhold; 
+        moveFF = Constants.LimelightConstants.kDriveToTargetMoveFF; 
 
         addRequirements(drivetrain);
     }
@@ -47,6 +53,9 @@ public class DriveToPoint extends Command{
     @Override
     public void initialize(){
         oi = DriverOI.getInstance();
+
+        //TODO: update
+        limelightBack.setPipeline(0);
     }
 
     @Override 
