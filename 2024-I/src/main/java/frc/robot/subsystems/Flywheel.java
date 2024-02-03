@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.FlywheelConstants;
@@ -18,6 +19,9 @@ public class Flywheel {
 
         flywheelLeftMotor.setCurrentLimit(FlywheelConstants.kFlywheelLeftCurrentLimit);
         flywheelRightMotor.setCurrentLimit(FlywheelConstants.kFlywheelRightCurrentLimit);
+
+        flywheelLeftMotor.setVelocityConversionFactor(FlywheelConstants.kFlywheelGearReduction);
+        flywheelRightMotor.setVelocityConversionFactor(FlywheelConstants.kFlywheelGearReduction);
 
         flywheelLeftMotor.setVelocityPIDValues(
                 FlywheelConstants.kFlywheelS,
@@ -61,6 +65,60 @@ public class Flywheel {
     public void stopFlywheel() {
         flywheelLeftMotor.setMotor(0);
         flywheelRightMotor.setMotor(0);
+    }
+
+    public void runFlywheelVelocitySetpoint(double speed){
+        flywheelLeftMotor.setVelocityWithFeedForward(speed);
+        flywheelRightMotor.setVelocityWithFeedForward(speed);
+    }
+
+    public void runLeftFlywheelVelocitySetpoint(double speed){
+        flywheelLeftMotor.setVelocityWithFeedForward(speed);
+    }
+
+    public void runRightFlywheelVelocitySetpoint(double speed){
+        flywheelRightMotor.setVelocityWithFeedForward(speed);
+    }
+
+    public void putSmartDashboard(){
+        SmartDashboard.putBoolean("Update Flywheel PID", false);
+        SmartDashboard.putNumber("Flywheel Left Motor RPM Setpoint", flywheelSetpoint);
+        SmartDashboard.putNumber("Flywheel Right Motor RPM Setpoint", flywheelSetpoint);
+
+        SmartDashboard.putNumber("Flywheel S", FlywheelConstants.kFlywheelS);
+        SmartDashboard.putNumber("Flywheel V", FlywheelConstants.kFlywheelV);
+        SmartDashboard.putNumber("Flywheel A", FlywheelConstants.kFlywheelA);
+        SmartDashboard.putNumber("Flywheel P", FlywheelConstants.kFlywheelP);
+        SmartDashboard.putNumber("Flywheel I", FlywheelConstants.kFlywheelI);
+        SmartDashboard.putNumber("Flywheel D", FlywheelConstants.kFlywheelD);
+        SmartDashboard.putNumber("Flywheel FF", FlywheelConstants.kFlywheelFF);
+    }
+
+    public void updateSmartdashBoard() {
+        if(SmartDashboard.getBoolean("Update Flywheel PID", false)){
+            flywheelLeftMotor.setVelocityPIDValues(
+                SmartDashboard.getNumber("Flywheel S", FlywheelConstants.kFlywheelS), 
+                SmartDashboard.getNumber("Flywheel V", FlywheelConstants.kFlywheelV), 
+                SmartDashboard.getNumber("Flywheel A", FlywheelConstants.kFlywheelA), 
+                SmartDashboard.getNumber("Flywheel P", FlywheelConstants.kFlywheelP), 
+                SmartDashboard.getNumber("Flywheel I", FlywheelConstants.kFlywheelI), 
+                SmartDashboard.getNumber("Flywheel D", FlywheelConstants.kFlywheelD), 
+                SmartDashboard.getNumber("Flywheel FF", FlywheelConstants.kFlywheelFF)
+            );
+
+            flywheelRightMotor.setVelocityPIDValues(
+                SmartDashboard.getNumber("Flywheel S", FlywheelConstants.kFlywheelS), 
+                SmartDashboard.getNumber("Flywheel V", FlywheelConstants.kFlywheelV), 
+                SmartDashboard.getNumber("Flywheel A", FlywheelConstants.kFlywheelA), 
+                SmartDashboard.getNumber("Flywheel P", FlywheelConstants.kFlywheelP), 
+                SmartDashboard.getNumber("Flywheel I", FlywheelConstants.kFlywheelI), 
+                SmartDashboard.getNumber("Flywheel D", FlywheelConstants.kFlywheelD), 
+                SmartDashboard.getNumber("Flywheel FF", FlywheelConstants.kFlywheelFF)
+            );
+
+            flywheelLeftMotor.setVelocityWithFeedForward(SmartDashboard.getNumber("Flywheel Left Motor RPM Setpoint", flywheelSetpoint));
+            flywheelRightMotor.setVelocityWithFeedForward(SmartDashboard.getNumber("Flywheel Right Motor RPM Setpoint", flywheelSetpoint));
+        }
     }
 
     public void periodic() {

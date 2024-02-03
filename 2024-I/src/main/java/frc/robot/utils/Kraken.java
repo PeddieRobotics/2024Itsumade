@@ -11,6 +11,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -73,8 +74,12 @@ public class Kraken {
         return talon.get();
     }
 
-    public double getMPS() {
+    public double getRPS() {
         return talon.getRotorVelocity().getValueAsDouble() * velocityConversionFactor;
+    }
+
+    public double getRPM(){
+        return talon.getRotorVelocity().getValueAsDouble() * velocityConversionFactor / 60.0;
     }
 
     public void setCurrentLimit(double currentLimit) {
@@ -94,7 +99,7 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    public void setMagicMotionParameters(double cruiseVelocity, double maxAcceleration, double maxJerk) {
+    public void setMotionMagicParameters(double cruiseVelocity, double maxAcceleration, double maxJerk) {
         config.MotionMagic.MotionMagicJerk = maxJerk;
         config.MotionMagic.MotionMagicAcceleration = maxAcceleration;
         config.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;
@@ -134,6 +139,10 @@ public class Kraken {
         // Set the control request to the motor controller
         talon.setControl(request.withOutput(percentOutput));
 
+    }
+
+    public void setFollower(int masterCANId, boolean inverted){
+        talon.setControl(new Follower(masterCANId, inverted));
     }
 
     public void setPIDValues(double kP, double kI, double kD, double kF) {
@@ -192,6 +201,8 @@ public class Kraken {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor).withFeedForward(feedForward).withEnableFOC(true));
     }
+
+    
 
     public void setFeedbackDevice(int deviceID, FeedbackSensorSourceValue feedbackType){
         config.Feedback.FeedbackRemoteSensorID = deviceID;
