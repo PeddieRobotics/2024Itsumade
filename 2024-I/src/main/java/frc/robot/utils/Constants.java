@@ -113,11 +113,17 @@ public final class Constants {
     public static final double kArmD = 0;
     public static final double kArmFF = 0;
     public static final double kArmIZone = 0;
+    public static final double kArmForwardSoftLimit = 0;
+    public static final double kArmReverseSoftLimit = 0;
+    public static final double kArmGearReduction = 0;
+    public static final double kArmPositionConversionFactor = 1.0; //dependednt on feedbakc device
   }
 
   public static class FlywheelConstants {
     public static final int kFlywheelLeftCurrentLimit = 0;
     public static final int kFlywheelRightCurrentLimit = 0;
+
+    public static final double kFlywheelGearReduction = 30.0/18.0;
     
     public static final double kFlywheelS = 0;
     public static final double kFlywheelV = 0;
