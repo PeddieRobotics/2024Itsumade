@@ -42,4 +42,8 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand());
   }
+
+  public void runControlLoop(){
+    driverOI.controlLoop();
+  }
 }

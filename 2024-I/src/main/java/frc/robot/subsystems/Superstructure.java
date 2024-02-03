@@ -31,6 +31,7 @@ public class Superstructure extends SubsystemBase {
     }
 
     SuperstructureState systemState;
+    SuperstructureState nextSystemState;
     SuperstructureState requestedSystemState;
 
     public Superstructure(){
@@ -71,7 +72,7 @@ public class Superstructure extends SubsystemBase {
 
     @Override
     public void periodic(){
-        SuperstructureState nextSystemState = systemState;
+        nextSystemState = systemState;
 
         switch(systemState){
 

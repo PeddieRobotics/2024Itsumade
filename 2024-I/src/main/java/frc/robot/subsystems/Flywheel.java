@@ -1,21 +1,25 @@
 package frc.robot.subsystems;
 
+import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.FlywheelConstants;
+import frc.robot.utils.Constants.IntakeConstants;
 
 public class Flywheel {
 
     private static Flywheel instance;
     private double flywheelSetpoint = 0;
 
-    public Kraken flywheelLeftMotor, flywheelRightMotor;
+    private Kraken flywheelLeftMotor, flywheelRightMotor;
+    private LaserCan flywheelSensor;
 
     public Flywheel() {
         flywheelLeftMotor = new Kraken(RobotMap.FLYWHEEL_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
         flywheelRightMotor = new Kraken(RobotMap.FLYWHEEL_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
+        flywheelSensor = new LaserCan(RobotMap.FLYWHEEL_SENSOR_ID);
 
         flywheelLeftMotor.setCurrentLimit(FlywheelConstants.kFlywheelLeftCurrentLimit);
         flywheelRightMotor.setCurrentLimit(FlywheelConstants.kFlywheelRightCurrentLimit);
@@ -65,6 +69,17 @@ public class Flywheel {
     public void stopFlywheel() {
         flywheelLeftMotor.setMotor(0);
         flywheelRightMotor.setMotor(0);
+    }
+
+    public boolean getSensorReading(){
+        if(getSensorMeasurement() < FlywheelConstants.kFlywheelSensorThreshold){
+            return true;
+        }
+        else return false;
+    }
+
+    public double getSensorMeasurement(){
+        return flywheelSensor.getMeasurement().distance_mm;
     }
 
     public void runFlywheelVelocitySetpoint(double speed){
