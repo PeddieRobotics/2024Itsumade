@@ -100,7 +100,6 @@ public class OperatorTab extends ShuffleboardTabBase{
             current2Entry.setDouble(pdh.getCurrent(2));
             current3Entry.setDouble(pdh.getCurrent(3));
             //flywheelAtRPMEntry.setBoolean(FlywheelConstants.kAtRPM)
-            
             //flywheel.setFlywheelRPM(flywheelSetRPMEntry.getDouble(FlywheelConstants.kShootingRPM)); 
             //^^Purely arbitrary, not sure if we will need a lookup table with additional rpm values so this is just here for now
             //flywheelTempEntry.setDouble(flywheel.getMotorTemperature());

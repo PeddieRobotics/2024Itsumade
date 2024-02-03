@@ -5,68 +5,59 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Shuffleboard.ShuffleboardTabBase;
 import frc.robot.subsystems.Arm;
 
-public class AngleOverridesTab extends ShuffleBoardTabBase{
+public class AngleOverridesTab extends ShuffleboardTabBase{ //Tentatively Complete, pay attention if prep & scoring positions are different later - Tony
     private Arm arm = Arm.getInstance();
 
-    private GenericEntry armAngleEntry, armForceStowEntry, armPrepStateEntry, armSetEntry, 
-    armStowEntry, ampPrepEntry, layupPrepEntry, LLPrepStateEntry;
+    private GenericEntry ampPrepEntry, armAngleEntry, armPrepStateEntry, 
+    armStowEntry, layupPrepEntry, LLPrepEntry;
 
     public void createEntries() {
         tab = Shuffleboard.getTab("AngleOverridesTab");
 
         try{ //All of these sizes and positions are arbitrary, please consider changing later...
-            armAngleEntry = tab.add("Arm Angle", 0.0)
+            ampPrepEntry = tab.add("Amp Prep", 0.0) //ArmConstants.kAmpPrepAngle
             .withSize(2,2)
-            .withPosition(17,13)
+            .withPosition(1,2)
             .getEntry();
 
-            armTempEntry = tab.add("Arm Temp", 0.0)
+            armAngleEntry = tab.add("Arm Angle", 0.0) //arm.getCurrentAngle()
             .withSize(2,2)
-            .withPosition(20,20)
+            .withPosition(4,5)
+            .getEntry();
+            
+            armPrepStateEntry = tab.add("Arm Set Angle", 0.0) //arm.getCurrentPrepState()
+            .withSize(2,2)
+            .withPosition(7,8)
+            .getEntry();
+            
+            armStowEntry = tab.add("Arm Stow", 0.0) //ArmConstants.kStowAngle
+            .withSize(2,2)
+            .withPosition(10,11)
+            .getEntry();
+            
+            layupPrepEntry = tab.add("Layup Prep", 0.0) //ArmConstants.kLayupAngle
+            .withSize(2,2)
+            .withPosition(13,14)
+            .getEntry();
+            
+            LLPrepEntry = tab.add("LL Prep", 0.0) //ArmConstants.kLLAngle
+            .withSize(2,2)
+            .withPosition(16,17)
             .getEntry();            
-
-            cameraWidget = tab.addCamera("Camera", "CameraName", "url") 
-            .withSize(2,2)
-            .withPosition(1,7);
-        
-            current1Entry = tab.add("Current Channel 1", 0.0)
-            .withSize(2,2)
-            .withPosition(1,7)
-            .getEntry();
-
-            current2Entry = tab.add("Current Channel 2", 0.0)
-            .withSize(2,2)
-            .withPosition(4,10)
-            .getEntry();
-
-            current3Entry = tab.add("Current Channel 3", 0.0)
-            .withSize(2,2)
-            .withPosition(7, 13)
-            .getEntry();
-
-            flywheelDeltaEntry = tab.add("Flywheel Delta", 0.0)
-            .withSize(2,2)
-            .withPosition(13, 10)
-            .getEntry();
-
-            flywheelTempEntry = tab.add("Flywheel Temp", 0.0)
-            .withSize(2,2)
-            .withPosition(25, 11)
-            .getEntry();            
-        } catch (IllegalArgumentException e){
-        }
+        } catch (IllegalArgumentException e){}
     }
 
     @Override
     public void update() { //Some lines here are arbitrary code that should be implemented later but don't have the necessary methods in our subsystems right now.
         try {
-            // armAngleEntry.setDouble(Arm.getArmAngle());
-            //armTempEntry.setDouble(Arm.getArmTemperature());
-            current1Entry.setDouble(pdh.getCurrent(1));
-            current2Entry.setDouble(pdh.getCurrent(2));
-            current3Entry.setDouble(pdh.getCurrent(3));
-            //flywheelDeltaEntry.setDouble(flywheel.getRPM());
-            //flywheelTempEntry.setDouble(flywheel.getMotorTemperature());
+            /*
+            arm.setkAmpAngle(ampPrepEntry.getDouble(ArmConstants.kAmpPrepAngle));
+            armAngleEntry.setDouble(arm.getCurrentAngle());
+            armPrepStateEntry.setString(arm.getCurrentPrepState());
+            arm.setkStowAngle(armStowEntry.getDouble(ArmConstants.kStowAngle));
+            arm.setkLayupAngle(layupPrepEntry.getDouble(ArmConstants.kLayupAngle));
+            arm.setkLLAngle(LLPrepStateEntry.getDouble(ArmConstants.kLLAngle));
+            */
         } catch(IllegalArgumentException e){}
     }
 }

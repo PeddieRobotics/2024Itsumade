@@ -71,4 +71,10 @@ public class Autonomous extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
+  //PLACEHOLDER METHOD FOR THE OPERATOR TAB, ONCE THE SKELETON CODE PEOPLE UPDATE MERGE FROM DEV
+public Hashtable<String, Command> getAutoRoutines() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getAutoRoutines'");
+}
 }
