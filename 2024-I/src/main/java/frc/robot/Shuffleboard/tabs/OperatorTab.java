@@ -30,7 +30,9 @@ public class OperatorTab extends ShuffleboardTabBase{
 
     private ComplexWidget autoChooser, cameraWidget;
 
-    private GenericEntry armAngleEntry, armTempEntry, current1Entry, current2Entry, current3Entry, flywheelDeltaEntry;
+    private GenericEntry armAngleEntry, armTempEntry, current1Entry, current2Entry, 
+    current3Entry, flywheelAtRPMEntry, flywheelSetRPMEntry, flywheelDeltaEntry, 
+    flywheelTempEntry;
 
     //Sendable Chooser
     private SendableChooser<Command> autoRoutineSelector;
@@ -53,7 +55,7 @@ public class OperatorTab extends ShuffleboardTabBase{
 
             cameraWidget = tab.addCamera("Camera", "CameraName", "url") 
             .withSize(2,2)
-            .withPosition(1,7);
+            .withPosition(1,2);
         
             current1Entry = tab.add("Current Channel 1", 0.0)
             .withSize(2,2)
@@ -74,6 +76,16 @@ public class OperatorTab extends ShuffleboardTabBase{
             .withSize(2,2)
             .withPosition(13, 10)
             .getEntry();
+
+            flywheelSetRPMEntry = tab.add("Flywheel Set RPM", 0.0)
+            .withSize(2,2)
+            .withPosition(10, 10)
+            .getEntry();            
+
+            flywheelTempEntry = tab.add("Flywheel Temp", 0.0)
+            .withSize(2,2)
+            .withPosition(25, 11)
+            .getEntry();            
         } catch (IllegalArgumentException e){
         }
     }
@@ -81,13 +93,15 @@ public class OperatorTab extends ShuffleboardTabBase{
     @Override
     public void update() { //Some lines here are arbitrary code that should be implemented later but don't have the necessary methods in our subsystems right now.
         try {
-            // armAngleEntry.setDouble(Arm.getArmAngle());
+            // arm.setArmAngle(armAngleEntry.getDouble(ArmConstants.kArmAngle));
             //armTempEntry.setDouble(Arm.getArmTemperature());
             current1Entry.setDouble(pdh.getCurrent(1));
             current2Entry.setDouble(pdh.getCurrent(2));
             current3Entry.setDouble(pdh.getCurrent(3));
-            //flywheelDeltaEntry.setDouble(flywheel.getRPM());
-            // armTempEntry.setDouble(...);
+            //flywheelAtRPMEntry.setBoolean(FlywheelConstants.kAtRPM)
+            //flywheel.setFlywheelRPM(flywheelSetRPMEntry.getDouble(FlywheelConstants.kShootingRPM)); 
+            //^^Purely arbitrary, not sure if we will need a lookup table with additional rpm values so this is just here for now
+            //flywheelTempEntry.setDouble(flywheel.getMotorTemperature());
         } catch(IllegalArgumentException e){}
     }
 

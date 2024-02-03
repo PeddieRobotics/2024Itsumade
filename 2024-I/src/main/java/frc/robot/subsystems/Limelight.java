@@ -21,5 +21,10 @@ public abstract class Limelight extends SubsystemBase {
 
     public abstract Pose2d getBotPose();
 
+    public static Limelight getInstance() { //PLACEHOLDER METHOD, PLEASE PUT THIS IN THE LIMELIGHTFRONT CLASS AND NOT HERE
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getInstance'");
+    }
+
 
 }
