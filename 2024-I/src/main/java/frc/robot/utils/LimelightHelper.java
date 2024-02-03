@@ -781,11 +781,4 @@ public class LimelightHelper {
         LimelightResults results = getLatestResults(limelightName);
         return results.targetingResults.targets_Fiducials.length;
     }
-
-    public static Translation2d getCurrentAprilTagCoordinates(String limelightName) { // gets the april tag the limelight is currently seeing
-        return getAprilTagCoordinates((int)getFiducialID(limelightName)); // this isn't the closest, it's just the one we're seeing
-    }
-
-   
-
 }
