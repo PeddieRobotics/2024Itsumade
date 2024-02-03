@@ -78,13 +78,13 @@ public class Superstructure extends SubsystemBase {
 
             //idle state of robot, arm is in stow position, 
             case STOW:
-                intake.StopIntake();
+                intake.stopIntake();
                 if(requestedSystemState != SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 } 
                 break;   
             case GROUND_INTAKE:
-                intake.SetIntake(IntakeConstants.kIntakeSpeed);
+                intake.setIntake(IntakeConstants.kIntakeSpeed);
 
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;

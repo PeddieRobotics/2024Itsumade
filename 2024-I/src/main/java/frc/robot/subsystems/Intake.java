@@ -44,11 +44,11 @@ public class Intake extends SubsystemBase {
     }return intake;
   }
 
-  public void SetIntake(double speed){
+  public void setIntake(double speed){
     intakeMotor.set(TalonSRXControlMode.PercentOutput, speed);
   }
 
-  public void StopIntake(){
+  public void stopIntake(){
     intakeMotor.set(TalonSRXControlMode.PercentOutput, 0);
   }
 
