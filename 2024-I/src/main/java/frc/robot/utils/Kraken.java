@@ -12,6 +12,7 @@ import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -202,7 +203,10 @@ public class Kraken {
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor).withFeedForward(feedForward).withEnableFOC(true));
     }
 
-    
+    public void setPositionMotionMagic(double position){
+        final MotionMagicVoltage request = new MotionMagicVoltage(0).withSlot(0);
+        talon.setControl(request.withPosition(position).withFeedForward(feedForward).withEnableFOC(true));
+    }
 
     public void setFeedbackDevice(int deviceID, FeedbackSensorSourceValue feedbackType){
         config.Feedback.FeedbackRemoteSensorID = deviceID;
