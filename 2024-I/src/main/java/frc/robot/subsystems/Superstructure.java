@@ -7,9 +7,11 @@ import frc.robot.utils.Logger;
 
 public class Superstructure extends SubsystemBase {
     private static Superstructure superstructure;
-    private Arm arm;
-    private Flywheel flywheel;
-    private Limelight limelight;
+    // private final Arm arm;
+    // private final Flywheel flywheel;
+    private final Intake intake;
+    // private final Hopper hopper;
+    // private final Limelight limelight;
     private double stateDuration;
     private double internalStateTimer;
     private double shootingSpeed;
@@ -31,8 +33,10 @@ public class Superstructure extends SubsystemBase {
     SuperstructureState requestedSystemState;
 
     public Superstructure(){
-        arm = Arm.getInstance();
-        flywheel = Flywheel.getInstance();
+        // arm = Arm.getInstance();
+        // flywheel = Flywheel.getInstance();
+        intake = Intake.getInstance();
+        // hopper = Hopper.getInstance();
         
 
         systemState = SuperstructureState.STOW;
@@ -72,12 +76,14 @@ public class Superstructure extends SubsystemBase {
 
             //idle state of robot, arm is in stow position, 
             case STOW:
-
+                intake.StopIntake();
                 if(requestedSystemState != SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 } 
                 break;   
             case GROUND_INTAKE:
+
+
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.AMP_PREP){
