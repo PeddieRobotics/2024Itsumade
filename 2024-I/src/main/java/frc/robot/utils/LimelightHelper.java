@@ -781,4 +781,5 @@ public class LimelightHelper {
         LimelightResults results = getLatestResults(limelightName);
         return results.targetingResults.targets_Fiducials.length;
     }
+
 }

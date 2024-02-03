@@ -25,7 +25,7 @@ public abstract class Limelight extends SubsystemBase {
 
     public abstract void forceAprilTagLocalization(SwerveDrivePoseEstimator odometry);
 
-    public abstract Pose2d getBotPose();
+    public abstract Pose2d getBotpose();
 
 
 }
