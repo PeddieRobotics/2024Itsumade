@@ -118,6 +118,7 @@ public final class Constants {
   }
 
   public static class ScoringConstants {
+    public static final double kLayupVelocity = 0;
     public static final double[][] treeMapValues = new double[][]{ {0,0}, {1,1} }; // no spin, based off of distance
   }
 
