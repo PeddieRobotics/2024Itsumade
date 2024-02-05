@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
 
     shuffleboardMain.update();
 
+    m_robotContainer.runControlLoop();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

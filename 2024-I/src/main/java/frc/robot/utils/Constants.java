@@ -17,8 +17,8 @@ public final class Constants {
 
   public static class DriveConstants {
     // TODO: Update these constants
-    public static final double kTrackWidth = Units.inchesToMeters(20);
-    public static final double kWheelBase = Units.inchesToMeters(20);
+    public static final double kTrackWidth = Units.inchesToMeters(25.75);
+    public static final double kWheelBase = Units.inchesToMeters(22.75);
 
     public static final double kBaseRadius = Math.sqrt(Math.pow(kTrackWidth, 2) + Math.pow(kWheelBase, 2)) / 2;
 
@@ -46,12 +46,12 @@ public final class Constants {
   }
 
   public static class ModuleConstants {
-    public static final double WHEEL_DIAMETER_IN = 4.0;
+    public static final double kWheelDiameterInches = 4.0;
 
     public static final double kDriveMotorReduction = 6.12;
-    public static final double kDrivingEncoderPostionFactor = (Units.inchesToMeters(WHEEL_DIAMETER_IN) * Math.PI)
+    public static final double kDrivingEncoderPostionFactor = (Units.inchesToMeters(kWheelDiameterInches) * Math.PI)
         / kDriveMotorReduction;
-    public static final double kDrivingEncoderVelocityFactor = (Units.inchesToMeters(WHEEL_DIAMETER_IN) * Math.PI
+    public static final double kDrivingEncoderVelocityFactor = (Units.inchesToMeters(kWheelDiameterInches) * Math.PI
         / kDriveMotorReduction);
 
     public static final double kTurningMotorReduction = 150.0 / 7.0;
@@ -104,6 +104,8 @@ public final class Constants {
     public static final int kFlywheelRightCurrentLimit = 0;
 
     public static final double kFlywheelGearReduction = 30.0/18.0;
+
+    public static final double kFlywheelSensorThreshold = 0;
     
     public static final double kFlywheelS = 0;
     public static final double kFlywheelV = 0;
@@ -119,5 +121,7 @@ public final class Constants {
     public static final int kHopperCurrentLimit = 0;
     public static final double kIntakeSensorThreshold = 0;
     public static final double kHopperSensorThreshold = 0;
+    
+    public static final double kIntakeSpeed = 0.8;
   }
 }

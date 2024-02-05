@@ -26,6 +26,7 @@ public class RobotMap {
 
     public static final int FLYWHEEL_LEFT_MOTOR = 0;
     public static final int FLYWHEEL_RIGHT_MOTOR = 0;
+    public static final int FLYWHEEL_SENSOR_ID = 0;
 
 
     public static final int INTAKE_MOTOR_CAN_ID = 0;

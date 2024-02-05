@@ -25,11 +25,11 @@ public class Intake extends SubsystemBase {
   public TalonSRX intakeMotor;
   public TalonSRXConfiguration config;
 
-  public LaserCan intakeSensor;
+  //public LaserCan intakeSensor;
 
   public Intake() {
     intakeMotor = new TalonSRX(RobotMap.INTAKE_MOTOR_CAN_ID);
-    intakeSensor = new LaserCan(RobotMap.INTAKE_SENSOR_ID);
+   // intakeSensor = new LaserCan(RobotMap.INTAKE_SENSOR_ID);
 
     config = new TalonSRXConfiguration();
     config.peakCurrentLimit = IntakeConstants.kIntakeCurrentLimit;
@@ -44,11 +44,11 @@ public class Intake extends SubsystemBase {
     }return intake;
   }
 
-  public void SetIntake(double speed){
+  public void setIntake(double speed){
     intakeMotor.set(TalonSRXControlMode.PercentOutput, speed);
   }
 
-  public void StopIntake(){
+  public void stopIntake(){
     intakeMotor.set(TalonSRXControlMode.PercentOutput, 0);
   }
 
@@ -61,7 +61,8 @@ public class Intake extends SubsystemBase {
 
   public double getSensorMeasurement(){
     //returns sensor distance in mm
-    return intakeSensor.getMeasurement().distance_mm;
+    //return intakeSensor.getMeasurement().distance_mm;
+    return 0;
   }
 
   @Override
