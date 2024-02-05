@@ -11,6 +11,8 @@ public class AngleOverridesTab extends ShuffleboardTabBase{ //Tentatively Comple
     private GenericEntry ampPrepEntry, armAngleEntry, armPrepStateEntry, 
     armStowEntry, layupPrepEntry, LLPrepEntry;
 
+    public AngleOverridesTab(){}
+
     public void createEntries() {
         tab = Shuffleboard.getTab("AngleOverridesTab");
 

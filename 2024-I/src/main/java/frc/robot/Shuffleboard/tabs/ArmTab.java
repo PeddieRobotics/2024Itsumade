@@ -21,6 +21,8 @@ public class ArmTab extends ShuffleboardTabBase {
      * - Tony
      */
 
+     public ArmTab(){}
+
     public void createEntries() {
         tab = Shuffleboard.getTab("ArmTab");
 
@@ -124,7 +126,18 @@ public class ArmTab extends ShuffleboardTabBase {
             armTempEntry.setDouble(arm.getCurrentMotorTemperature());
             armVoltageEntry.setDouble(arm.getCurrentVoltage());
 
-            Motion magic with PID toggle implementation should go below, will add later...
+            Motion magic with PID toggle implementation should go below, will add later... DO THIS LATER, copied in the flywheel pid toggle tentative logic that I didn't double check
+             if(flywheelToggleEntry.getBoolean()){
+             *      flywheel.setFlywheelSetpoint(flywheelSetpointEntry.getDouble())
+             *      if(flywheelPIDToggleEntry.getBoolean()){
+             *          flywheel.updatePIDController(mkPEntry.getDouble(),
+             *          mkIEntry.getDouble(), mkDEntry.getDouble(),
+             *          mkIzEntry.getDouble(), mkFFEntry.getDouble(), 0);
+             *      } else if(flywheelPIDToggleEntry.getBoolean(false)){
+             *      flywheel.updatePIDController(FlywheelConstants.kP, FlywheelConstants.kI,
+             *      FlywheelConstants.kD, FlywheelConstants.kIz, FlywheelConstants.kFF, 0)
+             *      }
+             * }
             */
         } catch(IllegalArgumentException e){}
     }

@@ -13,8 +13,10 @@ public class DrivetrainTab extends ShuffleboardTabBase{
     private GenericEntry mHeadingEntry, mkSEntry, mkVEntry, mkAEntry, 
     mkGEntry, mkFFEntry, mkDEntry, mkIEntry, mkIzEntry, mkPEntry, 
     mModuleRotations1Entry, mModuleRotations2Entry, mModuleRotations3Entry, mModuleRotations4Entry,
-    mOdometryXEntry, mOdometryYEntry, mOdometryThetaEntry, mPIDToggleEntry, 
-    mUseHeadingCorrectionToggleEntry, mAllowDrivingToggleEntry;
+    mOdometryXEntry, mOdometryYEntry, mOdometryThetaEntry, allowDrivingToggleEntry, 
+    PIDToggleEntry, useHeadingCorrectionToggleEntry;
+
+    public DrivetrainTab(){}
 
     public void createEntries() {
         tab = Shuffleboard.getTab("DrivetrainTab");
@@ -100,19 +102,21 @@ public class DrivetrainTab extends ShuffleboardTabBase{
             .withPosition(4, 5)
             .getEntry();
 
-            mUseHeadingCorrectionToggleEntry = tab.add("Use Heading Correction", true) 
+            
+            allowDrivingToggleEntry = tab.add("Allow Driving", true)
             .withWidget(BuiltInWidgets.kToggleButton)
             .withSize(2, 2)
             .withPosition(4, 5)
             .getEntry();
 
-            mAllowDrivingToggleEntry = tab.add("Allow Driving", true)
+            
+            PIDToggleEntry = tab.add("PID Toggle", true)
             .withWidget(BuiltInWidgets.kToggleButton)
             .withSize(2, 2)
             .withPosition(4, 5)
             .getEntry();
 
-            mPIDToggleEntry = tab.add("PID Toggle", true)
+            useHeadingCorrectionToggleEntry = tab.add("Use Heading Correction", true) 
             .withWidget(BuiltInWidgets.kToggleButton)
             .withSize(2, 2)
             .withPosition(4, 5)
@@ -120,6 +124,7 @@ public class DrivetrainTab extends ShuffleboardTabBase{
         } catch (IllegalArgumentException e) {}
     }
 
+    @Override
     public void update(){
         try{
             /*
@@ -134,7 +139,18 @@ public class DrivetrainTab extends ShuffleboardTabBase{
 
                 drivetrain.setUseHeadingCorrection(mUseHeadingCorrection.getBoolean(true));
                 drivetrain.setAllowDriving(mAllowDriving.getBoolean(true));
-             * Adjustable Drivetrain PID below, Do this later
+             * Adjustable Drivetrain PID below, DO THIS LATER, copied in the flywheel pid toggle tentative logic that I didn't double check
+             * if(flywheelToggleEntry.getBoolean()){
+             *      flywheel.setFlywheelSetpoint(flywheelSetpointEntry.getDouble())
+             *      if(flywheelPIDToggleEntry.getBoolean()){
+             *          flywheel.updatePIDController(mkPEntry.getDouble(),
+             *          mkIEntry.getDouble(), mkDEntry.getDouble(),
+             *          mkIzEntry.getDouble(), mkFFEntry.getDouble(), 0);
+             *      } else if(flywheelPIDToggleEntry.getBoolean(false)){
+             *      flywheel.updatePIDController(FlywheelConstants.kP, FlywheelConstants.kI,
+             *      FlywheelConstants.kD, FlywheelConstants.kIz, FlywheelConstants.kFF, 0)
+             *      }
+             * }
              */
         } catch (IllegalArgumentException e) {}
     }
