@@ -31,6 +31,7 @@ public class Drivetrain extends SubsystemBase {
 
     private final Pigeon2 gyro;
     private double heading;
+    private double currentDrivetrainSpeed = 0;
 
     public Drivetrain() {
         frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
@@ -99,6 +100,8 @@ public class Drivetrain extends SubsystemBase {
             robotRelativeSpeeds = fieldRelativeSpeeds;
         }
 
+        currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2) + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
+
         swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds, centerOfRotation);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxAngularSpeed);
         optimizeModuleStates();
@@ -125,6 +128,22 @@ public class Drivetrain extends SubsystemBase {
 
     public Rotation2d getRotation2d() {
         return gyro.getRotation2d();
+    }
+
+    public Pose2d getPose(){
+        return odometry.getEstimatedPosition();
+    }
+
+    public double getSpeed(){
+        return currentDrivetrainSpeed;
+    }
+
+    public SwerveModuleState[] getSwerveModuleState(){
+        return swerveModuleStates;
+    }
+
+    public SwerveModulePosition[] getSwerveModulePositions(){
+        return swerveModulePositions;
     }
 
     public void resetGyro() {
