@@ -45,47 +45,47 @@ public class OperatorTab extends ShuffleboardTabBase{
 
         try{ //All of these sizes and positions are arbitrary, please consider changing later...
             armAngleEntry = tab.add("Arm Angle", 0.0)
-            .withSize(2,2)
-            .withPosition(17,13)
+            .withSize(1,2)
+            .withPosition(4,6)
             .getEntry();
 
             armTempEntry = tab.add("Arm Temp", 0.0)
-            .withSize(2,2)
-            .withPosition(20,20)
+            .withSize(1,2)
+            .withPosition(4,8)
             .getEntry();            
 
             cameraWidget = tab.addCamera("Camera", "CameraName", "url") 
-            .withSize(2,2)
-            .withPosition(1,2);
+            .withSize(5,5)
+            .withPosition(1,1);
         
             current1Entry = tab.add("Current Channel 1", 0.0)
-            .withSize(2,2)
-            .withPosition(1,7)
+            .withSize(1,1)
+            .withPosition(3,7)
             .getEntry();
 
             current2Entry = tab.add("Current Channel 2", 0.0)
-            .withSize(2,2)
-            .withPosition(4,10)
+            .withSize(1,1)
+            .withPosition(3,8)
             .getEntry();
 
             current3Entry = tab.add("Current Channel 3", 0.0)
-            .withSize(2,2)
-            .withPosition(7, 13)
+            .withSize(1,1)
+            .withPosition(3, 9)
             .getEntry();
 
             flywheelDeltaEntry = tab.add("Flywheel Delta", 0.0)
-            .withSize(2,2)
-            .withPosition(13, 10)
+            .withSize(1,2)
+            .withPosition(1, 6)
             .getEntry();
 
             flywheelSetRPMEntry = tab.add("Flywheel Set RPM", 0.0)
-            .withSize(2,2)
-            .withPosition(10, 10)
+            .withSize(1,2)
+            .withPosition(1, 8)
             .getEntry();            
 
             flywheelTempEntry = tab.add("Flywheel Temp", 0.0)
-            .withSize(2,2)
-            .withPosition(25, 11)
+            .withSize(1,2)
+            .withPosition(2, 7)
             .getEntry();            
         } catch (IllegalArgumentException e){
         }

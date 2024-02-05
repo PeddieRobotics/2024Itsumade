@@ -19,32 +19,32 @@ public class AngleOverridesTab extends ShuffleboardTabBase{ //Tentatively Comple
         try{ //All of these sizes and positions are arbitrary, please consider changing later...
             ampPrepEntry = tab.add("Amp Prep", 0.0) //ArmConstants.kAmpPrepAngle
             .withSize(2,2)
-            .withPosition(1,2)
+            .withPosition(1,1)
             .getEntry();
 
             armAngleEntry = tab.add("Arm Angle", 0.0) //arm.getCurrentAngle()
             .withSize(2,2)
-            .withPosition(4,5)
+            .withPosition(1,3)
             .getEntry();
             
             armPrepStateEntry = tab.add("Arm Set Angle", 0.0) //arm.getCurrentPrepState()
             .withSize(2,2)
-            .withPosition(7,8)
+            .withPosition(1,5)
             .getEntry();
             
             armStowEntry = tab.add("Arm Stow", 0.0) //ArmConstants.kStowAngle
             .withSize(2,2)
-            .withPosition(10,11)
+            .withPosition(1,7)
             .getEntry();
             
             layupPrepEntry = tab.add("Layup Prep", 0.0) //ArmConstants.kLayupAngle
             .withSize(2,2)
-            .withPosition(13,14)
+            .withPosition(3,1)
             .getEntry();
             
             LLPrepEntry = tab.add("LL Prep", 0.0) //ArmConstants.kLLAngle
             .withSize(2,2)
-            .withPosition(16,17)
+            .withPosition(3,3)
             .getEntry();            
         } catch (IllegalArgumentException e){}
     }

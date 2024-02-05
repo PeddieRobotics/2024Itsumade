@@ -23,103 +23,103 @@ public class DrivetrainTab extends ShuffleboardTabBase{
 
         try{
             mHeadingEntry = tab.add("Heading", 0.0) //drivetrain.getHeading()
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(1, 1)
             .getEntry();
 
             mkSEntry = tab.add("kS", 0.0) // DrivetrainConstants.kS
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(1, 2)
             .getEntry();
 
             mkVEntry = tab.add("kV", 0.0) // DrivetrainConstants.kV
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(1, 3)
             .getEntry();
 
             mkAEntry = tab.add("kFF", 0.0) // DrivetrainConstants.kA
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(1, 4)
             .getEntry();
 
             mkFFEntry = tab.add("kP", 0.0) // DrivetrainConstants.kFF
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(1, 5)
             .getEntry();
 
             mkDEntry = tab.add("kD", 0.0) // DrivetrainConstants.kD
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(1, 6)
             .getEntry();
 
             mkIEntry = tab.add("kI", 0.0) // DrivetrainConstants.kI
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(1, 7)
             .getEntry();
 
             mkIzEntry = tab.add("kIz", 0.0) // DrivetrainConstants.kIz
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(1, 8)
             .getEntry();
 
             mkPEntry = tab.add("kP", 0.0) // DrivetrainConstants.kP
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(1, 9)
             .getEntry();
 
             mModuleRotations1Entry = tab.add("Module Rotations 1", 0.0) //drivetrain.getModuleRotations()[0]
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(2, 1)
             .getEntry();
 
             mModuleRotations2Entry = tab.add("Module Rotations 2", 0.0) //drivetrain.getModuleRotations()[1]
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(2, 2)
             .getEntry();
 
             mModuleRotations3Entry = tab.add("Module Rotations 3", 0.0) //drivetrain.getModuleRotations()[2]
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(2, 3)
             .getEntry();
 
             mModuleRotations4Entry = tab.add("Module Rotations 4", 0.0) //drivetrain.getModuleRotations()[3]
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(2, 4)
             .getEntry();
 
             mOdometryXEntry = tab.add("Odometry X", 0.0) //drivetrain.getPose().getX()
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(2, 5)
             .getEntry();
     
             mOdometryYEntry = tab.add("Odometry Y", 0.0) //drivetrain.getPose().getY()
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(2, 6)
             .getEntry();
     
             mOdometryThetaEntry = tab.add("Odometry Theta", 0.0) //drivetrain.getPose().getDegrees()
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(2, 7)
             .getEntry();
 
             
             allowDrivingToggleEntry = tab.add("Allow Driving", true)
             .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(3, 3)
             .getEntry();
 
             
             PIDToggleEntry = tab.add("PID Toggle", true)
             .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(3, 5)
             .getEntry();
 
             useHeadingCorrectionToggleEntry = tab.add("Use Heading Correction", true) 
             .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(3, 7)
             .getEntry();
         } catch (IllegalArgumentException e) {}
     }

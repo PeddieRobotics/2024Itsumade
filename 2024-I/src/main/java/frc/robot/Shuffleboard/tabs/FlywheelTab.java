@@ -21,70 +21,70 @@ public class FlywheelTab extends ShuffleboardTabBase{
 
         try{
             flywheelAtRPMEntry = tab.add("Flywheel At RPM", false)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(1, 1)
             .getEntry();
             
             flywheelCurrentEntry = tab.add("Flywheel Current", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(1, 3)
             .getEntry();
 
             flywheelDeltaEntry = tab.add("Flywheel Delta", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(1, 5)
             .getEntry();
 
             flywheelMotorTempEntry = tab.add("Flywheel Motor Temperature", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(1, 7)
             .getEntry();
 
             flywheelSetpointEntry = tab.add("Flywheel Setpoint", 0.0) 
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(2, 3)
             .getEntry();
 
             flywheelRPMEntry = tab.add("Flywheel Current RPM", 0.0) 
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(2, 5)
             .getEntry();
 
             flywheelToggleEntry = tab.add("Flywheel On", false)
             .withWidget(BuiltInWidgets.kToggleButton) 
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(2, 7)
             .getEntry();
 
             flywheelPIDToggleEntry = tab.add("Flywheel PID On", false)
             .withWidget(BuiltInWidgets.kToggleButton) 
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(3, 1)
             .getEntry();
 
             mkPEntry = tab.add("kP", 0.0) 
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(3, 2)
             .getEntry();
 
             mkIEntry = tab.add("kI", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(3, 3)
             .getEntry();
 
             mkIzEntry = tab.add("kIz", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(3, 4)
             .getEntry();
 
             mkDEntry = tab.add("kD", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(3, 5)
             .getEntry();
 
             mkFFEntry = tab.add("kFF", 0.0) 
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(3, 6)
             .getEntry();
         } catch (IllegalArgumentException e){}
     }

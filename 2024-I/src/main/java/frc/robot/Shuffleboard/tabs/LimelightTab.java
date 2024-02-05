@@ -21,51 +21,51 @@ public class LimelightTab extends ShuffleboardTabBase{
 
         try{
             limelightHasTargetEntry = tab.add("Has Target", false)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(1, 1)
             .getEntry();
 
             limelightTagsSeenEntry = tab.add("Tags Seen", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(1, 3)
             .getEntry();
 
             mBotposeAEntry = tab.add("Botpose Theta", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(2, 6)
             .getEntry();
 
             mBotposeXEntry = tab.add("Botpose X", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(2, 2)
             .getEntry();
 
             mBotposeYEntry = tab.add("Botpose Y", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(2, 4)
             .getEntry();
 
             mDistToTargetEntry = tab.add("Distance to Target", 0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 2)
+            .withPosition(2, 8)
             .getEntry();
 
             mTaEntry = tab
             .add("ta", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(3, 3)
             .getEntry();
 
             mTxEntry = tab
             .add("tx", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(3, 5)
             .getEntry();
 
             mTyEntry = tab
             .add("ty", 0.0)
-            .withSize(2, 2)
-            .withPosition(4, 5)
+            .withSize(1, 1)
+            .withPosition(3, 7)
             .getEntry();
         } catch (IllegalArgumentException e){}
     }
