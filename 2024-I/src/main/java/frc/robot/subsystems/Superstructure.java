@@ -9,9 +9,9 @@ import frc.robot.utils.Constants.IntakeConstants;
 public class Superstructure extends SubsystemBase {
     private static Superstructure superstructure;
     // private final Arm arm;
-    // private final Flywheel flywheel;
     private final Intake intake;
-    // private final Hopper hopper;
+    private final Flywheel flywheel;
+    private final Hopper hopper;
     // private final Limelight limelight;
     private double stateDuration;
     private double internalStateTimer;
@@ -36,9 +36,9 @@ public class Superstructure extends SubsystemBase {
 
     public Superstructure(){
         // arm = Arm.getInstance();
-        // flywheel = Flywheel.getInstance();
+        flywheel = Flywheel.getInstance();
         intake = Intake.getInstance();
-        // hopper = Hopper.getInstance();
+        hopper = Hopper.getInstance();
         
 
         systemState = SuperstructureState.STOW;
@@ -136,6 +136,9 @@ public class Superstructure extends SubsystemBase {
                 }
                 break; 
             case LAYUP_PREP:
+                intake.stopIntake();
+                flywheel.layup();
+                hopper.feed();
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.LAYUP_SCORING){
@@ -149,6 +152,9 @@ public class Superstructure extends SubsystemBase {
                 }
                 break; 
             case LAYUP_SCORING:
+                intake.stopIntake();
+                flywheel.layup();
+                hopper.feed();
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
@@ -158,6 +164,9 @@ public class Superstructure extends SubsystemBase {
                 }
                 break;
             case LL_PREP:
+                intake.stopIntake();
+                flywheel.llshoot();
+                hopper.index();
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.LL_SCORING){
@@ -171,6 +180,9 @@ public class Superstructure extends SubsystemBase {
                 }
                 break; 
             case LL_SCORING:
+                intake.stopIntake();
+                flywheel.llshoot();
+                hopper.feed();
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){

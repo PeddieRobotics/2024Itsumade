@@ -37,6 +37,14 @@ public class Hopper extends SubsystemBase {
     return hopper;
   }
 
+  public void index(){
+    //indexing (but not shooting logic) here
+  }
+
+  public void feed(){
+    //indexing (but not shooting logic) here
+  }
+
   public void SetHopper(double speed) {
     hopperMotor.setMotor(speed);
   }

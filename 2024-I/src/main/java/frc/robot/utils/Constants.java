@@ -1,6 +1,7 @@
 package frc.robot.utils;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
@@ -114,6 +115,10 @@ public final class Constants {
     public static final double kFlywheelI = 0;
     public static final double kFlywheelD = 0;
     public static final double kFlywheelFF = 0;
+  }
+
+  public static class ScoringConstants {
+    public static final double[][] treeMapValues = new double[][]{ {0,0}, {1,1} }; // no spin, based off of distance
   }
 
   public static class IntakeConstants {
