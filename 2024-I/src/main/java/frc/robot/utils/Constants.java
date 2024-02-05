@@ -117,11 +117,11 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    public static final int kIntakeCurrentLimit = 0;
+    public static final int kIntakeCurrentLimit = 20;
     public static final int kHopperCurrentLimit = 0;
     public static final double kIntakeSensorThreshold = 0;
     public static final double kHopperSensorThreshold = 0;
     
-    public static final double kIntakeSpeed = 0.8;
+    public static final double kIntakeSpeed = 1.0;
   }
 }

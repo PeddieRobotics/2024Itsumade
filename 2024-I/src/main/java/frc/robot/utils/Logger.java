@@ -10,21 +10,23 @@ import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Superstructure;
 
 public class Logger {
     private static Logger instance;
-    private BooleanLogEntry intakeStatusEntry;
-    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry;
+    private BooleanLogEntry intakeStatusEntry, hopperStatusEntry;
+    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry;
     private StringLogEntry robotStateEntry;
     private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
     private double lastTeleopEnable;
+    private Pose2d fieldPosition;
 
     private Drivetrain drivetrain;
-    private Pose2d fieldPosition;
     private Intake intake;
+    private Hopper hopper;
     private Superstructure superstructure;
 
     public static Logger getInstance() {
@@ -53,6 +55,9 @@ public class Logger {
         intakeStatusEntry = new BooleanLogEntry(log, "/Intake/Intake Status");
         intakeCurrentEntry = new DoubleLogEntry(log, "/Intake/Intake Current");
 
+        // Hopper Logs
+        hopperStatusEntry = new BooleanLogEntry(log, "/Hopper/Hopper Status");
+        hopperCurrentEntry = new DoubleLogEntry(log, "/Hopper/Hopper Current");
     }
 
     public void logEvent(String event, Boolean isStart) {
@@ -70,6 +75,10 @@ public class Logger {
         // Intake 
         intakeStatusEntry.append(intake.getSensorReading());
         intakeCurrentEntry.append(intake.getMotorCurrent());
+
+        // Hopper
+        hopperStatusEntry.append(hopper.getSensorReading());
+        hopperCurrentEntry.append(hopper.getMotorCurrent());
     }
 
     public void updateDrivetrainLogs() {
