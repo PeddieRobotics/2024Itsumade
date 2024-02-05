@@ -107,6 +107,7 @@ public class DrivetrainTab extends ShuffleboardTabBase{
             .getEntry();
 
             mAllowDrivingToggleEntry = tab.add("Allow Driving", true)
+            .withWidget(BuiltInWidgets.kToggleButton)
             .withSize(2, 2)
             .withPosition(4, 5)
             .getEntry();
