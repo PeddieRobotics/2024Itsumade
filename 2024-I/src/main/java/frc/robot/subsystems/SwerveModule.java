@@ -60,7 +60,7 @@ public class SwerveModule extends SubsystemBase {
     steerEncoder = new CANcoder(CANCoderId, canbusName);
     this.moduleAngularOffset = moduleAngularOffset;
     configureCANcoder();
-    steerEncoder.setPosition(0);
+    // steerEncoder.setPosition(0);
 
     steerMotor.setContinuousOutput();
     steerMotor.setFeedbackDevice(CANCoderId, FeedbackSensorSourceValue.RemoteCANcoder);
@@ -98,6 +98,7 @@ public class SwerveModule extends SubsystemBase {
 
   public void setDesiredState(SwerveModuleState desiredModuleState) {
     desiredState = desiredModuleState;
+
 
     // SmartDashboard.putNumber(drivingCANId + " desired velocity", desiredState.speedMetersPerSecond);
     // SmartDashboard.putNumber(steeringCANId + " desired position", desiredState.angle.getRadians());
