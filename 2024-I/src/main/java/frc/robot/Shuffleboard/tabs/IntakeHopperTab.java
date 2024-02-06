@@ -1,24 +1,40 @@
 package frc.robot.Shuffleboard.tabs;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Shuffleboard.ShuffleboardTabBase;
-
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 
-public class IntakeTab extends ShuffleboardTabBase{
+public class IntakeHopperTab extends ShuffleboardTabBase{
 
     private Intake intake = Intake.getInstance();
+    private Hopper hopper = Hopper.getInstance();
 
-    private GenericEntry intakeToggleEntry , intakeCurrentSpeedEntry, intakeMotorTempEntry, intakeSetSpeedEntry, intakeHasGamepieceEntry;
+    private GenericEntry hopperSetSpeedEntry, hopperToggleEntry, 
+    intakeToggleEntry , intakeCurrentSpeedEntry, intakeMotorTempEntry, 
+    intakeSetSpeedEntry, intakeHasGamepieceEntry;
 
-    public IntakeTab(){}
+    public IntakeHopperTab(){}
 
     public void createEntries() {
-        tab = Shuffleboard.getTab("IntakeTab");
+        tab = Shuffleboard.getTab("IntakeHopperTab");
         
         try{
-            intakeToggleEntry = tab.add("Intake On", false) 
+            hopperSetSpeedEntry = tab.add("Hopper Set Speed", 0.0)
+            .withSize(1,2)
+            .withPosition(2,8)
+            .getEntry();
+
+            hopperToggleEntry = tab.add("Hopper On", false)
+            .withWidget(BuiltInWidgets.kToggleButton) 
+            .withSize(1, 2)
+            .withPosition(3, 1)
+            .getEntry();
+
+            intakeToggleEntry = tab.add("Intake On", false)
+            .withWidget(BuiltInWidgets.kToggleButton) 
             .withSize(1, 2)
             .withPosition(1, 1)
             .getEntry();
@@ -48,6 +64,13 @@ public class IntakeTab extends ShuffleboardTabBase{
     @Override
     public void update(){
         try{
+            if(intakeToggleEntry.getBoolean(false)){
+                intake.setIntake(intakeSetSpeedEntry.getDouble(0.0));
+            }
+
+            if(hopperToggleEntry.getBoolean(false)){
+                hopper.setHopper(hopperSetSpeedEntry.getDouble(0.0));
+            }
             /*
              * intakeCurrentSpeedEntry.setDouble(intake.getSpeed());
              * intakeHasGamepieceEntry.setBoolean(intake.hasGamepiece());

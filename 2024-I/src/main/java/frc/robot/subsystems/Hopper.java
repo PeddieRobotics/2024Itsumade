@@ -37,11 +37,11 @@ public class Hopper extends SubsystemBase {
     return hopper;
   }
 
-  public void SetHopper(double speed) {
+  public void setHopper(double speed) {
     hopperMotor.setMotor(speed);
   }
 
-  public void StopHopper() {
+  public void stopHopper() {
     hopperMotor.setMotor(0);
   }
 

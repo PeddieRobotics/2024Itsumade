@@ -37,7 +37,7 @@ public class ArmTab extends ShuffleboardTabBase {
             .withPosition(1, 3)
             .getEntry();
             
-            armSpeedEntry = tab.add("Arm Speed", 0.0) // ArmConstants.kSpeed
+            armSpeedEntry = tab.add("Arm Percent Output", 0.0) // ArmConstants.kSpeed, setArmPercentOutput()
             .withSize(2, 2)
             .withPosition(1, 5)
             .getEntry();
@@ -122,7 +122,7 @@ public class ArmTab extends ShuffleboardTabBase {
             /*
             armAngleEntry.setDouble(arm.getCurrentAngle());
             armCurrentEntry.setDouble(arm.getArmCurrent());
-            arm.setArmSpeed(armSpeedEntry.getDouble(ArmConstants.kSpeed));
+            arm.setArmPercentOutput(armSpeedEntry.getDouble(ArmConstants.kSpeed));
             armTempEntry.setDouble(arm.getCurrentMotorTemperature());
             armVoltageEntry.setDouble(arm.getCurrentVoltage());
 

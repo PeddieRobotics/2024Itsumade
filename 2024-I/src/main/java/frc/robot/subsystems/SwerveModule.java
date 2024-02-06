@@ -92,6 +92,10 @@ public class SwerveModule extends SubsystemBase {
         driveMotor.getPosition(), new Rotation2d(getCANCoderReading()));
   }
 
+  public double getRotations() {
+    return driveMotor.getPosition();
+  }
+
   public void setDesiredState(SwerveModuleState desiredModuleState) {
     desiredState = desiredModuleState;
 

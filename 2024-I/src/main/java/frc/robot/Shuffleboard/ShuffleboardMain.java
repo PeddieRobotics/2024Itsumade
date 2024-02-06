@@ -14,7 +14,7 @@ public class ShuffleboardMain {
     private ArmTab armTab;
     private DrivetrainTab drivetrainTab;
     private FlywheelTab flywheelTab;
-    private IntakeTab intakeTab;
+    private IntakeHopperTab intakeHopperTab;
     private LimelightTab limelightTab;
     private OperatorTab operatorTab;
 
@@ -33,7 +33,7 @@ public class ShuffleboardMain {
         armTab = new ArmTab();
         drivetrainTab = new DrivetrainTab();
         flywheelTab = new FlywheelTab();
-        intakeTab = new IntakeTab();
+        intakeHopperTab = new IntakeHopperTab();
         limelightTab = new LimelightTab();
         operatorTab = new OperatorTab();
 

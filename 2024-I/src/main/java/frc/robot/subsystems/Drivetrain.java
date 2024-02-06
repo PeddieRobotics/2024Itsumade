@@ -123,12 +123,29 @@ public class Drivetrain extends SubsystemBase {
         return Math.IEEEremainder(heading, 360);
     }
 
+    // Returns the current pose of the robot
+    public Pose2d getPose() {
+        return odometry.getEstimatedPosition();
+    }
+
     public Rotation2d getRotation2d() {
         return gyro.getRotation2d();
     }
 
     public void resetGyro() {
         gyro.reset();
+    }
+
+    public double[] getModuleRotations(){
+        double[] positions = {frontLeftModule.getRotations(),
+            backLeftModule.getRotations(),
+            frontRightModule.getRotations(),
+            backRightModule.getRotations()};
+        return (positions);
+    }
+
+    public SwerveDrivePoseEstimator getOdometry() {
+        return odometry;
     }
 
 }

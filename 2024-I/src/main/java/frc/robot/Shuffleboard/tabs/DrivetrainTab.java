@@ -13,8 +13,8 @@ public class DrivetrainTab extends ShuffleboardTabBase{
     private GenericEntry mHeadingEntry, mkSEntry, mkVEntry, mkAEntry, 
     mkGEntry, mkFFEntry, mkDEntry, mkIEntry, mkIzEntry, mkPEntry, 
     mModuleRotations1Entry, mModuleRotations2Entry, mModuleRotations3Entry, mModuleRotations4Entry,
-    mOdometryXEntry, mOdometryYEntry, mOdometryThetaEntry, allowDrivingToggleEntry, 
-    PIDToggleEntry, useHeadingCorrectionToggleEntry;
+    mOdometryXEntry, mOdometryYEntry, mOdometryThetaEntry, 
+    PIDToggleEntry;
 
     public DrivetrainTab(){}
 
@@ -101,25 +101,11 @@ public class DrivetrainTab extends ShuffleboardTabBase{
             .withSize(1, 1)
             .withPosition(2, 7)
             .getEntry();
-
-            
-            allowDrivingToggleEntry = tab.add("Allow Driving", true)
-            .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(1, 2)
-            .withPosition(3, 3)
-            .getEntry();
-
             
             PIDToggleEntry = tab.add("PID Toggle", true)
             .withWidget(BuiltInWidgets.kToggleButton)
             .withSize(1, 2)
             .withPosition(3, 5)
-            .getEntry();
-
-            useHeadingCorrectionToggleEntry = tab.add("Use Heading Correction", true) 
-            .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(1, 2)
-            .withPosition(3, 7)
             .getEntry();
         } catch (IllegalArgumentException e) {}
     }
@@ -127,18 +113,17 @@ public class DrivetrainTab extends ShuffleboardTabBase{
     @Override
     public void update(){
         try{
-            /*
-                mOdometryX.setDouble(drivetrain.getPose().getX());
-                mOdometryY.setDouble(drivetrain.getPose().getY());
-                mOdometryTheta.setDouble(drivetrain.getPose().getRotation().getDegrees());
-                mHeading.setDouble(drivetrain.getHeading());
-                mModuleRotations1.setDouble(drivetrain.getModuleRotations()[0]);
-                mModuleRotations2.setDouble(drivetrain.getModuleRotations()[1]);
-                mModuleRotations3.setDouble(drivetrain.getModuleRotations()[2]);
-                mModuleRotations4.setDouble(drivetrain.getModuleRotations()[3]);
+            mHeadingEntry.setDouble(drivetrain.getHeading());
 
-                drivetrain.setUseHeadingCorrection(mUseHeadingCorrection.getBoolean(true));
-                drivetrain.setAllowDriving(mAllowDriving.getBoolean(true));
+            mModuleRotations1Entry.setDouble(drivetrain.getModuleRotations()[0]);
+            mModuleRotations2Entry.setDouble(drivetrain.getModuleRotations()[1]);
+            mModuleRotations3Entry.setDouble(drivetrain.getModuleRotations()[2]);
+            mModuleRotations4Entry.setDouble(drivetrain.getModuleRotations()[3]);
+
+            mOdometryXEntry.setDouble(drivetrain.getPose().getX());
+            mOdometryYEntry.setDouble(drivetrain.getPose().getY());
+            mOdometryThetaEntry.setDouble(drivetrain.getPose().getRotation().getDegrees());
+            /*
              * Adjustable Drivetrain PID below, DO THIS LATER, copied in the flywheel pid toggle tentative logic that I didn't double check
              * if(flywheelToggleEntry.getBoolean()){
              *      flywheel.setFlywheelSetpoint(flywheelSetpointEntry.getDouble())

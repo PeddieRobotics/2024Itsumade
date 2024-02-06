@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -33,7 +34,8 @@ public class OperatorTab extends ShuffleboardTabBase{
 
     private GenericEntry armAngleEntry, armTempEntry, current1Entry, current2Entry, 
     current3Entry, flywheelAtRPMEntry, flywheelSetRPMEntry, flywheelDeltaEntry, 
-    flywheelTempEntry;
+    flywheelTempEntry, flywheelVelocitySetpointEntry, flywheelVelocityRightSetpointEntry, 
+    flywheelVelocityLeftSetpointEntry, flywheelToggleEntry;
 
     //Sendable Chooser
     private SendableChooser<Command> autoRoutineSelector;
@@ -86,7 +88,28 @@ public class OperatorTab extends ShuffleboardTabBase{
             flywheelTempEntry = tab.add("Flywheel Temp", 0.0)
             .withSize(1,2)
             .withPosition(2, 7)
-            .getEntry();            
+            .getEntry();
+            
+            flywheelVelocitySetpointEntry = tab.add("Flywheel Both Velocity Setpoint", 0.0) 
+            .withSize(1, 2)
+            .withPosition(5, 1)
+            .getEntry();
+
+            flywheelVelocityLeftSetpointEntry = tab.add("Flywheel Left Velocity Setpoint", 0.0) 
+            .withSize(1, 2)
+            .withPosition(5, 3)
+            .getEntry();
+
+            flywheelVelocityRightSetpointEntry = tab.add("Flywheel Right Velocity Setpoint", 0.0) 
+            .withSize(1, 2)
+            .withPosition(5, 5)
+            .getEntry();
+
+            flywheelToggleEntry = tab.add("Flywheel On", false)
+            .withWidget(BuiltInWidgets.kToggleButton) 
+            .withSize(1, 2)
+            .withPosition(5, 7)
+            .getEntry();
         } catch (IllegalArgumentException e){
         }
     }
@@ -94,15 +117,23 @@ public class OperatorTab extends ShuffleboardTabBase{
     @Override
     public void update() { //Some lines here are arbitrary code that should be implemented later but don't have the necessary methods in our subsystems right now.
         try {
-            // arm.setArmAngle(armAngleEntry.getDouble(ArmConstants.kArmAngle));
-            //armTempEntry.setDouble(Arm.getArmTemperature());
             current1Entry.setDouble(pdh.getCurrent(1));
             current2Entry.setDouble(pdh.getCurrent(2));
             current3Entry.setDouble(pdh.getCurrent(3));
-            //flywheelAtRPMEntry.setBoolean(FlywheelConstants.kAtRPM)
-            //flywheel.setFlywheelRPM(flywheelSetRPMEntry.getDouble(FlywheelConstants.kShootingRPM)); 
-            //^^Purely arbitrary, not sure if we will need a lookup table with additional rpm values so this is just here for now
-            //flywheelTempEntry.setDouble(flywheel.getMotorTemperature());
+
+            if(flywheelToggleEntry.getBoolean(false)){
+                flywheel.runFlywheelVelocitySetpoint(flywheelVelocitySetpointEntry.getDouble(0.0));
+                flywheel.runRightFlywheelVelocitySetpoint(flywheelVelocityRightSetpointEntry.getDouble(0.0));
+                flywheel.runLeftFlywheelVelocitySetpoint(flywheelVelocityLeftSetpointEntry.getDouble(0.0));
+            }
+            /*
+            * arm.setArmAngle(armAngleEntry.getDouble(ArmConstants.kArmAngle));
+            * armTempEntry.setDouble(Arm.getArmTemperature());
+            * flywheelAtRPMEntry.setBoolean(FlywheelConstants.kAtRPM)
+            * flywheel.setFlywheelRPM(flywheelSetRPMEntry.getDouble(FlywheelConstants.kShootingRPM)); 
+            * ^^Purely arbitrary, not sure if we will need a lookup table with additional rpm values so this is just here for now
+            * flywheelTempEntry.setDouble(flywheel.getMotorTemperature());
+            */
         } catch(IllegalArgumentException e){}
     }
 
