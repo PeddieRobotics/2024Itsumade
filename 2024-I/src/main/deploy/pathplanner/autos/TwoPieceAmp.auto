@@ -2,36 +2,36 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.33,
-      "y": 5.604986667633057
+      "x": 0.8108477755417065,
+      "y": 6.7337310138186055
     },
-    "rotation": 0.0
+    "rotation": -119.48000000000002
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": null
+            "waitTime": 2.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "4PieceAmp.1"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": null
+            "waitTime": 2.0
           }
         }
       ]
     }
   },
   "folder": null,
-  "choreoAuto": true
+  "choreoAuto": false
 }
