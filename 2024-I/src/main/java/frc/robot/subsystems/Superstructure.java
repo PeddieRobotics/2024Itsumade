@@ -186,6 +186,31 @@ public class Superstructure extends SubsystemBase {
                 break; 
         }
         systemState = nextSystemState;
-        SmartDashboard.putString("State", systemState);
+        SmartDashboard.putString("State", stateAsString);
+    }
+
+    public String stateAsString(){
+        switch(systemState){
+            case STOW:
+                return "STOW"; 
+            case GROUND_INTAKE:
+                return "GROUND_INTAKE";
+            case HP_INTAKE:
+                return "HP_INTAKE";
+            case AMP_PREP:
+                return "AMP_PREP";
+            case AMP_SCORING:
+                return "AMP_SCORING";
+            case LAYUP_PREP:
+                return "LAYUP_PREP";
+            case LAYUP_SCORING:
+                return "LAYUP_SCORING";
+            case LL_PREP:
+                return "LL_PREP"; 
+            case LL_SCORING:
+                return "LL_SCORING"
+            case CLIMBING:
+                return "CLIMBING";
+        }
     }
 }
