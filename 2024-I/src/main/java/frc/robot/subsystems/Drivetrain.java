@@ -45,6 +45,7 @@ public class Drivetrain extends SubsystemBase {
                 frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() };
 
         gyro = new Pigeon2(RobotMap.GYRO, RobotMap.CANIVORE_NAME);
+        gyro.setYaw(0);
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, gyro.getRotation2d(), swerveModulePositions,
                 new Pose2d());
     }
@@ -62,6 +63,7 @@ public class Drivetrain extends SubsystemBase {
         updateModulePositions();
         updateOdometry();
         SmartDashboard.putNumber("Gyro Angle", getHeading());
+        for(SwerveModule m:swerveModules) m.updateSmartdashBoard();
     }
 
     @Override

@@ -98,7 +98,8 @@ public class SwerveModule extends SubsystemBase {
 
   public void setDesiredState(SwerveModuleState desiredModuleState) {
     desiredState = desiredModuleState;
-
+    desiredState.speedMetersPerSecond = -desiredState.speedMetersPerSecond;
+    desiredState.angle = Rotation2d.fromDegrees(-desiredState.angle.getDegrees());
 
     // SmartDashboard.putNumber(drivingCANId + " desired velocity", desiredState.speedMetersPerSecond);
     // SmartDashboard.putNumber(steeringCANId + " desired position", desiredState.angle.getRadians());
