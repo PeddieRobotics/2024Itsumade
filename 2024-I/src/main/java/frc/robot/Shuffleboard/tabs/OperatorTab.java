@@ -32,7 +32,7 @@ public class OperatorTab extends ShuffleboardTabBase{
 
     private ComplexWidget autoChooser, cameraWidget;
 
-    private GenericEntry armAngleEntry, armTempEntry, current1Entry, current2Entry, 
+    private GenericEntry state, armAngleEntry, armTempEntry, current1Entry, current2Entry, 
     current3Entry, flywheelAtRPMEntry, flywheelSetRPMEntry, flywheelDeltaEntry, 
     flywheelTempEntry, flywheelVelocitySetpointEntry, flywheelVelocityRightSetpointEntry, 
     flywheelVelocityLeftSetpointEntry, flywheelToggleEntry;
@@ -45,7 +45,12 @@ public class OperatorTab extends ShuffleboardTabBase{
 
         autoRoutineSelector = new SendableChooser<Command>();
 
-        try{ //All of these sizes and positions are arbitrary, please consider changing later...
+        try{ 
+            state = tab.add("State", "STOW")
+            .withSize(1,2)
+            .withPosition(2,5)
+            .getEntry();
+
             armAngleEntry = tab.add("Arm Angle", 0.0)
             .withSize(1,2)
             .withPosition(4,6)
