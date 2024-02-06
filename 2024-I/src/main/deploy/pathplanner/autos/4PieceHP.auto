@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.33,
-      "y": 5.604986667633057
+      "x": 0.66,
+      "y": 4.38
     },
-    "rotation": 0.0
+    "rotation": 120.0
   },
   "command": {
     "type": "sequential",
@@ -14,24 +14,24 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "2PieceHPSide"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "4PieceHP.2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "4PieceHP.3"
           }
         }
       ]
     }
   },
   "folder": null,
-  "choreoAuto": true
+  "choreoAuto": false
 }
