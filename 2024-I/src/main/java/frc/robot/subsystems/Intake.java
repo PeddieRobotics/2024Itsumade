@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import au.grapplerobotics.LaserCan;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.RobotMap;
@@ -25,11 +26,12 @@ public class Intake extends SubsystemBase {
   public TalonSRX intakeMotor;
   public TalonSRXConfiguration config;
 
-  //public LaserCan intakeSensor;
+  // public LaserCan intakeSensor;
+  private DigitalInput intakeSensor;
 
   public Intake() {
     intakeMotor = new TalonSRX(RobotMap.INTAKE_MOTOR_CAN_ID);
-   // intakeSensor = new LaserCan(RobotMap.INTAKE_SENSOR_ID);
+   intakeSensor = new DigitalInput(RobotMap.INTAKE_SENSOR_ID);
 
     config = new TalonSRXConfiguration();
     config.peakCurrentLimit = IntakeConstants.kIntakeCurrentLimit;
@@ -52,17 +54,9 @@ public class Intake extends SubsystemBase {
     intakeMotor.set(TalonSRXControlMode.PercentOutput, 0);
   }
 
-  public boolean getSensorReading(){
-    if(getSensorMeasurement() < IntakeConstants.kIntakeSensorThreshold){
-      return true;
-    }
-    return false;
-  }
-
-  public double getSensorMeasurement(){
-    //returns sensor distance in mm
-    //return intakeSensor.getMeasurement().distance_mm;
-    return 0;
+  //returns if beam is broken
+  public boolean getSensor(){
+    return !intakeSensor.get();
   }
 
   @Override
@@ -74,4 +68,5 @@ public class Intake extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
 }

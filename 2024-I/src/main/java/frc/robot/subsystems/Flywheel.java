@@ -157,4 +157,8 @@ public class Flywheel {
 
     }
 
+    public void amp() {
+
+    }
+
 }
