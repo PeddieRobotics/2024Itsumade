@@ -31,7 +31,7 @@ public class OperatorTab extends ShuffleboardTabBase{
 
     private ComplexWidget autoChooser, cameraWidget;
 
-    private GenericEntry armAngleEntry, armTempEntry, current1Entry, current2Entry, 
+    private GenericEntry state, armAngleEntry, armTempEntry, current1Entry, current2Entry, 
     current3Entry, flywheelAtRPMEntry, flywheelSetRPMEntry, flywheelDeltaEntry, 
     flywheelTempEntry;
 
