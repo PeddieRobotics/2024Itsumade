@@ -186,5 +186,6 @@ public class Superstructure extends SubsystemBase {
                 break; 
         }
         systemState = nextSystemState;
+        SmartDashboard.putString("State", systemState);
     }
 }

@@ -43,12 +43,12 @@ public class OperatorTab extends ShuffleboardTabBase{
 
         autoRoutineSelector = new SendableChooser<Command>();
 
-        try{ //All of these sizes and positions are arbitrary, please consider changing later...
-            state = tab.add("State", "stow")
+        try{ 
+            state = tab.add("State", SuperstructureState.stow)
             .withSize(1,2)
             .withPosition(2,5)
             .getEntry();
-            
+
             armAngleEntry = tab.add("Arm Angle", 0.0)
             .withSize(1,2)
             .withPosition(4,6)
