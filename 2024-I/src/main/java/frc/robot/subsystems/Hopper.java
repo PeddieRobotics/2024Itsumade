@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -72,14 +69,9 @@ public class Hopper extends SubsystemBase {
     return !bottomHopperSensor.get();
   }
 
-  // public double getTopSensorMeasurement() {
-  //   return topHopperSensor.getMeasurement().distance_mm;
-  // }
-
-  // public double getBottomSensorMeasurement() {
-  //   return bottomHopperSensor.getMeasurement().distance_mm;
-  // }
-
+  public double getMotorCurrent(){
+    return hopperMotor.getSupplyCurrent();
+  }
 
   @Override
   public void periodic() {

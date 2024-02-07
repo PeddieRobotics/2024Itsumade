@@ -24,10 +24,10 @@ public final class Constants {
     public static final double kBaseRadius = Math.sqrt(Math.pow(kTrackWidth, 2) + Math.pow(kWheelBase, 2)) / 2;
 
     public static final Translation2d[] swerveModuleLocations = {
-        new Translation2d(-kWheelBase / 2.0, kTrackWidth / 2.0),
         new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
-        new Translation2d(-kWheelBase / 2.0, -kTrackWidth / 2.0),
-        new Translation2d(kWheelBase / 2.0, -kTrackWidth / 2.0)
+        new Translation2d(kWheelBase / 2.0, -kTrackWidth / 2.0),
+        new Translation2d(-kWheelBase / 2.0, kTrackWidth / 2.0),
+        new Translation2d(-kWheelBase / 2.0, -kTrackWidth / 2.0)
     };
 
     public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
@@ -37,13 +37,18 @@ public final class Constants {
         swerveModuleLocations[3]);
 
     // TODO: Change this value
-    public static final double kMaxFloorSpeed = 3.0; // meters per second
+    public static final double kMaxFloorSpeed = 1.0; // meters per second
     public static final double kMaxAngularSpeed = Math.PI; // radians per second
 
     public static final int kDriveCurrentLimit = 30;
     public static final int kTurningCurrentLimit = 30;
 
     public static final double kWheelRadius = 2.0;
+
+    public static final double kFrontLeftModuleAngularOffset = 0;
+    public static final double kFrontRightModuleAngularOffset = 0;
+    public static final double kBackLeftModuleAngularOffset = 0;
+    public static final double kBackRightModulelAngularOffset = 0;
   }
 
   public static class ModuleConstants {
@@ -125,12 +130,12 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    public static final int kIntakeCurrentLimit = 0;
+    public static final int kIntakeCurrentLimit = 20;
     public static final int kHopperCurrentLimit = 0;
     public static final double kIntakeSensorThreshold = 0;
     public static final double kHopperSensorThreshold = 0;
     
-    public static final double kIntakeSpeed = 0.8;
+    public static final double kIntakeSpeed = 1.0;
   }
 
   public static class HopperConstants {

@@ -1,5 +1,7 @@
 package frc.robot.utils;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
@@ -7,40 +9,96 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Superstructure;
 
 public class Logger {
     private static Logger instance;
-    private BooleanLogEntry booleanLog;
-    private DoubleLogEntry doubleLog;
-    private StringLogEntry stringLog;
-    private DoubleArrayLogEntry doubleArrayLog;
+    private BooleanLogEntry intakeStatusEntry, hopperStatusEntry;
+    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry;
+    private StringLogEntry robotStateEntry;
+    private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
     private double lastTeleopEnable;
+    private Pose2d fieldPosition;
 
-    public static Logger getInstance(){
-        if (instance == null){
+    private Drivetrain drivetrain;
+    private Intake intake;
+    private Hopper hopper;
+    private Superstructure superstructure;
+
+    public static Logger getInstance() {
+        if (instance == null) {
             instance = new Logger();
         }
         return instance;
     }
 
-    public Logger(){
-        booleanLog = new BooleanLogEntry(log, "/Data/BooleanLog");
-        doubleLog = new DoubleLogEntry(log,"/Data/DoubleLog");
-        stringLog = new StringLogEntry(log,"/Data/StringLog");
-        doubleArrayLog = new DoubleArrayLogEntry(log,"/Data/DoubleArrayLog");
+    public Logger() {
+        drivetrain = Drivetrain.getInstance();
+        intake = Intake.getInstance();
+        superstructure = Superstructure.getInstance();
+
+        // Superstructure Logs
+        robotStateEntry = new StringLogEntry(log, "/Superstructure/Robot State");
+
+        // Drivetrain Logs
+        gyroAngleEntry = new DoubleLogEntry(log, "/Drivetrain/Gyro Angle");
+        drivetrainSpeedEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Speed");
+        fieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Postion");
+        moduleSpeedsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Speeds");
+        modulePositionsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Positions");
+
+        // Intake Logs
+        intakeStatusEntry = new BooleanLogEntry(log, "/Intake/Intake Status");
+        intakeCurrentEntry = new DoubleLogEntry(log, "/Intake/Intake Current");
+
+        // Hopper Logs
+        hopperStatusEntry = new BooleanLogEntry(log, "/Hopper/Hopper Status");
+        hopperCurrentEntry = new DoubleLogEntry(log, "/Hopper/Hopper Current");
+    }
+
+    public void logEvent(String event, Boolean isStart) {
+        // stringLog.append(event + (isStart? " Started": " Ended"));
 
     }
-    public void LogEvent(String event, Boolean isStart){
-        stringLog.append(event + (isStart? " Started": " Ended"));
 
+    public void updateLogs() {
+        // Superstructure
+        robotStateEntry.append(superstructure.getRobotState());
+
+        // Drivetrain
+        updateDrivetrainLogs();
+
+        // Intake 
+        intakeStatusEntry.append(intake.getSensorReading());
+        intakeCurrentEntry.append(intake.getMotorCurrent());
+
+        // Hopper
+        hopperStatusEntry.append(hopper.getSensorReading());
+        hopperCurrentEntry.append(hopper.getMotorCurrent());
     }
 
-    public void UpdateLogs(){
+    public void updateDrivetrainLogs() {
+        gyroAngleEntry.append(drivetrain.getHeading());
+        drivetrainSpeedEntry.append(drivetrain.getSpeed());
 
+        double[] pose = { drivetrain.getPose().getX(), drivetrain.getPose().getY(),
+                drivetrain.getPose().getRotation().getDegrees() };
+        fieldPositionEntry.append(pose);
+
+        SwerveModuleState[] moduleStates = drivetrain.getSwerveModuleState();
+        double[] swerveModulePositions = { moduleStates[0].angle.getDegrees(), moduleStates[1].angle.getDegrees(),
+                moduleStates[2].angle.getDegrees(), moduleStates[3].angle.getDegrees() };
+        double[] swerveModuleSpeeds = { moduleStates[0].speedMetersPerSecond, moduleStates[1].speedMetersPerSecond,
+                moduleStates[2].speedMetersPerSecond, moduleStates[3].speedMetersPerSecond };
+        modulePositionsEntry.append(swerveModulePositions);
+        moduleSpeedsEntry.append(swerveModuleSpeeds);
     }
 
-    public void SignalRobotEnable(){
+    public void signalRobotEnable() {
         lastTeleopEnable = Timer.getFPGATimestamp();
     }
 }
