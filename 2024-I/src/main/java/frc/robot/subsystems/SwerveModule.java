@@ -98,7 +98,6 @@ public class SwerveModule extends SubsystemBase {
 
   public void setDesiredState(SwerveModuleState desiredModuleState) {
     desiredState = desiredModuleState;
-    desiredState.speedMetersPerSecond = -desiredState.speedMetersPerSecond;
     desiredState.angle = Rotation2d.fromDegrees(-desiredState.angle.getDegrees());
 
     // SmartDashboard.putNumber(drivingCANId + " desired velocity", desiredState.speedMetersPerSecond);
@@ -144,7 +143,7 @@ public class SwerveModule extends SubsystemBase {
     CANcoderConfiguration canCoderConfiguration = new CANcoderConfiguration();
     canCoderConfiguration.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
     canCoderConfiguration.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
-    // canCoderConfiguration.MagnetSensor.MagnetOffset = moduleAngularOffset;
+    canCoderConfiguration.MagnetSensor.MagnetOffset = -moduleAngularOffset/(2 * Math.PI);
     steerEncoder.getConfigurator().apply(canCoderConfiguration);
   }
 

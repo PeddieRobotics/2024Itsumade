@@ -73,11 +73,11 @@ public class Logger {
         updateDrivetrainLogs();
 
         // Intake 
-        intakeStatusEntry.append(intake.getSensorReading());
+        // intakeStatusEntry.append(intake.getSensorReading());
         intakeCurrentEntry.append(intake.getMotorCurrent());
 
         // Hopper
-        hopperStatusEntry.append(hopper.getSensorReading());
+        // hopperStatusEntry.append(hopper.getSensorReading());
         hopperCurrentEntry.append(hopper.getMotorCurrent());
     }
 
