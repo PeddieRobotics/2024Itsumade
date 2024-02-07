@@ -16,7 +16,7 @@ import frc.robot.subsystems.Superstructure;
 
 public class Logger {
     private static Logger instance;
-    private BooleanLogEntry intakeStatusEntry, hopperStatusEntry;
+    private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
     private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry;
     private StringLogEntry robotStateEntry;
     private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
@@ -52,11 +52,12 @@ public class Logger {
         modulePositionsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Positions");
 
         // Intake Logs
-        intakeStatusEntry = new BooleanLogEntry(log, "/Intake/Intake Status");
+        intakeSensorEntry = new BooleanLogEntry(log, "/Intake/Intake Sensor");
         intakeCurrentEntry = new DoubleLogEntry(log, "/Intake/Intake Current");
 
         // Hopper Logs
-        hopperStatusEntry = new BooleanLogEntry(log, "/Hopper/Hopper Status");
+        hopperBottomSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
+        hopperTopSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
         hopperCurrentEntry = new DoubleLogEntry(log, "/Hopper/Hopper Current");
     }
 
@@ -73,11 +74,12 @@ public class Logger {
         updateDrivetrainLogs();
 
         // Intake 
-        intakeStatusEntry.append(intake.getSensorReading());
+        intakeSensorEntry.append(intake.getSensor());
         intakeCurrentEntry.append(intake.getMotorCurrent());
 
         // Hopper
-        hopperStatusEntry.append(hopper.getSensorReading());
+        hopperBottomSensorEntry.append(hopper.bottomSensor());
+        hopperTopSensorEntry.append(hopper.topSensor());
         hopperCurrentEntry.append(hopper.getMotorCurrent());
     }
 
