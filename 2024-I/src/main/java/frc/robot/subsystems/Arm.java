@@ -6,11 +6,9 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.ArmConstants;
-import frc.robot.utils.Constants.FlywheelConstants;
 
 public class Arm {
 
@@ -79,7 +77,7 @@ public class Arm {
         SmartDashboard.putNumber("Arm FF", ArmConstants.kArmFF);
     }
 
-    public void updateSmartdashBoard() {
+    public void updateSmartDashboard() {
         if (SmartDashboard.getBoolean("Update Arm PID", false)) {
             armPrimaryMotor.setPIDValues(
                     SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),

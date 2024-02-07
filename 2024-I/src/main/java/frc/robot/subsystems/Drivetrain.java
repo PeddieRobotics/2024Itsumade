@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -31,22 +28,24 @@ public class Drivetrain extends SubsystemBase {
 
     private final Pigeon2 gyro;
     private double heading;
+    private double currentDrivetrainSpeed = 0;
 
     public Drivetrain() {
         frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
-                RobotMap.FRONT_LEFT_MODULE_TURN_ID, RobotMap.FRONT_LEFT_MODULE_CANCODER_ID);
+                RobotMap.FRONT_LEFT_MODULE_TURN_ID, RobotMap.FRONT_LEFT_MODULE_CANCODER_ID, DriveConstants.kFrontLeftModuleAngularOffset);
         frontRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_RIGHT_MODULE_DRIVE_ID,
-                RobotMap.FRONT_RIGHT_MODULE_TURN_ID, RobotMap.FRONT_RIGHT_MODULE_CANCODER_ID);
+                RobotMap.FRONT_RIGHT_MODULE_TURN_ID, RobotMap.FRONT_RIGHT_MODULE_CANCODER_ID, DriveConstants.kFrontRightModuleAngularOffset);
         backLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_LEFT_MODULE_DRIVE_ID,
-                RobotMap.BACK_LEFT_MODULE_TURN_ID, RobotMap.BACK_LEFT_MODULE_CANCODER_ID);
+                RobotMap.BACK_LEFT_MODULE_TURN_ID, RobotMap.BACK_LEFT_MODULE_CANCODER_ID, DriveConstants.kBackLeftModuleAngularOffset);
         backRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_RIGHT_MODULE_DRIVE_ID,
-                RobotMap.BACK_RIGHT_MODULE_TURN_ID, RobotMap.BACK_RIGHT_MODULE_CANCODER_ID);
+                RobotMap.BACK_RIGHT_MODULE_TURN_ID, RobotMap.BACK_RIGHT_MODULE_CANCODER_ID, DriveConstants.kBackRightModulelAngularOffset);
 
         swerveModules = new SwerveModule[] { frontLeftModule, frontRightModule, backLeftModule, backRightModule };
         swerveModulePositions = new SwerveModulePosition[] { frontLeftModule.getPosition(),
                 frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() };
 
         gyro = new Pigeon2(RobotMap.GYRO, RobotMap.CANIVORE_NAME);
+        gyro.setYaw(0);
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, gyro.getRotation2d(), swerveModulePositions,
                 new Pose2d());
     }
@@ -63,6 +62,8 @@ public class Drivetrain extends SubsystemBase {
         // This method will be called once per scheduler run
         updateModulePositions();
         updateOdometry();
+        SmartDashboard.putNumber("Gyro Angle", getHeading());
+        for(SwerveModule m:swerveModules) m.updateSmartdashBoard();
     }
 
     @Override
@@ -81,8 +82,6 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void setSwerveModuleStates(SwerveModuleState[] swerveModuleStates) {
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxFloorSpeed);
-
         for (int i = 0; i < swerveModules.length; i++) {
             swerveModules[i].setDesiredState(swerveModuleStates[i]);
         }
@@ -98,6 +97,12 @@ public class Drivetrain extends SubsystemBase {
         } else {
             robotRelativeSpeeds = fieldRelativeSpeeds;
         }
+
+        currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2) + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
+
+        SmartDashboard.putNumber("Chassis Speed X", robotRelativeSpeeds.vxMetersPerSecond);
+        SmartDashboard.putNumber("Chassis Speed Y", robotRelativeSpeeds.vyMetersPerSecond);
+        SmartDashboard.putNumber("Theta", robotRelativeSpeeds.omegaRadiansPerSecond);
 
         swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds, centerOfRotation);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxAngularSpeed);
@@ -125,6 +130,22 @@ public class Drivetrain extends SubsystemBase {
 
     public Rotation2d getRotation2d() {
         return gyro.getRotation2d();
+    }
+
+    public Pose2d getPose(){
+        return odometry.getEstimatedPosition();
+    }
+
+    public double getSpeed(){
+        return currentDrivetrainSpeed;
+    }
+
+    public SwerveModuleState[] getSwerveModuleState(){
+        return swerveModuleStates;
+    }
+
+    public SwerveModulePosition[] getSwerveModulePositions(){
+        return swerveModulePositions;
     }
 
     public void resetGyro() {

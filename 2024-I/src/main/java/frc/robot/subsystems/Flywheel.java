@@ -1,12 +1,10 @@
 package frc.robot.subsystems;
 
 import au.grapplerobotics.LaserCan;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.FlywheelConstants;
-import frc.robot.utils.Constants.IntakeConstants;
 
 public class Flywheel {
 
@@ -109,7 +107,7 @@ public class Flywheel {
         SmartDashboard.putNumber("Flywheel FF", FlywheelConstants.kFlywheelFF);
     }
 
-    public void updateSmartdashBoard() {
+    public void updateSmartDashboard() {
         if(SmartDashboard.getBoolean("Update Flywheel PID", false)){
             flywheelLeftMotor.setVelocityPIDValues(
                 SmartDashboard.getNumber("Flywheel S", FlywheelConstants.kFlywheelS), 
