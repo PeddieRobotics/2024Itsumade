@@ -6,6 +6,7 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.utils.Constants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.ArmConstants;
@@ -110,7 +111,35 @@ public class Arm {
         goalState = requestedState;
     }
 
+    public boolean canIntake(){
+        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - Constants.ArmConstants.kArmIntakePosition) < Constants.ArmConstants.kArmPositionEpsilon;
+    }
+
+    public void setIntakePosition(){
+
+    }
+
+    public void setHPIntakePosition(){
+
+    }
+
+    public void setAmpPosition(){
+
+    }
+
+    public void setStowPosition(){
+        
+    }
+
     public void periodic() {
+
+    }
+
+    public void layup() {
+
+    }
+
+    public void llalign() {
 
     }
 

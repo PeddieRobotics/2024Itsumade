@@ -5,7 +5,10 @@
 package frc.robot.subsystems;
 
 import au.grapplerobotics.LaserCan;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.IntakeConstants;
@@ -16,11 +19,13 @@ public class Hopper extends SubsystemBase {
   private static Hopper hopper;
   private Kraken hopperMotor;
 
-  public LaserCan hopperSensor;
+  // public LaserCan topHopperSensor, bottomHopperSensor;
+  private DigitalInput topHopperSensor, bottomHopperSensor;
 
   public Hopper() {
     hopperMotor = new Kraken(RobotMap.HOPPER_MOTOR_CAN_ID, RobotMap.CANIVORE_NAME);
-    hopperSensor = new LaserCan(RobotMap.HOPPER_SENSOR_ID);
+    topHopperSensor = new DigitalInput(RobotMap.TOP_HOPPER_SENSOR_ID);
+    bottomHopperSensor = new DigitalInput(RobotMap.BOTTOM_HOPPER_SENSOR_ID);
 
     hopperMotor.setCurrentLimit(IntakeConstants.kHopperCurrentLimit);
     hopperMotor.setBrake();
@@ -33,23 +38,35 @@ public class Hopper extends SubsystemBase {
     return hopper;
   }
 
-  public void SetHopper(double speed) {
+  public void index(){
+    //indexing (but not shooting logic) here
+    setHopper(Constants.HopperConstants.kFloorIndexSpeed);
+  }
+
+  public void hpIndex(){
+    setHopper(Constants.HopperConstants.kHPIndexSpeed);
+  }
+
+  public void feed(){
+    setHopper(Constants.HopperConstants.kFeedSpeed);
+  }
+
+  public void setHopper(double speed) {
     hopperMotor.setMotor(speed);
   }
 
-  public void StopHopper() {
+  public void stopHopper() {
     hopperMotor.setMotor(0);
   }
 
-  public boolean getSensorReading() {
-    if (getSensorMeasurement() < IntakeConstants.kHopperSensorThreshold) {
-      return true;
-    }
-    return false;
+  //returns is the beam is broken
+  public boolean topSensor() {
+    return !topHopperSensor.get();
   }
 
-  public double getSensorMeasurement() {
-    return hopperSensor.getMeasurement().distance_mm;
+  //returns is the beam is broken
+  public boolean bottomSensor() {
+    return !bottomHopperSensor.get();
   }
 
   public double getMotorCurrent(){

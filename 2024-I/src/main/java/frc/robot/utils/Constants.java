@@ -1,6 +1,7 @@
 package frc.robot.utils;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
@@ -122,6 +123,8 @@ public final class Constants {
     public static final double kArmReverseSoftLimit = 0;
     public static final double kArmGearReduction = 0;
     public static final double kArmPositionConversionFactor = 1.0; //dependednt on feedbakc device
+    public static final double kArmIntakePosition = 0.0; //in deg
+    public static final double kArmPositionEpsilon = 1;
   }
 
   public static class FlywheelConstants {
@@ -141,6 +144,11 @@ public final class Constants {
     public static final double kFlywheelFF = 0;
   }
 
+  public static class ScoringConstants {
+    public static final double kLayupVelocity = 0;
+    public static final double[][] treeMapValues = new double[][]{ {0,0}, {1,1} }; // no spin, based off of distance
+  }
+
   public static class IntakeConstants {
     public static final int kIntakeCurrentLimit = 20;
     public static final int kHopperCurrentLimit = 0;
@@ -149,4 +157,11 @@ public final class Constants {
     
     public static final double kIntakeSpeed = 1.0;
   }
+
+  public static class HopperConstants {
+    public static final double kFloorIndexSpeed=0;
+    public static final double kHPIndexSpeed=0;
+    public static final double kFeedSpeed=0;
+  }
+
 }
