@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private ShuffleboardMain shuffleboardMain;
+  // private ShuffleboardMain shuffleboardMain;
   private PowerDistribution pdh;
 
   /**
@@ -35,12 +35,12 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    shuffleboardMain = ShuffleboardMain.getInstance();
+    // shuffleboardMain = ShuffleboardMain.getInstance();
 
     pdh = new PowerDistribution(1, ModuleType.kRev);
 
-    shuffleboardMain.setUpTabs();
-    shuffleboardMain.setUpAutoSelector();
+    // shuffleboardMain.setUpTabs();
+    // shuffleboardMain.setUpAutoSelector();
   }
 
   /**
@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    shuffleboardMain.update();
+    // shuffleboardMain.update();
 
     m_robotContainer.runControlLoop();
   }

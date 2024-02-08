@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -49,6 +50,7 @@ public class DriverOI {
 
     public DriverOI() {
         arm = Arm.getInstance();
+        drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
         configureController(false);
     }
@@ -109,7 +111,7 @@ public class DriverOI {
 
         // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
-        ps5Button.onTrue(new InstantCommand(drivetrain::resetGyro));
+        ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
         // Press and hold for outtaking slow (gamepiece adjustment), with down arrow
         // this becomes full speed.
@@ -188,7 +190,7 @@ public class DriverOI {
     }
 
     public double getForward() {
-        double input = controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
+        double input = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
         if (Math.abs(input) < 0.9) {
             input *= 0.7777;
         } else {
@@ -198,7 +200,7 @@ public class DriverOI {
     }
 
     public double getStrafe() {
-        double input = controller.getRawAxis(PS4Controller.Axis.kLeftX.value);
+        double input = -controller.getRawAxis(PS4Controller.Axis.kLeftX.value);
         if (Math.abs(input) < 0.9) {
             input *= 0.7777;
         } else {
@@ -244,7 +246,7 @@ public class DriverOI {
         double rightRotation = controller.getRawAxis(PS4Controller.Axis.kR2.value);
 
         double combinedRotation;
-        combinedRotation = (rightRotation - leftRotation) / 2.0;
+        combinedRotation = (leftRotation - rightRotation) / 2.0;
 
         return combinedRotation * DriveConstants.kMaxAngularSpeed;
     }
