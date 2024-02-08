@@ -186,7 +186,7 @@ public class Superstructure extends SubsystemBase {
                 break; 
         }
         systemState = nextSystemState;
-        SmartDashboard.putString("State", stateAsString);
+        //SmartDashboard.putString("State", stateAsString);
     }
 
     public String stateAsString(){
@@ -208,9 +208,10 @@ public class Superstructure extends SubsystemBase {
             case LL_PREP:
                 return "LL_PREP"; 
             case LL_SCORING:
-                return "LL_SCORING"
+                return "LL_SCORING";
             case CLIMBING:
                 return "CLIMBING";
         }
+        return "";
     }
 }

@@ -8,7 +8,7 @@ import frc.robot.subsystems.Limelight;
 
 public class LimelightTab extends ShuffleboardTabBase{
 
-    private Limelight limelight = Limelight.getInstance();
+    //private Limelight limelight = Limelight.getInstance();
 
     private GenericEntry limelightHasTargetEntry, limelightTagsSeenEntry,
     mBotposeAEntry, mBotposeXEntry, mBotposeYEntry, 
@@ -21,51 +21,51 @@ public class LimelightTab extends ShuffleboardTabBase{
 
         try{
             limelightHasTargetEntry = tab.add("Has Target", false)
-            .withSize(1, 2)
-            .withPosition(1, 1)
+            .withSize(1, 1)
+            .withPosition(0, 0)
             .getEntry();
 
             limelightTagsSeenEntry = tab.add("Tags Seen", 0.0)
-            .withSize(1, 2)
-            .withPosition(1, 3)
+            .withSize(1, 1)
+            .withPosition(1, 0)
             .getEntry();
 
             mBotposeAEntry = tab.add("Botpose Theta", 0.0)
-            .withSize(1, 2)
-            .withPosition(2, 6)
+            .withSize(1, 1)
+            .withPosition(2, 0)
             .getEntry();
 
             mBotposeXEntry = tab.add("Botpose X", 0.0)
-            .withSize(1, 2)
-            .withPosition(2, 2)
+            .withSize(1, 1)
+            .withPosition(3, 0)
             .getEntry();
 
             mBotposeYEntry = tab.add("Botpose Y", 0.0)
-            .withSize(1, 2)
-            .withPosition(2, 4)
+            .withSize(1, 1)
+            .withPosition(4, 0)
             .getEntry();
 
             mDistToTargetEntry = tab.add("Distance to Target", 0)
-            .withSize(1, 2)
-            .withPosition(2, 8)
+            .withSize(1, 1)
+            .withPosition(5, 0)
             .getEntry();
 
             mTaEntry = tab
             .add("ta", 0.0)
             .withSize(1, 1)
-            .withPosition(3, 3)
+            .withPosition(6, 0)
             .getEntry();
 
             mTxEntry = tab
             .add("tx", 0.0)
             .withSize(1, 1)
-            .withPosition(3, 5)
+            .withPosition(7, 0)
             .getEntry();
 
             mTyEntry = tab
             .add("ty", 0.0)
             .withSize(1, 1)
-            .withPosition(3, 7)
+            .withPosition(0, 1)
             .getEntry();
         } catch (IllegalArgumentException e){}
     }

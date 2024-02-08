@@ -9,8 +9,8 @@ import frc.robot.subsystems.Intake;
 
 public class IntakeHopperTab extends ShuffleboardTabBase{
 
-    private Intake intake = Intake.getInstance();
-    private Hopper hopper = Hopper.getInstance();
+    // private Intake intake = Intake.getInstance();
+    // private Hopper hopper = Hopper.getInstance();
 
     private GenericEntry hopperSetSpeedEntry, hopperToggleEntry, 
     intakeToggleEntry , intakeCurrentSpeedEntry, intakeMotorTempEntry, 
@@ -23,40 +23,40 @@ public class IntakeHopperTab extends ShuffleboardTabBase{
         
         try{
             hopperSetSpeedEntry = tab.add("Hopper Set Speed", 0.0)
-            .withSize(1,2)
-            .withPosition(2,8)
+            .withSize(1,1)
+            .withPosition(0,0)
             .getEntry();
 
             hopperToggleEntry = tab.add("Hopper On", false)
             .withWidget(BuiltInWidgets.kToggleButton) 
-            .withSize(1, 2)
-            .withPosition(3, 1)
+            .withSize(1, 1)
+            .withPosition(1, 0)
             .getEntry();
 
             intakeToggleEntry = tab.add("Intake On", false)
             .withWidget(BuiltInWidgets.kToggleButton) 
-            .withSize(1, 2)
-            .withPosition(1, 1)
+            .withSize(1, 1)
+            .withPosition(2, 0)
             .getEntry();
 
             intakeCurrentSpeedEntry = tab.add("Intake Current Speed", 0.0) 
-            .withSize(1, 2)
-            .withPosition(1, 3)
+            .withSize(1, 1)
+            .withPosition(3, 0)
             .getEntry();
 
             intakeMotorTempEntry = tab.add("Intake Motor Temperature", 0.0)
-            .withSize(1, 2)
-            .withPosition(1, 5)
+            .withSize(1, 1)
+            .withPosition(4, 0)
             .getEntry();
 
             intakeSetSpeedEntry = tab.add("Intake Set Speed", 0.0) 
-            .withSize(1, 2)
-            .withPosition(2, 4)
+            .withSize(1, 1)
+            .withPosition(5, 0)
             .getEntry();
 
             intakeHasGamepieceEntry = tab.add("Intake Has Gamepiece", false) 
-            .withSize(1, 2)
-            .withPosition(2, 6)
+            .withSize(1, 1)
+            .withPosition(6, 0)
             .getEntry();
         } catch (IllegalArgumentException e){}
     }
@@ -64,13 +64,13 @@ public class IntakeHopperTab extends ShuffleboardTabBase{
     @Override
     public void update(){
         try{
-            if(intakeToggleEntry.getBoolean(false)){
-                intake.setIntake(intakeSetSpeedEntry.getDouble(0.0));
-            }
+            // if(intakeToggleEntry.getBoolean(false)){
+            //     intake.setIntake(intakeSetSpeedEntry.getDouble(0.0));
+            // }
 
-            if(hopperToggleEntry.getBoolean(false)){
-                hopper.setHopper(hopperSetSpeedEntry.getDouble(0.0));
-            }
+            // if(hopperToggleEntry.getBoolean(false)){
+            //     hopper.setHopper(hopperSetSpeedEntry.getDouble(0.0));
+            // }
             /*
              * intakeCurrentSpeedEntry.setDouble(intake.getSpeed());
              * intakeHasGamepieceEntry.setBoolean(intake.hasGamepiece());
