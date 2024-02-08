@@ -92,9 +92,29 @@ public final class Constants {
   }
 
   public static class LimelightConstants {
-    public static final double limelightHeight = 0;
-    public static final double limelightPanningAngle = 0;
-    public static final double limelightAngle = 0;
+    public static final double kLimelightHeight = 0;
+    public static final double kLimelightPanningAngle = 0;
+    public static final double kLimelightAngle = 0;
+
+    //drive to target command constants
+    public static final double kDriveToTargetTurnP = 0;
+    public static final double kDriveToTargetTurnI = 0;
+    public static final double kDriveToTargetTurnD = 0;
+    public static final double kDriveToTargetIZone = 0;
+    public static final double kDriveToTargetTurnFF = 0;
+    public static final double kDriveToTargetTurnThreshold = 0;
+
+    public static final double kDriveToTargetMoveP = 0;
+    public static final double kDriveToTargetMoveI = 0;
+    public static final double kDriveToTargetMoveD = 0;
+    public static final double kDriveToTargetMoveFF = 0;
+    public static final double kDriveToTargetMoveThreshhold = 0;
+
+    //follow note command constants
+    public static final double kFollowNoteTurnP = 0;
+    public static final double kFollowNoteTurnI = 0;
+    public static final double kFollowNoteTurnD = 0;
+    public static final double kFollowNoteAngleThreshold = 0;
   }
 
   public static class ArmConstants {
