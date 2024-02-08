@@ -5,9 +5,11 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.OIConstants;
@@ -39,6 +41,7 @@ public class DriverOI {
 
     private Arm arm;
     private Superstructure superstructure;
+    private Drivetrain drivetrain;
 
     private boolean usePreScorePose;
 
@@ -106,6 +109,7 @@ public class DriverOI {
 
         // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
+        ps5Button.onTrue(new InstantCommand(drivetrain::resetGyro));
 
         // Press and hold for outtaking slow (gamepiece adjustment), with down arrow
         // this becomes full speed.
