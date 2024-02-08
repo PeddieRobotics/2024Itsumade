@@ -38,6 +38,7 @@ public class Autonomous extends SubsystemBase {
     // {superstructure.shoot(Constants.FlywheelConstants.FrontLayupFlywheelSpeed);}
     // ) );
 
+    configureAutoBuilder();
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
@@ -71,6 +72,21 @@ public class Autonomous extends SubsystemBase {
     );
   }
 
+  public void registerNameCommands(){
+    NamedCommands.registerCommand("Intake", new InstantCommand(() -> {
+      superstructure.requestState(SuperstructureState.GROUND_INTAKE);
+    }));
+    // NamedCommands.registerCommand("SideLayup", new InstantCommand( () ->
+    // {superstructure.shoot(Constants.FlywheelConstants.SideLayupFlywheelSpeed);} )
+    // );
+    // NamedCommands.registerCommand("FrontLayup", new InstantCommand( () ->
+    // {superstructure.shoot(Constants.FlywheelConstants.FrontLayupFlywheelSpeed);}
+    // ) );
+    NamedCommands.registerCommand("Stow", new InstantCommand(() -> {
+      superstructure.requestState(SuperstructureState.STOW);
+    }));
+  }
+
   public static Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
@@ -82,19 +98,7 @@ public class Autonomous extends SubsystemBase {
     return autonomous;
   }
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
+  
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a
