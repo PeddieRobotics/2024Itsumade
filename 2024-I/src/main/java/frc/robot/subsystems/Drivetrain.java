@@ -48,6 +48,7 @@ public class Drivetrain extends SubsystemBase {
         swerveModules = new SwerveModule[] { frontLeftModule, frontRightModule, backLeftModule, backRightModule };
         swerveModulePositions = new SwerveModulePosition[] { frontLeftModule.getPosition(),
                 frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() };
+        swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
 
         gyro = new Pigeon2(RobotMap.GYRO, RobotMap.CANIVORE_NAME);
         gyro.setYaw(0);

@@ -32,8 +32,8 @@ public class Autonomous extends SubsystemBase {
 
     registerNamedCommands();
     configureAutoBuilder();
-    // autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   public void configureAutoBuilder() {
