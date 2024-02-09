@@ -91,6 +91,11 @@ public class Superstructure extends SubsystemBase {
                 // hopper.index();
                 intake.setIntake(IntakeConstants.kIntakeSpeed);
 
+                if(intake.getSensor()){
+                    nextSystemState = SuperstructureState.STOW;
+                    requestedSystemState = SuperstructureState.STOW;
+                }
+
                 if(requestedSystemState == SuperstructureState.STOW || pieceIndexed()){
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.AMP_PREP){

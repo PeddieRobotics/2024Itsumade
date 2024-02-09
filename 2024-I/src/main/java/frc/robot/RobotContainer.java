@@ -12,7 +12,7 @@ import frc.robot.utils.DriverOI;
 public class RobotContainer {
   // private final Climber climber;
   // private final Arm arm;
-  // private final Autonomous autonomous;
+  private final Autonomous autonomous;
   private final Drivetrain drivetrain;
   private final Intake intake;
   // private final Flywheel flywheel;
@@ -21,15 +21,14 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    // return Autonomous.getAutonomousCommand();
-    return null;
+    return Autonomous.getAutonomousCommand();
   }
 
   public RobotContainer(){
     
     // arm = Arm.getInstance();
     // climber = Climber.getInstance();
-    // autonomous = Autonomous.getInstance();
+    autonomous = Autonomous.getInstance();
     drivetrain = Drivetrain.getInstance();
     intake = Intake.getInstance();
     // flywheel = Flywheel.getInstance();

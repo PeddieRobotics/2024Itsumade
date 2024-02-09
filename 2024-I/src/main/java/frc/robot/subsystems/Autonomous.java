@@ -2,11 +2,11 @@ package frc.robot.subsystems;
 
 import java.util.Hashtable;
 
-// import com.pathplanner.lib.auto.AutoBuilder;
-// import com.pathplanner.lib.auto.NamedCommands;
-// import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-// import com.pathplanner.lib.util.PIDConstants;
-// import com.pathplanner.lib.util.ReplanningConfig;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -30,55 +30,55 @@ public class Autonomous extends SubsystemBase {
     drivetrain = Drivetrain.getInstance();
     superstructure = Superstructure.getInstance();
 
-   // registerNamedCommands();
-    // configureAutoBuilder();
+    registerNamedCommands();
+    configureAutoBuilder();
     // autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
-  // public void configureAutoBuilder() {
-  //   AutoBuilder.configureHolonomic(
-  //       drivetrain::getPose, // Robot pose supplier
-  //       drivetrain::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-  //       drivetrain::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-  //       drivetrain::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-  //       new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-  //           new PIDConstants(AutoConstants.kTranslationP, AutoConstants.kTranslationI, AutoConstants.kTranslationD), // Translation PID constants
-  //           new PIDConstants(AutoConstants.kThetaP, AutoConstants.kThetaI, AutoConstants.kThetaD), // Rotation PID constants
-  //           DriveConstants.kMaxFloorSpeed, // Max module speed, in m/s
-  //           DriveConstants.kBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
-  //           new ReplanningConfig() // Default path replanning config. See the API for the options here
-  //       ),
-  //       () -> {
-  //         // Boolean supplier that controls when the path will be mirrored for the red
-  //         // alliance
-  //         // This will flip the path being followed to the red side of the field.
-  //         // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+  public void configureAutoBuilder() {
+    AutoBuilder.configureHolonomic(
+        drivetrain::getPose, // Robot pose supplier
+        drivetrain::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+        drivetrain::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+        drivetrain::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+            new PIDConstants(AutoConstants.kTranslationP, AutoConstants.kTranslationI, AutoConstants.kTranslationD), // Translation PID constants
+            new PIDConstants(AutoConstants.kThetaP, AutoConstants.kThetaI, AutoConstants.kThetaD), // Rotation PID constants
+            DriveConstants.kMaxFloorSpeed, // Max module speed, in m/s
+            DriveConstants.kBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
+            new ReplanningConfig() // Default path replanning config. See the API for the options here
+        ),
+        () -> {
+          // Boolean supplier that controls when the path will be mirrored for the red
+          // alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-  //         var alliance = DriverStation.getAlliance();
-  //         if (alliance.isPresent()) {
-  //           return alliance.get() == DriverStation.Alliance.Red;
-  //         }
-  //         return false;
-  //       },
-  //       drivetrain // Reference to this subsystem to set requirements
-  //   );
-  // }
+          var alliance = DriverStation.getAlliance();
+          if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+          }
+          return false;
+        },
+        drivetrain // Reference to this subsystem to set requirements
+    );
+  }
 
-  // public void registerNamedCommands(){
-  //   NamedCommands.registerCommand("Intake", new InstantCommand(() -> {
-  //     superstructure.requestState(SuperstructureState.GROUND_INTAKE);
-  //   }));
-  //   // NamedCommands.registerCommand("SideLayup", new InstantCommand( () ->
-  //   // {superstructure.shoot(Constants.FlywheelConstants.SideLayupFlywheelSpeed);} )
-  //   // );
-  //   // NamedCommands.registerCommand("FrontLayup", new InstantCommand( () ->
-  //   // {superstructure.shoot(Constants.FlywheelConstants.FrontLayupFlywheelSpeed);}
-  //   // ) );
-  //   NamedCommands.registerCommand("Stow", new InstantCommand(() -> {
-  //     superstructure.requestState(SuperstructureState.STOW);
-  //   }));
-  // }
+  public void registerNamedCommands(){
+    NamedCommands.registerCommand("Intake", new InstantCommand(() -> {
+      superstructure.requestState(SuperstructureState.GROUND_INTAKE);
+    }));
+    // NamedCommands.registerCommand("SideLayup", new InstantCommand( () ->
+    // {superstructure.shoot(Constants.FlywheelConstants.SideLayupFlywheelSpeed);} )
+    // );
+    // NamedCommands.registerCommand("FrontLayup", new InstantCommand( () ->
+    // {superstructure.shoot(Constants.FlywheelConstants.FrontLayupFlywheelSpeed);}
+    // ) );
+    NamedCommands.registerCommand("Stow", new InstantCommand(() -> {
+      superstructure.requestState(SuperstructureState.STOW);
+    }));
+  }
 
   public static Command getAutonomousCommand() {
     return autoChooser.getSelected();
@@ -115,7 +115,7 @@ public class Autonomous extends SubsystemBase {
   }
 
   //PLACEHOLDER METHOD FOR THE OPERATOR TAB, ONCE THE SKELETON CODE PEOPLE UPDATE MERGE FROM DEV
-public Hashtable<String, Command> getAutoRoutines() {
+  public Hashtable<String, Command> getAutoRoutines() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getAutoRoutines'");
 }
