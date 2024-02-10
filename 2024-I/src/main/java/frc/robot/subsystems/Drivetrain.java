@@ -152,10 +152,6 @@ public class Drivetrain extends SubsystemBase {
         return gyro.getRotation2d();
     }
 
-    public Pose2d getPose(){
-        return odometry.getEstimatedPosition();
-    }
-
     public void resetPose(Pose2d pose){
         resetGyro();
         odometry.resetPosition(getRotation2d(), swerveModulePositions, pose);
