@@ -1,6 +1,7 @@
 package frc.robot.utils;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
@@ -23,10 +24,10 @@ public final class Constants {
     public static final double kBaseRadius = Math.sqrt(Math.pow(kTrackWidth, 2) + Math.pow(kWheelBase, 2)) / 2;
 
     public static final Translation2d[] swerveModuleLocations = {
-        new Translation2d(-kWheelBase / 2.0, kTrackWidth / 2.0),
         new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
-        new Translation2d(-kWheelBase / 2.0, -kTrackWidth / 2.0),
-        new Translation2d(kWheelBase / 2.0, -kTrackWidth / 2.0)
+        new Translation2d(kWheelBase / 2.0, -kTrackWidth / 2.0),
+        new Translation2d(-kWheelBase / 2.0, kTrackWidth / 2.0),
+        new Translation2d(-kWheelBase / 2.0, -kTrackWidth / 2.0)
     };
 
     public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
@@ -36,13 +37,18 @@ public final class Constants {
         swerveModuleLocations[3]);
 
     // TODO: Change this value
-    public static final double kMaxFloorSpeed = 3.0; // meters per second
+    public static final double kMaxFloorSpeed = 2.0; // meters per second
     public static final double kMaxAngularSpeed = Math.PI; // radians per second
 
     public static final int kDriveCurrentLimit = 30;
     public static final int kTurningCurrentLimit = 30;
 
     public static final double kWheelRadius = 2.0;
+
+    public static final double kFrontLeftModuleAngularOffset = 2.88;
+    public static final double kFrontRightModuleAngularOffset = -2.01;
+    public static final double kBackLeftModuleAngularOffset = 2.09;
+    public static final double kBackRightModulelAngularOffset = -2.26;
   }
 
   public static class ModuleConstants {
@@ -76,13 +82,39 @@ public final class Constants {
   }
 
   public static class AutoConstants {
+    public static final double kTranslationP = 5.0;
+    public static final double kTranslationI = 0.0;
+    public static final double kTranslationD = 0.0;
 
+    public static final double kThetaP = 5.0;
+    public static final double kThetaI = 0.0;
+    public static final double kThetaD = 0.0;
   }
 
   public static class LimelightConstants {
-    public static final double limelightHeight = 0;
-    public static final double limelightPanningAngle = 0;
-    public static final double limelightAngle = 0;
+    public static final double kLimelightHeight = 0;
+    public static final double kLimelightPanningAngle = 0;
+    public static final double kLimelightAngle = 0;
+
+    //drive to target command constants
+    public static final double kDriveToTargetTurnP = 0;
+    public static final double kDriveToTargetTurnI = 0;
+    public static final double kDriveToTargetTurnD = 0;
+    public static final double kDriveToTargetIZone = 0;
+    public static final double kDriveToTargetTurnFF = 0;
+    public static final double kDriveToTargetTurnThreshold = 0;
+
+    public static final double kDriveToTargetMoveP = 0;
+    public static final double kDriveToTargetMoveI = 0;
+    public static final double kDriveToTargetMoveD = 0;
+    public static final double kDriveToTargetMoveFF = 0;
+    public static final double kDriveToTargetMoveThreshhold = 0;
+
+    //follow note command constants
+    public static final double kFollowNoteTurnP = 0;
+    public static final double kFollowNoteTurnI = 0;
+    public static final double kFollowNoteTurnD = 0;
+    public static final double kFollowNoteAngleThreshold = 0;
   }
 
   public static class ArmConstants {
@@ -96,17 +128,19 @@ public final class Constants {
     public static final double kArmForwardSoftLimit = 0;
     public static final double kArmReverseSoftLimit = 0;
     public static final double kArmGearReduction = 0;
-    public static final double kArmPositionConversionFactor = 1.0; //dependednt on feedbakc device
+    public static final double kArmPositionConversionFactor = 1.0; // dependednt on feedbakc device
+    public static final double kArmIntakePosition = 0.0; // in deg
+    public static final double kArmPositionEpsilon = 1;
   }
 
   public static class FlywheelConstants {
     public static final int kFlywheelLeftCurrentLimit = 0;
     public static final int kFlywheelRightCurrentLimit = 0;
 
-    public static final double kFlywheelGearReduction = 30.0/18.0;
+    public static final double kFlywheelGearReduction = 30.0 / 18.0;
 
     public static final double kFlywheelSensorThreshold = 0;
-    
+
     public static final double kFlywheelS = 0;
     public static final double kFlywheelV = 0;
     public static final double kFlywheelA = 0;
@@ -116,12 +150,25 @@ public final class Constants {
     public static final double kFlywheelFF = 0;
   }
 
+  public static class ScoringConstants {
+    public static final double kLayupVelocity = 0;
+    public static final double[][] treeMapValues = new double[][] { { 0, 0 }, { 1, 1 } }; // no spin, based off of
+                                                                                          // distance
+  }
+
   public static class IntakeConstants {
-    public static final int kIntakeCurrentLimit = 0;
+    public static final int kIntakeCurrentLimit = 20;
     public static final int kHopperCurrentLimit = 0;
     public static final double kIntakeSensorThreshold = 0;
     public static final double kHopperSensorThreshold = 0;
-    
-    public static final double kIntakeSpeed = 0.8;
+
+    public static final double kIntakeSpeed = 0.75;
   }
+
+  public static class HopperConstants {
+    public static final double kFloorIndexSpeed = 0;
+    public static final double kHPIndexSpeed = 0;
+    public static final double kFeedSpeed = 0;
+  }
+
 }

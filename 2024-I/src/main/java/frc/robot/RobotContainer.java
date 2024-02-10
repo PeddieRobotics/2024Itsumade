@@ -5,14 +5,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Shuffleboard.ShuffleboardMain;
 import frc.robot.commands.DriveCommands.SwerveDriveCommand;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Autonomous;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.DriverOI;
-import frc.robot.utils.OperatorOI;
 
 public class RobotContainer {
   // private final Climber climber;
