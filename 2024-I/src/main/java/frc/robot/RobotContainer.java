@@ -28,8 +28,8 @@ public class RobotContainer {
     
     // arm = Arm.getInstance();
     // climber = Climber.getInstance();
-    autonomous = Autonomous.getInstance();
     drivetrain = Drivetrain.getInstance();
+    autonomous = Autonomous.getInstance();
     intake = Intake.getInstance();
     // flywheel = Flywheel.getInstance();
     // operatorOI = OperatorOI.getInstance();

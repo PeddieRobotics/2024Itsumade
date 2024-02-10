@@ -46,7 +46,7 @@ public final class Constants {
     public static final double kWheelRadius = 2.0;
 
     public static final double kFrontLeftModuleAngularOffset = 2.88;
-    public static final double kFrontRightModuleAngularOffset = -2.01;
+    public static final double kFrontRightModuleAngularOffset = -2.01 + 0.197;
     public static final double kBackLeftModuleAngularOffset = 2.09;
     public static final double kBackRightModulelAngularOffset = -2.26;
   }

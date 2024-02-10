@@ -76,6 +76,9 @@ public class Drivetrain extends SubsystemBase {
         if (SmartDashboard.getBoolean("Reset Gyro", false)) {
             gyro.setYaw(0);
         }
+        SmartDashboard.putNumber("Odometry X", odometry.getEstimatedPosition().getX());
+        SmartDashboard.putNumber("Odometry Y", odometry.getEstimatedPosition().getY());
+        SmartDashboard.putNumber("Odometry Theta", odometry.getEstimatedPosition().getRotation().getDegrees());
     }
 
     @Override
@@ -128,7 +131,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
         swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
-        optimizeModuleStates();
+        // optimizeModuleStates();
         setSwerveModuleStates(swerveModuleStates);
     }
 
@@ -151,7 +154,9 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public Rotation2d getRotation2d() {
-        return gyro.getRotation2d();
+        Rotation2d rotation = gyro.getRotation2d();
+        // return rotation.times(-1.0);
+        return rotation;
     }
 
     public Pose2d getPose() {
@@ -168,7 +173,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public ChassisSpeeds getRobotRelativeSpeeds() {
-        return DriveConstants.kinematics.toChassisSpeeds(swerveModuleStates);
+        return DriveConstants.kinematics.toChassisSpeeds(frontLeftModule.getState(), frontRightModule.getState(), backLeftModule.getState(), backRightModule.getState());
     }
 
     public SwerveModuleState[] getSwerveModuleState() {
@@ -182,5 +187,4 @@ public class Drivetrain extends SubsystemBase {
     public void resetGyro() {
         gyro.reset();
     }
-
 }
