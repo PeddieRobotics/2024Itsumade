@@ -69,7 +69,7 @@ public class Kraken {
         return talon.get();
     }
 
-    public double getRPS() {
+    public double getMPS() {
         return talon.getRotorVelocity().getValueAsDouble() * velocityConversionFactor;
     }
 

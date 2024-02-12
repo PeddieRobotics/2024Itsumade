@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2,
-      "y": 7.0
+      "x": 1.4,
+      "y": 5.52
     },
     "rotation": 180.0
   },
@@ -20,13 +20,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Straight Path"
+            "pathName": "4 Piece Path - 1"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Stow"
+            "pathName": "4 Piece Path - 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Path - 3"
           }
         }
       ]

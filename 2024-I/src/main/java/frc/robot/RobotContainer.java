@@ -41,4 +41,8 @@ public class RobotContainer {
   public void runControlLoop(){
     driverOI.controlLoop();
   }
+
+  public void resetGyro(){
+    drivetrain.resetGyro();
+  }
 }

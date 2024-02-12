@@ -31,7 +31,6 @@ public class SwerveModule extends SubsystemBase {
   private final Kraken driveMotor;
   private final Kraken steerMotor;
 
-  private SwerveModuleState state;
   private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d(0));
 
   private double moduleAngularOffset;
@@ -51,11 +50,8 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.setCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
     steerMotor.setCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
 
-    // driveMotor.setBrake();
-    // steerMotor.setBrake();
-
-    driveMotor.setCoast();
-    steerMotor.setCoast();
+    driveMotor.setBrake();
+    steerMotor.setBrake();
 
     driveMotor.setClosedLoopRampRate(0.1);
     steerMotor.setClosedLoopRampRate(0.1);
@@ -95,7 +91,7 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public SwerveModuleState getState() {
-    return state;
+    return new SwerveModuleState(driveMotor.getMPS(), new Rotation2d(getCANCoderReading()));
   }
 
   public SwerveModulePosition getPosition() {
@@ -204,7 +200,7 @@ public class SwerveModule extends SubsystemBase {
     // }
 
     SmartDashboard.putNumber(CANCoderId + " canCoder position (rad)", getCANCoderReading());
-    SmartDashboard.putNumber(drivingCANId + " driving speed (mps)", driveMotor.getRPS());
+    SmartDashboard.putNumber(drivingCANId + " driving speed (mps)", driveMotor.getMPS());
     // SmartDashboard.putNumber(CANCoderId + " steer motor raw position", steerMotor.getPosition());
 
 
