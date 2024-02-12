@@ -129,8 +129,11 @@ public final class Constants {
     public static final double kArmReverseSoftLimit = 0;
     public static final double kArmGearReduction = 0;
     public static final double kArmPositionConversionFactor = 1.0; // dependednt on feedbakc device
-    public static final double kArmIntakePosition = 0.0; // in deg
+    //hypothetical values for the arm when going to these various positions
+    public static final double kArmIntakeHPPosition = 0.0; // in deg
     public static final double kArmPositionEpsilon = 1;
+    public static final double kArmAmpPosition = 45.0;
+    public static final double kArmStowPosition = -90.0;
   }
 
   public static class FlywheelConstants {
@@ -148,12 +151,15 @@ public final class Constants {
     public static final double kFlywheelI = 0;
     public static final double kFlywheelD = 0;
     public static final double kFlywheelFF = 0;
+
+    public static final double kFlywheelLLShootingRPM = 4000;
+    public static final double kFlywheelLayupRPM = 2500;
   }
 
   public static class ScoringConstants {
     public static final double kLayupVelocity = 0;
-    public static final double[][] treeMapValues = new double[][] { { 0, 0 }, { 1, 1 } }; // no spin, based off of
-                                                                                          // distance
+    // Distance, Angle; SAMPLE VALUES, NEEDS TO BE TUNED -TONY
+    public static final double[][] treeMapValues = new double[][] { { 0.5, -55 }, { 1.5, -45 }, {2.5, -37.5}, {3.5, -25}, {4.5, -20}, {5.5, -15} }; 
   }
 
   public static class IntakeConstants {

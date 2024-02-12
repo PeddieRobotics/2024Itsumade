@@ -78,8 +78,8 @@ public class Logger {
         intakeCurrentEntry.append(intake.getMotorCurrent());
 
         // Hopper
-        hopperBottomSensorEntry.append(hopper.bottomSensor());
-        hopperTopSensorEntry.append(hopper.topSensor());
+        hopperBottomSensorEntry.append(hopper.getBottomSensor());
+        hopperTopSensorEntry.append(hopper.getTopSensor());
         hopperCurrentEntry.append(hopper.getMotorCurrent());
     }
 

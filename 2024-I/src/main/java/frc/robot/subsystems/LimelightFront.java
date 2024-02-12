@@ -35,7 +35,7 @@ public class LimelightFront extends Limelight {
         setPipeline(0);
     }
 
-    public static LimelightFront Instance() {
+    public static LimelightFront getInstance() {
         if (limelightFront == null) {
             limelightFront = new LimelightFront();
         }
@@ -157,14 +157,6 @@ public class LimelightFront extends Limelight {
 
     public boolean hasTarget() {
         return getTv();
-    }
-
-    public boolean targetIsCone() {
-        return hasTarget() && getNeuralClassID() == 2;
-    }
-
-    public boolean targetIsCube() {
-        return hasTarget() && getNeuralClassID() == 1;
     }
 
 

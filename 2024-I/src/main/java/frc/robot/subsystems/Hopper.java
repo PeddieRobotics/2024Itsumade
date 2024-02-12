@@ -59,14 +59,18 @@ public class Hopper extends SubsystemBase {
     hopperMotor.setMotor(0);
   }
 
-  //returns is the beam is broken
-  public boolean topSensor() {
+  //returns if the beam is broken
+  public boolean getTopSensor() {
     return !topHopperSensor.get();
   }
 
-  //returns is the beam is broken
-  public boolean bottomSensor() {
+  //returns if the beam is broken
+  public boolean getBottomSensor() {
     return !bottomHopperSensor.get();
+  }
+
+  public boolean hasGamepiece(){
+    return (getTopSensor() || getBottomSensor());
   }
 
   public double getMotorCurrent(){

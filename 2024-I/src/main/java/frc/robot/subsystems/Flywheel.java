@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+
 import au.grapplerobotics.LaserCan;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,8 +16,6 @@ public class Flywheel {
 
     private Kraken flywheelLeftMotor, flywheelRightMotor;
     private LaserCan flywheelSensor;
-
-    private InterpolatingDoubleTreeMap map = new InterpolatingDoubleTreeMap();
 
     public Flywheel() {
         flywheelLeftMotor = new Kraken(RobotMap.FLYWHEEL_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
@@ -46,10 +45,6 @@ public class Flywheel {
                 FlywheelConstants.kFlywheelI,
                 FlywheelConstants.kFlywheelD,
                 FlywheelConstants.kFlywheelFF);
-
-        for(double[] pair:Constants.ScoringConstants.treeMapValues){
-            map.put(pair[0],pair[1]);
-        }
     }
 
     public static Flywheel getInstance() {
@@ -99,11 +94,6 @@ public class Flywheel {
 
     public void runRightFlywheelVelocitySetpoint(double speed){
         flywheelRightMotor.setVelocityWithFeedForward(speed);
-    }
-
-    public void llshoot(){
-        double llDist = 0; // temp value, change later to actually get value
-        runFlywheelVelocitySetpoint(map.get(llDist));
     }
 
     public void layup(){

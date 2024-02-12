@@ -1,10 +1,13 @@
 package frc.robot.subsystems;
 
+import frc.robot.subsystems.LimelightFront;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Kraken;
@@ -14,9 +17,11 @@ import frc.robot.utils.Constants.ArmConstants;
 public class Arm {
 
     private static Arm instance;
+    private static LimelightFront limelightFront;
 
     private Kraken armPrimaryMotor, armSecondaryMotor;
     private CANcoder armCANcoder;
+    private InterpolatingDoubleTreeMap LLShotMap = new InterpolatingDoubleTreeMap();
 
     public enum ArmState {
         Intaking, Moving, Stowed, Shooting
@@ -25,6 +30,8 @@ public class Arm {
     private ArmState state, goalState;
 
     public Arm() {
+        limelightFront = LimelightFront.getInstance();
+
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
 
         armPrimaryMotor = new Kraken(RobotMap.ARM_PRIMARY_MOTOR, RobotMap.CANIVORE_NAME);
@@ -33,7 +40,7 @@ public class Arm {
         armPrimaryMotor.setCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
         armSecondaryMotor.setCurrentLimit(ArmConstants.kArmSecondaryCurrentLimit);
 
-        // this can be overwritten by any other control type
+        // this can be overwritten by any other control type, follower
         armSecondaryMotor.setFollower(RobotMap.ARM_PRIMARY_MOTOR, false);
 
         armPrimaryMotor.setCoast();
@@ -49,6 +56,10 @@ public class Arm {
 
         armPrimaryMotor.setPIDValues(ArmConstants.kArmP, ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
         armSecondaryMotor.setPIDValues(ArmConstants.kArmP, ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
+
+        for(double[] pair:Constants.ScoringConstants.treeMapValues){
+            LLShotMap.put(pair[0],pair[1]);
+        }
 
         state = ArmState.Stowed;
         goalState = ArmState.Stowed;
@@ -112,7 +123,19 @@ public class Arm {
     }
 
     public boolean canIntake(){
-        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - Constants.ArmConstants.kArmIntakePosition) < Constants.ArmConstants.kArmPositionEpsilon;
+        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - Constants.ArmConstants.kArmIntakeHPPosition) < Constants.ArmConstants.kArmPositionEpsilon;
+    }
+
+     public void setArmAngle(double angle){
+        armPrimaryMotor.setPosition(angle);
+    }
+
+    public double getAngleFromDist(double dist){
+        return LLShotMap.get(dist);
+    }
+
+    public void LLShoot(){
+        setArmAngle(getAngleFromDist(limelightFront.getDistance())); 
     }
 
     public void setIntakePosition(){
@@ -120,15 +143,19 @@ public class Arm {
     }
 
     public void setHPIntakePosition(){
-
+        setArmAngle(ArmConstants.kArmIntakeHPPosition);
     }
 
     public void setAmpPosition(){
-
+        setArmAngle(ArmConstants.kArmAmpPosition);
     }
 
     public void setStowPosition(){
-        
+        setArmAngle(ArmConstants.kArmStowPosition);
+    }
+
+    public void getArmAngle(){
+        armPrimaryMotor.getPosition();
     }
 
     public void periodic() {
@@ -139,7 +166,7 @@ public class Arm {
 
     }
 
-    public void llalign() {
+    public void LLAlign() {
 
     }
 

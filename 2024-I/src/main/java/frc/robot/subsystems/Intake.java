@@ -51,6 +51,10 @@ public class Intake extends SubsystemBase {
     intakeMotor.set(TalonSRXControlMode.PercentOutput, 0);
   }
 
+  public boolean hasGamepiece(){
+    return getSensor();
+  }
+
   // returns if beam is broken
   public boolean getSensor() {
     return !intakeSensor.get();

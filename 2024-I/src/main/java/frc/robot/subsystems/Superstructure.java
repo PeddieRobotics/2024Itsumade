@@ -5,11 +5,10 @@ import frc.robot.utils.Constants.IntakeConstants;
 
 public class Superstructure extends SubsystemBase {
     private static Superstructure superstructure;
-    // private final Arm arm;
+    private final Arm arm;
     private final Intake intake;
-    // private final Flywheel flywheel;
-    // private final Hopper hopper;
-    // private final Limelight limelight;
+    private final Flywheel flywheel;
+    private final Hopper hopper;
     private double stateDuration;
     private double internalStateTimer;
     private double shootingSpeed;
@@ -32,10 +31,10 @@ public class Superstructure extends SubsystemBase {
     SuperstructureState requestedSystemState;
 
     public Superstructure(){
-        // arm = Arm.getInstance();
-        // flywheel = Flywheel.getInstance();
+        arm = Arm.getInstance();
+        flywheel = Flywheel.getInstance();
         intake = Intake.getInstance();
-        // hopper = Hopper.getInstance();
+        hopper = Hopper.getInstance();
         
 
         systemState = SuperstructureState.STOW;
@@ -75,9 +74,15 @@ public class Superstructure extends SubsystemBase {
 
             //idle state of robot, arm is in stow position, 
             case STOW:
+                arm.setStowPosition();
+                flywheel.stopFlywheel();
                 intake.stopIntake();
-                // hopper.index();
-                // flywheel.stopFlywheel();
+                
+                if(intake.hasGamepiece()){
+                    //let the note transition from intake to hopper
+                } else {
+                    hopper.stopHopper();
+                }
 
                 if(requestedSystemState != SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
@@ -248,12 +253,12 @@ public class Superstructure extends SubsystemBase {
         return "";
     }
 
-    private boolean hasPiece(){
+    private boolean robotHasPiece(){
         // return (intake.getSensor()||hopper.bottomSensor()||hopper.topSensor());
         return false;
     }
 
-    private boolean pieceIndexed(){
+    private boolean pieceIndexed(){ //cartridge = hopper, I better catch none of you calling it something that goes on a printer
         // return (!intake.getSensor()&&hopper.bottomSensor()&&hopper.topSensor());
         return false;
     }
