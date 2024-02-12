@@ -45,10 +45,10 @@ public final class Constants {
 
     public static final double kWheelRadius = 2.0;
 
-    public static final double kFrontLeftModuleAngularOffset = 2.88;
-    public static final double kFrontRightModuleAngularOffset = -2.01 + 0.197;
-    public static final double kBackLeftModuleAngularOffset = 2.09;
-    public static final double kBackRightModulelAngularOffset = -2.26;
+    public static final double kFrontLeftModuleAngularOffset = 2.88 + 0.59;
+    public static final double kFrontRightModuleAngularOffset = -2.01 + 0.197 - 2.68;
+    public static final double kBackLeftModuleAngularOffset = 2.09 + 2.08;
+    public static final double kBackRightModulelAngularOffset = -2.26 - 1.75;
   }
 
   public static class ModuleConstants {

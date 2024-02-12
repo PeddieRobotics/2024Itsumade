@@ -88,8 +88,14 @@ public class Kraken {
 
 
     public void setInverted(boolean inverted){
-        if(inverted) config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-        else config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        // if(inverted) config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        // else config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        if(inverted){
+            config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        }else{
+            config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        }
+        //talon.setInverted(inverted);
         talon.getConfigurator().apply(config);
     }
 

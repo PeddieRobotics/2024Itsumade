@@ -45,14 +45,17 @@ public class SwerveModule extends SubsystemBase {
     driveMotor = new Kraken(drivingCANId, canbusName);
     steerMotor = new Kraken(steeringCANId, canbusName);
 
-    driveMotor.setCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
-    steerMotor.setCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
-
     driveMotor.setInverted(true);
     steerMotor.setInverted(true);
 
+    driveMotor.setCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
+    steerMotor.setCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
+
     // driveMotor.setBrake();
     // steerMotor.setBrake();
+
+    driveMotor.setCoast();
+    steerMotor.setCoast();
 
     driveMotor.setClosedLoopRampRate(0.1);
     steerMotor.setClosedLoopRampRate(0.1);
