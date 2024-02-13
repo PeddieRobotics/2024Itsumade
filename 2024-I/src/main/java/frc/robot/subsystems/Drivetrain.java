@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,10 +12,15 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.RobotMap;
+import frc.robot.utils.RollingAverage;
 import frc.robot.utils.Constants.DriveConstants;
+import frc.robot.utils.LimelightHelper;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -30,6 +37,48 @@ public class Drivetrain extends SubsystemBase {
     private double heading;
     private double currentDrivetrainSpeed = 0;
     private ChassisSpeeds currentRobotRelativeSpeed;
+
+    private final LimelightFront limelightFront;
+    private final LimelightBack limelightBack;
+
+    private RollingAverage gyroTiltAverage;
+    private Field2d field;
+
+    private static double inch2meter(double inch) {
+        return inch * 0.0254;
+    }
+
+    private double S2 = 18.0;
+    private double I2 = 0.1;
+    private double K2 = 4.0;
+    private double H2 = 3.3;
+    private double sigmoid2(double dist) {
+        return (S2-I2)/(1.0+Math.exp(-K2*(dist-H2)))+I2;
+    }
+
+    private double S3 = 5.0;
+    private double I3 = 0.1;
+    private double K3 = 3.0;
+    private double H3 = 3.3;
+    private double sigmoid3(double dist) {
+        return (S3-I3)/(1.0+Math.exp(-K3*(dist-H3)))+I3;
+    }
+
+    private boolean useMegaTag;
+    private boolean isForcingCalibration;
+
+    public boolean getUseMegaTag() {
+        return useMegaTag;
+    }
+    public void setUseMegaTag(boolean useMegaTag) {
+        this.useMegaTag = useMegaTag;
+    }
+    public boolean getIsForcingCalibration() {
+        return isForcingCalibration;
+    }
+    public void setIsForcingCalibration(boolean isForcingCalibration) {
+        this.isForcingCalibration = isForcingCalibration;
+    }
 
     public Drivetrain() {
         frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
@@ -49,8 +98,23 @@ public class Drivetrain extends SubsystemBase {
         gyro.setYaw(0);
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, gyro.getRotation2d(), swerveModulePositions,
                 new Pose2d());
+
+        limelightFront = LimelightFront.getInstance();
+        limelightBack = LimelightBack.getInstance();
         
         SmartDashboard.putBoolean("Reset Gyro", false);
+
+        SmartDashboard.putNumber("Logistic S2", S2); 
+        SmartDashboard.putNumber("Logistic I2", I2); 
+        SmartDashboard.putNumber("Logistic K2", K2); 
+        SmartDashboard.putNumber("Logistic H2", H2);
+        
+        SmartDashboard.putNumber("Logistic S3", S3); 
+        SmartDashboard.putNumber("Logistic I3", I3); 
+        SmartDashboard.putNumber("Logistic K3", K3); 
+        SmartDashboard.putNumber("Logistic H3", H3); 
+        
+        SmartDashboard.putBoolean("Megatag updates", true);
     }
 
     public static Drivetrain getInstance() {
@@ -62,9 +126,43 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
+        S2 = SmartDashboard.getNumber("Logistic S2", S2); 
+        I2 = SmartDashboard.getNumber("Logistic I2", I2); 
+        K2 = SmartDashboard.getNumber("Logistic K2", K2); 
+        H2 = SmartDashboard.getNumber("Logistic H2", H2); 
+
+        S3 = SmartDashboard.getNumber("Logistic S3", S3); 
+        I3 = SmartDashboard.getNumber("Logistic I3", I3); 
+        K3 = SmartDashboard.getNumber("Logistic K3", K3); 
+        H3 = SmartDashboard.getNumber("Logistic H3", H3); 
+
+        useMegaTag = SmartDashboard.getBoolean("Megatag updates", useMegaTag);
+
+        field.setRobotPose(getPose()); 
+        SmartDashboard.putData(field); 
+
+        // Updating the odometry
+        for (int i = 0; i < 4; i++) {
+            swerveModulePositions[i] = swerveModules[i].getPosition();
+            swerveModules[i].putSmartDashboard();
+        }
+
+        double distance = inch2meter(limelightFront.getDistance());
+        int numAprilTag = LimelightHelper.getNumberOfAprilTagsSeen(limelightFront.getLimelightName());
+
+        if (numAprilTag >= 2) {
+            double stdDev = isForcingCalibration ? 0.0001 : (numAprilTag >= 3 ? sigmoid3(distance) : sigmoid2(distance));
+            
+            SmartDashboard.putNumber("distance", distance);
+            SmartDashboard.putNumber("standard deviation", stdDev);
+
+            Matrix<N3, N1> visionStdDevs = VecBuilder.fill(stdDev, stdDev, isForcingCalibration ? 0.0001 : 30);
+            odometry.setVisionMeasurementStdDevs(visionStdDevs);
+        }
+        
         updateModulePositions();
         updateOdometry();
+
         SmartDashboard.putNumber("Gyro Angle", getHeading());
         for(SwerveModule m:swerveModules) m.updateSmartdashBoard();
         if(SmartDashboard.getBoolean("Reset Gyro", false)){
@@ -85,6 +183,10 @@ public class Drivetrain extends SubsystemBase {
 
     public void updateOdometry() {
         odometry.update(getRotation2d(), swerveModulePositions);
+        if (useMegaTag){
+            limelightFront.checkForAprilTagUpdates(odometry);
+            limelightBack.checkForAprilTagUpdates(odometry);
+        }
     }
 
     public void setSwerveModuleStates(SwerveModuleState[] swerveModuleStates) {
