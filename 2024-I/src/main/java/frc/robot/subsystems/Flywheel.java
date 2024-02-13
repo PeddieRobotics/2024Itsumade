@@ -21,7 +21,7 @@ public class Flywheel {
     public Flywheel() {
         flywheelLeftMotor = new Kraken(RobotMap.FLYWHEEL_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
         flywheelRightMotor = new Kraken(RobotMap.FLYWHEEL_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
-        flywheelSensor = new LaserCan(RobotMap.FLYWHEEL_SENSOR_ID);
+        //flywheelSensor = new LaserCan(RobotMap.FLYWHEEL_SENSOR_ID);
 
         flywheelLeftMotor.setCurrentLimit(FlywheelConstants.kFlywheelLeftCurrentLimit);
         flywheelRightMotor.setCurrentLimit(FlywheelConstants.kFlywheelRightCurrentLimit);

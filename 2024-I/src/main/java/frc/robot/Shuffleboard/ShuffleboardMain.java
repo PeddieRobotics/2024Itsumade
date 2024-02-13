@@ -3,6 +3,7 @@ package frc.robot.Shuffleboard;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Shuffleboard.tabs.*;
 
 public class ShuffleboardMain {
@@ -14,7 +15,7 @@ public class ShuffleboardMain {
     private ArmTab armTab;
     private DrivetrainTab drivetrainTab;
     private FlywheelTab flywheelTab;
-    private IntakeTab intakeTab;
+    private IntakeHopperTab intakeHopperTab;
     private LimelightTab limelightTab;
     private OperatorTab operatorTab;
 
@@ -30,12 +31,19 @@ public class ShuffleboardMain {
 
     public void setUpTabs(){
         angleOverridesTab = new AngleOverridesTab();
+        tabs.add(angleOverridesTab);
         armTab = new ArmTab();
+        tabs.add(armTab);
         drivetrainTab = new DrivetrainTab();
+        tabs.add(drivetrainTab);
         flywheelTab = new FlywheelTab();
-        intakeTab = new IntakeTab();
+        tabs.add(flywheelTab);
+        intakeHopperTab = new IntakeHopperTab();
+        tabs.add(intakeHopperTab);
         limelightTab = new LimelightTab();
+        tabs.add(limelightTab);
         operatorTab = new OperatorTab();
+        tabs.add(operatorTab);
 
         for (ShuffleboardTabBase tab : tabs){
             tab.createEntries();

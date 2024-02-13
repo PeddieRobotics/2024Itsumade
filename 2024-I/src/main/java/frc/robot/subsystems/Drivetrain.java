@@ -188,4 +188,17 @@ public class Drivetrain extends SubsystemBase {
     public void resetGyro() {
         gyro.reset();
     }
+
+    public double[] getModuleRotations(){
+        double[] positions = {frontLeftModule.getRotations(),
+            backLeftModule.getRotations(),
+            frontRightModule.getRotations(),
+            backRightModule.getRotations()};
+        return (positions);
+    }
+
+    public SwerveDrivePoseEstimator getOdometry() {
+        return odometry;
+    }
+
 }

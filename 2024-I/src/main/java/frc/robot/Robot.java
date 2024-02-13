@@ -25,6 +25,8 @@ public class Robot extends TimedRobot {
 
   // private ShuffleboardMain shuffleboardMain;
   private PowerDistribution pdh;
+  private ShuffleboardMain shuffleboardMain;
+  //private PowerDistribution pdh;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -37,7 +39,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     // shuffleboardMain = ShuffleboardMain.getInstance();
 
-    pdh = new PowerDistribution(1, ModuleType.kRev);
+    //pdh = new PowerDistribution(1, ModuleType.kRev);
 
     // shuffleboardMain.setUpTabs();
     // shuffleboardMain.setUpAutoSelector();
