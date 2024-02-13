@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2,
-      "y": 7.0
+      "x": 0.81,
+      "y": 6.73
     },
-    "rotation": 180.0
+    "rotation": -120.0
   },
   "command": {
     "type": "sequential",
@@ -20,18 +20,24 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Straight Path"
+            "pathName": "A AmpSpeaker-AmpNote"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Stow"
+            "pathName": "D AmpNote-CenterNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "E CenterNote-SourceNote"
           }
         }
       ]
     }
   },
-  "folder": "Initial Testing",
+  "folder": null,
   "choreoAuto": false
 }

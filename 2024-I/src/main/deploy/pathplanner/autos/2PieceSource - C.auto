@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
-      "y": 7.0
+      "x": 0.79,
+      "y": 4.33
     },
-    "rotation": 180.0
+    "rotation": 120.0
   },
   "command": {
     "type": "sequential",
@@ -14,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Curve Path"
+            "pathName": "C SourceSpeaker-SourceNote"
           }
         }
       ]
     }
   },
-  "folder": "Initial Testing",
+  "folder": null,
   "choreoAuto": false
 }

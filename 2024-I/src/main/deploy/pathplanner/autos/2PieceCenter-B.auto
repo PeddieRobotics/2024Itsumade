@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
-      "y": 7.0
+      "x": 1.33,
+      "y": 5.5
     },
     "rotation": 180.0
   },
@@ -14,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Curve Path"
+            "pathName": "B CenterSpeaker-CenterNote"
           }
         }
       ]
     }
   },
-  "folder": "Initial Testing",
+  "folder": null,
   "choreoAuto": false
 }
