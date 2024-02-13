@@ -8,6 +8,7 @@ import frc.robot.utils.Constants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.FlywheelConstants;
+import frc.robot.utils.Constants.ScoringConstants;
 
 public class Flywheel {
 
@@ -96,8 +97,16 @@ public class Flywheel {
         flywheelRightMotor.setVelocityWithFeedForward(speed);
     }
 
-    public void layup(){
-        runFlywheelVelocitySetpoint(Constants.ScoringConstants.kLayupVelocity);
+    public void runFlywheelAmp(){
+        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelAmpRPM);
+    }
+
+    public void runFlywheelHP(){
+        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelHPIntakeRPM);
+    }
+
+    public void runFlywheelShot(){
+        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelLayupRPM);
     }
 
     public void putSmartDashboard(){

@@ -133,7 +133,9 @@ public final class Constants {
     public static final double kArmIntakeHPPosition = 0.0; // in deg
     public static final double kArmPositionEpsilon = 1;
     public static final double kArmAmpPosition = 45.0;
+    public static final double kArmLayupPosition = -80.0;
     public static final double kArmStowPosition = -90.0;
+    public static final double kArmIntakePositionFromGround = -70.0;
   }
 
   public static class FlywheelConstants {
@@ -151,13 +153,13 @@ public final class Constants {
     public static final double kFlywheelI = 0;
     public static final double kFlywheelD = 0;
     public static final double kFlywheelFF = 0;
-
-    public static final double kFlywheelLLShootingRPM = 4000;
-    public static final double kFlywheelLayupRPM = 2500;
   }
 
   public static class ScoringConstants {
-    public static final double kLayupVelocity = 0;
+    public static final double kFlywheelLLShootingRPM = 4000;
+    public static final double kFlywheelLayupRPM = 2500;
+    public static final double kFlywheelAmpRPM = 500;
+    public static final double kFlywheelHPIntakeRPM = -250;
     // Distance, Angle; SAMPLE VALUES, NEEDS TO BE TUNED -TONY
     public static final double[][] treeMapValues = new double[][] { { 0.5, -55 }, { 1.5, -45 }, {2.5, -37.5}, {3.5, -25}, {4.5, -20}, {5.5, -15} }; 
   }
@@ -172,8 +174,7 @@ public final class Constants {
   }
 
   public static class HopperConstants {
-    public static final double kFloorIndexSpeed = 0;
-    public static final double kHPIndexSpeed = 0;
+    public static final double kHopperSpeed = 0;
     public static final double kFeedSpeed = 0;
   }
 

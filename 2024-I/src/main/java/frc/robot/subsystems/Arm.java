@@ -122,7 +122,7 @@ public class Arm {
         goalState = requestedState;
     }
 
-    public boolean canIntake(){
+    public boolean isAtAngle(){
         return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - Constants.ArmConstants.kArmIntakeHPPosition) < Constants.ArmConstants.kArmPositionEpsilon;
     }
 
@@ -134,12 +134,10 @@ public class Arm {
         return LLShotMap.get(dist);
     }
 
-    public void LLShoot(){
-        setArmAngle(getAngleFromDist(limelightFront.getDistance())); 
-    }
+    //Methods to Set Arm to a specific position
 
-    public void setIntakePosition(){
-
+    public void setGroundIntakePosition(){
+        setArmAngle(ArmConstants.kArmIntakePositionFromGround);
     }
 
     public void setHPIntakePosition(){
@@ -148,6 +146,14 @@ public class Arm {
 
     public void setAmpPosition(){
         setArmAngle(ArmConstants.kArmAmpPosition);
+    }
+
+    public void setLayupPosition() {
+        setArmAngle(ArmConstants.kArmLayupPosition);
+    }
+
+    public void setLLPosition(){
+        setArmAngle(getAngleFromDist(limelightFront.getDistance())); 
     }
 
     public void setStowPosition(){
@@ -161,13 +167,4 @@ public class Arm {
     public void periodic() {
 
     }
-
-    public void layup() {
-
-    }
-
-    public void LLAlign() {
-
-    }
-
 }
