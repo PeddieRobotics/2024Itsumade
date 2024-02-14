@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -44,18 +45,16 @@ public class Drivetrain extends SubsystemBase {
     private RollingAverage gyroTiltAverage;
     private Field2d field;
 
-    private static double inch2meter(double inch) {
-        return inch * 0.0254;
-    }
-
-    private double S2 = 18.0;
-    private double I2 = 0.1;
-    private double K2 = 4.0;
-    private double H2 = 3.3;
-    private double sigmoid2(double dist) {
+    //logistic function for if two apriltags are seen
+    private double S2 = 18.0; //maximum 
+    private double I2 = 0.1; //minimum 
+    private double K2 = 4.0;//growth rate 
+    private double H2 = 3.3;//midpoint 
+    private double sigmoid2(double dist) {  
         return (S2-I2)/(1.0+Math.exp(-K2*(dist-H2)))+I2;
     }
 
+    //logistic function for if three apriltags are seen
     private double S3 = 5.0;
     private double I3 = 0.1;
     private double K3 = 3.0;
@@ -64,9 +63,13 @@ public class Drivetrain extends SubsystemBase {
         return (S3-I3)/(1.0+Math.exp(-K3*(dist-H3)))+I3;
     }
 
+    //turning the usage of vision updates on or off, typically for autos 
     private boolean useMegaTag;
+
+    //forcible set the robot odom completely based on megatag botpose 
     private boolean isForcingCalibration;
 
+    
     public boolean getUseMegaTag() {
         return useMegaTag;
     }
@@ -104,6 +107,8 @@ public class Drivetrain extends SubsystemBase {
         
         SmartDashboard.putBoolean("Reset Gyro", false);
 
+
+        //constant for logistic function scaling the vision std based on distance 
         SmartDashboard.putNumber("Logistic S2", S2); 
         SmartDashboard.putNumber("Logistic I2", I2); 
         SmartDashboard.putNumber("Logistic K2", K2); 
@@ -147,10 +152,11 @@ public class Drivetrain extends SubsystemBase {
             swerveModules[i].putSmartDashboard();
         }
 
-        double distance = inch2meter(limelightFront.getDistance());
+        double distance = Units.inchesToMeters(limelightFront.getDistance());
         int numAprilTag = LimelightHelper.getNumberOfAprilTagsSeen(limelightFront.getLimelightName());
 
         if (numAprilTag >= 2) {
+            //if forcing calibration make visionstd minimal otherwise choose between function for 3 and 2 based on number of tags seen
             double stdDev = isForcingCalibration ? 0.0001 : (numAprilTag >= 3 ? sigmoid3(distance) : sigmoid2(distance));
             
             SmartDashboard.putNumber("distance", distance);

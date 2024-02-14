@@ -210,6 +210,8 @@ public class LimelightFront extends Limelight {
 
     public void checkForAprilTagUpdates(SwerveDrivePoseEstimator odometry) {
         int tagsSeen = LimelightHelper.getNumberOfAprilTagsSeen(limelightName);
+        //IMPORTANT:still has safe guard preventing the use of update vision if it is outside a half meter range, delete or change 
+        //condition to furhter enable checkforapriltag updates 
         if (tagsSeen > 1 && this.getBotpose().relativeTo(odometry.getEstimatedPosition()).getTranslation().getNorm() < 0.5) {
             odometry.addVisionMeasurement(this.getBotpose(), Timer.getFPGATimestamp());
         }
