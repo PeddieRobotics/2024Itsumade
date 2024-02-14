@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.979353052965497,
-        "y": 7.377312444206746
+        "x": 8.378792911431978,
+        "y": 7.459408764971376
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.681276551468766,
-        "y": 7.229173144639699
+        "x": 7.080716409935247,
+        "y": 7.311269465404329
       },
       "isLocked": false,
       "linkedName": "MidNote1"
@@ -32,9 +32,9 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
-    "maxAngularVelocity": 360.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 520.0,
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
@@ -48,5 +48,5 @@
     "rotation": -160.0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

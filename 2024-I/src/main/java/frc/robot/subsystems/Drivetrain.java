@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.RobotMap;
@@ -30,6 +31,11 @@ public class Drivetrain extends SubsystemBase {
     private double heading;
     private double currentDrivetrainSpeed = 0;
     private ChassisSpeeds currentRobotRelativeSpeed;
+
+    private Timer timer;
+    private double previousTime;
+    private double offTime;
+    private Rotation2d holdHeading;
 
     public Drivetrain() {
         frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
@@ -55,7 +61,11 @@ public class Drivetrain extends SubsystemBase {
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, gyro.getRotation2d(), swerveModulePositions,
                 new Pose2d());
 
-        SmartDashboard.putBoolean("Reset Gyro", false);
+        timer = new Timer();
+        timer.start();
+        previousTime = 0.0;
+        offTime = 0.0;
+
     }
 
     public static Drivetrain getInstance() {
@@ -105,12 +115,13 @@ public class Drivetrain extends SubsystemBase {
     public void drive(Translation2d translation, double rotation, boolean fieldOriented,
             Translation2d centerOfRotation) {
         ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+        ChassisSpeeds correctedFieldRelativeSpeeds = correctHeading(fieldRelativeSpeeds);
         ChassisSpeeds robotRelativeSpeeds;
 
         if (fieldOriented) {
-            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getRotation2d());
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(correctedFieldRelativeSpeeds, getRotation2d());
         } else {
-            robotRelativeSpeeds = fieldRelativeSpeeds;
+            robotRelativeSpeeds =  correctedFieldRelativeSpeeds;
         }
 
         currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
@@ -125,6 +136,41 @@ public class Drivetrain extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxAngularSpeed);
         optimizeModuleStates();
         setSwerveModuleStates(swerveModuleStates);
+    }
+
+    private ChassisSpeeds correctHeading(ChassisSpeeds currentSpeeds) {
+        double currentTime = timer.get();
+        double dt = currentTime - previousTime;
+
+        double vTheta = currentSpeeds.omegaRadiansPerSecond;
+        double vTranslation = Math.sqrt(Math.pow(currentSpeeds.vxMetersPerSecond, 2)+ Math.pow(currentSpeeds.vyMetersPerSecond, 2));
+
+        if(Math.abs(vTheta) > 0.01){
+            offTime = currentTime;
+            holdHeading = getRotation2d();
+            return currentSpeeds;
+        }
+        if(currentTime - offTime < 0.5){
+            holdHeading = getRotation2d();
+            return currentSpeeds;
+        }
+        if(vTranslation < 0.1){
+            holdHeading = getRotation2d();
+            return currentSpeeds;
+        }
+
+        holdHeading = holdHeading.plus(new Rotation2d(vTheta * dt));
+
+        Rotation2d deltaHeading = holdHeading.minus(getRotation2d());
+
+        if(Math.abs(deltaHeading.getDegrees()) < DriveConstants.kHeadingCorrectionTolerance){
+            return currentSpeeds;
+        }
+
+        double correctedVTheta = deltaHeading.getRadians() / dt * DriveConstants.kHeadingCorrectionP;
+        previousTime = currentTime;
+        
+        return new ChassisSpeeds(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond, correctedVTheta);
     }
 
     // Autonomous Drive Functions
@@ -173,8 +219,9 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public ChassisSpeeds getRobotRelativeSpeeds() {
-        
-        return DriveConstants.kinematics.toChassisSpeeds(frontLeftModule.getState(), frontRightModule.getState(), backLeftModule.getState(), backRightModule.getState());
+
+        return DriveConstants.kinematics.toChassisSpeeds(frontLeftModule.getState(), frontRightModule.getState(),
+                backLeftModule.getState(), backRightModule.getState());
     }
 
     public SwerveModuleState[] getSwerveModuleState() {
@@ -189,11 +236,11 @@ public class Drivetrain extends SubsystemBase {
         gyro.reset();
     }
 
-    public double[] getModuleRotations(){
-        double[] positions = {frontLeftModule.getRotations(),
-            backLeftModule.getRotations(),
-            frontRightModule.getRotations(),
-            backRightModule.getRotations()};
+    public double[] getModuleRotations() {
+        double[] positions = { frontLeftModule.getRotations(),
+                backLeftModule.getRotations(),
+                frontRightModule.getRotations(),
+                backRightModule.getRotations() };
         return (positions);
     }
 

@@ -66,19 +66,19 @@ public class SwerveModule extends SubsystemBase {
     // steerEncoder.setPosition(0);
 
     steerMotor.setContinuousOutput();
-    steerMotor.setFeedbackDevice(CANCoderId, FeedbackSensorSourceValue.RemoteCANcoder);
+    steerMotor.setFeedbackDevice(CANCoderId, FeedbackSensorSourceValue.FusedCANcoder);
 
     driveMotor.setVelocityConversionFactor(ModuleConstants.kDrivingEncoderVelocityFactor);
 
     // REMOTE CANCODER
-    steerMotor.setPositionConversionFactor(1.0);
+   // steerMotor.setPositionConversionFactor(1.0);
 
     // INTERNAL SENSOR
     // steerMotor.setPositionConversionFactor(ModuleConstants.kTurningEncoderPositonFactor);
 
     // FUSED CANCODER
-    // steerMotor.setRotorToSensorRatio(ModuleConstants.kTurningEncoderPositonFactor);
-    // steerMotor.setPositionConversionFactor(1.0);
+    steerMotor.setRotorToSensorRatio(ModuleConstants.kTurningMotorReduction);
+    steerMotor.setPositionConversionFactor(1.0);
 
     driveMotor.setVelocityPIDValues(ModuleConstants.kDrivingS, ModuleConstants.kDrivingV, ModuleConstants.kDrivingA,
         ModuleConstants.kDrivingP, ModuleConstants.kDrivingI, ModuleConstants.kDrivingD, ModuleConstants.kDrivingFF);
