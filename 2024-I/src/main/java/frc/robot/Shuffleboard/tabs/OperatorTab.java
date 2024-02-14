@@ -122,9 +122,9 @@ public class OperatorTab extends ShuffleboardTabBase{
     @Override
     public void update() { //Some lines here are arbitrary code that should be implemented later but don't have the necessary methods in our subsystems right now.
         try {
-            current1Entry.setDouble(pdh.getCurrent(1));
-            current2Entry.setDouble(pdh.getCurrent(2));
-            current3Entry.setDouble(pdh.getCurrent(3));
+            //current1Entry.setDouble(pdh.getCurrent(1));
+            //current2Entry.setDouble(pdh.getCurrent(2));
+            //current3Entry.setDouble(pdh.getCurrent(3));
 
             // if(flywheelToggleEntry.getBoolean(false)){
             //     flywheel.runFlywheelVelocitySetpoint(flywheelVelocitySetpointEntry.getDouble(0.0));
