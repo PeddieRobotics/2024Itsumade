@@ -119,12 +119,13 @@ public final class Constants {
     public static final double kArmD = 0;
     public static final double kArmFF = 0;
     public static final double kArmIZone = 0;
-    public static final double kArmForwardSoftLimit = 0;
-    public static final double kArmReverseSoftLimit = 0;
+    public static final double kArmForwardSoftLimitDegrees = 180;
+    public static final double kArmReverseSoftLimitDegrees = 0;
     public static final double kArmGearReduction = 0;
     public static final double kArmPositionConversionFactor = 1.0; //dependednt on feedbakc device
     public static final double kArmIntakePosition = 0.0; //in deg
     public static final double kArmPositionEpsilon = 1;
+    public static final double kArmPositionOffsetDegrees = 61.171875;
   }
 
   public static class FlywheelConstants {
