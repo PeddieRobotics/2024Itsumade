@@ -73,7 +73,7 @@ public class Logger {
         // Drivetrain
         updateDrivetrainLogs();
 
-        // Intake 
+        // Intake
         intakeSensorEntry.append(intake.getSensor());
         intakeCurrentEntry.append(intake.getMotorCurrent());
 

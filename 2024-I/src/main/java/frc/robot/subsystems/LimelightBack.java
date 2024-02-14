@@ -70,29 +70,6 @@ public class LimelightBack extends Limelight {
         return new Translation2d(0, 0);
     }
 
-    public Pose2d getBotposeBlue() {
-        double[] result = LimelightHelper.getBotPose_wpiBlue(limelightName);
-        if (result.length > 0.0) {
-            return new Pose2d(new Translation2d(result[0], result[1]), new Rotation2d(Math.toRadians(result[5])));
-        }
-        return new Pose2d();
-    }
-
-     public Pose2d getBotPoseRed() {
-        double[] result = LimelightHelper.getBotPose_wpiRed(limelightName);
-        if (result.length > 0.0) {
-            return new Pose2d(new Translation2d(result[0], result[1]), new Rotation2d(Math.toRadians(result[5])));
-        }
-        return new Pose2d();
-    }
-    public Pose2d getBotpoesRPose2d() {
-        double[] result = LimelightHelper.getBotPose_wpiRed(limelightName);
-        if (result.length > 0.0) {
-            return new Pose2d(new Translation2d(result[0], result[1]), new Rotation2d(Math.toRadians(result[5])));
-        }
-        return new Pose2d();
-    }
-
     public Pose2d getBotpose() {
         double[] result;
         if(DriverStation.getAlliance().get() == Alliance.Red){
@@ -182,15 +159,6 @@ public class LimelightBack extends Limelight {
         return getTv();
     }
 
-    public boolean targetIsCone() {
-        return hasTarget() && getNeuralClassID() == 2;
-    }
-
-    public boolean targetIsCube() {
-        return hasTarget() && getNeuralClassID() == 1;
-    }
-
-
     public void updateRollingAverages() {
         if (hasTarget()) {
             txAverage.add(getTx());
@@ -198,11 +166,11 @@ public class LimelightBack extends Limelight {
             taAverage.add(getTa());
             
             // rotationAverage.add(getBotpose().getRotation().getDegrees());//based on alliance of driverstation, awaiting testing 
-            rotationAverage.add(getBotposeBlue().getRotation().getDegrees()); 
+            rotationAverage.add(getBotpose().getRotation().getDegrees()); 
 
             //red
-            rxAverage.add(getBotposeBlue().getX()); 
-            ryAverage.add(getBotposeBlue().getY()); 
+            rxAverage.add(getBotpose().getX()); 
+            ryAverage.add(getBotpose().getY()); 
 
         }
     }

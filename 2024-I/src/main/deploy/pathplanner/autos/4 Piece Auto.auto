@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.4,
+      "y": 5.52
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Path - 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Path - 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece Path - 3"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

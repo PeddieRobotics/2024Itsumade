@@ -3,8 +3,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Shuffleboard.ShuffleboardMain;
 import frc.robot.commands.DriveCommands.SwerveDriveCommand;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.DriverOI;
@@ -21,8 +23,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    // return Autonomous.getAutonomousCommand();
-    return null;
+    return Autonomous.getAutonomousCommand();
   }
 
   public RobotContainer(){
@@ -35,6 +36,7 @@ public class RobotContainer {
     // flywheel = Flywheel.getInstance();
     // operatorOI = OperatorOI.getInstance();
     // driverOI = DriverOI.getInstance();
+    //shuffleboardMain = ShuffleboardMain.getInstance();
 
     // drivetrain.setDefaultCommand(new SwerveDriveCommand());
   }
@@ -42,4 +44,8 @@ public class RobotContainer {
   // public void runControlLoop(){
   //   driverOI.controlLoop();
   // }
+
+  //public void resetGyro(){
+  //  drivetrain.resetGyro();
+  //}
 }

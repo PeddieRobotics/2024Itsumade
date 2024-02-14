@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.ModuleConstants;
@@ -30,7 +31,6 @@ public class SwerveModule extends SubsystemBase {
   private final Kraken driveMotor;
   private final Kraken steerMotor;
 
-  private SwerveModuleState state;
   private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d(0));
 
   private double moduleAngularOffset;
@@ -44,11 +44,14 @@ public class SwerveModule extends SubsystemBase {
     driveMotor = new Kraken(drivingCANId, canbusName);
     steerMotor = new Kraken(steeringCANId, canbusName);
 
+    driveMotor.setInverted(true);
+    steerMotor.setInverted(true);
+
     driveMotor.setCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
     steerMotor.setCurrentLimit(ModuleConstants.kDrivingMotorCurrentLimit);
 
-    // driveMotor.setBrake();
-    // steerMotor.setBrake();
+    driveMotor.setBrake();
+    steerMotor.setBrake();
 
     driveMotor.setClosedLoopRampRate(0.1);
     steerMotor.setClosedLoopRampRate(0.1);
@@ -88,18 +91,22 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public SwerveModuleState getState() {
-    return state;
+    return new SwerveModuleState(driveMotor.getMPS(), new Rotation2d(getCANCoderReading()));
   }
 
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
-        driveMotor.getPosition(), new Rotation2d(getCANCoderReading()));
+        driveMotor.getPosition() * ModuleConstants.kDrivingEncoderPostionFactor, new Rotation2d(getCANCoderReading()));
+  }
+
+  public double getRotations() {
+    return driveMotor.getPosition();
   }
 
   public void setDesiredState(SwerveModuleState desiredModuleState) {
     desiredState = desiredModuleState;
-    desiredState.speedMetersPerSecond = -desiredState.speedMetersPerSecond;
-    desiredState.angle = Rotation2d.fromDegrees(-desiredState.angle.getDegrees());
+    // desiredState.speedMetersPerSecond = -desiredState.speedMetersPerSecond;
+    // desiredState.angle = Rotation2d.fromDegrees(-desiredState.angle.getDegrees());
 
     // SmartDashboard.putNumber(drivingCANId + " desired velocity", desiredState.speedMetersPerSecond);
     // SmartDashboard.putNumber(steeringCANId + " desired position", desiredState.angle.getRadians());
@@ -143,8 +150,8 @@ public class SwerveModule extends SubsystemBase {
   public void configureCANcoder() {
     CANcoderConfiguration canCoderConfiguration = new CANcoderConfiguration();
     canCoderConfiguration.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-    canCoderConfiguration.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
-    // canCoderConfiguration.MagnetSensor.MagnetOffset = moduleAngularOffset;
+    canCoderConfiguration.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+    canCoderConfiguration.MagnetSensor.MagnetOffset = -moduleAngularOffset/(2 * Math.PI);
     steerEncoder.getConfigurator().apply(canCoderConfiguration);
   }
 
@@ -169,10 +176,10 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putNumber(drivingCANId + " Drive Motor PID Output ", 0);
     SmartDashboard.putNumber(steeringCANId + " Steer Motor PID Output ", 0);
 
-    // SmartDashboard.putNumber(steeringCANId + " turning p", 0);
-    // SmartDashboard.putNumber(steeringCANId + " turning i", 0);
-    // SmartDashboard.putNumber(steeringCANId + " turning d", 0);
-    // SmartDashboard.putNumber(steeringCANId + " turning ff", 0);
+    SmartDashboard.putNumber(steeringCANId + " turning p", 0);
+    SmartDashboard.putNumber(steeringCANId + " turning i", 0);
+    SmartDashboard.putNumber(steeringCANId + " turning d", 0);
+    SmartDashboard.putNumber(steeringCANId + " turning ff", 0);
 
     // SmartDashboard.putBoolean(steeringCANId + " use turn position pid", false);
     // SmartDashboard.putNumber(steeringCANId + " turning setpoint", 0);
@@ -197,7 +204,7 @@ public class SwerveModule extends SubsystemBase {
     // }
 
     SmartDashboard.putNumber(CANCoderId + " canCoder position (rad)", getCANCoderReading());
-    SmartDashboard.putNumber(drivingCANId + " driving speed (mps)", driveMotor.getRPS());
+    SmartDashboard.putNumber(drivingCANId + " driving speed (mps)", driveMotor.getMPS());
     // SmartDashboard.putNumber(CANCoderId + " steer motor raw position", steerMotor.getPosition());
 
 
@@ -206,16 +213,16 @@ public class SwerveModule extends SubsystemBase {
       driveMotor.setVelocityWithFeedForward(SmartDashboard.getNumber(drivingCANId + " Drive Motor PID Output ", 0));
       steerMotor.setPositionWithFeedForward(SmartDashboard.getNumber(steeringCANId + " Steer Motor PID Output ", 0)/ (2 * Math.PI));
 
-    //   // steerMotor.setPIDValues(
-    //   //   SmartDashboard.getNumber(steeringCANId + " turning p", 0),
-    //   //   SmartDashboard.getNumber(steeringCANId + " turning i", 0),
-    //   //   SmartDashboard.getNumber(steeringCANId + " turning d", 0),
-    //   //   SmartDashboard.getNumber(steeringCANId + " turning ff", 0));
+      steerMotor.setPIDValues(
+        SmartDashboard.getNumber(steeringCANId + " turning p", 36),
+        SmartDashboard.getNumber(steeringCANId + " turning i", 0),
+        SmartDashboard.getNumber(steeringCANId + " turning d", 0),
+        SmartDashboard.getNumber(steeringCANId + " turning ff", 0));
     }
 
-    // SmartDashboard.putNumber("drive motor position", driveMotor.getPosition());
-    // SmartDashboard.putNumber("turn motor position", steerMotor.getPosition());
-    // SmartDashboard.putNumber("drive motor mps", driveMotor.getMPS());
+    SmartDashboard.putNumber(drivingCANId + " drive motor position", driveMotor.getPosition() * ModuleConstants.kDrivingEncoderPostionFactor);
+    SmartDashboard.putNumber(steeringCANId + " turn motor position", steerMotor.getPosition());
+    //SmartDashboard.putNumber("drive motor mps", driveMotor.getMPS());
     // SmartDashboard.putNumber(CANCoderId + " cancoder position",
     // getCANCoderReading());
     // SmartDashboard.putNumber("drive motor temperature",

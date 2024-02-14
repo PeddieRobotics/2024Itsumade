@@ -37,7 +37,7 @@ public final class Constants {
         swerveModuleLocations[3]);
 
     // TODO: Change this value
-    public static final double kMaxFloorSpeed = 1.0; // meters per second
+    public static final double kMaxFloorSpeed = 2.0; // meters per second
     public static final double kMaxAngularSpeed = Math.PI; // radians per second
 
     public static final int kDriveCurrentLimit = 30;
@@ -45,10 +45,10 @@ public final class Constants {
 
     public static final double kWheelRadius = 2.0;
 
-    public static final double kFrontLeftModuleAngularOffset = 0;
-    public static final double kFrontRightModuleAngularOffset = 0;
-    public static final double kBackLeftModuleAngularOffset = 0;
-    public static final double kBackRightModulelAngularOffset = 0;
+    public static final double kFrontLeftModuleAngularOffset = 2.88 + 0.59;
+    public static final double kFrontRightModuleAngularOffset = -2.01 + 0.197 - 2.68;
+    public static final double kBackLeftModuleAngularOffset = 2.09 + 2.08;
+    public static final double kBackRightModulelAngularOffset = -2.26 - 1.75;
   }
 
   public static class ModuleConstants {
@@ -82,7 +82,13 @@ public final class Constants {
   }
 
   public static class AutoConstants {
+    public static final double kTranslationP = 5.0;
+    public static final double kTranslationI = 0.0;
+    public static final double kTranslationD = 0.0;
 
+    public static final double kThetaP = 5.0;
+    public static final double kThetaI = 0.0;
+    public static final double kThetaD = 0.0;
   }
 
   public static class LimelightConstants {
@@ -122,8 +128,8 @@ public final class Constants {
     public static final double kArmForwardSoftLimitDegrees = 180;
     public static final double kArmReverseSoftLimitDegrees = 0;
     public static final double kArmGearReduction = 0;
-    public static final double kArmPositionConversionFactor = 1.0; //dependednt on feedbakc device
-    public static final double kArmIntakePosition = 0.0; //in deg
+    public static final double kArmPositionConversionFactor = 1.0; // dependednt on feedbakc device
+    public static final double kArmIntakePosition = 0.0; // in deg
     public static final double kArmPositionEpsilon = 1;
     public static final double kArmPositionOffsetDegrees = 58.95;
 
@@ -134,10 +140,10 @@ public final class Constants {
     public static final int kFlywheelLeftCurrentLimit = 0;
     public static final int kFlywheelRightCurrentLimit = 0;
 
-    public static final double kFlywheelGearReduction = 30.0/18.0;
+    public static final double kFlywheelGearReduction = 30.0 / 18.0;
 
     public static final double kFlywheelSensorThreshold = 0;
-    
+
     public static final double kFlywheelS = 0;
     public static final double kFlywheelV = 0;
     public static final double kFlywheelA = 0;
@@ -149,7 +155,8 @@ public final class Constants {
 
   public static class ScoringConstants {
     public static final double kLayupVelocity = 0;
-    public static final double[][] treeMapValues = new double[][]{ {0,0}, {1,1} }; // no spin, based off of distance
+    public static final double[][] treeMapValues = new double[][] { { 0, 0 }, { 1, 1 } }; // no spin, based off of
+                                                                                          // distance
   }
 
   public static class IntakeConstants {
@@ -157,14 +164,14 @@ public final class Constants {
     public static final int kHopperCurrentLimit = 0;
     public static final double kIntakeSensorThreshold = 0;
     public static final double kHopperSensorThreshold = 0;
-    
-    public static final double kIntakeSpeed = 1.0;
+
+    public static final double kIntakeSpeed = 0.75;
   }
 
   public static class HopperConstants {
-    public static final double kFloorIndexSpeed=0;
-    public static final double kHPIndexSpeed=0;
-    public static final double kFeedSpeed=0;
+    public static final double kFloorIndexSpeed = 0;
+    public static final double kHPIndexSpeed = 0;
+    public static final double kFeedSpeed = 0;
   }
 
 }
