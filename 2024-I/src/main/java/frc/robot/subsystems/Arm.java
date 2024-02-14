@@ -38,33 +38,26 @@ public class Arm extends SubsystemBase{
         // armSecondaryMotor.setFollower(RobotMap.ARM_PRIMARY_MOTOR, false);
 
         armPrimaryMotor.setCoast();
-        // armSecondaryMotor.setCoast();
-
-        // armPrimaryMotor.setSoftLimits(true, ArmConstants.kArmForwardSoftLimitDegrees/360, ArmConstants.kArmReverseSoftLimitDegrees/360);
 
         armPrimaryMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
-        // armSecondaryMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
+        armPrimaryMotor.setRotorToSensorRatio(Constants.ArmConstants.kRotorToSensorRatio);
 
         armPrimaryMotor.setPositionConversionFactor(ArmConstants.kArmPositionConversionFactor);
-        // armSecondaryMotor.setPositionConversionFactor(ArmConstants.kArmPositionConversionFactor);
 
         armPrimaryMotor.setPIDValues(ArmConstants.kArmP, ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
-        // armSecondaryMotor.setPIDValues(ArmConstants.kArmP, ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
 
 
         state = ArmState.Stowed;
         goalState = ArmState.Stowed;
 
+        configureCANcoder();
         putSmartDashboard();
-    }
-
-    public double getCANCoderReading(){
-        return Math.IEEEremainder((armCANcoder.getAbsolutePosition().getValueAsDouble()*360)+Constants.ArmConstants.kArmPositionOffsetDegrees,360);
     }
 
     public void configureCANcoder() {
         CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive; // doublecheck this
+        canCoderConfig.MagnetSensor.MagnetOffset = Constants.ArmConstants.kArmPositionOffsetDegrees/360;
         armCANcoder.getConfigurator().apply(canCoderConfig);
     }
 
@@ -108,7 +101,6 @@ public class Arm extends SubsystemBase{
         }
 
         SmartDashboard.putNumber("cancoder reading", armCANcoder.getAbsolutePosition().getValueAsDouble()*360);
-        SmartDashboard.putNumber("adjusted CANcoder reading",getCANCoderReading());
     }
 
     public static Arm getInstance() {
