@@ -29,6 +29,8 @@ public class Arm extends SubsystemBase{
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
 
         armPrimaryMotor = new Kraken(RobotMap.ARM_PRIMARY_MOTOR, RobotMap.CANIVORE_NAME);
+
+        armPrimaryMotor.setInverted(true);
         // armSecondaryMotor = new Kraken(RobotMap.ARM_SECONDARY_MOTOR, RobotMap.CANIVORE_NAME);
 
         armPrimaryMotor.setCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
@@ -39,7 +41,7 @@ public class Arm extends SubsystemBase{
 
         armPrimaryMotor.setCoast();
 
-        armPrimaryMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
+        armPrimaryMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
         armPrimaryMotor.setRotorToSensorRatio(Constants.ArmConstants.kRotorToSensorRatio);
 
         armPrimaryMotor.setPositionConversionFactor(ArmConstants.kArmPositionConversionFactor);

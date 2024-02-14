@@ -131,7 +131,7 @@ public final class Constants {
     public static final double kArmPositionConversionFactor = 1.0; // dependednt on feedbakc device
     public static final double kArmIntakePosition = 0.0; // in deg
     public static final double kArmPositionEpsilon = 1;
-    public static final double kArmPositionOffsetDegrees = 58.95;
+    public static final double kArmPositionOffsetDegrees = 58.95-125.8; //hehe
 
     public static final double kRotorToSensorRatio = 16384.0/125;
   }
