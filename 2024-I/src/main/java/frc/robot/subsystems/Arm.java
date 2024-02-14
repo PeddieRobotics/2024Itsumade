@@ -30,24 +30,23 @@ public class Arm extends SubsystemBase{
 
         armPrimaryMotor = new Kraken(RobotMap.ARM_PRIMARY_MOTOR, RobotMap.CANIVORE_NAME);
 
+        // armPrimaryMotor.setSoftLimits(true, Constants.ArmConstants.kArmForwardSoftLimitDegrees/360, Constants.ArmConstants.kArmReverseSoftLimitDegrees/360);
+
         armPrimaryMotor.setInverted(true);
-        // armSecondaryMotor = new Kraken(RobotMap.ARM_SECONDARY_MOTOR, RobotMap.CANIVORE_NAME);
 
         armPrimaryMotor.setCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
-        // armSecondaryMotor.setCurrentLimit(ArmConstants.kArmSecondaryCurrentLimit);
-
-        // this can be overwritten by any other control type
-        // armSecondaryMotor.setFollower(RobotMap.ARM_PRIMARY_MOTOR, false);
 
         armPrimaryMotor.setCoast();
 
         armPrimaryMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
+
         armPrimaryMotor.setRotorToSensorRatio(Constants.ArmConstants.kRotorToSensorRatio);
 
         armPrimaryMotor.setPositionConversionFactor(ArmConstants.kArmPositionConversionFactor);
 
-        armPrimaryMotor.setPIDValues(ArmConstants.kArmP, ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
+        armPrimaryMotor.setVelocityPIDValues(ArmConstants.kArmS,ArmConstants.kArmV,ArmConstants.kArmA,ArmConstants.kArmP, ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
 
+        armPrimaryMotor.setMotionMagicParameters(131, 210, 1600);
 
         state = ArmState.Stowed;
         goalState = ArmState.Stowed;
@@ -75,6 +74,7 @@ public class Arm extends SubsystemBase{
         SmartDashboard.putBoolean("Update Arm PID", false);
         SmartDashboard.putNumber("Arm Primary Motor Position Setpoint", 0);
 
+        SmartDashboard.putNumber("Arm kS", ArmConstants.kArmS);
         SmartDashboard.putNumber("Arm P", ArmConstants.kArmP);
         SmartDashboard.putNumber("Arm I", ArmConstants.kArmI);
         SmartDashboard.putNumber("Arm D", ArmConstants.kArmD);
@@ -85,7 +85,9 @@ public class Arm extends SubsystemBase{
 
     public void updateSmartDashboard() {
         if (SmartDashboard.getBoolean("Update Arm PID", false)) {
-            armPrimaryMotor.setPIDValues(
+            armPrimaryMotor.setVelocityPIDValues(
+                    SmartDashboard.getNumber("Arm kS", ArmConstants.kArmS),
+                    ArmConstants.kArmV,ArmConstants.kArmA,
                     SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
                     SmartDashboard.getNumber("Arm I", ArmConstants.kArmI),
                     SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
@@ -97,9 +99,9 @@ public class Arm extends SubsystemBase{
             //         SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
             //         SmartDashboard.getNumber("Arm FF", ArmConstants.kArmFF));
 
-           armPrimaryMotor.setPositionWithFeedForward(SmartDashboard.getNumber("Arm Primary Motor Position Setpoint", 0) / 360.0);
+           armPrimaryMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Primary Motor Position Setpoint", 0) / 360.0);
         } else {
-            setArmPercentOutput(SmartDashboard.getNumber("Arm Percent Output", 0));
+            // setArmPercentOutput(SmartDashboard.getNumber("Arm Percent Output", 0));
         }
 
         SmartDashboard.putNumber("cancoder reading", armCANcoder.getAbsolutePosition().getValueAsDouble()*360);

@@ -120,13 +120,16 @@ public final class Constants {
   public static class ArmConstants {
     public static final int kArmPrimaryCurrentLimit = 0;
     public static final int kArmSecondaryCurrentLimit = 0;
+    public static final double kArmS = 0;
+    public static final double kArmV = 0;
+    public static final double kArmA = 0.01;
     public static final double kArmP = 0;
     public static final double kArmI = 0;
     public static final double kArmD = 0;
     public static final double kArmFF = 0;
     public static final double kArmIZone = 0;
-    public static final double kArmForwardSoftLimitDegrees = 180;
-    public static final double kArmReverseSoftLimitDegrees = 0;
+    public static final double kArmForwardSoftLimitDegrees = 100;
+    public static final double kArmReverseSoftLimitDegrees = -36;
     public static final double kArmGearReduction = 0;
     public static final double kArmPositionConversionFactor = 1.0; // dependednt on feedbakc device
     public static final double kArmIntakePosition = 0.0; // in deg
