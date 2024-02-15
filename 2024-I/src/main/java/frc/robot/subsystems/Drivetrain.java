@@ -135,6 +135,14 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Logistic H3", H3); 
         
         SmartDashboard.putBoolean("Megatag updates", true);
+
+
+        // temp
+        SmartDashboard.putNumber("Target P", 0);
+        SmartDashboard.putNumber("Target I", 0);
+        SmartDashboard.putNumber("Target D", 0);
+        SmartDashboard.putNumber("Target FF", 0);
+        
     }
 
     public static Drivetrain getInstance() {
@@ -158,8 +166,8 @@ public class Drivetrain extends SubsystemBase {
 
         useMegaTag = SmartDashboard.getBoolean("Megatag updates", useMegaTag);
 
-        field.setRobotPose(getPose()); 
-        SmartDashboard.putData(field); 
+        // field.setRobotPose(getPose()); 
+        // SmartDashboard.putData(field); 
 
         // Updating the odometry
         for (int i = 0; i < 4; i++) {

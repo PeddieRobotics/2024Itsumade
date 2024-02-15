@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DriveCommands.Target;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
@@ -123,6 +124,7 @@ public class DriverOI {
 
         // Game piece selection / LED indication requests to human player
         L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
+        L1Bumper.onTrue(new Target());
 
         R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
 

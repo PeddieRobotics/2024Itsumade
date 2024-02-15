@@ -10,48 +10,64 @@ import frc.robot.subsystems.LimelightBack;
 import frc.robot.subsystems.LimelightShooter;
 import frc.robot.utils.Constants;
 import frc.robot.utils.DriverOI;
+import frc.robot.utils.Constants.LimelightConstants;
 
-public class Target extends Command{
+public class Target extends Command {
     private Drivetrain drivetrain;
     private LimelightShooter limelightShooter; // TODO: figure out front or back LL
     private DriverOI oi;
 
-    //turn
-    private double turnThreshold, turnFF, turnTarget;
-    private PIDController turnController;
+    private double error, turnThreshold, turnFF, turnInput;
+    private PIDController turnPIDController;
 
-    //translate
-    private double moveThreshold, moveFF, xTarget, yTarget;
-    private PIDController xController, yController;
-    
-    //blue coordinate system, give input
-    public Target(double x, double y, double theta){
+    public Target() {
         drivetrain = Drivetrain.getInstance();
         limelightShooter = LimelightShooter.getInstance();
 
-        
+        turnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
+                LimelightConstants.kTargetD);
+        turnFF = LimelightConstants.kTargetFF;
+        turnThreshold = LimelightConstants.kTargetAngleThreshold;
+
         addRequirements(drivetrain);
     }
 
     @Override
-    public void initialize(){
+    public void initialize() {
         oi = DriverOI.getInstance();
-
-        //TODO: update
         limelightShooter.setPipeline(0);
     }
 
-    @Override 
-    public void execute(){
+    @Override
+    public void execute() {
+        turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
+        turnPIDController.setP(SmartDashboard.getNumber("Target I", 0));
+        turnPIDController.setP(SmartDashboard.getNumber("Target D", 0));
+        turnFF = (SmartDashboard.getNumber("Target FF", 0));
+
+        if (limelightShooter.hasTarget()) {
+            error = limelightShooter.getTxAverage();
+            if (error < -turnThreshold) {
+                turnInput = turnPIDController.calculate(error) + turnFF;
+            } else if (error > turnThreshold) {
+                turnInput = turnPIDController.calculate(error) - turnFF;
+            } else {
+                turnInput = 0;
+            }
+        } else {
+            turnInput = 0;
+        }
+        drivetrain.drive(oi.getSwerveTranslation(), error, true, oi.getCenterOfRotation());
+
     }
 
     @Override
-    public void end(boolean interrupted){
+    public void end(boolean interrupted) {
         drivetrain.stop();
     }
 
     @Override
-    public boolean isFinished(){
+    public boolean isFinished() {
         return false;
     }
 }
