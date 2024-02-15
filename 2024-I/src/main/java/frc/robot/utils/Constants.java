@@ -138,6 +138,21 @@ public final class Constants {
     public static final double kArmPositionEpsilon = 1;
   }
 
+  public static class ClimberConstants {
+    public static final double kClimberRightCurrentLimit = 0;
+    public static final double kClimberLeftCurrentLimit = 0;
+    public static final double kClimberP = 0.0;
+    public static final double kClimberI = 0.0;
+    public static final double kClimberD = 0.0;
+    public static final double kClimberFF = 0.0;
+    public static final double kClimberPercentOutput = -0.7; //percent putput the climber would 
+    public static final double kClimberUnwindPosition = 0.0; //the angle the kraken needs to go backwards to retract back
+
+    public static final double kClimberGearReduction = 35.0 / 1.0;
+
+    public static final int CLIMBER_SENSOR_ID = 0;
+  }
+
   public static class FlywheelConstants {
     public static final int kFlywheelLeftCurrentLimit = 0;
     public static final int kFlywheelRightCurrentLimit = 0;
