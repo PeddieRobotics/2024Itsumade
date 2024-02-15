@@ -14,15 +14,15 @@ import frc.robot.utils.LimelightHelper;
 import frc.robot.utils.Logger;
 import frc.robot.utils.RollingAverage;
 
-public class LimelightFront extends Limelight {
-    private static LimelightFront limelightFront;
+public class LimelightShooter extends Limelight {
+    private static LimelightShooter limelightFront;
 
     private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage;
 
 
-    private String limelightName = "limelight-front";
+    private String limelightName = "limelight-shooter";
 
-    public LimelightFront() {
+    public LimelightShooter() {
         txAverage = new RollingAverage();
         tyAverage = new RollingAverage();
         taAverage = new RollingAverage();
@@ -35,9 +35,9 @@ public class LimelightFront extends Limelight {
         setPipeline(0);
     }
 
-    public static LimelightFront Instance() {
+    public static LimelightShooter getInstance() {
         if (limelightFront == null) {
-            limelightFront = new LimelightFront();
+            limelightFront = new LimelightShooter();
         }
         return limelightFront;
     }
