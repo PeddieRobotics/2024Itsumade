@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Kraken;
+import frc.robot.utils.Rate;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.ArmConstants;
 
@@ -18,6 +19,7 @@ public class Arm extends SubsystemBase{
 
     private Kraken armPrimaryMotor, armSecondaryMotor;
     private CANcoder armCANcoder;
+    private Rate angle;
 
     public enum ArmState {
         Intaking, Moving, Stowed, Shooting
@@ -46,10 +48,11 @@ public class Arm extends SubsystemBase{
 
         armPrimaryMotor.setVelocityPIDValues(ArmConstants.kArmS,ArmConstants.kArmV,ArmConstants.kArmA,ArmConstants.kArmP, ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
 
-        armPrimaryMotor.setMotionMagicParameters(131, 210, 1600);
+        armPrimaryMotor.setMotionMagicParameters(ArmConstants.cancoderCruiseVelocityRPS, ArmConstants.cancoderCruiseMaxAccel, ArmConstants.cancoderCruiseMaxJerk);
 
         state = ArmState.Stowed;
         goalState = ArmState.Stowed;
+        angle=new Rate(0);
 
         configureCANcoder();
         putSmartDashboard();
@@ -85,7 +88,6 @@ public class Arm extends SubsystemBase{
 
     public void armPrimarySetPositionMotionMagic(double position){
         armPrimaryMotor.setPositionMotionMagic(position);
-
     }
 
     public void armPrimarySetVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kFF){
@@ -97,27 +99,9 @@ public class Arm extends SubsystemBase{
     }
 
     public void updateSmartDashboard() {
-        if (SmartDashboard.getBoolean("Update Arm PID", false)) {
-            armPrimarySetVelocityPIDValues(
-                    SmartDashboard.getNumber("Arm kS", ArmConstants.kArmS),
-                    ArmConstants.kArmV,ArmConstants.kArmA,
-                    SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
-                    SmartDashboard.getNumber("Arm I", ArmConstants.kArmI),
-                    SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
-                    SmartDashboard.getNumber("Arm FF", ArmConstants.kArmFF));
-
-            // armSecondaryMotor.setPIDValues(
-            //         SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
-            //         SmartDashboard.getNumber("Arm I", ArmConstants.kArmI),
-            //         SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
-            //         SmartDashboard.getNumber("Arm FF", ArmConstants.kArmFF));
-
-           armPrimarySetPositionMotionMagic(SmartDashboard.getNumber("Arm Primary Motor Position Setpoint", 0) / 360.0);
-        } else {
-            // setArmPercentOutput(SmartDashboard.getNumber("Arm Percent Output", 0));
-        }
-
-        SmartDashboard.putNumber("cancoder reading", getAbsoluteCANCoderPosition());
+        SmartDashboard.putNumber("Motor vel RPS",angle.getVel()*ArmConstants.kRotorToSensorRatio);
+        SmartDashboard.putNumber("Motor Accel RPS^2",angle.getAccel()*ArmConstants.kRotorToSensorRatio);
+        SmartDashboard.putNumber("Motor Jerk RPS^3",angle.getJerk()*ArmConstants.kRotorToSensorRatio);
     }
 
     public static Arm getInstance() {
@@ -159,6 +143,7 @@ public class Arm extends SubsystemBase{
 
     @Override
     public void periodic() {
+        angle.update(armCANcoder.getPosition().getValueAsDouble());
         updateSmartDashboard();
     }
 

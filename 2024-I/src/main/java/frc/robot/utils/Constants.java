@@ -120,10 +120,10 @@ public final class Constants {
   public static class ArmConstants {
     public static final int kArmPrimaryCurrentLimit = 0;
     public static final int kArmSecondaryCurrentLimit = 0;
-    public static final double kArmS = 0;
+    public static final double kArmS = 0.25;
     public static final double kArmV = 0;
-    public static final double kArmA = 0.01;
-    public static final double kArmP = 0;
+    public static final double kArmA = 0;
+    public static final double kArmP = 40;
     public static final double kArmI = 0;
     public static final double kArmD = 0;
     public static final double kArmFF = 0;
@@ -135,6 +135,10 @@ public final class Constants {
     public static final double kArmIntakePosition = 0.0; // in deg
     public static final double kArmPositionEpsilon = 1;
     public static final double kArmPositionOffsetDegrees = 58.95-125.8; //hehe
+
+    public static final double cancoderCruiseVelocityRPS=.3;
+    public static final double cancoderCruiseMaxAccel=200; // rot/s^2
+    public static final double cancoderCruiseMaxJerk=1600; //rot/s^3
 
     public static final double kRotorToSensorRatio = 16384.0/125;
   }
