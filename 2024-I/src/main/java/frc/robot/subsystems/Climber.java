@@ -59,10 +59,12 @@ public class Climber extends SubsystemBase {
   }
 
   public void pulldownClimber(){
-    rightClimber.setMotor(ClimberConstants.kClimberPercentOutput);
+    if(!isDoneClimbing()){
+      rightClimber.setMotor(ClimberConstants.kClimberPercentOutput);
+    }
   }
 
-  public boolean doneClimbing(){
+  public boolean isDoneClimbing(){
     return climberSensorState();
   }
 
