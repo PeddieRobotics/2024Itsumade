@@ -122,8 +122,12 @@ public class Arm {
         goalState = requestedState;
     }
 
-    public boolean isAtAngle(){
-        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - Constants.ArmConstants.kArmIntakeHPPosition) < Constants.ArmConstants.kArmPositionEpsilon;
+    public boolean isAtHPAngle(){
+        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - ArmConstants.kArmIntakeHPPosition) < ArmConstants.kArmPositionEpsilon;
+    }
+
+    public boolean isAtGroundIntakeAngle(){
+        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - ArmConstants.kArmIntakePositionFromGround) < ArmConstants.kArmPositionEpsilon;
     }
 
      public void setArmAngle(double angle){
