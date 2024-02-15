@@ -49,6 +49,10 @@ public final class Constants {
     public static final double kFrontRightModuleAngularOffset = -2.01 + 0.197 - 2.68;
     public static final double kBackLeftModuleAngularOffset = 2.09 + 2.08;
     public static final double kBackRightModulelAngularOffset = -2.26 - 1.75;
+
+    
+    public static final double kHeadingCorrectionP = 0.1;
+    public static final double kHeadingCorrectionTolerance = 1.0;
   }
 
   public static class ModuleConstants {
@@ -79,6 +83,7 @@ public final class Constants {
     public static final double kTurningI = 0.0;
     public static final double kTurningD = 0.0;
     public static final double kTurningFF = 0.0;
+
   }
 
   public static class AutoConstants {
@@ -141,6 +146,21 @@ public final class Constants {
     public static final double cancoderCruiseMaxJerk=1600; //rot/s^3
 
     public static final double kRotorToSensorRatio = 16384.0/125;
+  }
+
+  public static class ClimberConstants {
+    public static final double kClimberRightCurrentLimit = 0;
+    public static final double kClimberLeftCurrentLimit = 0;
+    public static final double kClimberP = 0.0;
+    public static final double kClimberI = 0.0;
+    public static final double kClimberD = 0.0;
+    public static final double kClimberFF = 0.0;
+    public static final double kClimberPercentOutput = -0.7; //percent putput the climber would 
+    public static final double kClimberUnwindPosition = 0.0; //the angle the kraken needs to go backwards to retract back
+
+    public static final double kClimberGearReduction = 35.0 / 1.0;
+
+    public static final int CLIMBER_SENSOR_ID = 0;
   }
 
   public static class FlywheelConstants {

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4,
-      "y": 5.52
+      "x": 0.79,
+      "y": 4.33
     },
-    "rotation": 180.0
+    "rotation": 120.0
   },
   "command": {
     "type": "sequential",
@@ -20,24 +20,36 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4 Piece Path - 1"
+            "pathName": "C SourceSpeaker-SourceNote"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "4 Piece Path - 2"
+            "pathName": "F SourceNote-CenterNote"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "4 Piece Path - 3"
+            "pathName": "G CenterNote-AmpNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "H AmpNote-MidNote1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "I MidNote1-Score"
           }
         }
       ]
     }
   },
-  "folder": "Initial Testing",
+  "folder": null,
   "choreoAuto": false
 }
