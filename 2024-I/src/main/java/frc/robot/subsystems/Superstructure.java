@@ -88,29 +88,40 @@ public class Superstructure extends SubsystemBase {
                 //     hopper.stopHopper();
                 // }
 
-                if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){
+                //only go into the prep state if you have a gamepiece
+                if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){ 
                     nextSystemState = requestedSystemState; 
                 } else if(requestedSystemState == SuperstructureState.LL_PREP && isGamepieceIndexed()){
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.LAYUP_PREP && isGamepieceIndexed()){
                     nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE && !isGamepieceIndexed()){ 
+                } 
+                
+                //intake only if you don't have a piece -- ASSUMING WE'RE INDEXING RIGHT AWAY
+                else if(requestedSystemState == SuperstructureState.GROUND_INTAKE && !isGamepieceIndexed()){ 
                     nextSystemState = requestedSystemState; 
                 } else if(requestedSystemState == SuperstructureState.HP_INTAKE && !isGamepieceIndexed()){
                     nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.AMP_SCORING && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_SCORING && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState;
-                } else if (requestedSystemState == SuperstructureState.LL_SCORING && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState;
-                } else if (requestedSystemState == SuperstructureState.CLIMBING){
+                } 
+
+                //you should not be able to go into scoring from stow **someone please verify if this makes sense
+                // else if(requestedSystemState == SuperstructureState.AMP_SCORING && isGamepieceIndexed()){
+                //     nextSystemState = requestedSystemState;
+                // } else if(requestedSystemState == SuperstructureState.LAYUP_SCORING && isGamepieceIndexed()){
+                //     nextSystemState = requestedSystemState;
+                // } else if (requestedSystemState == SuperstructureState.LL_SCORING && isGamepieceIndexed()){
+                //     nextSystemState = requestedSystemState;
+                // } 
+                
+                else if (requestedSystemState == SuperstructureState.CLIMBING){
                     nextSystemState = requestedSystemState;
                 }
+
                 break;   
 
             case GROUND_INTAKE:
                 arm.setGroundIntakePosition();
+                
                 if (arm.isAtGroundIntakeAngle() && !isGamepieceIndexed()){
                     intake.runIntake();
                     hopper.runHopper();
@@ -119,7 +130,8 @@ public class Superstructure extends SubsystemBase {
                     hopper.stopHopper();
                 }
 
-                if(requestedSystemState == SuperstructureState.STOW && isGamepieceIndexed()){
+                //only switch states from here if done indexing
+                if(requestedSystemState == SuperstructureState.STOW && isGamepieceIndexed()){ //CHECK THIS
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){
                     nextSystemState = requestedSystemState; 
@@ -127,7 +139,10 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.LAYUP_PREP && isGamepieceIndexed()){
                     nextSystemState = requestedSystemState; 
-                }
+                } else if(requestedSystemState == SuperstructureState.HP_INTAKE && !isGamepieceIndexed()){
+                    nextSystemState = requestedSystemState; 
+                } 
+
                 break; 
 
             case HP_INTAKE:
@@ -140,7 +155,8 @@ public class Superstructure extends SubsystemBase {
                     hopper.stopHopper();
                 }
 
-                if(requestedSystemState == SuperstructureState.STOW){
+                //only switch states from intake if done indexing
+                if(requestedSystemState == SuperstructureState.STOW && isGamepieceIndexed()){
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){
                     nextSystemState = requestedSystemState; 
@@ -148,7 +164,9 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.LAYUP_PREP && isGamepieceIndexed()){
                     nextSystemState = requestedSystemState; 
-                }
+                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE && !isGamepieceIndexed()){
+                    nextSystemState = requestedSystemState; 
+                } 
                 break; 
 
             case AMP_PREP:
