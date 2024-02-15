@@ -3,16 +3,18 @@ package frc.robot.Shuffleboard.tabs;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Shuffleboard.ShuffleboardTabBase;
 
 import frc.robot.subsystems.Arm;
+import frc.robot.utils.Constants.ArmConstants;
 
 public class ArmTab extends ShuffleboardTabBase {
 
     private Arm arm = Arm.getInstance();
     private GenericEntry armAngleEntry, armCurrentEntry, armSpeedEntry, armTempEntry,
-    armVoltageEntry, mAuxilaryCLToggleEntry, mClosedLoopToggleEntry,
-    mkAEntry, mkDEntry, mkFFEntry, mkGEntry,
+    armVoltageEntry, CANCoderReadingEntry, mAuxilaryCLToggleEntry, mClosedLoopToggleEntry,
+    mkAEntry, mkDEntry, mkFFEntry, mkSEntry,
     mkIEntry, mkIzEntry, mkPEntry, mkVEntry,
     mPIDToggleEntry, mArbitraryFFEntry;
     /*
@@ -52,6 +54,11 @@ public class ArmTab extends ShuffleboardTabBase {
             .withPosition(7, 0)
             .getEntry();
 
+            CANCoderReadingEntry = tab.add("CANCoder Reading", 0.0) // getAbsolute blah blah blah
+            .withSize(1, 1)
+            .withPosition(2, 2)
+            .getEntry();
+
             mAuxilaryCLToggleEntry = tab.add("Auxilary Closed Loop [2] Toggle", false) 
             .withWidget(BuiltInWidgets.kToggleButton)
             .withSize(2, 1)
@@ -79,7 +86,7 @@ public class ArmTab extends ShuffleboardTabBase {
             .withPosition(2, 1)
             .getEntry();
 
-            mkGEntry = tab.add("kG", 0.0) // ArmConstants.kG
+            mkSEntry = tab.add("kS", 0.0) // ArmConstants.kS
             .withSize(1, 1)
             .withPosition(3, 1)
             .getEntry();
@@ -120,7 +127,48 @@ public class ArmTab extends ShuffleboardTabBase {
     @Override
     public void update() { //Some lines here are arbitrary code that should be implemented later but don't have the necessary methods in our subsystems right now.
         try {
+            if(mPIDToggleEntry.getBoolean(false)){
+                arm.armPrimarySetVelocityPIDValues(
+                mkSEntry.getDouble(0.0),
+                mkVEntry.getDouble(0.0),
+                mkAEntry.getDouble(0.0),
+                mkPEntry.getDouble(0.0),
+                mkIEntry.getDouble(0.0),
+                mkDEntry.getDouble(0.0),
+                mkFFEntry.getDouble(0.0)
+                );
+                arm.armPrimarySetPositionMotionMagic(armAngleEntry.getDouble(0.0) / 360.0);
+            } else if(!mPIDToggleEntry.getBoolean(false)){
+                arm.armPrimarySetVelocityPIDValues(
+                mkSEntry.getDouble(ArmConstants.kArmS),
+                mkVEntry.getDouble(ArmConstants.kArmS),
+                mkAEntry.getDouble(ArmConstants.kArmA),
+                mkPEntry.getDouble(ArmConstants.kArmP),
+                mkIEntry.getDouble(ArmConstants.kArmI),
+                mkDEntry.getDouble(ArmConstants.kArmD),
+                mkFFEntry.getDouble(ArmConstants.kArmFF)
+                );
+            }
+            CANCoderReadingEntry.setDouble(arm.getAbsoluteCANCoderPosition());
+            }
             /*
+                    if (SmartDashboard.getBoolean("Update Arm PID", false)) {
+            armPrimaryMotor.setVelocityPIDValues(
+                    SmartDashboard.getNumber("Arm kS", ArmConstants.kArmS),
+                    ArmConstants.kArmV,ArmConstants.kArmA,
+                    SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
+                    SmartDashboard.getNumber("Arm I", ArmConstants.kArmI),
+                    SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
+                    SmartDashboard.getNumber("Arm FF", ArmConstants.kArmFF));
+
+            // armSecondaryMotor.setPIDValues(
+            //         SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
+            //         SmartDashboard.getNumber("Arm I", ArmConstants.kArmI),
+            //         SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
+            //         SmartDashboard.getNumber("Arm FF", ArmConstants.kArmFF));
+
+           armPrimaryMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Primary Motor Position Setpoint", 0) / 360.0);
+
             armAngleEntry.setDouble(arm.getCurrentAngle());
             armCurrentEntry.setDouble(arm.getArmCurrent());
             arm.setArmPercentOutput(armSpeedEntry.getDouble(ArmConstants.kSpeed));
@@ -140,6 +188,6 @@ public class ArmTab extends ShuffleboardTabBase {
              *      }
              * }
             */
-        } catch(IllegalArgumentException e){}
+        catch(NullPointerException e){}
     }
 }

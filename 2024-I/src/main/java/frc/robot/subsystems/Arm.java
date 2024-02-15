@@ -83,9 +83,22 @@ public class Arm extends SubsystemBase{
         SmartDashboard.putNumber("Arm Percent Output", 0);
     }
 
+    public void armPrimarySetPositionMotionMagic(double position){
+        armPrimaryMotor.setPositionMotionMagic(position);
+
+    }
+
+    public void armPrimarySetVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kFF){
+        armPrimaryMotor.setVelocityPIDValues(kS, kV, kA, kP, kI, kD, kFF);
+    }
+
+    public double getAbsoluteCANCoderPosition(){
+        return armCANcoder.getAbsolutePosition().getValueAsDouble()*360;
+    }
+
     public void updateSmartDashboard() {
         if (SmartDashboard.getBoolean("Update Arm PID", false)) {
-            armPrimaryMotor.setVelocityPIDValues(
+            armPrimarySetVelocityPIDValues(
                     SmartDashboard.getNumber("Arm kS", ArmConstants.kArmS),
                     ArmConstants.kArmV,ArmConstants.kArmA,
                     SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
@@ -99,12 +112,12 @@ public class Arm extends SubsystemBase{
             //         SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
             //         SmartDashboard.getNumber("Arm FF", ArmConstants.kArmFF));
 
-           armPrimaryMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Primary Motor Position Setpoint", 0) / 360.0);
+           armPrimarySetPositionMotionMagic(SmartDashboard.getNumber("Arm Primary Motor Position Setpoint", 0) / 360.0);
         } else {
             // setArmPercentOutput(SmartDashboard.getNumber("Arm Percent Output", 0));
         }
 
-        SmartDashboard.putNumber("cancoder reading", armCANcoder.getAbsolutePosition().getValueAsDouble()*360);
+        SmartDashboard.putNumber("cancoder reading", getAbsoluteCANCoderPosition());
     }
 
     public static Arm getInstance() {
@@ -125,6 +138,8 @@ public class Arm extends SubsystemBase{
     public boolean canIntake(){
         return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - Constants.ArmConstants.kArmIntakePosition) < Constants.ArmConstants.kArmPositionEpsilon;
     }
+
+
 
     public void setIntakePosition(){
 
