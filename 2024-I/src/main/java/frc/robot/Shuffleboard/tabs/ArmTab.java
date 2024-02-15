@@ -171,6 +171,6 @@ public class ArmTab extends ShuffleboardTabBase {
              *      }
              * }
             */
-        catch(NullPointerException e){}
+        catch(IllegalArgumentException e){}
     }
 }
