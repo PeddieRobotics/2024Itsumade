@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.81,
+      "y": 6.73
+    },
+    "rotation": -120.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A AmpSpeaker-AmpNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D AmpNote-CenterNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "E CenterNote-SourceNote"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

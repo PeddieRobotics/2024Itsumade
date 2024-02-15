@@ -1,0 +1,55 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.79,
+      "y": 4.33
+    },
+    "rotation": 120.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C SourceSpeaker-SourceNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F SourceNote-CenterNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "G CenterNote-AmpNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "H AmpNote-MidNote1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "I MidNote1-Score"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

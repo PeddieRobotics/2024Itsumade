@@ -10,6 +10,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -68,7 +69,7 @@ public class Kraken {
         return talon.get();
     }
 
-    public double getRPS() {
+    public double getMPS() {
         return talon.getRotorVelocity().getValueAsDouble() * velocityConversionFactor;
     }
 
@@ -82,6 +83,19 @@ public class Kraken {
         // config.CurrentLimits.StatorCurrentLimitEnable = true;
         // config.CurrentLimits.StatorCurrentLimit = currentLimit;
         
+        talon.getConfigurator().apply(config);
+    }
+
+
+    public void setInverted(boolean inverted){
+        // if(inverted) config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        // else config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        if(inverted){
+            config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        }else{
+            config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        }
+        //talon.setInverted(inverted);
         talon.getConfigurator().apply(config);
     }
 

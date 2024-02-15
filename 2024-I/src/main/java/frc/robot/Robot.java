@@ -23,6 +23,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  // private ShuffleboardMain shuffleboardMain;
+  private PowerDistribution pdh;
   private ShuffleboardMain shuffleboardMain;
   //private PowerDistribution pdh;
 
@@ -65,7 +67,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    // m_robotContainer.resetGyro();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -73,6 +77,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    m_robotContainer.resetGyro();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)

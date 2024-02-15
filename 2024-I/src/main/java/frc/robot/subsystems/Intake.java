@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,12 +23,11 @@ public class Intake extends SubsystemBase {
   public TalonSRX intakeMotor;
   public TalonSRXConfiguration config;
 
-  // public LaserCan intakeSensor;
-  private DigitalInput intakeSensor;
+  private AnalogInput intakeSensor;
 
   public Intake() {
     intakeMotor = new TalonSRX(RobotMap.INTAKE_MOTOR_CAN_ID);
-    intakeSensor = new DigitalInput(RobotMap.INTAKE_SENSOR_ID);
+    intakeSensor = new AnalogInput(RobotMap.INTAKE_SENSOR_ID);
     SmartDashboard.putNumber("Intake speed", 0);
 
     config = new TalonSRXConfiguration();
@@ -65,8 +65,12 @@ public class Intake extends SubsystemBase {
   }
 
   // returns if beam is broken
-  public boolean getSensor() {
-    return !intakeSensor.get();
+  public boolean getSensor(){
+    return getSensorReading() < 0.01;
+  }
+
+  public double getSensorReading() {
+    return intakeSensor.getVoltage();
   }
 
   public double getMotorCurrent() {
@@ -79,6 +83,8 @@ public class Intake extends SubsystemBase {
     // intakeMotor.set(TalonSRXControlMode.PercentOutput,SmartDashboard.getNumber("Intake
     // speed", 0));
     SmartDashboard.putNumber("Intake Motor Current", getMotorCurrent());
+    SmartDashboard.putNumber("Intake Sensor Reading", getSensorReading());
+    SmartDashboard.putBoolean("Intake Sensor Status", getSensor());
   }
 
   @Override
