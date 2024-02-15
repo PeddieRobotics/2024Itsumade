@@ -24,6 +24,11 @@ public class RobotMap {
     public static final int ARM_SECONDARY_MOTOR = 0;
     public static final int ARM_CANCODER_ID = 0;
 
+    public static final int CLIMBER_RIGHT_MOTOR = 0; //DEFAULT VALUE, CHANGE LATER
+    public static final int CLIMBER_LEFT_MOTOR = 0; //DEFAULT VALUE, CHANGE LATER
+    public static final int CLIMBER_CANCODER_ID = 0; //DEFAULT VALUE, CHANGE LATER
+
+
     public static final int FLYWHEEL_LEFT_MOTOR = 0;
     public static final int FLYWHEEL_RIGHT_MOTOR = 0;
     public static final int FLYWHEEL_SENSOR_ID = 0;
