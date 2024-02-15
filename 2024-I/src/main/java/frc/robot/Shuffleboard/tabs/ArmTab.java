@@ -141,7 +141,7 @@ public class ArmTab extends ShuffleboardTabBase {
             } else if(!mPIDToggleEntry.getBoolean(false)){
                 arm.armPrimarySetVelocityPIDValues(
                 mkSEntry.getDouble(ArmConstants.kArmS),
-                mkVEntry.getDouble(ArmConstants.kArmS),
+                mkVEntry.getDouble(ArmConstants.kArmV),
                 mkAEntry.getDouble(ArmConstants.kArmA),
                 mkPEntry.getDouble(ArmConstants.kArmP),
                 mkIEntry.getDouble(ArmConstants.kArmI),
@@ -152,23 +152,6 @@ public class ArmTab extends ShuffleboardTabBase {
             CANCoderReadingEntry.setDouble(arm.getAbsoluteCANCoderPosition());
             }
             /*
-                    if (SmartDashboard.getBoolean("Update Arm PID", false)) {
-            armPrimaryMotor.setVelocityPIDValues(
-                    SmartDashboard.getNumber("Arm kS", ArmConstants.kArmS),
-                    ArmConstants.kArmV,ArmConstants.kArmA,
-                    SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
-                    SmartDashboard.getNumber("Arm I", ArmConstants.kArmI),
-                    SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
-                    SmartDashboard.getNumber("Arm FF", ArmConstants.kArmFF));
-
-            // armSecondaryMotor.setPIDValues(
-            //         SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
-            //         SmartDashboard.getNumber("Arm I", ArmConstants.kArmI),
-            //         SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
-            //         SmartDashboard.getNumber("Arm FF", ArmConstants.kArmFF));
-
-           armPrimaryMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Primary Motor Position Setpoint", 0) / 360.0);
-
             armAngleEntry.setDouble(arm.getCurrentAngle());
             armCurrentEntry.setDouble(arm.getArmCurrent());
             arm.setArmPercentOutput(armSpeedEntry.getDouble(ArmConstants.kSpeed));
