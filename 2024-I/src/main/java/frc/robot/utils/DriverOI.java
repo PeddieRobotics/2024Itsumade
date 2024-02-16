@@ -39,20 +39,17 @@ public class DriverOI {
      */
     private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     private AlignGoalColumn alignGoalColumn = AlignGoalColumn.kCenter;
-
-    private Arm arm;
     private Superstructure superstructure;
     private Drivetrain drivetrain;
 
     private boolean usePreScorePose;
 
-    private Trigger xButton, touchpadButton, circleButton, ps5Button, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper;
+    private Trigger xButton, circleButton, shareButton, ps5Button, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper;
 
     public DriverOI() {
-        arm = Arm.getInstance();
         drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
-        configureController(false);
+        configureController();
     }
 
     public int getAlignGoalAprilTagID() {
@@ -83,7 +80,7 @@ public class DriverOI {
         ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
     }
 
-    public void configureController(boolean usePreScorePose) {
+    public void configureController() {
         controller = new PS4Controller(0);
 
         // Arm Poses
@@ -99,11 +96,14 @@ public class DriverOI {
         // Square button forces the robot to look at odometry updates.
         squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
 
-        // Stowed pose
-        touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
+        // Touchpad Button if we want to use it
+        //touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
 
         // Mute homes the entire arm subsystem, both wrist and shoulder.
         muteButton = new JoystickButton(controller, 15);
+
+        //Lock wheels, drive command for it not written yet...
+        shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
         // Manual Wrist and Shoulder Override Controls
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
@@ -169,7 +169,7 @@ public class DriverOI {
         return controller.getPOV() == 180;
     }
 
-    public boolean isUsePreScorePose() {
+    /*public boolean isUsePreScorePose() {
         return usePreScorePose;
     }
 
@@ -177,17 +177,12 @@ public class DriverOI {
     // This is especially important since this requires configuring the controller
     // mapping
     // for the operator, which should be done infrequently/minimally.
-    public void setUsePreScorePose(boolean usePreScorePose) {
+   public void setUsePreScorePose(boolean usePreScorePose) {
         if (this.usePreScorePose != usePreScorePose) {
             this.usePreScorePose = usePreScorePose;
-            configureController(usePreScorePose);
-        }
-    }
-
-    public void configureController() {
-        controller = new PS4Controller(0);
-        Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-    }
+            configureController();
+        } NOT NEEDED ANYMORE (OLD 2023 LEGACY CODE, IF WRONG PLEASE CHANGE/REFLECT CHANGES ELSEWHERE)
+    } */
 
     public double getForward() {
         double input = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
