@@ -3,16 +3,18 @@ package frc.robot.Shuffleboard.tabs;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Shuffleboard.ShuffleboardTabBase;
 
 import frc.robot.subsystems.Arm;
+import frc.robot.utils.Constants.ArmConstants;
 
 public class ArmTab extends ShuffleboardTabBase {
 
     private Arm arm = Arm.getInstance();
-    private GenericEntry armAngleEntry, armCurrentEntry, armSpeedEntry, armTempEntry,
-    armVoltageEntry, mAuxilaryCLToggleEntry, mClosedLoopToggleEntry,
-    mkAEntry, mkDEntry, mkFFEntry, mkGEntry,
+    private GenericEntry armSetpointEntry, armCurrentEntry, armSpeedEntry, armTempEntry,
+    armVoltageEntry, CANCoderReadingEntry, mAuxilaryCLToggleEntry, mClosedLoopToggleEntry,
+    mkAEntry, mkDEntry, mkFFEntry, mkSEntry,
     mkIEntry, mkIzEntry, mkPEntry, mkVEntry,
     mPIDToggleEntry, mArbitraryFFEntry;
     /*
@@ -27,7 +29,7 @@ public class ArmTab extends ShuffleboardTabBase {
         tab = Shuffleboard.getTab("ArmTab");
 
         try { // All of these sizes and positions are arbitrary, please consider changing later...
-            armAngleEntry = tab.add("Arm Angle", 0.0) // arm.getCurrentAngle()
+            armSetpointEntry = tab.add("Arm Setpoint", 0.0) // arm.getCurrentAngle()
             .withSize(1, 1)
             .withPosition(0, 0)
             .getEntry();
@@ -50,6 +52,11 @@ public class ArmTab extends ShuffleboardTabBase {
             armVoltageEntry = tab.add("Arm Voltage", 0.0) // arm.getCurrentVoltage()
             .withSize(1, 1)
             .withPosition(7, 0)
+            .getEntry();
+
+            CANCoderReadingEntry = tab.add("CANCoder Reading", 0.0) // getAbsolute blah blah blah
+            .withSize(1, 1)
+            .withPosition(2, 2)
             .getEntry();
 
             mAuxilaryCLToggleEntry = tab.add("Auxilary Closed Loop [2] Toggle", false) 
@@ -79,7 +86,7 @@ public class ArmTab extends ShuffleboardTabBase {
             .withPosition(2, 1)
             .getEntry();
 
-            mkGEntry = tab.add("kG", 0.0) // ArmConstants.kG
+            mkSEntry = tab.add("kS", 0.0) // ArmConstants.kS
             .withSize(1, 1)
             .withPosition(3, 1)
             .getEntry();
@@ -120,26 +127,50 @@ public class ArmTab extends ShuffleboardTabBase {
     @Override
     public void update() { //Some lines here are arbitrary code that should be implemented later but don't have the necessary methods in our subsystems right now.
         try {
-            /*
-            armAngleEntry.setDouble(arm.getCurrentAngle());
-            armCurrentEntry.setDouble(arm.getArmCurrent());
-            arm.setArmPercentOutput(armSpeedEntry.getDouble(ArmConstants.kSpeed));
-            armTempEntry.setDouble(arm.getCurrentMotorTemperature());
-            armVoltageEntry.setDouble(arm.getCurrentVoltage());
+            if(mPIDToggleEntry.getBoolean(false)){
+                arm.armPrimarySetVelocityPIDValues(
+                mkSEntry.getDouble(0.0),
+                mkVEntry.getDouble(0.0),
+                mkAEntry.getDouble(0.0),
+                mkPEntry.getDouble(0.0),
+                mkIEntry.getDouble(0.0),
+                mkDEntry.getDouble(0.0),
+                mkFFEntry.getDouble(0.0)
+                );
+                arm.armPrimarySetPositionMotionMagic(armSetpointEntry.getDouble(0.0) / 360.0);
+            } else if(!mPIDToggleEntry.getBoolean(false)){
+                arm.armPrimarySetVelocityPIDValues(
+                mkSEntry.getDouble(ArmConstants.kArmS),
+                mkVEntry.getDouble(ArmConstants.kArmV),
+                mkAEntry.getDouble(ArmConstants.kArmA),
+                mkPEntry.getDouble(ArmConstants.kArmP),
+                mkIEntry.getDouble(ArmConstants.kArmI),
+                mkDEntry.getDouble(ArmConstants.kArmD),
+                mkFFEntry.getDouble(ArmConstants.kArmFF)
+                );
+            }
+            CANCoderReadingEntry.setDouble(arm.getAbsoluteCANCoderPosition()/360);
+            
+            // armCurrentEntry.setDouble(arm.getArmCurrent());
+            // arm.setArmPercentOutput(armSpeedEntry.getDouble(ArmConstants.kSpeed));
+            // armTempEntry.setDouble(arm.getCurrentMotorTemperature());
+            // armVoltageEntry.setDouble(arm.getCurrentVoltage());
 
-            Motion magic with PID toggle implementation should go below, will add later... DO THIS LATER, copied in the flywheel pid toggle tentative logic that I didn't double check
-             if(flywheelToggleEntry.getBoolean()){
-             *      flywheel.setFlywheelSetpoint(flywheelSetpointEntry.getDouble())
-             *      if(flywheelPIDToggleEntry.getBoolean()){
-             *          flywheel.updatePIDController(mkPEntry.getDouble(),
-             *          mkIEntry.getDouble(), mkDEntry.getDouble(),
-             *          mkIzEntry.getDouble(), mkFFEntry.getDouble(), 0);
-             *      } else if(flywheelPIDToggleEntry.getBoolean(false)){
-             *      flywheel.updatePIDController(FlywheelConstants.kP, FlywheelConstants.kI,
-             *      FlywheelConstants.kD, FlywheelConstants.kIz, FlywheelConstants.kFF, 0)
-             *      }
-             * }
-            */
-        } catch(IllegalArgumentException e){}
+            //Motion magic with PID toggle implementation should go below, will add later... DO THIS LATER, copied in the flywheel pid toggle tentative logic that I didn't double check
+            //  if(flywheelToggleEntry.getBoolean()){
+            //  *      flywheel.setFlywheelSetpoint(flywheelSetpointEntry.getDouble())
+            //  *      if(flywheelPIDToggleEntry.getBoolean()){
+            //  *          flywheel.updatePIDController(mkPEntry.getDouble(),
+            //  *          mkIEntry.getDouble(), mkDEntry.getDouble(),
+            //  *          mkIzEntry.getDouble(), mkFFEntry.getDouble(), 0);
+            //  *      } else if(flywheelPIDToggleEntry.getBoolean(false)){
+            //  *      flywheel.updatePIDController(FlywheelConstants.kP, FlywheelConstants.kI,
+            //  *      FlywheelConstants.kD, FlywheelConstants.kIz, FlywheelConstants.kFF, 0)
+            //  *      }
+            //  * }
+        } catch (Exception e){
+
+        }
+            
     }
 }
