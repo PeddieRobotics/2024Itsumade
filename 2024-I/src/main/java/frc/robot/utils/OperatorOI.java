@@ -10,6 +10,7 @@ import frc.robot.commands.ArmCommands.ManualArmControl;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
+import frc.robot.utils.Constants.OIConstants;
 import frc.robot.subsystems.Superstructure;
 
 public class OperatorOI {
@@ -61,9 +62,7 @@ public class OperatorOI {
         } 
 
         ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
-        if(bothBumpersHeld()){
             L2Trigger.whileTrue(new ManualArmControl());
-        }
     }
 
     public void configureController() {
@@ -92,6 +91,8 @@ public class OperatorOI {
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
+
+        Trigger LStick = new JoystickButton(controller, PS4Controller.Axis.kLeftY.value);
 
         // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
@@ -152,10 +153,10 @@ public class OperatorOI {
 
     public double getForward() {
         double input = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
-        if (Math.abs(input) < 0.9) {
-            input *= 0.7777;
+        if (Math.abs(input) < OIConstants.kDrivingDeadband) {
+            input = 0;
         } else {
-            input = Math.pow(input, 3);
+            input *= 0.7777;
         }
         return input;
     }
