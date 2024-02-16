@@ -126,6 +126,10 @@ public class Arm {
         return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - ArmConstants.kArmIntakeHPPosition) < ArmConstants.kArmPositionEpsilon;
     }
 
+    public boolean isAtStowAngle(){
+        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - ArmConstants.kArmStowPosition) < ArmConstants.kArmPositionEpsilon;
+    }
+
     public boolean isAtGroundIntakeAngle(){
         return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - ArmConstants.kArmIntakePositionFromGround) < ArmConstants.kArmPositionEpsilon;
     }

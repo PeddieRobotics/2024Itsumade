@@ -7,6 +7,7 @@ import frc.robot.utils.Constants.IntakeConstants;
 public class Superstructure extends SubsystemBase {
     private static Superstructure superstructure;
     private final Arm arm;
+    private final Climber climber;
     private final Intake intake;
     private final Flywheel flywheel;
     private final Hopper hopper;
@@ -25,6 +26,7 @@ public class Superstructure extends SubsystemBase {
         LAYUP_SCORING,
         LL_PREP,
         LL_SCORING,
+        DEPLOY_CLIMBER,
         CLIMBING
     }
 
@@ -34,6 +36,7 @@ public class Superstructure extends SubsystemBase {
 
     public Superstructure(){
         arm = Arm.getInstance();
+        climber = Climber.getInstance();
         flywheel = Flywheel.getInstance();
         intake = Intake.getInstance();
         hopper = Hopper.getInstance();
@@ -285,20 +288,25 @@ public class Superstructure extends SubsystemBase {
                 }
                 break;
 
-            case CLIMBING:
+            case DEPLOY_CLIMBER:
                 arm.setStowPosition();
                 flywheel.stopFlywheel();
                 hopper.stopHopper();
                 intake.stopIntake();
-                //Climbing logic for the state here; nothing is in the subsystem so can't do anything
-                
-                if(requestedSystemState == SuperstructureState.STOW){
+                if(arm.isAtStowAngle()){
+                    climber.deployClimber(); //If we're at the stow angle, we can climb and the climber will deploy
+                }
+
+                if(requestedSystemState == SuperstructureState.CLIMBING){
                     nextSystemState = requestedSystemState;
                 }
                 break; 
+
+            case CLIMBING:
+                climber.pulldownClimber(); //once you press the other button to pull down, the climber will pull down
+                break; 
         }
         systemState = nextSystemState;
-        //SmartDashboard.putString("State", stateAsString);
     }
 
     public String stateAsString(){ //possibly? using this to print state on shuffleboard
@@ -321,6 +329,8 @@ public class Superstructure extends SubsystemBase {
                 return "LL_PREP"; 
             case LL_SCORING:
                 return "LL_SCORING";
+            case DEPLOY_CLIMBER:
+                return "DEPLOY CLIMBER";
             case CLIMBING:
                 return "CLIMBING";
         }
