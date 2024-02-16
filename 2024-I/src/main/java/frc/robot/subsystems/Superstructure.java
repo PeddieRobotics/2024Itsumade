@@ -133,8 +133,8 @@ public class Superstructure extends SubsystemBase {
                     hopper.stopHopper();
                 }
 
-                //only switch states from here if done indexing
-                if(requestedSystemState == SuperstructureState.STOW && isGamepieceIndexed()){ //CHECK THIS
+                //only switch states from here if done indexing, but let it go into stow from anywhere
+                if(requestedSystemState == SuperstructureState.STOW){ //CHECK THIS
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){
                     nextSystemState = requestedSystemState; 
@@ -158,8 +158,8 @@ public class Superstructure extends SubsystemBase {
                     hopper.stopHopper();
                 }
 
-                //only switch states from intake if done indexing
-                if(requestedSystemState == SuperstructureState.STOW && isGamepieceIndexed()){
+                //only switch states from intake if done indexing, but let it go into stow from anywhere
+                if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){
                     nextSystemState = requestedSystemState; 
@@ -176,15 +176,13 @@ public class Superstructure extends SubsystemBase {
                 if(isGamepieceIndexed()){
                     arm.setAmpPosition();
                     flywheel.runFlywheelAmp();
-                    hopper.stopHopper(); //only when we are shooting in the shooting states do we run the hopper
+                    hopper.stopHopper(); //only run hopper when we are shooting in the shooting states 
                     intake.stopIntake();
                 } else {}
                 
-               
-
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_SCORING && flywheel.isAtRPM()){
+                } else if(requestedSystemState == SuperstructureState.AMP_SCORING && isGamepieceIndexed() &&  flywheel.isAtRPM()){
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.LL_PREP){
                     nextSystemState = requestedSystemState;
@@ -194,7 +192,7 @@ public class Superstructure extends SubsystemBase {
                 break; 
 
             case AMP_SCORING:
-                if(isGamepieceIndexed()){
+                if(isGamepieceIndexed()){ //stop this once the piece is scored
                     flywheel.runFlywheelAmp();
                     hopper.runHopper();
                     intake.stopIntake();
@@ -251,7 +249,7 @@ public class Superstructure extends SubsystemBase {
                 break;
 
             case LL_PREP:
-                if(isGamepieceIndexed()){
+                if(isGamepieceIndexed()){ //should generally always be true here-- maybe switch this to if the arm isn't at position?
                     arm.setLLPosition();
                     flywheel.runFlywheelShot();
                     hopper.stopHopper(); //only when we are shooting in the shooting states do we run the hopper
@@ -260,7 +258,7 @@ public class Superstructure extends SubsystemBase {
 
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LL_SCORING && isGamepieceIndexed() && flywheel.isAtRPM()){
+                } else if(requestedSystemState == SuperstructureState.LL_SCORING && isGamepieceIndexed() && flywheel.isAtRPM() && arm.isAtLLAngle()){
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.AMP_PREP){
                     nextSystemState = requestedSystemState;

@@ -123,7 +123,7 @@ public class Arm {
     }
 
     public boolean isAtHPAngle(){
-        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - ArmConstants.kArmIntakeHPPosition) < ArmConstants.kArmPositionEpsilon;
+        return Math.abs(getArmAngleDegrees() - ArmConstants.kArmIntakeHPPosition) < ArmConstants.kArmPositionEpsilon;
     }
 
     public boolean isAtStowAngle(){
@@ -131,11 +131,19 @@ public class Arm {
     }
 
     public boolean isAtGroundIntakeAngle(){
-        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - ArmConstants.kArmIntakePositionFromGround) < ArmConstants.kArmPositionEpsilon;
+        return Math.abs(getArmAngleDegrees() - ArmConstants.kArmIntakePositionFromGround) < ArmConstants.kArmPositionEpsilon;
+    }
+
+    public boolean isAtLLAngle(){
+        return Math.abs(getArmAngleDegrees() - getAngleFromDist(limelightFront.getDistance())) < ArmConstants.kArmPositionEpsilon;
     }
 
      public void setArmAngle(double angle){
         armPrimaryMotor.setPosition(angle);
+    }
+
+    public double getArmAngleDegrees(){
+        return armCANcoder.getAbsolutePosition().getValueAsDouble()*360;
     }
 
     public double getAngleFromDist(double dist){
@@ -168,9 +176,9 @@ public class Arm {
         setArmAngle(ArmConstants.kArmStowPosition);
     }
 
-    public void getArmAngle(){
-        armPrimaryMotor.getPosition();
-    }
+    // public void getArmAngle(){
+    //     armPrimaryMotor.getPosition();
+    // }
 
     public void periodic() {
 
