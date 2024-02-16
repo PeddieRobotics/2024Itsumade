@@ -122,12 +122,12 @@ public final class Constants {
     public static final double kFollowNoteAngleThreshold = 0;
 
     //target apriltag command constants
-    public static final double kTargetP = 0;
-    public static final double kTargetI = 0;
+    public static final double kTargetP = 0.03;
+    public static final double kTargetI = 0.1;
     public static final double kTargetD = 0;
     public static final double kTargetFF = 0;
 
-    public static final double kTargetAngleThreshold = 0.5;
+    public static final double kTargetAngleThreshold = 2.0;
   }
 
   public static class ArmConstants {

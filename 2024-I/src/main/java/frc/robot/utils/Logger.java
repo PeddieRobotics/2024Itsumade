@@ -18,7 +18,7 @@ public class Logger {
     private static Logger instance;
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
     private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry;
-    private StringLogEntry robotStateEntry;
+    private StringLogEntry robotStateEntry, commandEntry;
     private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
     private double lastTeleopEnable;
@@ -26,7 +26,7 @@ public class Logger {
 
     private Drivetrain drivetrain;
     private Intake intake;
-    private Hopper hopper;
+    // private Hopper hopper;
     private Superstructure superstructure;
 
     public static Logger getInstance() {
@@ -39,6 +39,7 @@ public class Logger {
     public Logger() {
         drivetrain = Drivetrain.getInstance();
         intake = Intake.getInstance();
+        // hopper = Hopper.getInstance();
         superstructure = Superstructure.getInstance();
 
         // Superstructure Logs
@@ -56,13 +57,15 @@ public class Logger {
         intakeCurrentEntry = new DoubleLogEntry(log, "/Intake/Intake Current");
 
         // Hopper Logs
-        hopperBottomSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
-        hopperTopSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
-        hopperCurrentEntry = new DoubleLogEntry(log, "/Hopper/Hopper Current");
+        // hopperBottomSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
+        // hopperTopSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
+        // hopperCurrentEntry = new DoubleLogEntry(log, "/Hopper/Hopper Current");
+
+        commandEntry = new StringLogEntry(log, "/Commands/commands");
     }
 
     public void logEvent(String event, Boolean isStart) {
-        // stringLog.append(event + (isStart? " Started": " Ended"));
+        commandEntry.append(event + (isStart? " Started": " Ended"));
 
     }
 
@@ -78,9 +81,9 @@ public class Logger {
         intakeCurrentEntry.append(intake.getMotorCurrent());
 
         // Hopper
-        hopperBottomSensorEntry.append(hopper.bottomSensor());
-        hopperTopSensorEntry.append(hopper.topSensor());
-        hopperCurrentEntry.append(hopper.getMotorCurrent());
+        // hopperBottomSensorEntry.append(hopper.bottomSensor());
+        // hopperTopSensorEntry.append(hopper.topSensor());
+        // hopperCurrentEntry.append(hopper.getMotorCurrent());
     }
 
     public void updateDrivetrainLogs() {
