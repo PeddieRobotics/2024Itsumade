@@ -116,7 +116,7 @@ public class Superstructure extends SubsystemBase {
                 //     nextSystemState = requestedSystemState;
                 // } 
                 
-                else if (requestedSystemState == SuperstructureState.CLIMBING){
+                else if (requestedSystemState == SuperstructureState.DEPLOY_CLIMBER){
                     nextSystemState = requestedSystemState;
                 }
 
@@ -333,6 +333,16 @@ public class Superstructure extends SubsystemBase {
                 return "CLIMBING";
         }
         return "";
+    }
+
+    public void setScoringState(){
+        if(systemState == SuperstructureState.AMP_PREP){
+            requestState(SuperstructureState.AMP_SCORING);
+        } else if(systemState == SuperstructureState.LL_PREP){
+            requestState(SuperstructureState.LL_SCORING);
+        } else if(systemState == SuperstructureState.LAYUP_PREP){
+            requestState(SuperstructureState.LAYUP_SCORING);
+        }
     }
 
     // private boolean hasGamepiece(){ //this has potential use cases if we want to keep a note in the intake instead of indexing it right away

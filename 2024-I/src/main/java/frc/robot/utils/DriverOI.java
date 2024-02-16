@@ -46,7 +46,7 @@ public class DriverOI {
 
     private boolean usePreScorePose;
 
-    private Trigger xButton, touchpadButton, circleButton, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper;
+    private Trigger xButton, touchpadButton, circleButton, ps5Button, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper;
 
     public DriverOI() {
         arm = Arm.getInstance();
@@ -70,16 +70,17 @@ public class DriverOI {
             superstructure.requestState(SuperstructureState.STOW);
         } else if (circleButton.getAsBoolean()) {
             superstructure.requestState(SuperstructureState.HP_INTAKE);
-        } else if (triangleButton.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.LL_SCORING); // CHANGE THIS LATER BECAUSE THERE IS DEEPER
-                                                                         // LOGIC REQUIRED
+        } else if (triangleButton.getAsBoolean() ) {
+            superstructure.setScoringState(); //Scores the gamepiece depending on which scoring state you are in
         } else if (squareButton.getAsBoolean()) {
             // drive to note command here
         } else if (L1Bumper.getAsBoolean()) {
             // align command here
         } else if (R1Bumper.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.CLIMBING);
+            superstructure.requestState(SuperstructureState.CLIMBING); //Will climb since 
         }
+
+        ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
     }
 
     public void configureController(boolean usePreScorePose) {
@@ -111,7 +112,6 @@ public class DriverOI {
 
         // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
-        ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
         // Press and hold for outtaking slow (gamepiece adjustment), with down arrow
         // this becomes full speed.
