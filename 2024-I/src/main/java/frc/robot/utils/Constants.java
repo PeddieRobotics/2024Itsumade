@@ -37,8 +37,8 @@ public final class Constants {
         swerveModuleLocations[3]);
 
     // TODO: Change this value
-    public static final double kMaxFloorSpeed = 2.0; // meters per second
-    public static final double kMaxAngularSpeed = Math.PI; // radians per second
+    public static final double kMaxFloorSpeed = 3.0; // meters per second
+    public static final double kMaxAngularSpeed = 3 / 2 * Math.PI; // radians per second
 
     public static final int kDriveCurrentLimit = 30;
     public static final int kTurningCurrentLimit = 30;
