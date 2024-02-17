@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
-import frc.robot.subsystems.LimelightFront;
-
+import frc.robot.subsystems.LimelightShooter;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -19,7 +18,7 @@ import frc.robot.utils.Constants.ArmConstants;
 public class Arm extends SubsystemBase{
 
     private static Arm instance;
-    private static LimelightFront limelightFront;
+    private static LimelightShooter limelightShooter;
 
     private Kraken armPrimaryMotor, armSecondaryMotor;
     private CANcoder armCANcoder;
@@ -33,7 +32,7 @@ public class Arm extends SubsystemBase{
     private ArmState state, goalState;
 
     public Arm() {
-        limelightFront = LimelightFront.getInstance();
+        limelightShooter = LimelightShooter.getInstance();
 
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
 
@@ -147,7 +146,7 @@ public class Arm extends SubsystemBase{
     }
 
     public boolean isAtLLAngle(){
-        return Math.abs(getArmAngleDegrees() - getAngleFromDist(limelightFront.getDistance())) < ArmConstants.kArmPositionEpsilon;
+        return Math.abs(getArmAngleDegrees() - getAngleFromDist(limelightShooter.getDistance())) < ArmConstants.kArmPositionEpsilon;
     }
 
      public void setArmAngle(double angle){
@@ -181,7 +180,7 @@ public class Arm extends SubsystemBase{
     }
 
     public void setLLPosition(){
-        setArmAngle(getAngleFromDist(limelightFront.getDistance())); 
+        setArmAngle(getAngleFromDist(limelightShooter.getDistance())); 
     }
 
     public void setStowPosition(){
