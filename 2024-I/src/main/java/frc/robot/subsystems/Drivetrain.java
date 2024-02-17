@@ -306,7 +306,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void resetPose(Pose2d pose) {
-        resetGyro();
+        gyro.reset();
         odometry.resetPosition(getGyroRotation2d(), swerveModulePositions, pose);
     }
 
@@ -329,7 +329,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void resetGyro() {
-        gyro.reset();
+        resetPose(odometry.getEstimatedPosition());
     }
 
     public double[] getModuleRotations() {
