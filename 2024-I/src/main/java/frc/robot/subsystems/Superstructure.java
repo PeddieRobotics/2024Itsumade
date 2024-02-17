@@ -48,7 +48,7 @@ public class Superstructure extends SubsystemBase {
         // hasGamepieceOverride = SmartDashboard.getBoolean("Has Gamepiece Override", false);
 
         stateDuration = 0;
-        shootingSpeed=0;
+        shootingSpeed= 0;
         internalStateTimer = 0;
     }
 
@@ -66,11 +66,10 @@ public class Superstructure extends SubsystemBase {
     public void shoot(double flywheelspeed){
         requestedSystemState=SuperstructureState.LAYUP_PREP;
         shootingSpeed=flywheelspeed;
-
     }
 
     public String getRobotState(){
-        return (systemState.toString());
+        return systemState.toString();
     }
 
     @Override

@@ -15,7 +15,7 @@ import frc.robot.utils.Logger;
 import frc.robot.utils.RollingAverage;
 
 public class LimelightShooter extends Limelight {
-    private static LimelightShooter limelightFront;
+    private static LimelightShooter limelightShooter;
 
     private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage;
 
@@ -36,10 +36,10 @@ public class LimelightShooter extends Limelight {
     }
 
     public static LimelightShooter getInstance() {
-        if (limelightFront == null) {
-            limelightFront = new LimelightShooter();
+        if (limelightShooter == null) {
+            limelightShooter = new LimelightShooter();
         }
-        return limelightFront;
+        return limelightShooter;
     }
 
     public String getLimelightName(){

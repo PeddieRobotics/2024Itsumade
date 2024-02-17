@@ -61,7 +61,7 @@ public class Logger {
         // hopperTopSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
         // hopperCurrentEntry = new DoubleLogEntry(log, "/Hopper/Hopper Current");
 
-        commandEntry = new StringLogEntry(log, "/Commands/commands");
+        commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
     }
 
     public void logEvent(String event, Boolean isStart) {
