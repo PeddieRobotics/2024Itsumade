@@ -131,8 +131,7 @@ public final class Constants {
   }
 
   public static class ArmConstants {
-    public static final int kArmPrimaryCurrentLimit = 0;
-    public static final int kArmSecondaryCurrentLimit = 0;
+    public static final int kArmPrimaryCurrentLimit = 40;
     public static final double kArmS = 0.25;
     public static final double kArmV = 0;
     public static final double kArmA = 0;

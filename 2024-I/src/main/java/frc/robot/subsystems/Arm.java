@@ -21,7 +21,7 @@ public class Arm extends SubsystemBase{
     private static Arm instance;
     private static LimelightShooter limelightShooter;
 
-    private Kraken armPrimaryMotor, armSecondaryMotor;
+    private Kraken armMotor;
     private CANcoder armCANcoder;
     private InterpolatingDoubleTreeMap LLShotMap = new InterpolatingDoubleTreeMap();
     private Rate angle;
@@ -37,29 +37,19 @@ public class Arm extends SubsystemBase{
 
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
 
-        armPrimaryMotor = new Kraken(RobotMap.ARM_PRIMARY_MOTOR, RobotMap.CANIVORE_NAME);
+        armMotor = new Kraken(RobotMap.ARM_PRIMARY_MOTOR, RobotMap.CANIVORE_NAME);
 
         // armPrimaryMotor.setSoftLimits(true, Constants.ArmConstants.kArmForwardSoftLimitDegrees/360, Constants.ArmConstants.kArmReverseSoftLimitDegrees/360);
 
-        armPrimaryMotor.setInverted(true);
+        armMotor.setInverted(true);
+        armMotor.setCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
+        armMotor.setCoast();
+        armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
 
-        armPrimaryMotor.setCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
-        armSecondaryMotor.setCurrentLimit(ArmConstants.kArmSecondaryCurrentLimit);
-
-        // this can be overwritten by any other control type, follower
-        armSecondaryMotor.setFollower(RobotMap.ARM_PRIMARY_MOTOR, false);
-
-        armPrimaryMotor.setCoast();
-
-        armPrimaryMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
-
-        armPrimaryMotor.setRotorToSensorRatio(Constants.ArmConstants.kRotorToSensorRatio);
-
-        armPrimaryMotor.setPositionConversionFactor(ArmConstants.kArmPositionConversionFactor);
-
-        armPrimaryMotor.setVelocityPIDValues(ArmConstants.kArmS,ArmConstants.kArmV,ArmConstants.kArmA,ArmConstants.kArmP, ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
-
-        armPrimaryMotor.setMotionMagicParameters(ArmConstants.cancoderCruiseVelocityRPS, ArmConstants.cancoderCruiseMaxAccel, ArmConstants.cancoderCruiseMaxJerk);
+        armMotor.setRotorToSensorRatio(Constants.ArmConstants.kRotorToSensorRatio);
+        armMotor.setPositionConversionFactor(ArmConstants.kArmPositionConversionFactor);
+        armMotor.setVelocityPIDValues(ArmConstants.kArmS,ArmConstants.kArmV,ArmConstants.kArmA,ArmConstants.kArmP, ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
+        armMotor.setMotionMagicParameters(ArmConstants.cancoderCruiseVelocityRPS, ArmConstants.cancoderCruiseMaxAccel, ArmConstants.cancoderCruiseMaxJerk);
 
         for(double[] pair:Constants.ScoringConstants.treeMapValues){
             LLShotMap.put(pair[0],pair[1]);
@@ -81,11 +71,11 @@ public class Arm extends SubsystemBase{
     }
 
     public void setArmPercentOutput(double speed) {
-        armPrimaryMotor.setMotor(speed);
+        armMotor.setMotor(speed);
     }
 
     public void stopArm() {
-        armPrimaryMotor.setMotor(0);
+        armMotor.setMotor(0);
     }
 
     public void putSmartDashboard() {
@@ -102,11 +92,11 @@ public class Arm extends SubsystemBase{
     }
 
     public void armPrimarySetPositionMotionMagic(double position){
-        armPrimaryMotor.setPositionMotionMagic(position);
+        armMotor.setPositionMotionMagic(position);
     }
 
     public void armPrimarySetVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kFF){
-        armPrimaryMotor.setVelocityPIDValues(kS, kV, kA, kP, kI, kD, kFF);
+        armMotor.setVelocityPIDValues(kS, kV, kA, kP, kI, kD, kFF);
     }
 
     public double getAbsoluteCANCoderPosition(){
@@ -151,7 +141,7 @@ public class Arm extends SubsystemBase{
     }
 
      public void setArmAngle(double angle){
-        armPrimaryMotor.setPosition(angle);
+        armMotor.setPosition(angle);
     }
 
     public double getArmAngleDegrees(){
@@ -188,9 +178,9 @@ public class Arm extends SubsystemBase{
         setArmAngle(ArmConstants.kArmStowPosition);
     }
 
-    // public void getArmAngle(){
-    //     armPrimaryMotor.getPosition();
-    // }
+    public void getArmAngle(){
+        armMotor.getPosition();
+    }
 
     @Override
     public void periodic() {
