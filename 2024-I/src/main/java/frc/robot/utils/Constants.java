@@ -49,6 +49,9 @@ public final class Constants {
     public static final double kFrontRightModuleAngularOffset = -2.01 + 0.197 - 2.68;
     public static final double kBackLeftModuleAngularOffset = 2.09 + 2.08;
     public static final double kBackRightModulelAngularOffset = -2.26 - 1.75;
+
+    public static final double kHeadingCorrectionP = 0.1;
+    public static final double kHeadingCorrectionTolerance = 1.0;
   }
 
   public static class ModuleConstants {
