@@ -66,7 +66,7 @@ public class OperatorOI {
     }
 
     public void configureController() {
-        controller = new PS4Controller(0);
+        controller = new PS4Controller(1);
 
         // Arm Poses
         // L1 score (will move to this pose regardless of having a gamepiece)
