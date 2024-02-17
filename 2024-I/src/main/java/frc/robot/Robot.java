@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     shuffleboardMain = ShuffleboardMain.getInstance();
     
     DataLogManager.logNetworkTables(false);
-    DataLogManager.start();
+    DataLogManager.start("/media/sda1");
     logger = Logger.getInstance();
     DriverStation.startDataLog(DataLogManager.getLog());
 

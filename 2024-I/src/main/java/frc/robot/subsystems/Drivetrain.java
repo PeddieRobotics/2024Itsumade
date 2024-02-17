@@ -111,6 +111,7 @@ public class Drivetrain extends SubsystemBase {
         gyro.setYaw(0);
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, gyro.getRotation2d(), swerveModulePositions,
                 new Pose2d());
+        field = new Field2d();
 
         timer = new Timer();
         timer.start();
@@ -135,7 +136,6 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Logistic H3", H3); 
         
         SmartDashboard.putBoolean("Megatag updates", true);
-
 
         // temp
         SmartDashboard.putNumber("Target P", 0);
@@ -166,8 +166,8 @@ public class Drivetrain extends SubsystemBase {
 
         useMegaTag = SmartDashboard.getBoolean("Megatag updates", useMegaTag);
 
-        // field.setRobotPose(getPose()); 
-        // SmartDashboard.putData(field); 
+        field.setRobotPose(getPose()); 
+        SmartDashboard.putData(field); 
 
         // Updating the odometry
         for (int i = 0; i < 4; i++) {
@@ -177,6 +177,7 @@ public class Drivetrain extends SubsystemBase {
 
         double distance = Units.inchesToMeters(limelightShooter.getDistance());
         int numAprilTag = LimelightHelper.getNumberOfAprilTagsSeen(limelightShooter.getLimelightName());
+        SmartDashboard.putNumber("Number of Tags Seems", numAprilTag);
 
         if (numAprilTag >= 2) {
             //if forcing calibration make visionstd minimal otherwise choose between function for 3 and 2 based on number of tags seen

@@ -103,7 +103,7 @@ public class DriverOI {
 
         // Stowed pose
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
-        touchpadButton.whileTrue(new ForcedCalibration());
+        touchpadButton.onTrue(new ForcedCalibration());
 
         // Mute homes the entire arm subsystem, both wrist and shoulder.
         Trigger muteButton = new JoystickButton(controller, 15);
