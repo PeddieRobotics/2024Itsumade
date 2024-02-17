@@ -44,7 +44,7 @@ public class Kraken {
         talon.getConfigurator().apply(new TalonFXConfiguration());
     }
 
-    public void setPosition(double position){
+    public void setEncoder(double position){
         talon.getConfigurator().setPosition(position);
     }
 
@@ -190,12 +190,12 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    public void setControlPosition(double position, int slot) {
+    public void setPosition(double position, int slot) {
         final PositionVoltage request = new PositionVoltage(0).withSlot(slot);
         talon.setControl(request.withPosition(position).withEnableFOC(true));
     }
 
-    public void setControlVelocity(double velocity, int slot) {
+    public void setVelocity(double velocity, int slot) {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(slot);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor).withEnableFOC(true));
     }

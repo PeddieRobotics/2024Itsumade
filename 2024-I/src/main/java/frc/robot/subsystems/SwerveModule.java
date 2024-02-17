@@ -56,8 +56,8 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.setClosedLoopRampRate(0.1);
     steerMotor.setClosedLoopRampRate(0.1);
 
-    driveMotor.setPosition(0);
-    steerMotor.setPosition(0);
+    driveMotor.setEncoder(0);
+    steerMotor.setEncoder(0);
 
     // Steer Encoder Setup
     steerEncoder = new CANcoder(CANCoderId, canbusName);
@@ -140,11 +140,11 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public void resetTurnEncoder() {
-    steerMotor.setPosition(0);
+    steerMotor.setEncoder(0);
   }
 
   public void resetDriveEncoder() {
-    driveMotor.setPosition(0);
+    driveMotor.setEncoder(0);
   }
 
   public void configureCANcoder() {

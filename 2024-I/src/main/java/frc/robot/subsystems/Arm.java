@@ -39,20 +39,22 @@ public class Arm extends SubsystemBase {
         limelightShooter = LimelightShooter.getInstance();
 
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
+        configureCANcoder();
 
         armMotor = new Kraken(RobotMap.ARM_PRIMARY_MOTOR, RobotMap.CANIVORE_NAME);
 
-        // armPrimaryMotor.setSoftLimits(true,
-        // Constants.ArmConstants.kArmForwardSoftLimitDegrees/360,
-        // Constants.ArmConstants.kArmReverseSoftLimitDegrees/360);
+        armMotor.setSoftLimits(true,
+        Constants.ArmConstants.kArmForwardSoftLimitDegrees/360,
+        Constants.ArmConstants.kArmReverseSoftLimitDegrees/360);
 
+        armMotor.setEncoder(-90.0);
         armMotor.setInverted(true);
         armMotor.setCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
-        armMotor.setCoast();
-        armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
+        armMotor.setBrake();
+        armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
 
-        armMotor.setRotorToSensorRatio(Constants.ArmConstants.kRotorToSensorRatio);
-        armMotor.setPositionConversionFactor(ArmConstants.kArmPositionConversionFactor);
+        armMotor.setRotorToSensorRatio(ArmConstants.kRotorToSensorRatio);
+        armMotor.setPositionConversionFactor(ArmConstants.kArmPositionConversionFactor * 2.0);
         armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
                 ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
         armMotor.setMotionMagicParameters(ArmConstants.cancoderCruiseVelocityRPS, ArmConstants.cancoderCruiseMaxAccel,
@@ -66,7 +68,6 @@ public class Arm extends SubsystemBase {
         goalState = ArmState.Stowed;
         angle = new Rate(0);
 
-        configureCANcoder();
         putSmartDashboard();
     }
 
@@ -74,7 +75,7 @@ public class Arm extends SubsystemBase {
     public void configureCANcoder() {
         CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive; // doublecheck this
-        canCoderConfig.MagnetSensor.MagnetOffset = Constants.ArmConstants.kArmPositionOffsetDegrees / 360; // and this
+        canCoderConfig.MagnetSensor.MagnetOffset = -Constants.ArmConstants.kArmPositionOffsetDegrees / 360; // and this
         armCANcoder.getConfigurator().apply(canCoderConfig);
     }
 
@@ -101,15 +102,16 @@ public class Arm extends SubsystemBase {
     }
 
     public void updateSmartDashboard() {
-        SmartDashboard.putNumber("Absolute CANCoder Reading", getAbsoluteCANCoderPosition());
-        SmartDashboard.putNumber("Internal Motor Encoder Reading", armMotor.getPosition());
+        SmartDashboard.putNumber("ARM Absolute CANCoder Reading", getAbsoluteCANCoderPosition());
+        SmartDashboard.putNumber("ARM Internal Motor Encoder Reading", armMotor.getPosition());
 
         SmartDashboard.putNumber("Motor vel RPS", angle.getVel() * ArmConstants.kRotorToSensorRatio);
         SmartDashboard.putNumber("Motor Accel RPS^2", angle.getAccel() * ArmConstants.kRotorToSensorRatio);
         SmartDashboard.putNumber("Motor Jerk RPS^3", angle.getJerk() * ArmConstants.kRotorToSensorRatio);
 
+        SmartDashboard.putNumber("Open Loop Speed Input", DriverOI.getInstance().getForward()/5);
         if(SmartDashboard.getBoolean("Open Loop Arm Control", false)){
-            setArmPercentOutput(DriverOI.getInstance().getForward());
+            setArmPercentOutput(DriverOI.getInstance().getForward()/10);
         }
     }
 
@@ -123,7 +125,7 @@ public class Arm extends SubsystemBase {
     }
 
     public double getAbsoluteCANCoderPosition() {
-        return armCANcoder.getAbsolutePosition().getValueAsDouble() * 360;
+        return armCANcoder.getPosition().getValueAsDouble() * 360 / 2;
     }
 
     public static Arm getInstance() {
@@ -161,7 +163,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setArmAngle(double angle) {
-        armMotor.setPosition(angle);
+        armMotor.setPosition(angle, 0);
     }
 
     public double getArmAngleDegrees() {

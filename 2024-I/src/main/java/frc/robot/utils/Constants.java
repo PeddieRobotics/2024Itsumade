@@ -132,6 +132,7 @@ public final class Constants {
 
   public static class ArmConstants {
     public static final int kArmPrimaryCurrentLimit = 40;
+
     public static final double kArmS = 0.25;
     public static final double kArmV = 0;
     public static final double kArmA = 0;
@@ -140,24 +141,26 @@ public final class Constants {
     public static final double kArmD = 0;
     public static final double kArmFF = 0;
     public static final double kArmIZone = 0;
-    public static final double kArmForwardSoftLimitDegrees = 100;
-    public static final double kArmReverseSoftLimitDegrees = -36;
-    public static final double kArmGearReduction = 0;
+
+    public static final double kArmForwardSoftLimitDegrees = 140;
+    public static final double kArmReverseSoftLimitDegrees = 0;
+
+    public static final double kArmGearReduction = 16384.0/125;
+    public static final double kRotorToSensorRatio = kArmGearReduction / (360);
     public static final double kArmPositionConversionFactor = 1.0; // dependednt on feedbakc device
     //hypothetical values for the arm when going to these various positions
+
     public static final double kArmIntakeHPPosition = 0.0; // in deg
     public static final double kArmPositionEpsilon = 1;
     public static final double kArmAmpPosition = 45.0;
     public static final double kArmLayupPosition = -80.0;
     public static final double kArmStowPosition = -90.0;
     public static final double kArmIntakePositionFromGround = -70.0;
-    public static final double kArmPositionOffsetDegrees = 58.95-125.8; //hehe
 
+    public static final double kArmPositionOffsetDegrees = 37.771;
     public static final double cancoderCruiseVelocityRPS=.3;
     public static final double cancoderCruiseMaxAccel=200; // rot/s^2
     public static final double cancoderCruiseMaxJerk=1600; //rot/s^3
-
-    public static final double kRotorToSensorRatio = 16384.0/125;
   }
 
   public static class ClimberConstants {

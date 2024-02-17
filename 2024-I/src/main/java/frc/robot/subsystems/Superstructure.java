@@ -79,7 +79,7 @@ public class Superstructure extends SubsystemBase {
 
             //idle state of robot, arm is in stow position, 
             case STOW:
-                arm.setStowPosition();
+                // arm.setStowPosition();
                 intake.stopIntake();
                 // hopper.stopHopper();
 

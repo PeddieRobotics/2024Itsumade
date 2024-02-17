@@ -55,7 +55,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void deployClimber(){
-    rightClimber.setPosition(ClimberConstants.kClimberUnwindPosition);
+    rightClimber.setEncoder(ClimberConstants.kClimberUnwindPosition);
   }
 
   public void pulldownClimber(){
