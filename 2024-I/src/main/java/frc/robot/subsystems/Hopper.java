@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
+import frc.robot.utils.Constants.HopperConstants;
 import frc.robot.utils.Constants.IntakeConstants;
 
 public class Hopper extends SubsystemBase {
@@ -38,17 +39,17 @@ public class Hopper extends SubsystemBase {
     return hopper;
   }
 
-  public void index(){
+  public void runHopper(){
     //indexing (but not shooting logic) here
-    setHopper(Constants.HopperConstants.kFloorIndexSpeed);
+    setHopper(HopperConstants.kHopperSpeed);
   }
 
-  public void hpIndex(){
-    setHopper(Constants.HopperConstants.kHPIndexSpeed);
+  public void runHopperHP(){
+    setHopper(-HopperConstants.kHopperSpeed);
   }
 
   public void feed(){
-    setHopper(Constants.HopperConstants.kFeedSpeed);
+    setHopper(HopperConstants.kFeedSpeed);
   }
 
   public void setHopper(double speed) {
@@ -59,14 +60,22 @@ public class Hopper extends SubsystemBase {
     hopperMotor.setMotor(0);
   }
 
-  //returns is the beam is broken
-  public boolean topSensor() {
+  //returns if the beam is broken
+  public boolean getTopSensor() {
     return !topHopperSensor.get();
   }
 
-  //returns is the beam is broken
-  public boolean bottomSensor() {
+  //returns if the beam is broken
+  public boolean getBottomSensor() {
     return !bottomHopperSensor.get();
+  }
+
+  public boolean hasGamepiece(){
+    return (getTopSensor() || getBottomSensor());
+  }
+
+  public boolean isGamepieceIndexed(){
+    return (getTopSensor() && getBottomSensor());
   }
 
   public double getMotorCurrent(){

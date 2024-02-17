@@ -3,11 +3,14 @@ package frc.robot.utils;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ArmCommands.ManualArmControl;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
-//import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.Constants.OIConstants;
 import frc.robot.subsystems.Superstructure;
 
 public class OperatorOI {
@@ -17,7 +20,6 @@ public class OperatorOI {
         if (instance == null) {
             instance = new OperatorOI();
         }
-
         return instance;
     }
 
@@ -29,16 +31,15 @@ public class OperatorOI {
     private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
 
     private Arm arm;
-    private Superstructure superstructure;    
-
-    private boolean usePreScorePose;
-
-    private Trigger xButton, touchpadButton, circleButton, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper;
+    private Drivetrain drivetrain;
+    private Superstructure superstructure;
+    private Trigger xButton, circleButton, ps5Button, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper, L2Trigger, R2Trigger;
 
     public OperatorOI() {
         arm = Arm.getInstance();
+        drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
-        configureController(false);
+        configureController();
     }
 
     public int getAlignGoalAprilTagID() {
@@ -57,11 +58,14 @@ public class OperatorOI {
         } else if(L1Bumper.getAsBoolean()){
                 //align command here
         } else if(R1Bumper.getAsBoolean()){
-               superstructure.requestState(SuperstructureState.CLIMBING);  
-        }   
+               superstructure.requestState(SuperstructureState.DEPLOY_CLIMBER);  
+        } 
+
+        ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
+            L2Trigger.whileTrue(new ManualArmControl());
     }
 
-    public void configureController(boolean usePreScorePose) {
+    public void configureController() {
         controller = new PS4Controller(0);
 
         // Arm Poses
@@ -77,8 +81,8 @@ public class OperatorOI {
         // Square button forces the robot to look at odometry updates.
         squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
 
-        // Stowed pose
-        touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
+        // Touchpad Button (if we need it)
+        //touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
 
         // Mute homes the entire arm subsystem, both wrist and shoulder.
         muteButton = new JoystickButton(controller, 15);
@@ -87,6 +91,8 @@ public class OperatorOI {
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
+
+        Trigger LStick = new JoystickButton(controller, PS4Controller.Axis.kLeftY.value);
 
         // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
@@ -145,7 +151,17 @@ public class OperatorOI {
         return controller.getPOV() == 180;
     }
 
-    public boolean isUsePreScorePose() {
+    public double getForward() {
+        double input = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
+        if (Math.abs(input) < OIConstants.kDrivingDeadband) {
+            input = 0;
+        } else {
+            input *= 0.7777;
+        }
+        return input;
+    }
+
+    /*public boolean isUsePreScorePose() {
         return usePreScorePose;
     }
 
@@ -158,5 +174,6 @@ public class OperatorOI {
             configureController(usePreScorePose);
         }
     }
+    */
 
 }

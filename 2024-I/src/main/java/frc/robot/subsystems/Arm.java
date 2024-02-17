@@ -1,10 +1,13 @@
 package frc.robot.subsystems;
 
+import frc.robot.subsystems.LimelightShooter;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
@@ -16,9 +19,11 @@ import frc.robot.utils.Constants.ArmConstants;
 public class Arm extends SubsystemBase{
 
     private static Arm instance;
+    private static LimelightShooter limelightShooter;
 
     private Kraken armPrimaryMotor, armSecondaryMotor;
     private CANcoder armCANcoder;
+    private InterpolatingDoubleTreeMap LLShotMap = new InterpolatingDoubleTreeMap();
     private Rate angle;
 
     public enum ArmState {
@@ -28,6 +33,8 @@ public class Arm extends SubsystemBase{
     private ArmState state, goalState;
 
     public Arm() {
+        limelightShooter = LimelightShooter.getInstance();
+
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
 
         armPrimaryMotor = new Kraken(RobotMap.ARM_PRIMARY_MOTOR, RobotMap.CANIVORE_NAME);
@@ -37,6 +44,10 @@ public class Arm extends SubsystemBase{
         armPrimaryMotor.setInverted(true);
 
         armPrimaryMotor.setCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
+        armSecondaryMotor.setCurrentLimit(ArmConstants.kArmSecondaryCurrentLimit);
+
+        // this can be overwritten by any other control type, follower
+        armSecondaryMotor.setFollower(RobotMap.ARM_PRIMARY_MOTOR, false);
 
         armPrimaryMotor.setCoast();
 
@@ -49,6 +60,10 @@ public class Arm extends SubsystemBase{
         armPrimaryMotor.setVelocityPIDValues(ArmConstants.kArmS,ArmConstants.kArmV,ArmConstants.kArmA,ArmConstants.kArmP, ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
 
         armPrimaryMotor.setMotionMagicParameters(ArmConstants.cancoderCruiseVelocityRPS, ArmConstants.cancoderCruiseMaxAccel, ArmConstants.cancoderCruiseMaxJerk);
+
+        for(double[] pair:Constants.ScoringConstants.treeMapValues){
+            LLShotMap.put(pair[0],pair[1]);
+        }
 
         state = ArmState.Stowed;
         goalState = ArmState.Stowed;
@@ -119,40 +134,67 @@ public class Arm extends SubsystemBase{
         goalState = requestedState;
     }
 
-    public boolean canIntake(){
-        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - Constants.ArmConstants.kArmIntakePosition) < Constants.ArmConstants.kArmPositionEpsilon;
+    public boolean isAtHPAngle(){
+        return Math.abs(getArmAngleDegrees() - ArmConstants.kArmIntakeHPPosition) < ArmConstants.kArmPositionEpsilon;
     }
 
+    public boolean isAtStowAngle(){
+        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble()*360 - ArmConstants.kArmStowPosition) < ArmConstants.kArmPositionEpsilon;
+    }
 
+    public boolean isAtGroundIntakeAngle(){
+        return Math.abs(getArmAngleDegrees() - ArmConstants.kArmIntakePositionFromGround) < ArmConstants.kArmPositionEpsilon;
+    }
 
-    public void setIntakePosition(){
+    public boolean isAtLLAngle(){
+        return Math.abs(getArmAngleDegrees() - getAngleFromDist(limelightShooter.getDistance())) < ArmConstants.kArmPositionEpsilon;
+    }
 
+     public void setArmAngle(double angle){
+        armPrimaryMotor.setPosition(angle);
+    }
+
+    public double getArmAngleDegrees(){
+        return armCANcoder.getAbsolutePosition().getValueAsDouble()*360;
+    }
+
+    public double getAngleFromDist(double dist){
+        return LLShotMap.get(dist);
+    }
+
+    //Methods to Set Arm to a specific position
+
+    public void setGroundIntakePosition(){
+        setArmAngle(ArmConstants.kArmIntakePositionFromGround);
     }
 
     public void setHPIntakePosition(){
-
+        setArmAngle(ArmConstants.kArmIntakeHPPosition);
     }
 
     public void setAmpPosition(){
+        setArmAngle(ArmConstants.kArmAmpPosition);
+    }
 
+    public void setLayupPosition() {
+        setArmAngle(ArmConstants.kArmLayupPosition);
+    }
+
+    public void setLLPosition(){
+        setArmAngle(getAngleFromDist(limelightShooter.getDistance())); 
     }
 
     public void setStowPosition(){
-        
+        setArmAngle(ArmConstants.kArmStowPosition);
     }
+
+    // public void getArmAngle(){
+    //     armPrimaryMotor.getPosition();
+    // }
 
     @Override
     public void periodic() {
         angle.update(armCANcoder.getPosition().getValueAsDouble());
         updateSmartDashboard();
     }
-
-    public void layup() {
-
-    }
-
-    public void llalign() {
-
-    }
-
 }

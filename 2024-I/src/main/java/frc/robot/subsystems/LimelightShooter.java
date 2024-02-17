@@ -163,14 +163,6 @@ public class LimelightShooter extends Limelight {
         return getTv();
     }
 
-    public boolean targetIsCone() {
-        return hasTarget() && getNeuralClassID() == 2;
-    }
-
-    public boolean targetIsCube() {
-        return hasTarget() && getNeuralClassID() == 1;
-    }
-
 
     public void updateRollingAverages() {
         if (hasTarget()) {

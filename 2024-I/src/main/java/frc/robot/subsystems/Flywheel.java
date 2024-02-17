@@ -1,24 +1,27 @@
 package frc.robot.subsystems;
 
-import au.grapplerobotics.LaserCan;
-import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+//import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap; -- ONLY using this for arm angle currently
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
+import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Constants.FlywheelConstants;
+import frc.robot.utils.Constants.ScoringConstants;
 
 public class Flywheel {
 
     private static Flywheel instance;
-    private double flywheelSetpoint = 0;
+    private double leftSetpoint, rightSetpoint;
 
     private Kraken flywheelLeftMotor, flywheelRightMotor;
-    private LaserCan flywheelSensor;
+    // private LaserCan flywheelSensor;
+    private double rpmDelta;
 
-    private InterpolatingDoubleTreeMap map = new InterpolatingDoubleTreeMap();
 
     public Flywheel() {
+        rpmDelta = SmartDashboard.getNumber("Flywheel Delta", 0.0);
+
         flywheelLeftMotor = new Kraken(RobotMap.FLYWHEEL_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
         flywheelRightMotor = new Kraken(RobotMap.FLYWHEEL_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
         //flywheelSensor = new LaserCan(RobotMap.FLYWHEEL_SENSOR_ID);
@@ -46,10 +49,6 @@ public class Flywheel {
                 FlywheelConstants.kFlywheelI,
                 FlywheelConstants.kFlywheelD,
                 FlywheelConstants.kFlywheelFF);
-
-        for(double[] pair:Constants.ScoringConstants.treeMapValues){
-            map.put(pair[0],pair[1]);
-        }
     }
 
     public static Flywheel getInstance() {
@@ -77,43 +76,47 @@ public class Flywheel {
         flywheelRightMotor.setMotor(0);
     }
 
-    public boolean getSensorReading(){
-        if(getSensorMeasurement() < FlywheelConstants.kFlywheelSensorThreshold){
-            return true;
-        }
-        else return false;
-    }
-
-    public double getSensorMeasurement(){
-        return flywheelSensor.getMeasurement().distance_mm;
-    }
-
     public void runFlywheelVelocitySetpoint(double speed){
         flywheelLeftMotor.setVelocityWithFeedForward(speed);
         flywheelRightMotor.setVelocityWithFeedForward(speed);
+        leftSetpoint = speed;
+        rightSetpoint = speed;
     }
 
     public void runLeftFlywheelVelocitySetpoint(double speed){
         flywheelLeftMotor.setVelocityWithFeedForward(speed);
+        leftSetpoint = speed;
     }
 
     public void runRightFlywheelVelocitySetpoint(double speed){
         flywheelRightMotor.setVelocityWithFeedForward(speed);
+        rightSetpoint = speed;
     }
 
-    public void llshoot(){
-        double llDist = 0; // temp value, change later to actually get value
-        runFlywheelVelocitySetpoint(map.get(llDist));
+    public void runFlywheelAmp(){
+        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelAmpRPM);
     }
 
-    public void layup(){
-        runFlywheelVelocitySetpoint(Constants.ScoringConstants.kLayupVelocity);
+    public void runFlywheelHP(){
+        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelHPIntakeRPM);
+    }
+
+    public void runFlywheelShot(){
+        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelLayupRPM + rpmDelta); //for now, we're assumign you're using the same velocity for both LL and Layup
+    }
+
+    public double getFlywheelLeftRPM(){
+        return flywheelLeftMotor.getRPM();
+    }
+
+    public double getFlywheelRightRPM(){
+        return flywheelRightMotor.getRPM();
     }
 
     public void putSmartDashboard(){
         SmartDashboard.putBoolean("Update Flywheel PID", false);
-        SmartDashboard.putNumber("Flywheel Left Motor RPM Setpoint", flywheelSetpoint);
-        SmartDashboard.putNumber("Flywheel Right Motor RPM Setpoint", flywheelSetpoint);
+        SmartDashboard.putNumber("Flywheel Left Motor RPM Setpoint", leftSetpoint);
+        SmartDashboard.putNumber("Flywheel Right Motor RPM Setpoint", rightSetpoint);
 
         SmartDashboard.putNumber("Flywheel S", FlywheelConstants.kFlywheelS);
         SmartDashboard.putNumber("Flywheel V", FlywheelConstants.kFlywheelV);
@@ -146,8 +149,8 @@ public class Flywheel {
                 SmartDashboard.getNumber("Flywheel FF", FlywheelConstants.kFlywheelFF)
             );
 
-            flywheelLeftMotor.setVelocityWithFeedForward(SmartDashboard.getNumber("Flywheel Left Motor RPM Setpoint", flywheelSetpoint));
-            flywheelRightMotor.setVelocityWithFeedForward(SmartDashboard.getNumber("Flywheel Right Motor RPM Setpoint", flywheelSetpoint));
+            flywheelLeftMotor.setVelocityWithFeedForward(SmartDashboard.getNumber("Flywheel Left Motor RPM Setpoint", leftSetpoint));
+            flywheelRightMotor.setVelocityWithFeedForward(SmartDashboard.getNumber("Flywheel Right Motor RPM Setpoint", rightSetpoint));
         }
     }
 
@@ -155,8 +158,16 @@ public class Flywheel {
 
     }
 
-    public void amp() {
+    private boolean isLeftAtRPM(){
+        return (Math.abs(getFlywheelLeftRPM() - leftSetpoint) < ScoringConstants.kFlywheelShotThreshold);
+    }
 
+    private boolean isRightAtRPM(){
+        return (Math.abs(getFlywheelRightRPM() - rightSetpoint) < ScoringConstants.kFlywheelShotThreshold);
+    }
+
+    public boolean isAtRPM() {
+        return (isLeftAtRPM() && isRightAtRPM());
     }
 
 }

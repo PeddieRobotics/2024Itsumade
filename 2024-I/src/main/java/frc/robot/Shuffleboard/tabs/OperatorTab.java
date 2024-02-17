@@ -35,7 +35,7 @@ public class OperatorTab extends ShuffleboardTabBase{
     private GenericEntry state, armAngleEntry, armTempEntry, current1Entry, current2Entry, 
     current3Entry, flywheelAtRPMEntry, flywheelSetRPMEntry, flywheelDeltaEntry, 
     flywheelTempEntry, flywheelVelocitySetpointEntry, flywheelVelocityRightSetpointEntry, 
-    flywheelVelocityLeftSetpointEntry, flywheelToggleEntry;
+    flywheelVelocityLeftSetpointEntry, flywheelToggleEntry, isIndexedOverride, hasGamepieceOverride;
 
     //Sendable Chooser
     private SendableChooser<Command> autoRoutineSelector;
@@ -114,6 +114,16 @@ public class OperatorTab extends ShuffleboardTabBase{
             .withWidget(BuiltInWidgets.kToggleButton) 
             .withSize(1, 1)
             .withPosition(4, 1)
+            .getEntry();
+
+            isIndexedOverride = tab.add("Piece Indexed Override", false)
+            .withSize(2,1)
+            .withPosition(5, 1)
+            .getEntry();
+
+            hasGamepieceOverride = tab.add("Has Gamepiece Override", false)
+            .withSize(2,1)
+            .withPosition(5, 3)
             .getEntry();
         } catch (IllegalArgumentException e){
         }

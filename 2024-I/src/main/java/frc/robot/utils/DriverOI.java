@@ -42,15 +42,12 @@ public class DriverOI {
      */
     private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     private AlignGoalColumn alignGoalColumn = AlignGoalColumn.kCenter;
-
-    private Arm arm;
     private Superstructure superstructure;
     private Drivetrain drivetrain;
 
     private boolean usePreScorePose;
 
     public DriverOI() {
-        arm = Arm.getInstance();
         drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
         configureController();
@@ -115,7 +112,6 @@ public class DriverOI {
 
         // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
-        ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
         // Press and hold for outtaking slow (gamepiece adjustment), with down arrow
         // this becomes full speed.

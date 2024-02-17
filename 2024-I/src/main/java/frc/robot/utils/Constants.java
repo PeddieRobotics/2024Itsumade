@@ -145,8 +145,13 @@ public final class Constants {
     public static final double kArmReverseSoftLimitDegrees = -36;
     public static final double kArmGearReduction = 0;
     public static final double kArmPositionConversionFactor = 1.0; // dependednt on feedbakc device
-    public static final double kArmIntakePosition = 0.0; // in deg
+    //hypothetical values for the arm when going to these various positions
+    public static final double kArmIntakeHPPosition = 0.0; // in deg
     public static final double kArmPositionEpsilon = 1;
+    public static final double kArmAmpPosition = 45.0;
+    public static final double kArmLayupPosition = -80.0;
+    public static final double kArmStowPosition = -90.0;
+    public static final double kArmIntakePositionFromGround = -70.0;
     public static final double kArmPositionOffsetDegrees = 58.95-125.8; //hehe
 
     public static final double cancoderCruiseVelocityRPS=.3;
@@ -189,9 +194,13 @@ public final class Constants {
   }
 
   public static class ScoringConstants {
-    public static final double kLayupVelocity = 0;
-    public static final double[][] treeMapValues = new double[][] { { 0, 0 }, { 1, 1 } }; // no spin, based off of
-                                                                                          // distance
+    public static final double kFlywheelLLShootingRPM = 4000;
+    public static final double kFlywheelLayupRPM = 2500;
+    public static final double kFlywheelAmpRPM = 500;
+    public static final double kFlywheelHPIntakeRPM = -250;
+    public static final double kFlywheelShotThreshold = 100; 
+    // Distance, Angle; SAMPLE VALUES, NEEDS TO BE TUNED -TONY
+    public static final double[][] treeMapValues = new double[][] { { 0.5, -55 }, { 1.5, -45 }, {2.5, -37.5}, {3.5, -25}, {4.5, -20}, {5.5, -15} }; 
   }
 
   public static class IntakeConstants {
@@ -204,8 +213,7 @@ public final class Constants {
   }
 
   public static class HopperConstants {
-    public static final double kFloorIndexSpeed = 0;
-    public static final double kHPIndexSpeed = 0;
+    public static final double kHopperSpeed = 0;
     public static final double kFeedSpeed = 0;
   }
 
