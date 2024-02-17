@@ -31,7 +31,7 @@ public class Climber extends SubsystemBase {
 
     rightClimber.setFollower(RobotMap.CLIMBER_LEFT_MOTOR, false);
 
-    rightClimber.setFeedbackDevice(0, FeedbackSensorSourceValue.RemoteCANcoder);
+    rightClimber.setFeedbackDevice(RobotMap.CLIMBER_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
     leftClimber.setFeedbackDevice(RobotMap.CLIMBER_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
 
     rightClimber.setVelocityConversionFactor(ClimberConstants.kClimberGearReduction);

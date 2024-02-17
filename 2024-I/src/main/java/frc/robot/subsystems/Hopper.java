@@ -5,7 +5,9 @@
 package frc.robot.subsystems;
 
 import au.grapplerobotics.LaserCan;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
@@ -23,10 +25,16 @@ public class Hopper extends SubsystemBase {
   // public LaserCan topHopperSensor, bottomHopperSensor;
   private DigitalInput topHopperSensor, bottomHopperSensor;
 
+  //TODO: figure out if sensor will be digital input or analog
+  // private AnalogInput topHopperSensor, bottomHopperSensor;
+
   public Hopper() {
     hopperMotor = new Kraken(RobotMap.HOPPER_MOTOR_CAN_ID, RobotMap.CANIVORE_NAME);
     topHopperSensor = new DigitalInput(RobotMap.TOP_HOPPER_SENSOR_ID);
     bottomHopperSensor = new DigitalInput(RobotMap.BOTTOM_HOPPER_SENSOR_ID);
+
+    // topHopperSensor = new AnalogInput(RobotMap.TOP_HOPPER_SENSOR_ID);
+    // bottomHopperSensor = new AnalogInput(RobotMap.BOTTOM_HOPPER_SENSOR_ID);
 
     hopperMotor.setCurrentLimit(IntakeConstants.kHopperCurrentLimit);
     hopperMotor.setBrake();
@@ -65,10 +73,28 @@ public class Hopper extends SubsystemBase {
     return !topHopperSensor.get();
   }
 
+  //ANALOG INPUT MODES
+  // public boolean getTopSensor(){
+  //   return getTopSensorReading() < 0.01;
+  // }
+
+  // public double getTopSensorReading() {
+  //   return topHopperSensor.getVoltage();
+  // }
+
   //returns if the beam is broken
   public boolean getBottomSensor() {
     return !bottomHopperSensor.get();
   }
+  
+  //ANALOG INPUT MODES
+  // public boolean getBottomSensor(){
+  //   return getBottomSensorReading() < 0.01;
+  // }
+
+  // public double getBottomSensorReading() {
+  //   return bottomHopperSensor.getVoltage();
+  // }
 
   public boolean hasGamepiece(){
     return (getTopSensor() || getBottomSensor());
@@ -85,6 +111,12 @@ public class Hopper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Hopper Top Sensor Status", getBottomSensor());
+    SmartDashboard.putBoolean("Hopper Bottom Sensor Status", getBottomSensor());
+    
+    // IF USING ANALOG INPUTS
+    // SmartDashboard.putNumber("Hopper Top Sensor Reading", getTopSensorReading());
+    // SmartDashboard.putNumber("Hopper Bottom Sensor Reading", getBottomSensorReading());
   }
 
   @Override
