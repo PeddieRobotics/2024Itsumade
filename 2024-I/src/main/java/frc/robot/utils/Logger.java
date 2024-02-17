@@ -87,7 +87,7 @@ public class Logger {
     }
 
     public void updateDrivetrainLogs() {
-        gyroAngleEntry.append(drivetrain.getHeading());
+        gyroAngleEntry.append(drivetrain.getGyroHeading());
         drivetrainSpeedEntry.append(drivetrain.getSpeed());
 
         double[] pose = { drivetrain.getPose().getX(), drivetrain.getPose().getY(),

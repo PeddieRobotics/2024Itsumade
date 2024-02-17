@@ -192,7 +192,7 @@ public class Drivetrain extends SubsystemBase {
         updateModulePositions();
         updateOdometry();
 
-        SmartDashboard.putNumber("Gyro Angle", getHeading());
+        SmartDashboard.putNumber("Gyro Angle", getGyroHeading());
         for (SwerveModule m : swerveModules)
             m.updateSmartdashBoard();
         if (SmartDashboard.getBoolean("Reset Gyro", false)) {
@@ -215,7 +215,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void updateOdometry() {
-        odometry.update(getRotation2d(), swerveModulePositions);
+        odometry.update(getGyroRotation2d(), swerveModulePositions);
         if (useMegaTag){
             limelightShooter.checkForAprilTagUpdates(odometry);
             limelightBack.checkForAprilTagUpdates(odometry);
@@ -231,62 +231,34 @@ public class Drivetrain extends SubsystemBase {
     public void drive(Translation2d translation, double rotation, boolean fieldOriented,
             Translation2d centerOfRotation) {
         ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
-        ChassisSpeeds correctedFieldRelativeSpeeds = correctHeading(fieldRelativeSpeeds);
         ChassisSpeeds robotRelativeSpeeds;
 
         if (fieldOriented) {
-            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(correctedFieldRelativeSpeeds, getRotation2d());
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getRotation2d());
         } else {
-            robotRelativeSpeeds =  correctedFieldRelativeSpeeds;
+            robotRelativeSpeeds =  fieldRelativeSpeeds;
         }
 
         currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
                 + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
         currentRobotRelativeSpeed = robotRelativeSpeeds; // not sure if robot relative
 
-        SmartDashboard.putNumber("Chassis Speed X", robotRelativeSpeeds.vxMetersPerSecond);
-        SmartDashboard.putNumber("Chassis Speed Y", robotRelativeSpeeds.vyMetersPerSecond);
-        SmartDashboard.putNumber("Theta", robotRelativeSpeeds.omegaRadiansPerSecond);
+        robotRelativeSpeeds= ChassisSpeeds.discretize(robotRelativeSpeeds,.02);//real loop time should be .02
+
+        //fudge factoring
+
+        double fudgefactor=-.11;//-.11
+        Translation2d commandedVelocity = new Translation2d(robotRelativeSpeeds.vxMetersPerSecond,robotRelativeSpeeds.vyMetersPerSecond);
+        Rotation2d commandedRotation = Rotation2d.fromRadians(robotRelativeSpeeds.omegaRadiansPerSecond);
+        Translation2d TangentVelocity = commandedVelocity.rotateBy(Rotation2d.fromDegrees(90));
+        commandedVelocity = commandedVelocity.plus(TangentVelocity.times(fudgefactor*commandedRotation.getRadians())); // adds tangent veclocity times rotational speed times fudge factor
+
+        robotRelativeSpeeds = new ChassisSpeeds(commandedVelocity.getX(), commandedVelocity.getY(), commandedRotation.getRadians());
 
         swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds, centerOfRotation);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxAngularSpeed);
         optimizeModuleStates();
         setSwerveModuleStates(swerveModuleStates);
-    }
-
-    private ChassisSpeeds correctHeading(ChassisSpeeds currentSpeeds) {
-        double currentTime = timer.get();
-        double dt = currentTime - previousTime;
-
-        double vTheta = currentSpeeds.omegaRadiansPerSecond;
-        double vTranslation = Math.sqrt(Math.pow(currentSpeeds.vxMetersPerSecond, 2)+ Math.pow(currentSpeeds.vyMetersPerSecond, 2));
-
-        if(Math.abs(vTheta) > 0.01){
-            offTime = currentTime;
-            holdHeading = getRotation2d();
-            return currentSpeeds;
-        }
-        if(currentTime - offTime < 0.5){
-            holdHeading = getRotation2d();
-            return currentSpeeds;
-        }
-        if(vTranslation < 0.1){
-            holdHeading = getRotation2d();
-            return currentSpeeds;
-        }
-
-        holdHeading = holdHeading.plus(new Rotation2d(vTheta * dt));
-
-        Rotation2d deltaHeading = holdHeading.minus(getRotation2d());
-
-        if(Math.abs(deltaHeading.getDegrees()) < DriveConstants.kHeadingCorrectionTolerance){
-            return currentSpeeds;
-        }
-
-        double correctedVTheta = deltaHeading.getRadians() / dt * DriveConstants.kHeadingCorrectionP;
-        previousTime = currentTime;
-        
-        return new ChassisSpeeds(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond, correctedVTheta);
     }
 
     // Autonomous Drive Functions
@@ -310,12 +282,20 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
-    public double getHeading() {
+    public double getHeading(){
+        return Math.IEEEremainder(odometry.getEstimatedPosition().getRotation().getDegrees(), 360);
+    }
+
+    public Rotation2d getRotation2d(){
+        return odometry.getEstimatedPosition().getRotation();
+    }
+
+    public double getGyroHeading() {
         heading = gyro.getAngle();
         return Math.IEEEremainder(heading, 360);
     }
 
-    public Rotation2d getRotation2d() {
+    public Rotation2d getGyroRotation2d() {
         Rotation2d rotation = gyro.getRotation2d();
         // return rotation.times(-1.0);
         return rotation;
@@ -327,7 +307,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void resetPose(Pose2d pose) {
         resetGyro();
-        odometry.resetPosition(getRotation2d(), swerveModulePositions, pose);
+        odometry.resetPosition(getGyroRotation2d(), swerveModulePositions, pose);
     }
 
     public double getSpeed() {
