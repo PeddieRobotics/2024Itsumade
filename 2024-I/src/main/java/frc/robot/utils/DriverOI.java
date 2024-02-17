@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DriveCommands.ForcedCalibration;
 import frc.robot.commands.DriveCommands.Target;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -102,7 +103,7 @@ public class DriverOI {
 
         // Stowed pose
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
-        touchpadButton.whileTrue(new Target());
+        touchpadButton.whileTrue(new ForcedCalibration());
 
         // Mute homes the entire arm subsystem, both wrist and shoulder.
         Trigger muteButton = new JoystickButton(controller, 15);
