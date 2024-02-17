@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -11,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Shuffleboard.ShuffleboardMain;
+import frc.robot.utils.Logger;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -26,6 +29,7 @@ public class Robot extends TimedRobot {
   // private ShuffleboardMain shuffleboardMain;
   private PowerDistribution pdh;
   private ShuffleboardMain shuffleboardMain;
+  private Logger logger;
   //private PowerDistribution pdh;
 
   /**
@@ -38,6 +42,11 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     shuffleboardMain = ShuffleboardMain.getInstance();
+    
+    DataLogManager.logNetworkTables(false);
+    DataLogManager.start();
+    logger = Logger.getInstance();
+    DriverStation.startDataLog(DataLogManager.getLog());
 
     //pdh = new PowerDistribution(1, ModuleType.kRev);
 
@@ -69,6 +78,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     // m_robotContainer.resetGyro();
+    logger.logEvent("Disabled Mode", true);
   }
 
   @Override
@@ -84,11 +94,16 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    logger.logEvent("Autonomous Mode", true);
+    logger.signalRobotEnable();
+    System.out.println("LOGGING: " + DataLogManager.getLogDir());
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    logger.updateLogs();
+  }
 
   @Override
   public void teleopInit() {
@@ -99,11 +114,17 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    logger.logEvent("TeleOp Mode", true);
+    logger.signalRobotEnable();
+    System.out.println("LOGGING: " + DataLogManager.getLogDir());
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    logger.updateLogs();
+  }
 
   @Override
   public void testInit() {

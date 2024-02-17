@@ -14,15 +14,15 @@ import frc.robot.utils.LimelightHelper;
 import frc.robot.utils.Logger;
 import frc.robot.utils.RollingAverage;
 
-public class LimelightFront extends Limelight {
-    private static LimelightFront limelightFront;
+public class LimelightShooter extends Limelight {
+    private static LimelightShooter limelightFront;
 
     private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage;
 
 
-    private String limelightName = "limelight-front";
+    private String limelightName = "limelight-shooter";
 
-    public LimelightFront() {
+    public LimelightShooter() {
         txAverage = new RollingAverage();
         tyAverage = new RollingAverage();
         taAverage = new RollingAverage();
@@ -35,11 +35,15 @@ public class LimelightFront extends Limelight {
         setPipeline(0);
     }
 
-    public static LimelightFront getInstance() {
+    public static LimelightShooter getInstance() {
         if (limelightFront == null) {
-            limelightFront = new LimelightFront();
+            limelightFront = new LimelightShooter();
         }
         return limelightFront;
+    }
+
+    public String getLimelightName(){
+        return limelightName;
     }
 
     @Override
@@ -199,6 +203,8 @@ public class LimelightFront extends Limelight {
 
     public void checkForAprilTagUpdates(SwerveDrivePoseEstimator odometry) {
         int tagsSeen = LimelightHelper.getNumberOfAprilTagsSeen(limelightName);
+        //IMPORTANT:still has safe guard preventing the use of update vision if it is outside a half meter range, delete or change 
+        //condition to furhter enable checkforapriltag updates 
         if (tagsSeen > 1 && this.getBotpose().relativeTo(odometry.getEstimatedPosition()).getTranslation().getNorm() < 0.5) {
             odometry.addVisionMeasurement(this.getBotpose(), Timer.getFPGATimestamp());
         }
