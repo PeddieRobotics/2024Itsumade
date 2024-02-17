@@ -62,7 +62,7 @@ public class OperatorOI {
         } 
 
         ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
-            L2Trigger.whileTrue(new ManualArmControl());
+        L2Trigger.whileTrue(new ManualArmControl());
     }
 
     public void configureController() {
