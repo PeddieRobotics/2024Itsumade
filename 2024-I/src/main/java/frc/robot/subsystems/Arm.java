@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import frc.robot.subsystems.LimelightShooter;
 
+import java.sql.Driver;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -11,6 +13,7 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
+import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.Rate;
 import frc.robot.utils.RobotMap;
@@ -84,6 +87,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void putSmartDashboard() {
+        SmartDashboard.putBoolean("Open Loop Arm Control", false);
         SmartDashboard.putBoolean("Update Arm PID", false);
         SmartDashboard.putNumber("Arm Primary Motor Position Setpoint", 0);
 
@@ -103,6 +107,10 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Motor vel RPS", angle.getVel() * ArmConstants.kRotorToSensorRatio);
         SmartDashboard.putNumber("Motor Accel RPS^2", angle.getAccel() * ArmConstants.kRotorToSensorRatio);
         SmartDashboard.putNumber("Motor Jerk RPS^3", angle.getJerk() * ArmConstants.kRotorToSensorRatio);
+
+        if(SmartDashboard.getBoolean("Open Loop Arm Control", false)){
+            setArmPercentOutput(DriverOI.getInstance().getForward());
+        }
     }
 
     public void armPrimarySetPositionMotionMagic(double position) {

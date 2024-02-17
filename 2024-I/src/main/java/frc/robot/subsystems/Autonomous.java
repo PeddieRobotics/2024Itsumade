@@ -32,16 +32,6 @@ public class Autonomous extends SubsystemBase {
         drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
 
-        NamedCommands.registerCommand("Intake", new InstantCommand(() -> {
-            superstructure.requestState(SuperstructureState.GROUND_INTAKE);
-        }));
-        // NamedCommands.registerCommand("SideLayup", new InstantCommand( () ->
-        // {superstructure.shoot(Constants.FlywheelConstants.SideLayupFlywheelSpeed);} )
-        // );
-        // NamedCommands.registerCommand("FrontLayup", new InstantCommand( () ->
-        // {superstructure.shoot(Constants.FlywheelConstants.FrontLayupFlywheelSpeed);}
-        // ) );
-
         registerNamedCommands();
         configureAutoBuilder();
         autoChooser = AutoBuilder.buildAutoChooser();

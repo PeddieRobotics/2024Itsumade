@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ArmCommands.ManualArmControl;
 import frc.robot.commands.DriveCommands.ForcedCalibration;
 import frc.robot.commands.DriveCommands.Target;
 import frc.robot.subsystems.Arm;
@@ -107,6 +108,7 @@ public class DriverOI {
 
         // Manual Wrist and Shoulder Override Controls
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
+        // L2Trigger.whileTrue(new ManualArmControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 

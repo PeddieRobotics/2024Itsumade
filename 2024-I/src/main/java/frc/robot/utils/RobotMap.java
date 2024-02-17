@@ -21,8 +21,7 @@ public class RobotMap {
 
 
     public static final int ARM_PRIMARY_MOTOR = 50;
-    // public static final int ARM_SECONDARY_MOTOR = 51;
-    public static final int ARM_CANCODER_ID = 51;
+    public static final int ARM_CANCODER_ID = 52;
 
     public static final int CLIMBER_RIGHT_MOTOR = 0; //DEFAULT VALUE, CHANGE LATER
     public static final int CLIMBER_LEFT_MOTOR = 0; //DEFAULT VALUE, CHANGE LATER
