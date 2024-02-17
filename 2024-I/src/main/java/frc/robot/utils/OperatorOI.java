@@ -28,7 +28,7 @@ public class OperatorOI {
      */
     private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
 
-    private Arm arm;
+    // private Arm arm;
     private Superstructure superstructure;    
 
     private boolean usePreScorePose;
@@ -36,7 +36,7 @@ public class OperatorOI {
     private Trigger xButton, touchpadButton, circleButton, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper;
 
     public OperatorOI() {
-        arm = Arm.getInstance();
+        // arm = Arm.getInstance();
         superstructure = Superstructure.getInstance();
         configureController(false);
     }

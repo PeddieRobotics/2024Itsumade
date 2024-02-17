@@ -108,7 +108,8 @@ public class Arm extends SubsystemBase{
         if (instance == null) {
             instance = new Arm();
         }
-        return instance;
+        // return instance;
+        return null;
     }
 
     public void RequestState(ArmState requestedState) {
