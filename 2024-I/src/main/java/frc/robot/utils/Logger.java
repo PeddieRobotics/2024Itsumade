@@ -86,6 +86,8 @@ public class Logger {
         // hopperCurrentEntry.append(hopper.getMotorCurrent());
     }
 
+    //put pose to log for field visualization
+    //put swerve module speeds and positions to log
     public void updateDrivetrainLogs() {
         gyroAngleEntry.append(drivetrain.getHeading());
         drivetrainSpeedEntry.append(drivetrain.getSpeed());

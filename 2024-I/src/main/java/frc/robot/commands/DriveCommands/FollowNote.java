@@ -23,8 +23,7 @@ public class FollowNote extends Command {
     private double currentAngle;
     private double error;
 
-    // Full constructor with all 6 parameters for the climb charge station
-    // algorithm.
+    //follow a note in Tele-Op
     public FollowNote() {
         drivetrain = Drivetrain.getInstance();
         limelightBack = LimelightBack.getInstance();
