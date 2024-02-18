@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Kraken {
     private final TalonFX talon;
+    //configurator for TalonFX
     private TalonFXConfiguration config;
     private int deviceID;
     private String canbusName;
@@ -35,48 +36,55 @@ public class Kraken {
 
         orchestra = new Orchestra();
         orchestra.addInstrument(talon);
+        orchestra.loadMusic("output.chrp");
 
-        var status = orchestra.loadMusic("output.chrp");
         // factoryReset();
     }
 
+    //completely reset motor configuration to default
     public void factoryReset() {
         talon.getConfigurator().apply(new TalonFXConfiguration());
     }
 
+    //set kraken encoder to a given position
     public void setEncoder(double position){
         talon.getConfigurator().setPosition(position);
     }
 
+    //set brake mode
     public void setBrake() {
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         talon.getConfigurator().apply(config);
-
     }
 
+    //set coast mode
     public void setCoast() {
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         talon.getConfigurator().apply(config);
     }
 
+    //get internal motor encoder position reading
     public double getPosition() {
-        // Get position from TalonFX and apply position conversion factor
+        //should apply position conversion factor after
         return talon.getPosition().getValueAsDouble();
     }
 
+    //get motor velocity setpoint (-1 to 1)
     public double getVelocity() {
-        // Get velocity from TalonFX and apply velocity conversion factor
         return talon.get();
     }
 
+    //get the motor rotor velocity from TalonFX in meters/second (must apply conversion factor)
     public double getMPS() {
         return talon.getRotorVelocity().getValueAsDouble() * velocityConversionFactor;
     }
 
+    //get the motor rotor velocity in RPMs (must apply conversion factor?)
     public double getRPM(){
         return talon.getRotorVelocity().getValueAsDouble() * velocityConversionFactor / 60.0;
     }
 
+    //set the current limit of motor
     public void setCurrentLimit(double currentLimit) {
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.SupplyCurrentLimit = currentLimit;
@@ -86,7 +94,7 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-
+    //invert motor
     public void setInverted(boolean inverted){
         // if(inverted) config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         // else config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -99,6 +107,7 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
+    //set a ramp rate for closed loop PID control
     public void setClosedLoopRampRate(double rampRate) {
         config.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = rampRate;
         config.ClosedLoopRamps.TorqueClosedLoopRampPeriod = rampRate;
@@ -107,6 +116,7 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
+    //set parameters for motion magic - jerk, vel, accel
     public void setMotionMagicParameters(double cruiseVelocity, double maxAcceleration, double maxJerk) {
         config.MotionMagic.MotionMagicJerk = maxJerk;
         config.MotionMagic.MotionMagicAcceleration = maxAcceleration;
@@ -115,6 +125,7 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
+    //set forward and backward soft limits
     public void setSoftLimits(boolean enableSoftLimit, double forwardLimitValue, double reverseLimitValue) {
         
         if (enableSoftLimit) {
@@ -130,15 +141,18 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
+    //allows for continuous wrap of encoder - finds the shortest path to target position
     public void setContinuousOutput(){
         config.ClosedLoopGeneral.ContinuousWrap = true;
         talon.getConfigurator().apply(config);
     }
 
+    //reset encoder value to 0
     public void resetEncoder() {
         talon.getConfigurator().setPosition(0);
     }
 
+    //set the motor in open loop control using percent output
     public void setMotor(double percentOutput) {
         final DutyCycleOut request = new DutyCycleOut(0);
         // Ensure the percentOutput is within the acceptable range [-1.0, 1.0]
@@ -149,10 +163,13 @@ public class Kraken {
 
     }
 
+    //set motor to follow a different motor
+    //set if motor needs to be inverted when following master motor
     public void setFollower(int masterCANId, boolean inverted){
         talon.setControl(new Follower(masterCANId, inverted));
     }
 
+    //set PID values for position setpoint control
     public void setPIDValues(double kP, double kI, double kD, double kF) {
         var pidSlotConfigs = new Slot0Configs();
 
@@ -163,6 +180,7 @@ public class Kraken {
         talon.getConfigurator().apply(pidSlotConfigs);
     }
 
+    //set PID values for velocity setpoint control
     public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF) {
         var pidSlotConfigs = new Slot0Configs();
 
@@ -176,63 +194,76 @@ public class Kraken {
         talon.getConfigurator().apply(pidSlotConfigs);
     }
 
+    //set the SensorToMechanismRatio - used for converting sensor (encoder) rotations to mechanism rotations
     public void setPositionConversionFactor(double conversionFactor){
         config.Feedback.SensorToMechanismRatio = conversionFactor;
         talon.getConfigurator().apply(config);
     }
 
+    //set velocity conversion factor based on gear ratio
     public void setVelocityConversionFactor(double conversionFactor){
         velocityConversionFactor = conversionFactor;
     }
 
+    //Used for FusedCANcoder, set the ratio of motor rotor rotations to rotations of sensor (CANcoder)
     public void setRotorToSensorRatio(double conversionRatio){
         config.Feedback.RotorToSensorRatio = conversionRatio;
         talon.getConfigurator().apply(config);
     }
 
+    //Set the motor target position using PID control
     public void setPosition(double position, int slot) {
         final PositionVoltage request = new PositionVoltage(0).withSlot(slot);
         talon.setControl(request.withPosition(position).withEnableFOC(true));
     }
 
+    //set motor target velocity using velocity PID control
     public void setVelocity(double velocity, int slot) {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(slot);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor).withEnableFOC(true));
     }
 
+    //set the motor target position using PID control and feedforward (often to counter gravity)
     public void setPositionWithFeedForward(double position) {
         final PositionVoltage request = new PositionVoltage(0).withSlot(0);
         talon.setControl(request.withPosition(position).withFeedForward(feedForward).withEnableFOC(true));
     }
 
+    //set the motor target velocity using velocity PID control and feedforward
     public void setVelocityWithFeedForward(double velocity) {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor).withFeedForward(feedForward).withEnableFOC(true));
     }
 
+    //set the motor target position using Motion Magic
     public void setPositionMotionMagic(double position){
         final MotionMagicVoltage request = new MotionMagicVoltage(0).withSlot(0);
         talon.setControl(request.withPosition(position).withFeedForward(feedForward).withEnableFOC(true));
     }
 
+    //set the feedback device of motor - often for using external CANcoders 
     public void setFeedbackDevice(int deviceID, FeedbackSensorSourceValue feedbackType){
         config.Feedback.FeedbackRemoteSensorID = deviceID;
         config.Feedback.FeedbackSensorSource = feedbackType;
         talon.getConfigurator().apply(config);
     }
 
+    //get the current supplied by TalonFX motor controller to motor
     public double getSupplyCurrent() {
         return talon.getSupplyCurrent().getValueAsDouble();
     }
 
+    //get the temperature of the motor
     public double getMotorTemperature() {
         return talon.getDeviceTemp().getValueAsDouble();
     }
 
+    //put motor canID and CANbus name to Smart Dashboard?? Not quite sure what this is really supposed to do
     public void updateSmartdashBoard(){
         SmartDashboard.putNumber(canbusName + " " + deviceID + " motor", 1);
     }
 
+    //Krakens can supposedly play music - don't 
     public void playMusic(boolean on){
         if(on){
             orchestra.play();
