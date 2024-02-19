@@ -50,7 +50,7 @@ public class DriverOI {
 
     public DriverOI() {
         drivetrain = Drivetrain.getInstance();
-        superstructure = Superstructure.getInstance();
+        // superstructure = Superstructure.getInstance();
         configureController();
     }
 
@@ -87,7 +87,7 @@ public class DriverOI {
         // Arm Poses
         // L1 score (will move to this pose regardless of having a gamepiece)
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
+        // xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         // L2 scoring pose
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);

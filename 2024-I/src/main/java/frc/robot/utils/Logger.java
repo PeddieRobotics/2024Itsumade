@@ -27,7 +27,7 @@ public class Logger {
     private Drivetrain drivetrain;
     private Intake intake;
     // private Hopper hopper;
-    private Superstructure superstructure;
+    // private Superstructure superstructure;
 
     public static Logger getInstance() {
         if (instance == null) {
@@ -40,7 +40,7 @@ public class Logger {
         drivetrain = Drivetrain.getInstance();
         intake = Intake.getInstance();
         // hopper = Hopper.getInstance();
-        superstructure = Superstructure.getInstance();
+        // superstructure = Superstructure.getInstance();
 
         // Superstructure Logs
         robotStateEntry = new StringLogEntry(log, "/Superstructure/Robot State");
@@ -71,7 +71,7 @@ public class Logger {
 
     public void updateLogs() {
         // Superstructure
-        robotStateEntry.append(superstructure.getRobotState());
+        // robotStateEntry.append(superstructure.getRobotState());
 
         // Drivetrain
         updateDrivetrainLogs();
