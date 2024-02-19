@@ -35,7 +35,7 @@ public class OperatorTab extends ShuffleboardTabBase{
     private GenericEntry state, armAngleEntry, armTempEntry, current1Entry, current2Entry, 
     current3Entry, flywheelAtRPMEntry, flywheelSetRPMEntry, flywheelDeltaEntry, 
     flywheelTempEntry, flywheelVelocitySetpointEntry, flywheelVelocityRightSetpointEntry, 
-    flywheelVelocityLeftSetpointEntry, flywheelToggleEntry, isIndexedOverride, hasGamepieceOverride;
+    flywheelVelocityLeftSetpointEntry, flywheelToggleEntry, isIndexedOverride, hasGamepieceOverride, stowAfterShootOverride;
 
     //Sendable Chooser
     private SendableChooser<Command> autoRoutineSelector;
@@ -124,6 +124,11 @@ public class OperatorTab extends ShuffleboardTabBase{
             hasGamepieceOverride = tab.add("Has Gamepiece Override", false)
             .withSize(2,1)
             .withPosition(5, 3)
+            .getEntry();
+
+            stowAfterShootOverride = tab.add("Stow After Shoot Override", true)
+            .withSize(2,1)
+            .withPosition(5, 5)
             .getEntry();
         } catch (IllegalArgumentException e){
         }

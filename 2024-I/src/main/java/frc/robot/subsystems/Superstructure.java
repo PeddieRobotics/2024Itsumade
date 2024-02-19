@@ -3,6 +3,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.IntakeConstants;
+import frc.robot.utils.Constants.ScoringConstants;
+
+import edu.wpi.first.wpilibj.Timer;
+
 
 public class Superstructure extends SubsystemBase {
     private static Superstructure superstructure;
@@ -15,6 +19,8 @@ public class Superstructure extends SubsystemBase {
     private double internalStateTimer;
     private double shootingSpeed;
     private boolean isIndexedOverride, hasGamepieceOverride;
+    private double timeElapsed;
+    private Timer timer;
 
     public enum SuperstructureState{
         STOW,
@@ -40,6 +46,7 @@ public class Superstructure extends SubsystemBase {
         flywheel = Flywheel.getInstance();
         intake = Intake.getInstance();
         hopper = Hopper.getInstance();
+        timer = new Timer();
         
 
         systemState = SuperstructureState.STOW;
@@ -192,13 +199,18 @@ public class Superstructure extends SubsystemBase {
                 break; 
 
             case AMP_SCORING:
-                if(isGamepieceIndexed()){ //stop this once the piece is scored
+                timeElapsed = timer.get();
+                if(isGamepieceIndexed() && timeElapsed < ScoringConstants.kShootingStateTime){ //stop this once the piece is scored
                     flywheel.runFlywheelAmp();
                     hopper.runHopper();
                     intake.stopIntake();
-                } else {
+                } else if(!isGamepieceIndexed() && timeElapsed > ScoringConstants.kShootingStateTime){
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
+                    timer.stop();
+                    timer.reset();
+                    requestState(SuperstructureState.STOW);
+                    break;
                 }
 
                 if(requestedSystemState == SuperstructureState.STOW){
@@ -230,13 +242,18 @@ public class Superstructure extends SubsystemBase {
                 break; 
 
             case LAYUP_SCORING:
-                if(isGamepieceIndexed()){
+                timeElapsed = timer.get();
+                if(isGamepieceIndexed() && timeElapsed < ScoringConstants.kShootingStateTime){
                     flywheel.runFlywheelShot();
                     hopper.runHopper();
                     intake.stopIntake();
-                } else {
+                } else if(!isGamepieceIndexed() && timeElapsed > ScoringConstants.kShootingStateTime){
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
+                    timer.stop();
+                    timer.reset();
+                    requestState(SuperstructureState.STOW);
+                    break;
                 }
 
                 if(requestedSystemState == SuperstructureState.STOW){
@@ -268,13 +285,18 @@ public class Superstructure extends SubsystemBase {
                 break; 
 
             case LL_SCORING:
-                if(isGamepieceIndexed()){
+                timeElapsed = timer.get();
+                if(isGamepieceIndexed() && timeElapsed < ScoringConstants.kShootingStateTime){
                     flywheel.runFlywheelShot();
                     hopper.runHopper();
                     intake.stopIntake();
-                } else {
+                } else if(!isGamepieceIndexed() && timeElapsed > ScoringConstants.kShootingStateTime){
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
+                    timer.stop();
+                    timer.reset();
+                    requestState(SuperstructureState.STOW);
+                    break;
                 }
 
                 if(requestedSystemState == SuperstructureState.STOW){
@@ -343,6 +365,14 @@ public class Superstructure extends SubsystemBase {
         } else if(systemState == SuperstructureState.LAYUP_PREP){
             requestState(SuperstructureState.LAYUP_SCORING);
         }
+        if(SmartDashboard.getBoolean("Stow After Shoot Override", true)){
+            timer.start();
+        } else{
+            timer.reset(); //make sure there's nothing on the timer to prevent shooting otherwise
+            timer.stop();
+        }
+
+
     }
 
     // private boolean hasGamepiece(){ //this has potential use cases if we want to keep a note in the intake instead of indexing it right away
