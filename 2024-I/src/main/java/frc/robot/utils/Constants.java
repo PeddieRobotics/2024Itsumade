@@ -97,8 +97,8 @@ public final class Constants {
   }
 
   public static class LimelightConstants {
-    public static final double kLimelightHeight = 0;
-    public static final double kLimelightPanningAngle = 0;
+    public static final double kLimelightHeight = 17;
+    public static final double kLimelightPanningAngle = 60;
     public static final double kLimelightAngle = 0;
 
     //drive to target command constants

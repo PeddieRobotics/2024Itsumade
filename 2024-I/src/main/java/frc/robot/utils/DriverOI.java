@@ -114,6 +114,7 @@ public class DriverOI {
 
         // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
+        ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
         // Press and hold for outtaking slow (gamepiece adjustment), with down arrow
         // this becomes full speed.
