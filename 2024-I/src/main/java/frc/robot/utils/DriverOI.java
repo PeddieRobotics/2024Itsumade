@@ -43,12 +43,15 @@ public class DriverOI {
      */
     private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     private AlignGoalColumn alignGoalColumn = AlignGoalColumn.kCenter;
+
+    // private Arm arm;
     private Superstructure superstructure;
     private Drivetrain drivetrain;
 
     private boolean usePreScorePose;
 
     public DriverOI() {
+        // arm = Arm.getInstance();
         drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
         configureController();
@@ -101,7 +104,7 @@ public class DriverOI {
 
         // Stowed pose
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
-        touchpadButton.whileTrue(new ForcedCalibration());
+        touchpadButton.onTrue(new ForcedCalibration());
 
         // Mute homes the entire arm subsystem, both wrist and shoulder.
         Trigger muteButton = new JoystickButton(controller, 15);

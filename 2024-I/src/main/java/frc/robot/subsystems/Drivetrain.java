@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.fasterxml.jackson.databind.deser.ValueInstantiator.Gettable;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
@@ -50,40 +51,44 @@ public class Drivetrain extends SubsystemBase {
     private RollingAverage gyroTiltAverage;
     private Field2d field;
 
-    //logistic function for if two apriltags are seen
-    private double S2 = 18.0; //maximum 
-    private double I2 = 0.1; //minimum 
-    private double K2 = 4.0;//growth rate 
-    private double H2 = 3.3;//midpoint 
-    private double sigmoid2(double dist) {  
-        return (S2-I2)/(1.0+Math.exp(-K2*(dist-H2)))+I2;
+    // logistic function for if two apriltags are seen
+    private double S2 = 18.0; // maximum
+    private double I2 = 0.1; // minimum
+    private double K2 = 4.0;// growth rate
+    private double H2 = 3.3;// midpoint
+
+    private double sigmoid2(double dist) {
+        return (S2 - I2) / (1.0 + Math.exp(-K2 * (dist - H2))) + I2;
     }
 
-    //logistic function for if three apriltags are seen
+    // logistic function for if three apriltags are seen
     private double S3 = 5.0;
     private double I3 = 0.1;
     private double K3 = 3.0;
     private double H3 = 3.3;
+
     private double sigmoid3(double dist) {
-        return (S3-I3)/(1.0+Math.exp(-K3*(dist-H3)))+I3;
+        return (S3 - I3) / (1.0 + Math.exp(-K3 * (dist - H3))) + I3;
     }
 
-    //turning the usage of vision updates on or off, typically for autos 
+    // turning the usage of vision updates on or off, typically for autos
     private boolean useMegaTag;
 
-    //forcible set the robot odom completely based on megatag botpose 
+    // forcible set the robot odom completely based on megatag botpose
     private boolean isForcingCalibration;
 
-    
     public boolean getUseMegaTag() {
         return useMegaTag;
     }
+
     public void setUseMegaTag(boolean useMegaTag) {
         this.useMegaTag = useMegaTag;
     }
+
     public boolean getIsForcingCalibration() {
         return isForcingCalibration;
     }
+
     public void setIsForcingCalibration(boolean isForcingCalibration) {
         this.isForcingCalibration = isForcingCalibration;
     }
@@ -111,6 +116,7 @@ public class Drivetrain extends SubsystemBase {
         gyro.setYaw(0);
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, gyro.getRotation2d(), swerveModulePositions,
                 new Pose2d());
+        field = new Field2d();
 
         timer = new Timer();
         timer.start();
@@ -119,30 +125,28 @@ public class Drivetrain extends SubsystemBase {
 
         limelightShooter = LimelightShooter.getInstance();
         limelightBack = LimelightBack.getInstance();
-        
+
         SmartDashboard.putBoolean("Reset Gyro", false);
 
-
-        //constant for logistic function scaling the vision std based on distance 
-        SmartDashboard.putNumber("Logistic S2", S2); 
-        SmartDashboard.putNumber("Logistic I2", I2); 
-        SmartDashboard.putNumber("Logistic K2", K2); 
+        // constant for logistic function scaling the vision std based on distance
+        SmartDashboard.putNumber("Logistic S2", S2);
+        SmartDashboard.putNumber("Logistic I2", I2);
+        SmartDashboard.putNumber("Logistic K2", K2);
         SmartDashboard.putNumber("Logistic H2", H2);
-        
-        SmartDashboard.putNumber("Logistic S3", S3); 
-        SmartDashboard.putNumber("Logistic I3", I3); 
-        SmartDashboard.putNumber("Logistic K3", K3); 
-        SmartDashboard.putNumber("Logistic H3", H3); 
-        
-        SmartDashboard.putBoolean("Megatag updates", true);
 
+        SmartDashboard.putNumber("Logistic S3", S3);
+        SmartDashboard.putNumber("Logistic I3", I3);
+        SmartDashboard.putNumber("Logistic K3", K3);
+        SmartDashboard.putNumber("Logistic H3", H3);
+
+        SmartDashboard.putBoolean("Megatag updates", true);
 
         // temp
         SmartDashboard.putNumber("Target P", 0);
         SmartDashboard.putNumber("Target I", 0);
         SmartDashboard.putNumber("Target D", 0);
         SmartDashboard.putNumber("Target FF", 0);
-        
+
     }
 
     public static Drivetrain getInstance() {
@@ -154,20 +158,20 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        S2 = SmartDashboard.getNumber("Logistic S2", S2); 
-        I2 = SmartDashboard.getNumber("Logistic I2", I2); 
-        K2 = SmartDashboard.getNumber("Logistic K2", K2); 
-        H2 = SmartDashboard.getNumber("Logistic H2", H2); 
+        S2 = SmartDashboard.getNumber("Logistic S2", S2);
+        I2 = SmartDashboard.getNumber("Logistic I2", I2);
+        K2 = SmartDashboard.getNumber("Logistic K2", K2);
+        H2 = SmartDashboard.getNumber("Logistic H2", H2);
 
-        S3 = SmartDashboard.getNumber("Logistic S3", S3); 
-        I3 = SmartDashboard.getNumber("Logistic I3", I3); 
-        K3 = SmartDashboard.getNumber("Logistic K3", K3); 
-        H3 = SmartDashboard.getNumber("Logistic H3", H3); 
+        S3 = SmartDashboard.getNumber("Logistic S3", S3);
+        I3 = SmartDashboard.getNumber("Logistic I3", I3);
+        K3 = SmartDashboard.getNumber("Logistic K3", K3);
+        H3 = SmartDashboard.getNumber("Logistic H3", H3);
 
         useMegaTag = SmartDashboard.getBoolean("Megatag updates", useMegaTag);
 
-        // field.setRobotPose(getPose()); 
-        // SmartDashboard.putData(field); 
+        field.setRobotPose(getPose());
+        SmartDashboard.putData(field);
 
         // Updating the odometry
         for (int i = 0; i < 4; i++) {
@@ -177,18 +181,21 @@ public class Drivetrain extends SubsystemBase {
 
         double distance = Units.inchesToMeters(limelightShooter.getDistance());
         int numAprilTag = LimelightHelper.getNumberOfAprilTagsSeen(limelightShooter.getLimelightName());
+        SmartDashboard.putNumber("Number of Tags Seems", numAprilTag);
 
         if (numAprilTag >= 2) {
-            //if forcing calibration make visionstd minimal otherwise choose between function for 3 and 2 based on number of tags seen
-            double stdDev = isForcingCalibration ? 0.0001 : (numAprilTag >= 3 ? sigmoid3(distance) : sigmoid2(distance));
-            
+            // if forcing calibration make visionstd minimal otherwise choose between
+            // function for 3 and 2 based on number of tags seen
+            double stdDev = isForcingCalibration ? 0.0001
+                    : (numAprilTag >= 3 ? sigmoid3(distance) : sigmoid2(distance));
+
             SmartDashboard.putNumber("distance", distance);
             SmartDashboard.putNumber("standard deviation", stdDev);
 
             Matrix<N3, N1> visionStdDevs = VecBuilder.fill(stdDev, stdDev, isForcingCalibration ? 0.0001 : 30);
             odometry.setVisionMeasurementStdDevs(visionStdDevs);
         }
-        
+
         updateModulePositions();
         updateOdometry();
 
@@ -216,7 +223,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void updateOdometry() {
         odometry.update(getRotation2d(), swerveModulePositions);
-        if (useMegaTag){
+        if (useMegaTag) {
             limelightShooter.checkForAprilTagUpdates(odometry);
             limelightBack.checkForAprilTagUpdates(odometry);
         }
@@ -231,22 +238,40 @@ public class Drivetrain extends SubsystemBase {
     public void drive(Translation2d translation, double rotation, boolean fieldOriented,
             Translation2d centerOfRotation) {
         ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
-        ChassisSpeeds correctedFieldRelativeSpeeds = correctHeading(fieldRelativeSpeeds);
+        
         ChassisSpeeds robotRelativeSpeeds;
 
         if (fieldOriented) {
-            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(correctedFieldRelativeSpeeds, getRotation2d());
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getRotation2d());
         } else {
-            robotRelativeSpeeds =  correctedFieldRelativeSpeeds;
+            robotRelativeSpeeds = fieldRelativeSpeeds;
         }
 
         currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
                 + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
         currentRobotRelativeSpeed = robotRelativeSpeeds; // not sure if robot relative
 
-        SmartDashboard.putNumber("Chassis Speed X", robotRelativeSpeeds.vxMetersPerSecond);
-        SmartDashboard.putNumber("Chassis Speed Y", robotRelativeSpeeds.vyMetersPerSecond);
-        SmartDashboard.putNumber("Theta", robotRelativeSpeeds.omegaRadiansPerSecond);
+        robotRelativeSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, .02);// real loop time should be .02
+
+        // fudge factoring
+
+        double fudgefactor = -.11;// -.11
+        Translation2d commandedVelocity = new Translation2d(robotRelativeSpeeds.vxMetersPerSecond,
+                robotRelativeSpeeds.vyMetersPerSecond);
+        Rotation2d commandedRotation = Rotation2d.fromRadians(robotRelativeSpeeds.omegaRadiansPerSecond);
+        Translation2d TangentVelocity = commandedVelocity.rotateBy(Rotation2d.fromDegrees(90));
+        commandedVelocity = commandedVelocity.plus(TangentVelocity.times(fudgefactor * commandedRotation.getRadians())); // adds
+                                                                                                                         // tangent
+                                                                                                                         // veclocity
+                                                                                                                         // times
+                                                                                                                         // rotational
+                                                                                                                         // speed
+                                                                                                                         // times
+                                                                                                                         // fudge
+                                                                                                                         // factor
+
+        robotRelativeSpeeds = new ChassisSpeeds(commandedVelocity.getX(), commandedVelocity.getY(),
+                commandedRotation.getRadians());
 
         swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds, centerOfRotation);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxAngularSpeed);
@@ -259,18 +284,19 @@ public class Drivetrain extends SubsystemBase {
         double dt = currentTime - previousTime;
 
         double vTheta = currentSpeeds.omegaRadiansPerSecond;
-        double vTranslation = Math.sqrt(Math.pow(currentSpeeds.vxMetersPerSecond, 2)+ Math.pow(currentSpeeds.vyMetersPerSecond, 2));
+        double vTranslation = Math
+                .sqrt(Math.pow(currentSpeeds.vxMetersPerSecond, 2) + Math.pow(currentSpeeds.vyMetersPerSecond, 2));
 
-        if(Math.abs(vTheta) > 0.01){
+        if (Math.abs(vTheta) > 0.01) {
             offTime = currentTime;
             holdHeading = getRotation2d();
             return currentSpeeds;
         }
-        if(currentTime - offTime < 0.5){
+        if (currentTime - offTime < 0.5) {
             holdHeading = getRotation2d();
             return currentSpeeds;
         }
-        if(vTranslation < 0.1){
+        if (vTranslation < 0.1) {
             holdHeading = getRotation2d();
             return currentSpeeds;
         }
@@ -279,13 +305,13 @@ public class Drivetrain extends SubsystemBase {
 
         Rotation2d deltaHeading = holdHeading.minus(getRotation2d());
 
-        if(Math.abs(deltaHeading.getDegrees()) < DriveConstants.kHeadingCorrectionTolerance){
+        if (Math.abs(deltaHeading.getDegrees()) < DriveConstants.kHeadingCorrectionTolerance) {
             return currentSpeeds;
         }
 
         double correctedVTheta = deltaHeading.getRadians() / dt * DriveConstants.kHeadingCorrectionP;
         previousTime = currentTime;
-        
+
         return new ChassisSpeeds(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond, correctedVTheta);
     }
 
@@ -326,7 +352,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void resetPose(Pose2d pose) {
-        resetGyro();
+        gyro.reset();
         odometry.resetPosition(getRotation2d(), swerveModulePositions, pose);
     }
 
@@ -349,7 +375,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void resetGyro() {
-        gyro.reset();
+        resetPose(odometry.getEstimatedPosition());
     }
 
     public double[] getModuleRotations() {

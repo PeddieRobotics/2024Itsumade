@@ -33,7 +33,8 @@ public class OperatorOI {
     private Arm arm;
     private Drivetrain drivetrain;
     private Superstructure superstructure;
-    private Trigger xButton, circleButton, ps5Button, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper, L2Trigger, R2Trigger;
+    private Trigger xButton, circleButton, ps5Button, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper,
+            L2Trigger, R2Trigger;
 
     public OperatorOI() {
         arm = Arm.getInstance();
@@ -46,20 +47,21 @@ public class OperatorOI {
         return alignGoalAprilTagID;
     }
 
-    public void controlLoop(){
-        if(xButton.getAsBoolean()){
+    public void controlLoop() {
+        if (xButton.getAsBoolean()) {
             superstructure.requestState(SuperstructureState.STOW);
-        } else if(circleButton.getAsBoolean()){
+        } else if (circleButton.getAsBoolean()) {
             superstructure.requestState(SuperstructureState.AMP_PREP);
-        } else if(triangleButton.getAsBoolean()){
-                superstructure.requestState(SuperstructureState.LAYUP_PREP); //CHANGE THIS LATER BECAUSE THERE IS DEEPER LOGIC REQUIRED
-        } else if(squareButton.getAsBoolean()){
-                superstructure.requestState(SuperstructureState.LL_PREP);
-        } else if(L1Bumper.getAsBoolean()){
-                //align command here
-        } else if(R1Bumper.getAsBoolean()){
-               superstructure.requestState(SuperstructureState.DEPLOY_CLIMBER);  
-        } 
+        } else if (triangleButton.getAsBoolean()) {
+            superstructure.requestState(SuperstructureState.LAYUP_PREP); // CHANGE THIS LATER BECAUSE THERE IS DEEPER
+                                                                         // LOGIC REQUIRED
+        } else if (squareButton.getAsBoolean()) {
+            superstructure.requestState(SuperstructureState.LL_PREP);
+        } else if (L1Bumper.getAsBoolean()) {
+            // align command here
+        } else if (R1Bumper.getAsBoolean()) {
+            superstructure.requestState(SuperstructureState.DEPLOY_CLIMBER);
+        }
 
         ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
         L2Trigger.whileTrue(new ManualArmControl());
@@ -82,7 +84,8 @@ public class OperatorOI {
         squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
 
         // Touchpad Button (if we need it)
-        //touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
+        // touchpadButton = new JoystickButton(controller,
+        // PS4Controller.Button.kTouchpad.value);
 
         // Mute homes the entire arm subsystem, both wrist and shoulder.
         muteButton = new JoystickButton(controller, 15);
@@ -97,10 +100,12 @@ public class OperatorOI {
         // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
 
-        // Press and hold for outtaking slow (gamepiece adjustment), with down arrow this becomes full speed.
+        // Press and hold for outtaking slow (gamepiece adjustment), with down arrow
+        // this becomes full speed.
         Trigger startButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
 
-        // Press and hold for intaking slow (gamepiece adjustment), with down arrow this becomes full speed.
+        // Press and hold for intaking slow (gamepiece adjustment), with down arrow this
+        // becomes full speed.
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
         // Game piece selection / LED indication requests to human player
@@ -127,19 +132,19 @@ public class OperatorOI {
         return leftTriggerHeld() & rightTriggerHeld();
     }
 
-    private boolean leftTriggerHeld(){
+    private boolean leftTriggerHeld() {
         return controller.getL2Button();
     }
 
-    private boolean onlyLeftTriggerHeld(){
+    private boolean onlyLeftTriggerHeld() {
         return leftTriggerHeld() && !rightTriggerHeld();
     }
 
-    private boolean rightTriggerHeld(){
+    private boolean rightTriggerHeld() {
         return controller.getR2Button();
     }
 
-    private boolean onlyRightTriggerHeld(){
+    private boolean onlyRightTriggerHeld() {
         return !leftTriggerHeld() && rightTriggerHeld();
     }
 
@@ -147,7 +152,7 @@ public class OperatorOI {
         return leftTriggerHeld() ^ rightTriggerHeld();
     }
 
-    public boolean dPadDownHeld(){
+    public boolean dPadDownHeld() {
         return controller.getPOV() == 180;
     }
 
@@ -161,19 +166,22 @@ public class OperatorOI {
         return input;
     }
 
-    /*public boolean isUsePreScorePose() {
-        return usePreScorePose;
-    }
-
-    // Only update the boolean for using the pre-score pose if it is a state change
-    // This is especially important since this requires configuring the controller mapping
-    // for the operator, which should be done infrequently/minimally.
-    public void setUsePreScorePose(boolean usePreScorePose) {
-        if(this.usePreScorePose != usePreScorePose){
-            this.usePreScorePose = usePreScorePose;
-            configureController(usePreScorePose);
-        }
-    }
-    */
+    /*
+     * public boolean isUsePreScorePose() {
+     * return usePreScorePose;
+     * }
+     * 
+     * // Only update the boolean for using the pre-score pose if it is a state
+     * change
+     * // This is especially important since this requires configuring the
+     * controller mapping
+     * // for the operator, which should be done infrequently/minimally.
+     * public void setUsePreScorePose(boolean usePreScorePose) {
+     * if(this.usePreScorePose != usePreScorePose){
+     * this.usePreScorePose = usePreScorePose;
+     * configureController(usePreScorePose);
+     * }
+     * }
+     */
 
 }
