@@ -108,7 +108,7 @@ public class DriverOI {
         Trigger muteButton = new JoystickButton(controller, 15);
 
         //Lock wheels, drive command for it not written yet...
-        shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
+        Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
         // Manual Wrist and Shoulder Override Controls
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
@@ -124,7 +124,7 @@ public class DriverOI {
 
         // Press and hold for intaking slow (gamepiece adjustment), with down arrow this
         // becomes full speed.
-        Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
+        //Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
         // Game piece selection / LED indication requests to human player
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
