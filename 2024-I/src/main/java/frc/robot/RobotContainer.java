@@ -14,7 +14,7 @@ import frc.robot.utils.DriverOI;
 
 public class RobotContainer {
   // private final Climber climber;
-  // private final Arm arm;
+  private final Arm arm;
   private final Autonomous autonomous;
   private final Drivetrain drivetrain;
   private final Intake intake;
@@ -30,7 +30,7 @@ public class RobotContainer {
 
   public RobotContainer(){
     
-    // arm = Arm.getInstance();
+    arm = Arm.getInstance();
     // climber = Climber.getInstance();
     drivetrain = Drivetrain.getInstance();
     autonomous = Autonomous.getInstance();
