@@ -164,6 +164,16 @@ public class OperatorOI {
         return input;
     }
 
+    public double getRightForward(){
+        double input = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
+        if (Math.abs(input) < OIConstants.kDrivingDeadband) {
+            input = 0;
+        } else {
+            input *= 0.7777;
+        }
+        return input;
+    }
+
     /*
      * public boolean isUsePreScorePose() {
      * return usePreScorePose;

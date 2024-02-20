@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
+import frc.robot.utils.OperatorOI;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.ClimberConstants;
 
@@ -76,8 +77,8 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if(SmartDashboard.getBoolean("Manual Climber Control", true)){
-      leftClimber.setMotor(DriverOI.getInstance().getForward());
-      rightClimber.setMotor(DriverOI.getInstance().getForward());
+      leftClimber.setMotor(OperatorOI.getInstance().getForward());
+      rightClimber.setMotor(OperatorOI.getInstance().getRightForward());
     } 
 
   }
