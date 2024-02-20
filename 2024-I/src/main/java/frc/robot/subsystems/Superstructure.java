@@ -19,7 +19,7 @@ public class Superstructure extends SubsystemBase {
     private double internalStateTimer;
     private double shootingSpeed;
     private boolean isIndexedOverride, hasGamepieceOverride;
-    private double timeElapsed;
+    //private double timeElapsed;
     private Timer timer;
 
     public enum SuperstructureState{
@@ -199,12 +199,11 @@ public class Superstructure extends SubsystemBase {
                 break; 
 
             case AMP_SCORING:
-                timeElapsed = timer.get();
-                if(isGamepieceIndexed() && timeElapsed < ScoringConstants.kShootingStateTime){ //stop this once the piece is scored
+                if(isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){ //stop this once the piece is scored
                     flywheel.runFlywheelAmp();
                     hopper.runHopper();
                     intake.stopIntake();
-                } else if(!isGamepieceIndexed() && timeElapsed > ScoringConstants.kShootingStateTime){
+                } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.stop();
@@ -242,12 +241,11 @@ public class Superstructure extends SubsystemBase {
                 break; 
 
             case LAYUP_SCORING:
-                timeElapsed = timer.get();
-                if(isGamepieceIndexed() && timeElapsed < ScoringConstants.kShootingStateTime){
+                if(isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
                     flywheel.runFlywheelShot();
                     hopper.runHopper();
                     intake.stopIntake();
-                } else if(!isGamepieceIndexed() && timeElapsed > ScoringConstants.kShootingStateTime){
+                } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.stop();
@@ -285,12 +283,11 @@ public class Superstructure extends SubsystemBase {
                 break; 
 
             case LL_SCORING:
-                timeElapsed = timer.get();
-                if(isGamepieceIndexed() && timeElapsed < ScoringConstants.kShootingStateTime){
+                if(isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
                     flywheel.runFlywheelShot();
                     hopper.runHopper();
                     intake.stopIntake();
-                } else if(!isGamepieceIndexed() && timeElapsed > ScoringConstants.kShootingStateTime){
+                } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime){
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.stop();
