@@ -79,6 +79,7 @@ public class Climber extends SubsystemBase {
     if(SmartDashboard.getBoolean("Manual Climber Control", true)){
       leftClimber.setMotor(OperatorOI.getInstance().getForward());
       rightClimber.setMotor(OperatorOI.getInstance().getRightForward());
+      
     } 
 
   }
