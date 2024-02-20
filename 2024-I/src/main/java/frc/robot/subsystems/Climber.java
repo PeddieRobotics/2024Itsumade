@@ -18,7 +18,6 @@ import frc.robot.utils.OperatorOI;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.ClimberConstants;
 
-
 public class Climber extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
@@ -27,30 +26,42 @@ public class Climber extends SubsystemBase {
   private DigitalInput climberSensor;
 
   public Climber() {
-    rightClimber = new Kraken(RobotMap.CLIMBER_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
+    // rightClimber = new Kraken(RobotMap.CLIMBER_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
     leftClimber = new Kraken(RobotMap.CLIMBER_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
     // climberSensor = new DigitalInput(ClimberConstants.CLIMBER_SENSOR_ID);
 
-    rightClimber.setCurrentLimit(ClimberConstants.kClimberCurrentLimit);
+    // rightClimber.setCurrentLimit(ClimberConstants.kClimberCurrentLimit);
     leftClimber.setCurrentLimit(ClimberConstants.kClimberCurrentLimit);
 
-    rightClimber.setVelocityConversionFactor(ClimberConstants.kClimberGearReduction);
+    // rightClimber.setVelocityConversionFactor(ClimberConstants.kClimberGearReduction);
     leftClimber.setVelocityConversionFactor(ClimberConstants.kClimberGearReduction);
 
-    rightClimber.setPIDValues(ClimberConstants.kClimberP, ClimberConstants.kClimberI, ClimberConstants.kClimberD, ClimberConstants.kClimberFF);
-    leftClimber.setPIDValues(ClimberConstants.kClimberP, ClimberConstants.kClimberI, ClimberConstants.kClimberD, ClimberConstants.kClimberFF);
+    // rightClimber.setPIDValues(ClimberConstants.kClimberP,
+    // ClimberConstants.kClimberI, ClimberConstants.kClimberD,
+    // ClimberConstants.kClimberFF);
+    leftClimber.setPIDValues(ClimberConstants.kClimberP, ClimberConstants.kClimberI, ClimberConstants.kClimberD,
+        ClimberConstants.kClimberFF);
 
-    rightClimber.setBrake();
+    // rightClimber.setBrake();
     leftClimber.setBrake();
-    
-    SmartDashboard.putNumber("Manual Climber Speed", 0);
+
     SmartDashboard.putBoolean("Manual Climber Control", false);
+    SmartDashboard.putBoolean("Climber PID Tuning", false);
+
+    SmartDashboard.putNumber("Climber P Value", 0);
+    SmartDashboard.putNumber("Climber I Value", 0);
+    SmartDashboard.putNumber("Climber D Value", 0);
+    SmartDashboard.putNumber("Climber FF Value", 0);
+
+    SmartDashboard.putNumber("Climber Angle Setpoint", 0);
+
   }
 
-  public static Climber getInstance(){
-    if(climber == null){
+  public static Climber getInstance() {
+    if (climber == null) {
       climber = new Climber();
-    } return climber;
+    }
+    return climber;
   }
 
   public boolean climberSensorState() {
@@ -58,29 +69,38 @@ public class Climber extends SubsystemBase {
     return false;
   }
 
-  public void deployClimber(){
-    rightClimber.setPositionWithFeedForward(ClimberConstants.kClimberUnwindPosition);
+  public void deployClimber() {
+    // rightClimber.setPositionWithFeedForward(ClimberConstants.kClimberUnwindPosition);
     leftClimber.setPositionWithFeedForward(ClimberConstants.kClimberUnwindPosition);
   }
 
-  public void pulldownClimber(){
-    if(!isDoneClimbing()){
+  public void pulldownClimber() {
+    if (!isDoneClimbing()) {
       // leftClimber.setMotor(ClimberConstants.kClimberPercentOutput);
     }
   }
 
-  public boolean isDoneClimbing(){
+  public boolean isDoneClimbing() {
     return climberSensorState();
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Climber Encoder Reading", leftClimber.getPosition());
     // This method will be called once per scheduler run
-    if(SmartDashboard.getBoolean("Manual Climber Control", true)){
-      leftClimber.setMotor(OperatorOI.getInstance().getForward());
-      rightClimber.setMotor(OperatorOI.getInstance().getRightForward());
-      
-    } 
+    if (SmartDashboard.getBoolean("Manual Climber Control", false)) {
+      leftClimber.setMotor(OperatorOI.getInstance().getForward()/5);
+      // rightClimber.setMotor(OperatorOI.getInstance().getRightForward());
+    }
+
+    if (SmartDashboard.getBoolean("Climber PID Tuning", false)) {
+      leftClimber.setPIDValues(
+          SmartDashboard.getNumber("Climber P Value", 0),
+          SmartDashboard.getNumber("Climber I Value", 0),
+          SmartDashboard.getNumber("Climber D Value", 0),
+          SmartDashboard.getNumber("Climber FF Value", 0));
+      leftClimber.setPositionWithFeedForward(SmartDashboard.getNumber("Climber Angle Setpoint", 0));
+    }
 
   }
 }
