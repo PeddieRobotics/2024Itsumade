@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 2,
+      "y": 5.5
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Turn off MegaTag"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "forwardNotFacingSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Follow note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "backwardNotFacingSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Turn on MegaTag"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

@@ -96,6 +96,14 @@ public final class Constants {
     public static final double kThetaP = 5.0;
     public static final double kThetaI = 0.0;
     public static final double kThetaD = 0.0;
+
+    // designated shooting coordinates (for ToClosestShooting command)
+    // blue coordinates (x, y, theta)
+    public static final double [][] shootingPositions = {
+      { 3.95, 6.88, -160.00 },
+      { 3.81, 5.31,  175.00 },
+      { 2.21, 4.47,  125.00 },
+    };
   }
 
   public static class LimelightConstants {

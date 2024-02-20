@@ -1,0 +1,67 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7,
+      "y": 7.0
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "straighten"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Turn off MegaTag"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "startToMidline"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Follow note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PP to shooting"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shootToMidline"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Follow note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PP to shooting"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

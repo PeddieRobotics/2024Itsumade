@@ -9,26 +9,21 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.utils.Constants;
 
-public class PathPlannerToPoint extends Command {
+// go to the closest shooting position
+public class PathPlannerToShoot extends Command {
     private Drivetrain drivetrain;
     private Command followPathCommand;
-
-    private double xTargetInitial, turnTargetInitial;
-    private double xTarget, yTarget, turnTarget;
 
     private double timeLimit;
     private double startTime;
 
     // Full constructor with all 6 parameters for the climb charge station
     // algorithm.
-    public PathPlannerToPoint(double x, double y, double theta, double timeLimit) {
+    public PathPlannerToShoot(double timeLimit) {
         drivetrain = Drivetrain.getInstance();
         
-        xTargetInitial = x; 
-        yTarget = y; 
-        turnTargetInitial = theta;
-
         this.timeLimit = timeLimit;
         startTime = Timer.getFPGATimestamp();
 
@@ -37,18 +32,41 @@ public class PathPlannerToPoint extends Command {
 
     @Override
     public void initialize() {
-        // if the robot is parked (we do not want it to move anymore) then do not do anything
+        // if we are parked (went to midline and no note) then do not do anything
         if (drivetrain.getIsParkedAuto()) {
             followPathCommand = null;
             return;
         }
-        
-        // pathfindToPose doesn't flip coordinates for red side. Have to do that manually
-        boolean isRed = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
-        turnTarget = isRed ? turnTargetInitial - 180 : turnTargetInitial;
-        xTarget = isRed ? 16.542 - xTargetInitial : xTargetInitial;
 
-        // PathPlanner on the fly pathfinding code
+        // https://pathplanner.dev/pplib-create-a-path-on-the-fly.html
+
+        // find the closest shooting location to go to using distance formula
+        var currentOdometry = drivetrain.getPose();
+        double currentX = currentOdometry.getX();
+        double currentY = currentOdometry.getY();
+
+        double minDistance = Integer.MAX_VALUE;
+        double[] point = Constants.AutoConstants.shootingPositions[0];
+
+        for (double[] shootingPoint : Constants.AutoConstants.shootingPositions) {
+            // distance formula
+            double distance = Math.sqrt(Math.pow(shootingPoint[0] - currentX, 2) + Math.pow(shootingPoint[1] - currentY, 2));
+            // compare against current minimum
+            if (distance < minDistance) {
+                minDistance = distance;
+                point = shootingPoint;
+            }
+        }
+
+        // pathfindToPose doesn't flip coordinates for red side. Have to do that manually
+        double xTarget, yTarget, turnTarget;
+        boolean isRed = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+        // point[0] = x, point[1] = y, point[2] = rotation
+        xTarget = isRed ? 16.542 - point[0] : point[0];
+        yTarget = point[1];
+        turnTarget = isRed ? point[2] - 180 : point[2];
+
+        // pathplanner on the fly pathfinding
         PathConstraints constraints = new PathConstraints(
             1.5, 1.5, Units.degreesToRadians(720), Units.degreesToRadians(720)
         );
