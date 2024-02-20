@@ -190,13 +190,13 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    public void setPosition(double position, int slot) {
-        final PositionVoltage request = new PositionVoltage(0).withSlot(slot);
+    public void setPosition(double position) {
+        final PositionVoltage request = new PositionVoltage(0).withSlot(0);
         talon.setControl(request.withPosition(position).withEnableFOC(true));
     }
 
-    public void setVelocity(double velocity, int slot) {
-        final VelocityVoltage request = new VelocityVoltage(0).withSlot(slot);
+    public void setVelocity(double velocity) {
+        final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor).withEnableFOC(true));
     }
 

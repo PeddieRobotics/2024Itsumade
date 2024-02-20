@@ -164,7 +164,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setArmAngle(double angle) {
-        armMotor.setPosition(angle, 0);
+        armMotor.setPositionWithFeedForward(angle);
     }
 
     public double getArmAngleDegrees() {

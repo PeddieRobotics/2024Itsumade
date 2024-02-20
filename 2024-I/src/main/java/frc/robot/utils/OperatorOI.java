@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ArmCommands.ManualArmControl;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
@@ -48,23 +47,22 @@ public class OperatorOI {
     }
 
     public void controlLoop() {
-        if (xButton.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.STOW);
-        } else if (circleButton.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.AMP_PREP);
-        } else if (triangleButton.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.LAYUP_PREP); // CHANGE THIS LATER BECAUSE THERE IS DEEPER
-                                                                         // LOGIC REQUIRED
-        } else if (squareButton.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.LL_PREP);
-        } else if (L1Bumper.getAsBoolean()) {
-            // align command here
-        } else if (R1Bumper.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.DEPLOY_CLIMBER);
-        }
+        // if (xButton.getAsBoolean()) {
+        //     superstructure.requestState(SuperstructureState.STOW);
+        // } else if (circleButton.getAsBoolean()) {
+        //     superstructure.requestState(SuperstructureState.AMP_PREP);
+        // } else if (triangleButton.getAsBoolean()) {
+        //     superstructure.requestState(SuperstructureState.LAYUP_PREP); // CHANGE THIS LATER BECAUSE THERE IS DEEPER
+        //                                                                  // LOGIC REQUIRED
+        // } else if (squareButton.getAsBoolean()) {
+        //     superstructure.requestState(SuperstructureState.LL_PREP);
+        // } else if (L1Bumper.getAsBoolean()) {
+        //     // align command here
+        // } else if (R1Bumper.getAsBoolean()) {
+        //     superstructure.requestState(SuperstructureState.DEPLOY_CLIMBER);
+        // }
 
-        ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
-        L2Trigger.whileTrue(new ManualArmControl());
+        // ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
     }
 
     public void configureController() {
