@@ -20,7 +20,7 @@ public class RobotMap {
     public static final int BACK_RIGHT_MODULE_CANCODER_ID = 42;
 
 
-    public static final int ARM_PRIMARY_MOTOR = 50;
+    public static final int ARM_MOTOR = 50;
     public static final int ARM_CANCODER_ID = 52;
 
     public static final int CLIMBER_RIGHT_MOTOR = 60; //DEFAULT VALUE, CHANGE LATER

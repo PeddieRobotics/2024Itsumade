@@ -41,7 +41,7 @@ public class Arm extends SubsystemBase {
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
         configureCANcoder();
 
-        armMotor = new Kraken(RobotMap.ARM_PRIMARY_MOTOR, RobotMap.CANIVORE_NAME);
+        armMotor = new Kraken(RobotMap.ARM_MOTOR, RobotMap.CANIVORE_NAME);
 
         armMotor.setSoftLimits(true,
         Constants.ArmConstants.kArmForwardSoftLimitDegrees/360,
