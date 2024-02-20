@@ -19,7 +19,6 @@ public class Superstructure extends SubsystemBase {
     private double internalStateTimer;
     private double shootingSpeed;
     private boolean isIndexedOverride, hasGamepieceOverride;
-    //private double timeElapsed;
     private Timer timer;
 
     public enum SuperstructureState{
@@ -287,7 +286,7 @@ public class Superstructure extends SubsystemBase {
                     flywheel.runFlywheelShot();
                     hopper.runHopper();
                     intake.stopIntake();
-                } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime){
+                } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.stop();
