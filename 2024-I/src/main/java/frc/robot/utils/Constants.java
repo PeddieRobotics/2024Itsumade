@@ -162,8 +162,7 @@ public final class Constants {
   }
 
   public static class ClimberConstants {
-    public static final double kClimberRightCurrentLimit = 0;
-    public static final double kClimberLeftCurrentLimit = 0;
+    public static final double kClimberCurrentLimit = 40;
     public static final double kClimberP = 0.0;
     public static final double kClimberI = 0.0;
     public static final double kClimberD = 0.0;

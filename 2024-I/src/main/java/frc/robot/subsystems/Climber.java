@@ -4,11 +4,15 @@
 
 package frc.robot.subsystems;
 
+import java.sql.Driver;
+
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.ClimberConstants;
@@ -24,15 +28,10 @@ public class Climber extends SubsystemBase {
   public Climber() {
     rightClimber = new Kraken(RobotMap.CLIMBER_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
     leftClimber = new Kraken(RobotMap.CLIMBER_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
-    climberSensor = new DigitalInput(ClimberConstants.CLIMBER_SENSOR_ID);
+    // climberSensor = new DigitalInput(ClimberConstants.CLIMBER_SENSOR_ID);
 
-    rightClimber.setCurrentLimit(ClimberConstants.kClimberRightCurrentLimit);
-    leftClimber.setCurrentLimit(ClimberConstants.kClimberLeftCurrentLimit);
-
-    rightClimber.setFollower(RobotMap.CLIMBER_LEFT_MOTOR, false);
-
-    rightClimber.setFeedbackDevice(RobotMap.CLIMBER_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
-    leftClimber.setFeedbackDevice(RobotMap.CLIMBER_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
+    rightClimber.setCurrentLimit(ClimberConstants.kClimberCurrentLimit);
+    leftClimber.setCurrentLimit(ClimberConstants.kClimberCurrentLimit);
 
     rightClimber.setVelocityConversionFactor(ClimberConstants.kClimberGearReduction);
     leftClimber.setVelocityConversionFactor(ClimberConstants.kClimberGearReduction);
@@ -42,6 +41,9 @@ public class Climber extends SubsystemBase {
 
     rightClimber.setBrake();
     leftClimber.setBrake();
+    
+    SmartDashboard.putNumber("Manual Climber Speed", 0);
+    SmartDashboard.putBoolean("Manual Climber Control", false);
   }
 
   public static Climber getInstance(){
@@ -51,16 +53,17 @@ public class Climber extends SubsystemBase {
   }
 
   public boolean climberSensorState() {
-    return climberSensor.get();
+    // return climberSensor.get();
+    return false;
   }
 
   public void deployClimber(){
-    rightClimber.setPosition(ClimberConstants.kClimberUnwindPosition);
+    // leftClimber.setPosition(ClimberConstants.kClimberUnwindPosition);
   }
 
   public void pulldownClimber(){
     if(!isDoneClimbing()){
-      rightClimber.setMotor(ClimberConstants.kClimberPercentOutput);
+      // leftClimber.setMotor(ClimberConstants.kClimberPercentOutput);
     }
   }
 
@@ -71,5 +74,10 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if(SmartDashboard.getBoolean("Manual Climber Control", true)){
+      leftClimber.setMotor(DriverOI.getInstance().getForward());
+      rightClimber.setMotor(DriverOI.getInstance().getForward());
+    } 
+
   }
 }

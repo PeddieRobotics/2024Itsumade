@@ -23,9 +23,8 @@ public class RobotMap {
     public static final int ARM_PRIMARY_MOTOR = 50;
     public static final int ARM_CANCODER_ID = 52;
 
-    public static final int CLIMBER_RIGHT_MOTOR = 0; //DEFAULT VALUE, CHANGE LATER
-    public static final int CLIMBER_LEFT_MOTOR = 0; //DEFAULT VALUE, CHANGE LATER
-    public static final int CLIMBER_CANCODER_ID = 0; //DEFAULT VALUE, CHANGE LATER
+    public static final int CLIMBER_RIGHT_MOTOR = 60; //DEFAULT VALUE, CHANGE LATER
+    public static final int CLIMBER_LEFT_MOTOR = 61; //DEFAULT VALUE, CHANGE LATER
 
 
     public static final int FLYWHEEL_LEFT_MOTOR = 0; //DEFAULT VALUE, CHANGE LATER
