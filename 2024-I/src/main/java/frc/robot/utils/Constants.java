@@ -202,6 +202,7 @@ public final class Constants {
     public static final double kFlywheelAmpRPM = 500;
     public static final double kFlywheelHPIntakeRPM = -250;
     public static final double kFlywheelShotThreshold = 100; 
+    public static final double kShootingStateTime = 1.0;
     // Distance, Angle; SAMPLE VALUES, NEEDS TO BE TUNED -TONY
     public static final double[][] treeMapValues = new double[][] { { 0.5, -55 }, { 1.5, -45 }, {2.5, -37.5}, {3.5, -25}, {4.5, -20}, {5.5, -15} }; 
   }

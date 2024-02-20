@@ -2,8 +2,6 @@ package frc.robot.subsystems;
 
 import frc.robot.subsystems.LimelightShooter;
 
-import java.sql.Driver;
-
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -159,8 +157,7 @@ public class Arm extends SubsystemBase {
     }
 
     public boolean isAtLLAngle() {
-        return Math.abs(getArmAngleDegrees()
-                - getAngleFromDist(limelightShooter.getDistance())) < ArmConstants.kArmPositionEpsilon;
+        return Math.abs(getArmAngleDegrees() - getAngleFromDist(limelightShooter.getDistance())) < ArmConstants.kArmPositionEpsilon;
     }
 
     public void setArmAngle(double angle) {
@@ -194,7 +191,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setLLPosition() {
-        setArmAngle(getAngleFromDist(limelightShooter.getDistance()));
+        setArmAngle(getAngleFromDist(limelightShooter.getDistance())); 
     }
 
     public void setStowPosition() {
