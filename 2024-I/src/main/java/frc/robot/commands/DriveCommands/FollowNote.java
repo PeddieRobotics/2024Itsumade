@@ -5,13 +5,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.LimelightBack;
+import frc.robot.subsystems.LimelightIntake;
 import frc.robot.utils.Constants;
 import frc.robot.utils.DriverOI;
 
 public class FollowNote extends Command {
     private Drivetrain drivetrain;
-    private LimelightBack limelightBack;
+    private LimelightIntake limelightBack;
     private DriverOI oi;
     private double angleThreshold;
     private double targetAngle;
@@ -26,7 +26,7 @@ public class FollowNote extends Command {
     //follow a note in Tele-Op
     public FollowNote() {
         drivetrain = Drivetrain.getInstance();
-        limelightBack = LimelightBack.getInstance();
+        limelightBack = LimelightIntake.getInstance();
         
         angleThreshold = Constants.LimelightConstants.kFollowNoteAngleThreshold;
 

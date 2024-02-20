@@ -6,13 +6,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.LimelightBack;
+import frc.robot.subsystems.LimelightIntake;
 import frc.robot.utils.Constants;
 import frc.robot.utils.DriverOI;
 
-public class DriveToPoint extends Command{
+public class PIDToPoint extends Command{
     private Drivetrain drivetrain;
-    private LimelightBack limelightBack; // TODO: figure out front or back LL
+    private LimelightIntake limelightBack; // TODO: figure out front or back LL
     private DriverOI oi;
 
     //turn
@@ -24,9 +24,9 @@ public class DriveToPoint extends Command{
     private PIDController xController, yController;
     
     //blue coordinate system, give input
-    public DriveToPoint(double x, double y, double theta){
+    public PIDToPoint(double x, double y, double theta){
         drivetrain = Drivetrain.getInstance();
-        limelightBack = LimelightBack.getInstance();
+        limelightBack = LimelightIntake.getInstance();
 
         turnController = new PIDController(Constants.LimelightConstants.kDriveToTargetTurnP, Constants.LimelightConstants.kDriveToTargetTurnI, 
             Constants.LimelightConstants.kDriveToTargetTurnD);

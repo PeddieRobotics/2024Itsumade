@@ -46,7 +46,7 @@ public class Drivetrain extends SubsystemBase {
     private double offTime;
     private Rotation2d holdHeading;
     private final LimelightShooter limelightShooter;
-    private final LimelightBack limelightBack;
+    private final LimelightIntake limelightBack;
 
     private RollingAverage gyroTiltAverage;
     private Field2d field;
@@ -72,15 +72,19 @@ public class Drivetrain extends SubsystemBase {
     }
 
     // turning the usage of vision updates on or off, typically for autos
+    // automatically turned off in autonomousInit, turned on in teleopInit
     private boolean useMegaTag;
 
     // forcible set the robot odom completely based on megatag botpose
     private boolean isForcingCalibration;
 
+    // make the robot not move, because if there's no note at the midline we park
+    // automatically turned off in autonomousInit and teleopInit
+    private boolean isParkedAuto;
+
     public boolean getUseMegaTag() {
         return useMegaTag;
     }
-
     public void setUseMegaTag(boolean useMegaTag) {
         this.useMegaTag = useMegaTag;
     }
@@ -88,9 +92,15 @@ public class Drivetrain extends SubsystemBase {
     public boolean getIsForcingCalibration() {
         return isForcingCalibration;
     }
-
     public void setIsForcingCalibration(boolean isForcingCalibration) {
         this.isForcingCalibration = isForcingCalibration;
+    }
+
+    public boolean getIsParkedAuto()  {
+        return isParkedAuto;
+    }
+    public void setIsParkedAuto(boolean isParked) {
+        this.isParkedAuto = isParked;
     }
 
     public Drivetrain() {
@@ -123,8 +133,10 @@ public class Drivetrain extends SubsystemBase {
         previousTime = 0.0;
         offTime = 0.0;
 
+        isParkedAuto = false;
+
         limelightShooter = LimelightShooter.getInstance();
-        limelightBack = LimelightBack.getInstance();
+        limelightBack = LimelightIntake.getInstance();
 
         SmartDashboard.putBoolean("Reset Gyro", false);
 
@@ -225,7 +237,7 @@ public class Drivetrain extends SubsystemBase {
         odometry.update(getRotation2d(), swerveModulePositions);
         if (useMegaTag) {
             limelightShooter.checkForAprilTagUpdates(odometry);
-            limelightBack.checkForAprilTagUpdates(odometry);
+            // limelightBack.checkForAprilTagUpdates(odometry);
         }
     }
 
@@ -318,6 +330,8 @@ public class Drivetrain extends SubsystemBase {
     // Autonomous Drive Functions
 
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+        if (isParkedAuto)
+            return;
         swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
         // optimizeModuleStates();
         setSwerveModuleStates(swerveModuleStates);
