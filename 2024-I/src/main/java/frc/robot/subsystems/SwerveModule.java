@@ -203,6 +203,8 @@ public class SwerveModule extends SubsystemBase {
     // Percent Output ", 0));
     // }
 
+    SmartDashboard.putNumber(drivingCANId + " Drive Motor Current", driveMotor.getSupplyCurrent());
+
     SmartDashboard.putNumber(CANCoderId + " canCoder position (rad)", getCANCoderReading());
     SmartDashboard.putNumber(drivingCANId + " driving speed (mps)", driveMotor.getMPS());
     // SmartDashboard.putNumber(CANCoderId + " steer motor raw position", steerMotor.getPosition());

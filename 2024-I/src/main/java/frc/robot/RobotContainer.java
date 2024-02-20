@@ -14,14 +14,14 @@ import frc.robot.utils.DriverOI;
 
 public class RobotContainer {
   // private final Climber climber;
-  private final Arm arm;
+  // private final Arm arm;
   private final Autonomous autonomous;
   private final Drivetrain drivetrain;
   private final Intake intake;
   // private final Flywheel flywheel;
   // private final OperatorOI operatorOI;
   private final DriverOI driverOI;
-  private final LimelightShooter limelightShooter;
+  // private final LimelightShooter limelightShooter;
 
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
@@ -30,12 +30,12 @@ public class RobotContainer {
 
   public RobotContainer(){
     
-    arm = Arm.getInstance();
+    // arm = Arm.getInstance();
     // climber = Climber.getInstance();
     drivetrain = Drivetrain.getInstance();
     autonomous = Autonomous.getInstance();
     intake = Intake.getInstance();
-    limelightShooter = LimelightShooter.getInstance();
+    // limelightShooter = LimelightShooter.getInstance();
     // flywheel = Flywheel.getInstance();
     // operatorOI = OperatorOI.getInstance();
     driverOI = DriverOI.getInstance();

@@ -39,6 +39,9 @@ public final class Constants {
     // TODO: Change this value
     public static final double kMaxFloorSpeed = 3.0; // meters per second
     public static final double kMaxAngularSpeed = 3 / 2 * Math.PI; // radians per second
+    // public static final double kMaxFloorSpeed = 4.0; // meters per second
+    // public static final double kMaxAngularSpeed = Math.PI; // radians per second
+    
 
     public static final int kDriveCurrentLimit = 30;
     public static final int kTurningCurrentLimit = 30;
@@ -96,8 +99,8 @@ public final class Constants {
   }
 
   public static class LimelightConstants {
-    public static final double kLimelightHeight = 0;
-    public static final double kLimelightPanningAngle = 0;
+    public static final double kLimelightHeight = 17;
+    public static final double kLimelightPanningAngle = 60;
     public static final double kLimelightAngle = 0;
 
     //drive to target command constants
@@ -163,8 +166,7 @@ public final class Constants {
   }
 
   public static class ClimberConstants {
-    public static final double kClimberRightCurrentLimit = 0;
-    public static final double kClimberLeftCurrentLimit = 0;
+    public static final double kClimberCurrentLimit = 40;
     public static final double kClimberP = 0.0;
     public static final double kClimberI = 0.0;
     public static final double kClimberD = 0.0;
