@@ -7,7 +7,7 @@ import frc.robot.utils.Constants.IntakeConstants;
 public class Superstructure extends SubsystemBase {
     private static Superstructure superstructure;
     private final Arm arm;
-    // private final Climber climber;
+    private final Climber climber;
     private final Intake intake;
     // private final Flywheel flywheel;
     // private final Hopper hopper;
@@ -36,7 +36,7 @@ public class Superstructure extends SubsystemBase {
 
     public Superstructure(){
         arm = Arm.getInstance();
-        // climber = Climber.getInstance();
+        climber = Climber.getInstance();
         // flywheel = Flywheel.getInstance();
         intake = Intake.getInstance();
         // hopper = Hopper.getInstance();
