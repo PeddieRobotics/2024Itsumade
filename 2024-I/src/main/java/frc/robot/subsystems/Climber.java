@@ -74,7 +74,7 @@ public class Climber extends SubsystemBase {
     leftClimber.setPositionWithFeedForward(ClimberConstants.kClimberUnwindPosition);
   }
 
-  public void pulldownClimber() {
+  public void retractClimber() {
     if (!isDoneClimbing()) {
       // leftClimber.setMotor(ClimberConstants.kClimberPercentOutput);
     }
@@ -84,12 +84,31 @@ public class Climber extends SubsystemBase {
     return climberSensorState();
   }
 
+  public boolean isClimberDeployed(){
+    if(leftClimber.getPosition() == ClimberConstants.kClimberUnwindPosition && rightClimber.getPosition() == ClimberConstants.kClimberUnwindPosition){
+      return true;
+    }else return false;
+  }
+
+  public void runLeftMotor(double speed){
+    leftClimber.setMotor(speed);
+  }
+
+  public void runRigthMotor(double speed){
+    rightClimber.setMotor(speed);
+  }
+
+  public void stopClimber(){
+    leftClimber.setMotor(0);
+    rightClimber.setMotor(0);
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Climber Encoder Reading", leftClimber.getPosition());
     // This method will be called once per scheduler run
     if (SmartDashboard.getBoolean("Manual Climber Control", false)) {
-      leftClimber.setMotor(OperatorOI.getInstance().getForward()/5);
+      leftClimber.setMotor(OperatorOI.getInstance().getLeftForward()/5);
       // rightClimber.setMotor(OperatorOI.getInstance().getRightForward());
     }
 

@@ -6,7 +6,11 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ClimbCommands.DeployClimber;
+import frc.robot.commands.ClimbCommands.ManualClimberControl;
+import frc.robot.commands.ClimbCommands.RetractClimber;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants.OIConstants;
@@ -30,6 +34,7 @@ public class OperatorOI {
     private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
 
     private Arm arm;
+    private Climber climber;
     private Drivetrain drivetrain;
     private Superstructure superstructure;
     private Trigger xButton, circleButton, ps5Button, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper,
@@ -37,6 +42,7 @@ public class OperatorOI {
 
     public OperatorOI() {
         arm = Arm.getInstance();
+        climber = Climber.getInstance();
         drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
         configureController();
@@ -87,9 +93,11 @@ public class OperatorOI {
 
         // Mute homes the entire arm subsystem, both wrist and shoulder.
         muteButton = new JoystickButton(controller, 15);
+        muteButton.onTrue(null);
 
         // Manual Wrist and Shoulder Override Controls
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
+        L2Trigger.whileTrue(new ManualClimberControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
@@ -98,13 +106,13 @@ public class OperatorOI {
         // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
 
-        // Press and hold for outtaking slow (gamepiece adjustment), with down arrow
-        // this becomes full speed.
-        Trigger startButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
+      
+        Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
+        optionButton.onTrue(new RetractClimber());
 
-        // Press and hold for intaking slow (gamepiece adjustment), with down arrow this
-        // becomes full speed.
+     
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
+        shareButton.onTrue(new DeployClimber());
 
         // Game piece selection / LED indication requests to human player
         L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
@@ -154,7 +162,7 @@ public class OperatorOI {
         return controller.getPOV() == 180;
     }
 
-    public double getForward() {
+    public double getLeftForward() {
         double input = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
         if (Math.abs(input) < OIConstants.kDrivingDeadband) {
             input = 0;
