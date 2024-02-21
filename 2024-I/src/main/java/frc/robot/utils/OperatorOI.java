@@ -93,7 +93,6 @@ public class OperatorOI {
 
         // Mute homes the entire arm subsystem, both wrist and shoulder.
         muteButton = new JoystickButton(controller, 15);
-        muteButton.onTrue(null);
 
         // Manual Wrist and Shoulder Override Controls
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);

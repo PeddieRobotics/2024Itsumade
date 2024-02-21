@@ -22,8 +22,6 @@ public class ManualClimberControl extends Command{
         climber = Climber.getInstance();
     }
 
-    
-
     @Override
     public void initialize(){
        operatorOI = OperatorOI.getInstance();

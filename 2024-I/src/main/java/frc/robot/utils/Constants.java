@@ -37,8 +37,8 @@ public final class Constants {
         swerveModuleLocations[3]);
 
     // TODO: Change this value
-    public static final double kMaxFloorSpeed = 4.0; // meters per second
-    public static final double kMaxAngularSpeed = 3 / 2 * Math.PI; // radians per second
+    public static final double kMaxFloorSpeed = 1; // meters per second
+    public static final double kMaxAngularSpeed =  Math.PI; // radians per second
     // public static final double kMaxFloorSpeed = 4.0; // meters per second
     // public static final double kMaxAngularSpeed = Math.PI; // radians per second
     
@@ -166,7 +166,7 @@ public final class Constants {
   }
 
   public static class ClimberConstants {
-    public static final double kClimberCurrentLimit = 40;
+    public static final double kClimberCurrentLimit = 60;
     public static final double kClimberP = 0.0;
     public static final double kClimberI = 0.0;
     public static final double kClimberD = 0.0;

@@ -26,24 +26,27 @@ public class Climber extends SubsystemBase {
   private DigitalInput climberSensor;
 
   public Climber() {
-    // rightClimber = new Kraken(RobotMap.CLIMBER_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
+    rightClimber = new Kraken(RobotMap.CLIMBER_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
     leftClimber = new Kraken(RobotMap.CLIMBER_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
     // climberSensor = new DigitalInput(ClimberConstants.CLIMBER_SENSOR_ID);
 
-    // rightClimber.setCurrentLimit(ClimberConstants.kClimberCurrentLimit);
+    rightClimber.setCurrentLimit(ClimberConstants.kClimberCurrentLimit);
     leftClimber.setCurrentLimit(ClimberConstants.kClimberCurrentLimit);
 
-    // rightClimber.setVelocityConversionFactor(ClimberConstants.kClimberGearReduction);
+    rightClimber.setVelocityConversionFactor(ClimberConstants.kClimberGearReduction);
     leftClimber.setVelocityConversionFactor(ClimberConstants.kClimberGearReduction);
 
-    // rightClimber.setPIDValues(ClimberConstants.kClimberP,
-    // ClimberConstants.kClimberI, ClimberConstants.kClimberD,
-    // ClimberConstants.kClimberFF);
+    rightClimber.setPIDValues(ClimberConstants.kClimberP,
+        ClimberConstants.kClimberI, ClimberConstants.kClimberD,
+        ClimberConstants.kClimberFF);
     leftClimber.setPIDValues(ClimberConstants.kClimberP, ClimberConstants.kClimberI, ClimberConstants.kClimberD,
         ClimberConstants.kClimberFF);
 
-    // rightClimber.setBrake();
-    leftClimber.setBrake();
+    rightClimber.setCoast();
+    leftClimber.setCoast();
+
+    rightClimber.resetEncoder();
+    leftClimber.resetEncoder();
 
     SmartDashboard.putBoolean("Manual Climber Control", false);
     SmartDashboard.putBoolean("Climber PID Tuning", false);
@@ -70,7 +73,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void deployClimber() {
-    // rightClimber.setPositionWithFeedForward(ClimberConstants.kClimberUnwindPosition);
+    rightClimber.setPositionWithFeedForward(ClimberConstants.kClimberUnwindPosition);
     leftClimber.setPositionWithFeedForward(ClimberConstants.kClimberUnwindPosition);
   }
 
@@ -84,32 +87,38 @@ public class Climber extends SubsystemBase {
     return climberSensorState();
   }
 
-  public boolean isClimberDeployed(){
-    if(leftClimber.getPosition() == ClimberConstants.kClimberUnwindPosition && rightClimber.getPosition() == ClimberConstants.kClimberUnwindPosition){
+  public boolean isClimberDeployed() {
+    if (leftClimber.getPosition() == ClimberConstants.kClimberUnwindPosition
+        && rightClimber.getPosition() == ClimberConstants.kClimberUnwindPosition) {
       return true;
-    }else return false;
+    } else
+      return false;
   }
 
-  public void runLeftMotor(double speed){
+  public void runLeftMotor(double speed) {
     leftClimber.setMotor(speed);
   }
 
-  public void runRigthMotor(double speed){
+  public void runRigthMotor(double speed) {
     rightClimber.setMotor(speed);
   }
 
-  public void stopClimber(){
+  public void stopClimber() {
     leftClimber.setMotor(0);
     rightClimber.setMotor(0);
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Climber Encoder Reading", leftClimber.getPosition());
+    SmartDashboard.putNumber("Climber Left Encoder Reading", leftClimber.getPosition());
+    SmartDashboard.putNumber("Climber Right Encoder Reading", rightClimber.getPosition());
+
+    SmartDashboard.putNumber("Left Climber Current", leftClimber.getSupplyCurrent());
+    SmartDashboard.putNumber("Right Climber Currrent", rightClimber.getSupplyCurrent());
     // This method will be called once per scheduler run
     if (SmartDashboard.getBoolean("Manual Climber Control", false)) {
-      leftClimber.setMotor(OperatorOI.getInstance().getLeftForward()/5);
-      // rightClimber.setMotor(OperatorOI.getInstance().getRightForward());
+      leftClimber.setMotor(OperatorOI.getInstance().getLeftForward() / 5);
+      rightClimber.setMotor(OperatorOI.getInstance().getRightForward() / 5);
     }
 
     if (SmartDashboard.getBoolean("Climber PID Tuning", false)) {
