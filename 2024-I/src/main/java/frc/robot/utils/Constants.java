@@ -37,8 +37,8 @@ public final class Constants {
         swerveModuleLocations[3]);
 
     // TODO: Change this value
-    public static final double kMaxFloorSpeed = 1; // meters per second
-    public static final double kMaxAngularSpeed =  Math.PI; // radians per second
+    public static final double kMaxFloorSpeed = 4; // meters per second
+    public static final double kMaxAngularSpeed = 3 * 2 / Math.PI; // radians per second
     // public static final double kMaxFloorSpeed = 4.0; // meters per second
     // public static final double kMaxAngularSpeed = Math.PI; // radians per second
     
@@ -180,8 +180,8 @@ public final class Constants {
   }
 
   public static class FlywheelConstants {
-    public static final int kFlywheelLeftCurrentLimit = 0;
-    public static final int kFlywheelRightCurrentLimit = 0;
+    public static final int kFlywheelLeftCurrentLimit = 30;
+    public static final int kFlywheelRightCurrentLimit = 30;
 
     public static final double kFlywheelGearReduction = 30.0 / 18.0;
 
@@ -209,7 +209,7 @@ public final class Constants {
 
   public static class IntakeConstants {
     public static final int kIntakeCurrentLimit = 20;
-    public static final int kHopperCurrentLimit = 0;
+    public static final int kHopperCurrentLimit = 20;
     public static final double kIntakeSensorThreshold = 0;
     public static final double kHopperSensorThreshold = 0;
 

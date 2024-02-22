@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
+import frc.robot.utils.OperatorOI;
 import frc.robot.utils.Rate;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.Constants.ArmConstants;
@@ -109,7 +110,7 @@ public class Arm extends SubsystemBase {
 
         SmartDashboard.putNumber("Open Loop Speed Input", DriverOI.getInstance().getForward()/5);
         if(SmartDashboard.getBoolean("Open Loop Arm Control", false)){
-            setArmPercentOutput(DriverOI.getInstance().getForward()/10);
+            setArmPercentOutput(OperatorOI.getInstance().getRightForward()/2);
         }
     }
 

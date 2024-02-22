@@ -36,7 +36,7 @@ public class OperatorOI {
     private Arm arm;
     private Climber climber;
     private Drivetrain drivetrain;
-    private Superstructure superstructure;
+    // private Superstructure superstructure;
     private Trigger xButton, circleButton, ps5Button, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper,
             L2Trigger, R2Trigger;
 
@@ -44,7 +44,7 @@ public class OperatorOI {
         arm = Arm.getInstance();
         climber = Climber.getInstance();
         drivetrain = Drivetrain.getInstance();
-        superstructure = Superstructure.getInstance();
+        // superstructure = Superstructure.getInstance();
         configureController();
     }
 
@@ -96,7 +96,7 @@ public class OperatorOI {
 
         // Manual Wrist and Shoulder Override Controls
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
-        L2Trigger.whileTrue(new ManualClimberControl());
+        // L2Trigger.whileTrue(new ManualClimberControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 

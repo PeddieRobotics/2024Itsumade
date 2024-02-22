@@ -52,7 +52,7 @@ public class DriverOI {
     public DriverOI() {
         arm = Arm.getInstance();
         drivetrain = Drivetrain.getInstance();
-        // superstructure = Superstructure.getInstance();
+        superstructure = Superstructure.getInstance();
         configureController();
     }
 
@@ -89,7 +89,7 @@ public class DriverOI {
         // Arm Poses
         // L1 score (will move to this pose regardless of having a gamepiece)
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        // xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
+        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         // L2 scoring pose
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
@@ -107,6 +107,7 @@ public class DriverOI {
 
         // Mute homes the entire arm subsystem, both wrist and shoulder.
         Trigger muteButton = new JoystickButton(controller, 15);
+        muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         //Lock wheels, drive command for it not written yet...
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
@@ -185,6 +186,17 @@ public class DriverOI {
             input = Math.pow(input, 3);
         }
         return input;
+    }
+
+    public double getRightForward(){
+        double input = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
+        if (Math.abs(input) < 0.9) {
+            input *= 0.7777;
+        } else {
+            input = Math.pow(input, 3);
+        }
+        return input;
+
     }
 
     public double getStrafe() {

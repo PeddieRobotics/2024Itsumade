@@ -120,15 +120,17 @@ public class Superstructure extends SubsystemBase {
                 break;   
 
             case GROUND_INTAKE:
-                arm.setGroundIntakePosition();
+                // arm.setGroundIntakePosition();
                 
-                if (arm.isAtGroundIntakeAngle() && !isGamepieceIndexed()){
-                    intake.runIntake();
-                    // hopper.runHopper();
-                } else { // if(!arm.isAtGroundIntakeAngle() || isGamepieceIndexed()) 
-                     intake.stopIntake();
-                    // hopper.stopHopper();
-                }
+                // if (arm.isAtGroundIntakeAngle() && !isGamepieceIndexed()){
+                //     intake.runIntake();
+                //     // hopper.runHopper();
+                // } else { // if(!arm.isAtGroundIntakeAngle() || isGamepieceIndexed()) 
+                //      intake.stopIntake();
+                //     // hopper.stopHopper();
+                // }
+
+                intake.runIntake();
 
                 //only switch states from here if done indexing, but let it go into stow from anywhere
                 if(requestedSystemState == SuperstructureState.STOW){ //CHECK THIS

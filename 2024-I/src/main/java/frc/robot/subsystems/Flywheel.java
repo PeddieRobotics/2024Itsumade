@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
+import com.fasterxml.jackson.databind.jsontype.impl.SubTypeValidator;
+
 //import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap; -- ONLY using this for arm angle currently
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
@@ -9,7 +12,7 @@ import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Constants.FlywheelConstants;
 import frc.robot.utils.Constants.ScoringConstants;
 
-public class Flywheel {
+public class Flywheel extends SubsystemBase{
 
     private static Flywheel instance;
     private double leftSetpoint, rightSetpoint;
@@ -49,6 +52,7 @@ public class Flywheel {
                 FlywheelConstants.kFlywheelI,
                 FlywheelConstants.kFlywheelD,
                 FlywheelConstants.kFlywheelFF);
+        putSmartDashboard();
     }
 
     public static Flywheel getInstance() {
@@ -125,9 +129,19 @@ public class Flywheel {
         SmartDashboard.putNumber("Flywheel I", FlywheelConstants.kFlywheelI);
         SmartDashboard.putNumber("Flywheel D", FlywheelConstants.kFlywheelD);
         SmartDashboard.putNumber("Flywheel FF", FlywheelConstants.kFlywheelFF);
+        SmartDashboard.putBoolean("Flywheel Percent Output", false);
+        SmartDashboard.putNumber("Flywheel Left Percent Output", 0);
+        SmartDashboard.putNumber("Flywheel Right Percent Output", 0);
     }
 
     public void updateSmartDashboard() {
+        if(SmartDashboard.getBoolean("Flywheel Percent Output", false)){
+            runLeftFlywheelPercentOutput(SmartDashboard.getNumber("Flywheel Left Percent Output", 0));
+            runRightFlywheelPercentOutput(SmartDashboard.getNumber("Flywheel Right Percent Output", 0));
+            // flywheelLeftMotor.setMotor(SmartDashboard.getNumber("Flywheel Left Percent Output", 0));
+            // flywheelRightMotor.setMotor(SmartDashboard.getNumber("Flywheel Right Percent Output", 0));
+        }
+
         if(SmartDashboard.getBoolean("Update Flywheel PID", false)){
             flywheelLeftMotor.setVelocityPIDValues(
                 SmartDashboard.getNumber("Flywheel S", FlywheelConstants.kFlywheelS), 
@@ -154,8 +168,9 @@ public class Flywheel {
         }
     }
 
+    @Override
     public void periodic() {
-
+        updateSmartDashboard();
     }
 
     private boolean isLeftAtRPM(){

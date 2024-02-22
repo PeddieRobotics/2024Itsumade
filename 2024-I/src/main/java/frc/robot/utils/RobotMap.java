@@ -27,15 +27,15 @@ public class RobotMap {
     public static final int CLIMBER_LEFT_MOTOR = 61; //DEFAULT VALUE, CHANGE LATER
 
 
-    public static final int FLYWHEEL_LEFT_MOTOR = 0; //DEFAULT VALUE, CHANGE LATER
-    public static final int FLYWHEEL_RIGHT_MOTOR = 0; //DEFAULT VALUE, CHANGE LATER
+    public static final int FLYWHEEL_LEFT_MOTOR = 7; //DEFAULT VALUE, CHANGE LATER
+    public static final int FLYWHEEL_RIGHT_MOTOR = 8; //DEFAULT VALUE, CHANGE LATER
     public static final int FLYWHEEL_SENSOR_ID = 0; //DEFAULT VALUE, CHANGE LATER
 
 
     public static final int INTAKE_MOTOR_CAN_ID = 5;
     public static final int INTAKE_SENSOR_ID = 3;
 
-    public static final int HOPPER_MOTOR_CAN_ID = 0; //DEFAULT VALUE, CHANGE LATER
+    public static final int HOPPER_MOTOR_CAN_ID = 6; //DEFAULT VALUE, CHANGE LATER
     public static final int TOP_HOPPER_SENSOR_ID = 0; //DEFAULT VALUE, CHANGE LATER
     public static final int BOTTOM_HOPPER_SENSOR_ID = 0; //DEFAULT VALUE, CHANGE LATER
 
