@@ -33,10 +33,10 @@ public class RobotMap {
 
 
     public static final int INTAKE_MOTOR_CAN_ID = 5;
-    public static final int INTAKE_SENSOR_ID = 3;
+    public static final int INTAKE_SENSOR_ID = 1;
 
     public static final int HOPPER_MOTOR_CAN_ID = 6; //DEFAULT VALUE, CHANGE LATER
-    public static final int TOP_HOPPER_SENSOR_ID = 0; //DEFAULT VALUE, CHANGE LATER
-    public static final int BOTTOM_HOPPER_SENSOR_ID = 0; //DEFAULT VALUE, CHANGE LATER
+    public static final int TOP_HOPPER_SENSOR_ID = 3; //DEFAULT VALUE, CHANGE LATER
+    public static final int BOTTOM_HOPPER_SENSOR_ID = 2; //DEFAULT VALUE, CHANGE LATER
 
 }

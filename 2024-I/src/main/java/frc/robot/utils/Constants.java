@@ -107,8 +107,8 @@ public final class Constants {
   }
 
   public static class LimelightConstants {
-    public static final double kLimelightHeight = 17;
-    public static final double kLimelightPanningAngle = 60;
+    public static final double kLimelightHeight = 17.88;
+    public static final double kLimelightPanningAngle = 25;
     public static final double kLimelightAngle = 0;
 
     //drive to target command constants
@@ -138,6 +138,13 @@ public final class Constants {
     public static final double kTargetFF = 0;
 
     public static final double kTargetAngleThreshold = 2.0;
+
+    // speaker april tag height because that is what will be used the most
+    public static final double kSpeakerAprilTagHeight = 57.125;
+
+    public static final int kShooterAprilTagPipeline = 3;
+
+    public static final int kIntakeNotePipeline = 0;
   }
 
   public static class ArmConstants {

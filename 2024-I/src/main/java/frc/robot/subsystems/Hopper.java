@@ -22,25 +22,20 @@ public class Hopper extends SubsystemBase {
   private static Hopper hopper;
   private Kraken hopperMotor;
 
-  // public LaserCan topHopperSensor, bottomHopperSensor;
-  // private DigitalInput topHopperSensor, bottomHopperSensor;
-
   //TODO: figure out if sensor will be digital input or analog
-  // private AnalogInput topHopperSensor, bottomHopperSensor;
+  private AnalogInput topHopperSensor, bottomHopperSensor;
 
   public Hopper() {
     hopperMotor = new Kraken(RobotMap.HOPPER_MOTOR_CAN_ID, RobotMap.CANIVORE_NAME);
-    // topHopperSensor = new DigitalInput(RobotMap.TOP_HOPPER_SENSOR_ID);
-    // bottomHopperSensor = new DigitalInput(RobotMap.BOTTOM_HOPPER_SENSOR_ID);
 
-    SmartDashboard.putBoolean("Hopper Percent Output", false);
-    SmartDashboard.putNumber("Hopper Motor Percent Output", 0);
-
-    // topHopperSensor = new AnalogInput(RobotMap.TOP_HOPPER_SENSOR_ID);
-    // bottomHopperSensor = new AnalogInput(RobotMap.BOTTOM_HOPPER_SENSOR_ID);
+    topHopperSensor = new AnalogInput(RobotMap.TOP_HOPPER_SENSOR_ID);
+    bottomHopperSensor = new AnalogInput(RobotMap.BOTTOM_HOPPER_SENSOR_ID);
 
     hopperMotor.setCurrentLimit(IntakeConstants.kHopperCurrentLimit);
     hopperMotor.setBrake();
+
+    SmartDashboard.putBoolean("Hopper Percent Output", false);
+    SmartDashboard.putNumber("Hopper Motor Percent Output", 0);
   }
 
   public static Hopper getInstance() {
@@ -71,35 +66,21 @@ public class Hopper extends SubsystemBase {
     hopperMotor.setMotor(0);
   }
 
-  //returns if the beam is broken
-  public boolean getTopSensor() {
-    // return !topHopperSensor.get();
-    return false;
+  public boolean getTopSensor(){
+    return getTopSensorReading() < 0.01;
   }
 
-  //ANALOG INPUT MODES
-  // public boolean getTopSensor(){
-  //   return getTopSensorReading() < 0.01;
-  // }
-
-  // public double getTopSensorReading() {
-  //   return topHopperSensor.getVoltage();
-  // }
-
-  //returns if the beam is broken
-  public boolean getBottomSensor() {
-    // return !bottomHopperSensor.get();
-    return false;
+  public double getTopSensorReading() {
+    return topHopperSensor.getVoltage();
   }
-  
-  //ANALOG INPUT MODES
-  // public boolean getBottomSensor(){
-  //   return getBottomSensorReading() < 0.01;
-  // }
 
-  // public double getBottomSensorReading() {
-  //   return bottomHopperSensor.getVoltage();
-  // }
+  public boolean getBottomSensor(){
+    return getBottomSensorReading() < 0.01;
+  }
+
+  public double getBottomSensorReading() {
+    return bottomHopperSensor.getVoltage();
+  }
 
   public boolean hasGamepiece(){
     return (getTopSensor() || getBottomSensor());
@@ -116,15 +97,15 @@ public class Hopper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("Hopper Top Sensor Status", getBottomSensor());
+    SmartDashboard.putBoolean("Hopper Top Sensor Status", getTopSensor());
     SmartDashboard.putBoolean("Hopper Bottom Sensor Status", getBottomSensor());
-    if(SmartDashboard.getBoolean("Hopper Percent Output", false)){
+    if (SmartDashboard.getBoolean("Hopper Percent Output", false)){
       hopperMotor.setMotor(SmartDashboard.getNumber("Hopper Motor Percent Output", 0));
     }
     
     // IF USING ANALOG INPUTS
-    // SmartDashboard.putNumber("Hopper Top Sensor Reading", getTopSensorReading());
-    // SmartDashboard.putNumber("Hopper Bottom Sensor Reading", getBottomSensorReading());
+    SmartDashboard.putNumber("Hopper Top Sensor Reading", getTopSensorReading());
+    SmartDashboard.putNumber("Hopper Bottom Sensor Reading", getBottomSensorReading());
   }
 
   @Override

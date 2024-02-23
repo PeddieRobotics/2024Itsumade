@@ -1,24 +1,19 @@
 package frc.robot.subsystems;
 
-import com.fasterxml.jackson.databind.jsontype.impl.SubTypeValidator;
-
 //import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap; -- ONLY using this for arm angle currently
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.Constants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
-import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Constants.FlywheelConstants;
 import frc.robot.utils.Constants.ScoringConstants;
 
-public class Flywheel extends SubsystemBase{
+public class Flywheel extends SubsystemBase {
 
     private static Flywheel instance;
     private double leftSetpoint, rightSetpoint;
 
     private Kraken flywheelLeftMotor, flywheelRightMotor;
-    // private LaserCan flywheelSensor;
     private double rpmDelta;
 
 
@@ -27,7 +22,6 @@ public class Flywheel extends SubsystemBase{
 
         flywheelLeftMotor = new Kraken(RobotMap.FLYWHEEL_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
         flywheelRightMotor = new Kraken(RobotMap.FLYWHEEL_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
-        //flywheelSensor = new LaserCan(RobotMap.FLYWHEEL_SENSOR_ID);
 
         flywheelLeftMotor.setCurrentLimit(FlywheelConstants.kFlywheelLeftCurrentLimit);
         flywheelRightMotor.setCurrentLimit(FlywheelConstants.kFlywheelRightCurrentLimit);
@@ -35,23 +29,28 @@ public class Flywheel extends SubsystemBase{
         flywheelLeftMotor.setVelocityConversionFactor(FlywheelConstants.kFlywheelGearReduction);
         flywheelRightMotor.setVelocityConversionFactor(FlywheelConstants.kFlywheelGearReduction);
 
-        flywheelLeftMotor.setVelocityPIDValues(
-                FlywheelConstants.kFlywheelS,
-                FlywheelConstants.kFlywheelV,
-                FlywheelConstants.kFlywheelA,
-                FlywheelConstants.kFlywheelP,
-                FlywheelConstants.kFlywheelI,
-                FlywheelConstants.kFlywheelD,
-                FlywheelConstants.kFlywheelFF);
+        flywheelLeftMotor.setInverted(false);
+        flywheelRightMotor.setInverted(true);
 
+        flywheelLeftMotor.setVelocityPIDValues(
+            FlywheelConstants.kFlywheelS,
+            FlywheelConstants.kFlywheelV,
+            FlywheelConstants.kFlywheelA,
+            FlywheelConstants.kFlywheelP,
+            FlywheelConstants.kFlywheelI,
+            FlywheelConstants.kFlywheelD,
+            FlywheelConstants.kFlywheelFF
+        );
         flywheelRightMotor.setVelocityPIDValues(
-                FlywheelConstants.kFlywheelS,
-                FlywheelConstants.kFlywheelV,
-                FlywheelConstants.kFlywheelA,
-                FlywheelConstants.kFlywheelP,
-                FlywheelConstants.kFlywheelI,
-                FlywheelConstants.kFlywheelD,
-                FlywheelConstants.kFlywheelFF);
+            FlywheelConstants.kFlywheelS,
+            FlywheelConstants.kFlywheelV,
+            FlywheelConstants.kFlywheelA,
+            FlywheelConstants.kFlywheelP,
+            FlywheelConstants.kFlywheelI,
+            FlywheelConstants.kFlywheelD,
+            FlywheelConstants.kFlywheelFF
+        );
+
         putSmartDashboard();
     }
 
@@ -106,7 +105,7 @@ public class Flywheel extends SubsystemBase{
     }
 
     public void runFlywheelShot(){
-        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelLayupRPM + rpmDelta); //for now, we're assumign you're using the same velocity for both LL and Layup
+        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelLayupRPM + rpmDelta); //for now, we're assuming you're using the same velocity for both LL and Layup
     }
 
     public double getFlywheelLeftRPM(){

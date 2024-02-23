@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.Constants.LimelightConstants;
+import frc.robot.utils.Constants;
 import frc.robot.utils.LimelightHelper;
 import frc.robot.utils.Logger;
 import frc.robot.utils.RollingAverage;
@@ -18,7 +19,6 @@ public class LimelightShooter extends Limelight {
     private static LimelightShooter limelightShooter;
 
     private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage;
-
 
     private String limelightName = "limelight-shooter";
 
@@ -32,7 +32,7 @@ public class LimelightShooter extends Limelight {
         xAverage = new RollingAverage(4,getBotpose().getX());
 
         //tbd
-        setPipeline(0);
+        setPipeline(Constants.LimelightConstants.kShooterAprilTagPipeline);
     }
 
     public static LimelightShooter getInstance() {
@@ -150,7 +150,7 @@ public class LimelightShooter extends Limelight {
             // a2 = additional angle to target
             // tan(a1 + a2) = h/d
             // d = h/tan(a1+a2)
-            return (LimelightConstants.kLimelightHeight) /
+            return (LimelightConstants.kSpeakerAprilTagHeight - LimelightConstants.kLimelightHeight) /
                     (Math.tan(Math.toRadians(LimelightConstants.kLimelightPanningAngle + getTy())));
         }
     }

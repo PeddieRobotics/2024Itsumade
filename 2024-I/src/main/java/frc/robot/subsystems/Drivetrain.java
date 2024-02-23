@@ -46,7 +46,7 @@ public class Drivetrain extends SubsystemBase {
     private double offTime;
     private Rotation2d holdHeading;
     private final LimelightShooter limelightShooter;
-    private final LimelightIntake limelightBack;
+    private final LimelightIntake limelightIntake;
 
     private RollingAverage gyroTiltAverage;
     private Field2d field;
@@ -54,8 +54,8 @@ public class Drivetrain extends SubsystemBase {
     // logistic function for if two apriltags are seen
     private double S2 = 18.0; // maximum
     private double I2 = 0.1; // minimum
-    private double K2 = 4.0;// growth rate
-    private double H2 = 3.3;// midpoint
+    private double K2 = 4.0; // growth rate
+    private double H2 = 3.3; // midpoint
 
     private double sigmoid2(double dist) {
         return (S2 - I2) / (1.0 + Math.exp(-K2 * (dist - H2))) + I2;
@@ -136,7 +136,7 @@ public class Drivetrain extends SubsystemBase {
         isParkedAuto = false;
 
         limelightShooter = LimelightShooter.getInstance();
-        limelightBack = LimelightIntake.getInstance();
+        limelightIntake = LimelightIntake.getInstance();
 
         SmartDashboard.putBoolean("Reset Gyro", false);
 
@@ -159,6 +159,7 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Target D", 0);
         SmartDashboard.putNumber("Target FF", 0);
 
+        isForcingCalibration = false;
     }
 
     public static Drivetrain getInstance() {
@@ -235,7 +236,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void updateOdometry() {
         odometry.update(getRotation2d(), swerveModulePositions);
-        if (useMegaTag) {
+        if (useMegaTag || isForcingCalibration) {
             limelightShooter.checkForAprilTagUpdates(odometry);
             // limelightBack.checkForAprilTagUpdates(odometry);
         }
