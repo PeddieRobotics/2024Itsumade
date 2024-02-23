@@ -41,7 +41,6 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 3 * 2 / Math.PI; // radians per second
     // public static final double kMaxFloorSpeed = 4.0; // meters per second
     // public static final double kMaxAngularSpeed = Math.PI; // radians per second
-    
 
     public static final int kDriveCurrentLimit = 30;
     public static final int kTurningCurrentLimit = 30;
@@ -99,10 +98,10 @@ public final class Constants {
 
     // designated shooting coordinates (for ToClosestShooting command)
     // blue coordinates (x, y, theta)
-    public static final double [][] shootingPositions = {
-      { 3.95, 6.88, -160.00 },
-      { 3.81, 5.31,  175.00 },
-      { 2.21, 4.47,  125.00 },
+    public static final double[][] shootingPositions = {
+        { 3.95, 6.88, -160.00 },
+        { 3.81, 5.31, 175.00 },
+        { 2.21, 4.47, 125.00 },
     };
   }
 
@@ -111,7 +110,7 @@ public final class Constants {
     public static final double kLimelightPanningAngle = 25;
     public static final double kLimelightAngle = 0;
 
-    //drive to target command constants
+    // drive to target command constants
     public static final double kDriveToTargetTurnP = 0;
     public static final double kDriveToTargetTurnI = 0;
     public static final double kDriveToTargetTurnD = 0;
@@ -125,13 +124,13 @@ public final class Constants {
     public static final double kDriveToTargetMoveFF = 0;
     public static final double kDriveToTargetMoveThreshhold = 0;
 
-    //follow note command constants
+    // follow note command constants
     public static final double kFollowNoteTurnP = 0;
     public static final double kFollowNoteTurnI = 0;
     public static final double kFollowNoteTurnD = 0;
     public static final double kFollowNoteAngleThreshold = 0;
 
-    //target apriltag command constants
+    // target apriltag command constants
     public static final double kTargetP = 0.03;
     public static final double kTargetI = 0.1;
     public static final double kTargetD = 0;
@@ -150,22 +149,28 @@ public final class Constants {
   public static class ArmConstants {
     public static final int kArmPrimaryCurrentLimit = 40;
 
-    public static final double kArmS = 0.25;
-    public static final double kArmV = 0;
-    public static final double kArmA = 0;
+    public static final double kArmS = 0.75;
+    public static final double kArmV = 2.59;
+    public static final double kArmA = 0.01;
     public static final double kArmP = 40;
     public static final double kArmI = 0;
     public static final double kArmD = 0;
     public static final double kArmFF = 0;
     public static final double kArmIZone = 0;
+    public static final double kArmG = 0.25;
+
+    public static final double kCancoderCruiseVelocityRPS = .3;
+    public static final double kCancoderCruiseMaxAccel = 200; // rot/s^2
+    public static final double kCancoderCruiseMaxJerk = 1600; // rot/s^3
 
     public static final double kArmForwardSoftLimitDegrees = 140;
     public static final double kArmReverseSoftLimitDegrees = 0;
 
-    public static final double kArmGearReduction = 16384.0/125;
+    public static final double kArmPositionOffsetDegrees = -28.3447;
+    public static final double kArmGearReduction = 16384.0 / 125;
     public static final double kRotorToSensorRatio = kArmGearReduction / (360);
     public static final double kArmPositionConversionFactor = 1.0; // dependednt on feedbakc device
-    //hypothetical values for the arm when going to these various positions
+    // hypothetical values for the arm when going to these various positions
 
     public static final double kArmIntakeHPPosition = 0.0; // in deg
     public static final double kArmPositionEpsilon = 1;
@@ -173,11 +178,6 @@ public final class Constants {
     public static final double kArmLayupPosition = -80.0;
     public static final double kArmStowPosition = -90.0;
     public static final double kArmIntakePositionFromGround = -70.0;
-
-    public static final double kArmPositionOffsetDegrees = 37.771;
-    public static final double cancoderCruiseVelocityRPS=.3;
-    public static final double cancoderCruiseMaxAccel=200; // rot/s^2
-    public static final double cancoderCruiseMaxJerk=1600; //rot/s^3
   }
 
   public static class ClimberConstants {
@@ -186,8 +186,9 @@ public final class Constants {
     public static final double kClimberI = 0.0;
     public static final double kClimberD = 0.0;
     public static final double kClimberFF = 0.0;
-    public static final double kClimberPercentOutput = -0.7; //percent putput the climber would 
-    public static final double kClimberUnwindPosition = 0.0; //the angle the kraken needs to go backwards to retract back
+    public static final double kClimberPercentOutput = -0.7; // percent putput the climber would
+    public static final double kClimberUnwindPosition = 0.0; // the angle the kraken needs to go backwards to retract
+                                                             // back
 
     public static final double kClimberGearReduction = 35.0 / 1.0;
 
@@ -216,10 +217,11 @@ public final class Constants {
     public static final double kFlywheelLayupRPM = 2500;
     public static final double kFlywheelAmpRPM = 500;
     public static final double kFlywheelHPIntakeRPM = -250;
-    public static final double kFlywheelShotThreshold = 100; 
+    public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 1.0;
     // Distance, Angle; SAMPLE VALUES, NEEDS TO BE TUNED -TONY
-    public static final double[][] treeMapValues = new double[][] { { 0.5, -55 }, { 1.5, -45 }, {2.5, -37.5}, {3.5, -25}, {4.5, -20}, {5.5, -15} }; 
+    public static final double[][] treeMapValues = new double[][] { { 0.5, -55 }, { 1.5, -45 }, { 2.5, -37.5 },
+        { 3.5, -25 }, { 4.5, -20 }, { 5.5, -15 } };
   }
 
   public static class IntakeConstants {
