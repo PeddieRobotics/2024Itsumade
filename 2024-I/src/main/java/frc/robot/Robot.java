@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Shuffleboard.ShuffleboardMain;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.Logger;
 
 /**
@@ -95,6 +96,9 @@ public class Robot extends TimedRobot {
     logger.logEvent("Autonomous Mode", true);
     logger.signalRobotEnable();
     System.out.println("LOGGING: " + DataLogManager.getLogDir());
+
+    Drivetrain.getInstance().setIsParkedAuto(false);
+    Drivetrain.getInstance().setUseMegaTag(false);
   }
 
   /** This function is called periodically during autonomous. */
@@ -116,6 +120,9 @@ public class Robot extends TimedRobot {
     logger.logEvent("TeleOp Mode", true);
     logger.signalRobotEnable();
     System.out.println("LOGGING: " + DataLogManager.getLogDir());
+
+    Drivetrain.getInstance().setIsParkedAuto(false);
+    Drivetrain.getInstance().setUseMegaTag(true);
   }
 
   /** This function is called periodically during operator control. */

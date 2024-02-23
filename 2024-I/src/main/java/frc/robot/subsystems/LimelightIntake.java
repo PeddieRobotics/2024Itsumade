@@ -14,15 +14,14 @@ import frc.robot.utils.LimelightHelper;
 import frc.robot.utils.Logger;
 import frc.robot.utils.RollingAverage;
 
-public class LimelightBack extends Limelight {
-    private static LimelightBack limelightBack;
+public class LimelightIntake extends Limelight {
+    private static LimelightIntake limelightIntake;
 
     private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage;
 
+    private String limelightName = "limelight-intake";
 
-    private String limelightName = "limelight-back";
-
-    public LimelightBack() {
+    public LimelightIntake() {
         txAverage = new RollingAverage();
         tyAverage = new RollingAverage();
         taAverage = new RollingAverage();
@@ -35,11 +34,11 @@ public class LimelightBack extends Limelight {
         setPipeline(0);
     }
 
-    public static LimelightBack getInstance() {
-        if (limelightBack == null) {
-            limelightBack = new LimelightBack();
+    public static LimelightIntake getInstance() {
+        if (limelightIntake == null) {
+            limelightIntake = new LimelightIntake();
         }
-        return limelightBack;
+        return limelightIntake;
     }
 
     @Override

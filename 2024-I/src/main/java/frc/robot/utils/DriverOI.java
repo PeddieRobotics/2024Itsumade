@@ -10,14 +10,16 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.ForcedCalibration;
+import frc.robot.commands.DriveCommands.PathPlannerToPoint;
+import frc.robot.commands.DriveCommands.PathPlannerToShoot;
 import frc.robot.commands.DriveCommands.Target;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.OIConstants;
-//import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure;
 
 public class DriverOI {
@@ -37,9 +39,6 @@ public class DriverOI {
 
     private PS4Controller controller;
 
-    /**
-     * the center depending on aliance
-     */
     private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     private AlignGoalColumn alignGoalColumn = AlignGoalColumn.kCenter;
 
@@ -86,56 +85,44 @@ public class DriverOI {
     public void configureController() {
         controller = new PS4Controller(0);
 
-        // Arm Poses
-        // L1 score (will move to this pose regardless of having a gamepiece)
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
-        // L2 scoring pose
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
-        // L3 scoring pose - does not include L3 cone forward right now.
+        // Test
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
+        triangleButton.onTrue(new PathPlannerToShoot(4));
 
-        // Square button forces the robot to look at odometry updates.
+        // Test
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+        squareButton.onTrue(new FollowNoteInAuto(2));
 
-        // Stowed pose
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new ForcedCalibration());
 
-        // Mute homes the entire arm subsystem, both wrist and shoulder.
         Trigger muteButton = new JoystickButton(controller, 15);
         muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
-        //Lock wheels, drive command for it not written yet...
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
-        // Manual Wrist and Shoulder Override Controls
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
         // L2Trigger.whileTrue(new ManualArmControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
-        // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
         ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
-        // Press and hold for outtaking slow (gamepiece adjustment), with down arrow
-        // this becomes full speed.
         Trigger startButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
 
-        // Press and hold for intaking slow (gamepiece adjustment), with down arrow this
-        // becomes full speed.
         //Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
-        // Game piece selection / LED indication requests to human player
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
 
-        // Column Selection
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
 
         Trigger dpadLeftTrigger = new Trigger(() -> controller.getPOV() == 270);
