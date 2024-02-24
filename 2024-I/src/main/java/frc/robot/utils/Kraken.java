@@ -8,6 +8,7 @@ import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
@@ -250,6 +251,12 @@ public class Kraken {
     public void setVelocityTorqueFOC(double velocity){
         final VelocityTorqueCurrentFOC request = new VelocityTorqueCurrentFOC(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor));
+    }
+
+    //position torque foc
+    public void setPositionTorqueFOC(double setpoint){
+        final PositionTorqueCurrentFOC request = new PositionTorqueCurrentFOC(0).withSlot(0);
+        talon.setControl(request.withPosition(setpoint).withFeedForward(feedForward));
     }
 
     // set the motor target position using Motion Magic

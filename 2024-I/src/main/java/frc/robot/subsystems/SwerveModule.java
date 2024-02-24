@@ -223,7 +223,7 @@ public class SwerveModule extends SubsystemBase {
     }
 
     SmartDashboard.putNumber(drivingCANId + " drive motor position", driveMotor.getPosition() * ModuleConstants.kDrivingEncoderPostionFactor);
-    SmartDashboard.putNumber(steeringCANId + " turn motor position", steerMotor.getPosition());
+    SmartDashboard.putNumber(steeringCANId + " turn motor position", steerMotor.getPosition() * 2* Math.PI);
     //SmartDashboard.putNumber("drive motor mps", driveMotor.getMPS());
     // SmartDashboard.putNumber(CANCoderId + " cancoder position",
     // getCANCoderReading());

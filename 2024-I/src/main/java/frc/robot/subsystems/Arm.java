@@ -49,7 +49,7 @@ public class Arm extends SubsystemBase {
         armMotor.setEncoder(0);
 
         armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
-        armMotor.setPositionConversionFactor(ArmConstants.kArmPositionConversionFactor * 2);
+        armMotor.setPositionConversionFactor(ArmConstants.kArmPositionConversionFactor);
 
         armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
                 ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
@@ -57,8 +57,8 @@ public class Arm extends SubsystemBase {
                 ArmConstants.kCancoderCruiseMaxJerk);
 
         armMotor.setSoftLimits(true,
-                Constants.ArmConstants.kArmForwardSoftLimitDegrees / 360,
-                Constants.ArmConstants.kArmReverseSoftLimitDegrees / 360);
+                (Constants.ArmConstants.kArmForwardSoftLimitDegrees) / 360,
+                (Constants.ArmConstants.kArmReverseSoftLimitDegrees) / 360);
 
         for (double[] pair : Constants.ScoringConstants.treeMapValues) {
             LLShotMap.put(pair[0], pair[1]);
@@ -76,8 +76,10 @@ public class Arm extends SubsystemBase {
     public void configureCANcoder() {
         CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive; // doublecheck this
-        canCoderConfig.MagnetSensor.MagnetOffset = -2 * Constants.ArmConstants.kArmPositionOffsetDegrees / 360; // and
-                                                                                                                // this
+        canCoderConfig.MagnetSensor.MagnetOffset = 2 * Constants.ArmConstants.kArmPositionOffsetDegrees / 360; // the value that we put to shuffleboard
+                                                                                                                // is modified from the actual CANCoder to multiply by 360 for degrees, 
+                                                                                                                //and then divide by 2 for the difference between CANCoder and actual arm shaft.
+                                                                                                                //This just undoes that
         armCANcoder.getConfigurator().apply(canCoderConfig);
     }
 
@@ -113,7 +115,7 @@ public class Arm extends SubsystemBase {
 
     public void updateSmartDashboard() {
         SmartDashboard.putNumber("ARM Absolute CANCoder Reading", getAbsoluteCANCoderPosition());
-        SmartDashboard.putNumber("ARM Internal Motor Encoder Reading", armMotor.getPosition());
+        SmartDashboard.putNumber("ARM Internal Motor Encoder Reading", armMotor.getPosition() * 360);
 
         SmartDashboard.putNumber("Arm Motor Current", armMotor.getSupplyCurrent());
         SmartDashboard.putNumber("Arm Motor Temperature", armMotor.getMotorTemperature());
@@ -127,6 +129,8 @@ public class Arm extends SubsystemBase {
         if (SmartDashboard.getBoolean("Open Loop Arm Control", false)) {
             setArmPercentOutput(OperatorOI.getInstance().getRightForward() / 2);
         }
+
+        SmartDashboard.putNumber("Calculated Arm FF", getFeedForward(SmartDashboard.getNumber("Arm kG", 0)));
 
         if (SmartDashboard.getBoolean("Update Arm PID", false)) {
             armMotor.setMotionMagicParameters(
@@ -142,7 +146,9 @@ public class Arm extends SubsystemBase {
                     SmartDashboard.getNumber("Arm I", 0),
                     SmartDashboard.getNumber("Arm D", 0),
                     getFeedForward(SmartDashboard.getNumber("Arm kG", 0)));
-            armMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Position Setpoint", 0)/360);
+ 
+            armMotor.setPositionTorqueFOC(SmartDashboard.getNumber("Arm Position Setpoint", 0)/360);
+            // armMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Position Setpoint", 0)/360);
         }
     }
 
@@ -156,9 +162,11 @@ public class Arm extends SubsystemBase {
     }
 
     public double getFeedForward(double kG){
-        return kG * Math.sin(getAbsoluteCANCoderPosition());
+        return kG * Math.sin((getAbsoluteCANCoderPosition()/180) * Math.PI);
     }
-
+    
+    //CANcoder reads 0 to 1, we use this to get easier to read angles to put to dashboard 
+    //(* 360 for degrees, /2 for difference between CANcoder output shaft and actual arm shaft)
     public double getAbsoluteCANCoderPosition() {
         return armCANcoder.getPosition().getValueAsDouble() * 360 / 2;
     }

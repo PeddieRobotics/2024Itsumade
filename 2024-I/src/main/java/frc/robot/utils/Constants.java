@@ -166,10 +166,14 @@ public final class Constants {
     public static final double kArmForwardSoftLimitDegrees = 140;
     public static final double kArmReverseSoftLimitDegrees = 0;
 
-    public static final double kArmPositionOffsetDegrees = -28.3447;
-    public static final double kArmGearReduction = 16384.0 / 125;
-    public static final double kRotorToSensorRatio = kArmGearReduction / (360);
-    public static final double kArmPositionConversionFactor = 1.0; // dependednt on feedbakc device
+    public static final double kArmPositionOffsetDegrees = 28.3447;
+
+    //TOTAL NET gear reduction from motor ALL THE WAY to shoulder pivot
+    public static final double kRotorToArmGearReduction = 16384.0 / 125;
+
+    //gear reduction from motor to CANCoder Shaft
+    public static final double kRotorToSensorRatio = (kRotorToArmGearReduction/2);
+    public static final double kArmPositionConversionFactor = 2.0; // dependednt on feedback device
     // hypothetical values for the arm when going to these various positions
 
     public static final double kArmIntakeHPPosition = 0.0; // in deg
@@ -203,10 +207,10 @@ public final class Constants {
 
     public static final double kFlywheelSensorThreshold = 0;
 
-    public static final double kFlywheelS = 0;
-    public static final double kFlywheelV = 0; // 0.00225;
+    public static final double kFlywheelS = 4;
+    public static final double kFlywheelV = 3.25; // 0.00225;
     public static final double kFlywheelA = 0;
-    public static final double kFlywheelP = 0; // 0.0005;
+    public static final double kFlywheelP = 12; // could be changed later... crap tune
     public static final double kFlywheelI = 0;
     public static final double kFlywheelD = 0;
     public static final double kFlywheelFF = 0;
