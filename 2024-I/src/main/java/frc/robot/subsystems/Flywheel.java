@@ -131,6 +131,8 @@ public class Flywheel extends SubsystemBase {
         SmartDashboard.putBoolean("Flywheel Percent Output", false);
         SmartDashboard.putNumber("Flywheel Left Percent Output", 0);
         SmartDashboard.putNumber("Flywheel Right Percent Output", 0);
+        SmartDashboard.putNumber("Flywheel Left RPM", 0);
+        SmartDashboard.putNumber("Flywheel Right RPM", 0);
     }
 
     public void updateSmartDashboard() {
@@ -162,9 +164,15 @@ public class Flywheel extends SubsystemBase {
                 SmartDashboard.getNumber("Flywheel FF", FlywheelConstants.kFlywheelFF)
             );
 
-            flywheelLeftMotor.setVelocityWithFeedForward(SmartDashboard.getNumber("Flywheel Left Motor RPM Setpoint", leftSetpoint));
-            flywheelRightMotor.setVelocityWithFeedForward(SmartDashboard.getNumber("Flywheel Right Motor RPM Setpoint", rightSetpoint));
+            leftSetpoint = SmartDashboard.getNumber("Flywheel Left Motor RPM Setpoint", leftSetpoint);
+            rightSetpoint = SmartDashboard.getNumber("Flywheel Right Motor RPM Setpoint", rightSetpoint);
+
+            flywheelLeftMotor.setVelocityTorqueFOC(leftSetpoint);
+            flywheelRightMotor.setVelocityTorqueFOC(rightSetpoint);
         }
+
+        SmartDashboard.putNumber("Flywheel Left RPM", getFlywheelLeftRPM());
+        SmartDashboard.putNumber("Flywheel Right RPM", getFlywheelRightRPM());
     }
 
     @Override

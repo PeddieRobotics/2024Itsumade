@@ -3,10 +3,14 @@ package frc.robot.utils;
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.TorqueCurrentFOC;
+import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -82,7 +86,8 @@ public class Kraken {
 
     // get the motor rotor velocity in RPMs (must apply conversion factor?)
     public double getRPM() {
-        return talon.getRotorVelocity().getValueAsDouble() * velocityConversionFactor / 60.0;
+        return talon.getRotorVelocity().getValueAsDouble() * 60.0;
+        // return talon.getRotorVelocity().getValueAsDouble() * Constants.FlywheelConstants.kFlywheelGearReduction * 60.0;
     }
 
     // set the current limit of motor
@@ -240,6 +245,11 @@ public class Kraken {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor).withFeedForward(feedForward)
                 .withEnableFOC(true));
+    }
+
+    public void setVelocityTorqueFOC(double velocity){
+        final VelocityTorqueCurrentFOC request = new VelocityTorqueCurrentFOC(0);
+        talon.setControl(request.withVelocity(velocity / velocityConversionFactor));
     }
 
     // set the motor target position using Motion Magic
