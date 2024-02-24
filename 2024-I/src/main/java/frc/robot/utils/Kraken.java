@@ -205,7 +205,7 @@ public class Kraken {
 
     // set the SensorToMechanismRatio - used for converting sensor (encoder)
     // rotations to mechanism rotations
-    public void setPositionConversionFactor(double conversionFactor) {
+    public void setSensorToMechanismRatio(double conversionFactor) {
         config.Feedback.SensorToMechanismRatio = conversionFactor;
         talon.getConfigurator().apply(config);
     }

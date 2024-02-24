@@ -173,7 +173,7 @@ public final class Constants {
 
     //gear reduction from motor to CANCoder Shaft
     public static final double kRotorToSensorRatio = (kRotorToArmGearReduction/2);
-    public static final double kArmPositionConversionFactor = 2.0; // dependednt on feedback device
+    public static final double kArmSensorToMechanismRatio = 2.0; // dependednt on feedback device
     // hypothetical values for the arm when going to these various positions
 
     public static final double kArmIntakeHPPosition = 0.0; // in deg

@@ -78,7 +78,7 @@ public class SwerveModule extends SubsystemBase {
 
     // FUSED CANCODER
     steerMotor.setRotorToSensorRatio(ModuleConstants.kTurningMotorReduction);
-    steerMotor.setPositionConversionFactor(1.0);
+    steerMotor.setSensorToMechanismRatio(1.0);
 
     driveMotor.setVelocityPIDValues(ModuleConstants.kDrivingS, ModuleConstants.kDrivingV, ModuleConstants.kDrivingA,
         ModuleConstants.kDrivingP, ModuleConstants.kDrivingI, ModuleConstants.kDrivingD, ModuleConstants.kDrivingFF);

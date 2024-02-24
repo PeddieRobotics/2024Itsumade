@@ -48,8 +48,10 @@ public class Arm extends SubsystemBase {
         armMotor.setBrake();
         armMotor.setEncoder(0);
 
-        armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
-        armMotor.setPositionConversionFactor(ArmConstants.kArmPositionConversionFactor);
+        armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
+        armMotor.setRotorToSensorRatio(ArmConstants.kRotorToSensorRatio);
+        armMotor.setSensorToMechanismRatio(ArmConstants.kArmSensorToMechanismRatio);
+        // armMotor.setPositionConversionFactor(1.0);
 
         armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
                 ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
@@ -115,7 +117,8 @@ public class Arm extends SubsystemBase {
 
     public void updateSmartDashboard() {
         SmartDashboard.putNumber("ARM Absolute CANCoder Reading", getAbsoluteCANCoderPosition());
-        SmartDashboard.putNumber("ARM Internal Motor Encoder Reading", armMotor.getPosition() * 360);
+        // SmartDashboard.putNumber("ARM Internal Motor Encoder Reading", armMotor.getPosition() * 360);
+        SmartDashboard.putNumber("ARM Internal Motor Encoder Reading", armMotor.getPosition());
 
         SmartDashboard.putNumber("Arm Motor Current", armMotor.getSupplyCurrent());
         SmartDashboard.putNumber("Arm Motor Temperature", armMotor.getMotorTemperature());
@@ -147,7 +150,7 @@ public class Arm extends SubsystemBase {
                     SmartDashboard.getNumber("Arm D", 0),
                     getFeedForward(SmartDashboard.getNumber("Arm kG", 0)));
  
-            armMotor.setPositionTorqueFOC(SmartDashboard.getNumber("Arm Position Setpoint", 0)/360);
+            armMotor.setPositionTorqueFOC(SmartDashboard.getNumber("Arm Position Setpoint", 0));
             // armMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Position Setpoint", 0)/360);
         }
     }
@@ -168,7 +171,8 @@ public class Arm extends SubsystemBase {
     //CANcoder reads 0 to 1, we use this to get easier to read angles to put to dashboard 
     //(* 360 for degrees, /2 for difference between CANcoder output shaft and actual arm shaft)
     public double getAbsoluteCANCoderPosition() {
-        return armCANcoder.getPosition().getValueAsDouble() * 360 / 2;
+        // return armCANcoder.getPosition().getValueAsDouble() * 360 / 2;
+        return armCANcoder.getPosition().getValueAsDouble();
     }
 
     public static Arm getInstance() {
