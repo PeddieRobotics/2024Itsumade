@@ -96,7 +96,7 @@ public class Arm extends SubsystemBase {
     public void putSmartDashboard() {
         SmartDashboard.putBoolean("Open Loop Arm Control", false);
         SmartDashboard.putBoolean("Update Arm PID", false);
-        SmartDashboard.putNumber("Arm Position Setpoint", 0);
+        SmartDashboard.putNumber("Arm Position Setpoint Degrees", 0);
 
         SmartDashboard.putNumber("Arm kG", ArmConstants.kArmG);
         SmartDashboard.putNumber("Arm kS", ArmConstants.kArmS);
@@ -150,8 +150,8 @@ public class Arm extends SubsystemBase {
                     SmartDashboard.getNumber("Arm D", 0),
                     getFeedForward(SmartDashboard.getNumber("Arm kG", 0)));
  
-            armMotor.setPositionTorqueFOC(SmartDashboard.getNumber("Arm Position Setpoint", 0));
-            // armMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Position Setpoint", 0)/360);
+            armMotor.setPositionTorqueFOC(SmartDashboard.getNumber("Arm Position Setpoint", 0)/360);
+            //armMotor.setPosition(SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0)/360);
         }
     }
 

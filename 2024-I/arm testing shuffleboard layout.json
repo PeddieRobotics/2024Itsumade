@@ -50,19 +50,6 @@
               "_showGlyph": false
             }
           },
-          "5,4": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Arm Position Setpoint",
-              "_title": "SmartDashboard/Arm Position Setpoint",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "9,1": {
             "size": [
               2,
@@ -205,6 +192,19 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "5,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Arm Position Setpoint Degrees",
+              "_title": "SmartDashboard/Arm Position Setpoint Degrees",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -226,7 +226,7 @@
   "windowGeometry": {
     "x": -2101.0,
     "y": -1084.0,
-    "width": 1918.0,
-    "height": 1006.0
+    "width": 1922.0,
+    "height": 1016.0
   }
 }
