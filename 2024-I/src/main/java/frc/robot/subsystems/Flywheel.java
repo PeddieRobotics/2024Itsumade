@@ -104,8 +104,12 @@ public class Flywheel extends SubsystemBase {
         runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelHPIntakeRPM);
     }
 
-    public void runFlywheelShot(){
-        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelLayupRPM + rpmDelta); //for now, we're assuming you're using the same velocity for both LL and Layup
+    public void runFlywheelLayup(){
+        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelLayupRPM + rpmDelta);
+    }
+
+    public void runFlywheelLimelight(){
+        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelLLShootingRPM + rpmDelta);
     }
 
     public double getFlywheelLeftRPM(){

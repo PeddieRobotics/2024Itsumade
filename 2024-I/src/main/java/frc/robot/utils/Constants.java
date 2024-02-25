@@ -167,7 +167,6 @@ public final class Constants {
     public static final double kArmReverseSoftLimitDegrees = 0;
 
     public static final double kArmPositionOffsetDegrees = 28.3447;
-    //public static final double kArmPositionOffsetDegrees = 28.3447;
 
     //TOTAL NET gear reduction from motor ALL THE WAY to shoulder pivot
     public static final double kRotorToArmGearReduction = 16384.0 / 125;
@@ -177,12 +176,12 @@ public final class Constants {
     public static final double kArmSensorToMechanismRatio = 2.0; // dependednt on feedback device
     // hypothetical values for the arm when going to these various positions
 
-    public static final double kArmIntakeHPPosition = 0.0; // in deg
+    public static final double kArmIntakeHPPosition = 90; // in deg
     public static final double kArmPositionEpsilon = 1;
-    public static final double kArmAmpPosition = 45.0;
-    public static final double kArmLayupPosition = -80.0;
-    public static final double kArmStowPosition = -90.0;
-    public static final double kArmIntakePositionFromGround = -70.0;
+    public static final double kArmAmpPosition = 135;
+    public static final double kArmLayupPosition = 10;
+    public static final double kArmStowPosition = 0;
+    public static final double kArmIntakePositionFromGround = 30;
 
     public static final double kArmkG = 0.25;
   }
@@ -225,7 +224,7 @@ public final class Constants {
     public static final double kFlywheelAmpRPM = 500;
     public static final double kFlywheelHPIntakeRPM = -250;
     public static final double kFlywheelShotThreshold = 100;
-    public static final double kShootingStateTime = 1.0;
+    public static final double kShootingStateTime = 1.5;
     // Distance, Angle; SAMPLE VALUES, NEEDS TO BE TUNED -TONY
     public static final double[][] treeMapValues = new double[][] { { 0.5, -55 }, { 1.5, -45 }, { 2.5, -37.5 },
         { 3.5, -25 }, { 4.5, -20 }, { 5.5, -15 } };

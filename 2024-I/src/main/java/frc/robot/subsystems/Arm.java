@@ -55,7 +55,6 @@ public class Arm extends SubsystemBase {
         // armMotor.setPositionConversionFactor(1.0);
         armMotor.setClosedLoopRampRate(0.05);
 
-        //armMotor.setVelocityConversionFactor()
 
         armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
                 ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF); // recaculate offset so 0 is horizontal
