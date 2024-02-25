@@ -134,6 +134,42 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
+    public double getKS(){
+        return config.Slot0.kS;
+    }
+
+    public double getKV(){
+        return config.Slot0.kV;
+    }
+
+    public double getKA(){
+        return config.Slot0.kA;
+    }
+
+    public double getKP(){
+        return config.Slot0.kP;
+    }
+
+    public double getKI(){
+        return config.Slot0.kI;
+    }
+
+    public double getKD(){
+        return config.Slot0.kD;
+    }    
+
+    public double getKMaxCruiseAccel(){
+        return config.MotionMagic.MotionMagicAcceleration;
+    }
+
+    public double getKMaxCruiseJerk(){
+        return config.MotionMagic.MotionMagicJerk;
+    }
+
+    public double getKMaxCruiseVelocity(){
+        return config.MotionMagic.MotionMagicCruiseVelocity;
+    }  
+
     // set forward and backward soft limits
     public void setSoftLimits(boolean enableSoftLimit, double forwardLimitValue, double reverseLimitValue) {
 
@@ -192,7 +228,7 @@ public class Kraken {
 
     // set PID values for velocity setpoint control
     public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF) {
-        var pidSlotConfigs = new Slot0Configs();
+        var pidSlotConfigs = config.Slot0;
 
         feedForward = kF;
         pidSlotConfigs.kS = kS;
@@ -202,6 +238,7 @@ public class Kraken {
         pidSlotConfigs.kI = kI;
         pidSlotConfigs.kD = kD;
         talon.getConfigurator().apply(pidSlotConfigs);
+
     }
 
     // set the SensorToMechanismRatio - used for converting sensor (encoder)

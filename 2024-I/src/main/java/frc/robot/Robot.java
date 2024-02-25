@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Shuffleboard.ShuffleboardMain;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Logger;
 
 /**
@@ -77,6 +79,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     // m_robotContainer.resetGyro();
+    Superstructure.getInstance().requestState(SuperstructureState.STOW);
     logger.logEvent("Disabled Mode", true);
   }
 

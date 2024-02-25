@@ -54,8 +54,16 @@ public class Hopper extends SubsystemBase {
     setHopper(-HopperConstants.kHPIntakeHopperSpeed);
   }
 
-  public void feedFlywheel(){
-    setHopper(HopperConstants.kFeedSpeed);
+  public void feedFlywheelLayup(){
+    setHopper(HopperConstants.kFeedFlywheelLayupSpeed);
+  }
+
+  public void feedFlywheelAmp() {
+    setHopper(HopperConstants.kFeedFlywheelAmpSpeed);
+  }
+
+    public void feedFlywheelSpeaker() {
+    setHopper(HopperConstants.kFeedFlywheelSpeakerSpeed);
   }
 
   public void setHopper(double speed) {
@@ -87,7 +95,8 @@ public class Hopper extends SubsystemBase {
   }
 
   public boolean isGamepieceIndexed(){
-    return (getTopSensor() && getBottomSensor());
+    return getTopSensor();
+    // return (getTopSensor() && getBottomSensor());
   }
 
   public double getMotorCurrent(){

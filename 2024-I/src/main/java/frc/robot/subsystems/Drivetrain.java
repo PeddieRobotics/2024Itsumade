@@ -171,20 +171,20 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        S2 = SmartDashboard.getNumber("Logistic S2", S2);
-        I2 = SmartDashboard.getNumber("Logistic I2", I2);
-        K2 = SmartDashboard.getNumber("Logistic K2", K2);
-        H2 = SmartDashboard.getNumber("Logistic H2", H2);
+        // S2 = SmartDashboard.getNumber("Logistic S2", S2);
+        // I2 = SmartDashboard.getNumber("Logistic I2", I2);
+        // K2 = SmartDashboard.getNumber("Logistic K2", K2);
+        // H2 = SmartDashboard.getNumber("Logistic H2", H2);
 
-        S3 = SmartDashboard.getNumber("Logistic S3", S3);
-        I3 = SmartDashboard.getNumber("Logistic I3", I3);
-        K3 = SmartDashboard.getNumber("Logistic K3", K3);
-        H3 = SmartDashboard.getNumber("Logistic H3", H3);
+        // S3 = SmartDashboard.getNumber("Logistic S3", S3);
+        // I3 = SmartDashboard.getNumber("Logistic I3", I3);
+        // K3 = SmartDashboard.getNumber("Logistic K3", K3);
+        // H3 = SmartDashboard.getNumber("Logistic H3", H3);
 
         useMegaTag = SmartDashboard.getBoolean("Megatag updates", useMegaTag);
 
         field.setRobotPose(getPose());
-        SmartDashboard.putData(field);
+        // SmartDashboard.putData(field);
 
         // Updating the odometry
         for (int i = 0; i < 4; i++) {
@@ -202,8 +202,8 @@ public class Drivetrain extends SubsystemBase {
             double stdDev = isForcingCalibration ? 0.0001
                     : (numAprilTag >= 3 ? sigmoid3(distance) : sigmoid2(distance));
 
-            SmartDashboard.putNumber("distance", distance);
-            SmartDashboard.putNumber("standard deviation", stdDev);
+            // SmartDashboard.putNumber("distance", distance);
+            // SmartDashboard.putNumber("standard deviation", stdDev);
 
             Matrix<N3, N1> visionStdDevs = VecBuilder.fill(stdDev, stdDev, isForcingCalibration ? 0.0001 : 30);
             odometry.setVisionMeasurementStdDevs(visionStdDevs);
@@ -212,15 +212,15 @@ public class Drivetrain extends SubsystemBase {
         updateModulePositions();
         updateOdometry();
 
-        SmartDashboard.putNumber("Gyro Angle", getHeading());
-        for (SwerveModule m : swerveModules)
-            m.updateSmartdashBoard();
-        if (SmartDashboard.getBoolean("Reset Gyro", false)) {
-            gyro.setYaw(0);
-        }
-        SmartDashboard.putNumber("Odometry X", odometry.getEstimatedPosition().getX());
-        SmartDashboard.putNumber("Odometry Y", odometry.getEstimatedPosition().getY());
-        SmartDashboard.putNumber("Odometry Theta", odometry.getEstimatedPosition().getRotation().getDegrees());
+        // SmartDashboard.putNumber("Gyro Angle", getHeading());
+        // for (SwerveModule m : swerveModules)
+        //     m.updateSmartdashBoard();
+        // if (SmartDashboard.getBoolean("Reset Gyro", false)) {
+        //     gyro.setYaw(0);
+        // }
+        // SmartDashboard.putNumber("Odometry X", odometry.getEstimatedPosition().getX());
+        // SmartDashboard.putNumber("Odometry Y", odometry.getEstimatedPosition().getY());
+        // SmartDashboard.putNumber("Odometry Theta", odometry.getEstimatedPosition().getRotation().getDegrees());
     }
 
     @Override

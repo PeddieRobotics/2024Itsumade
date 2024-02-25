@@ -22,7 +22,7 @@ import frc.robot.utils.Constants.ArmConstants;
 public class Arm extends SubsystemBase {
 
     private static Arm instance;
-    private static LimelightShooter limelightShooter;
+    private LimelightShooter limelightShooter;
 
     private Kraken armMotor;
     private CANcoder armCANcoder;
@@ -57,7 +57,7 @@ public class Arm extends SubsystemBase {
 
 
         armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
-                ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
+                ArmConstants.kArmI, ArmConstants.kArmD, 0);
         armMotor.setMotionMagicParameters(ArmConstants.kCancoderCruiseVelocityRPS, ArmConstants.kCancoderCruiseMaxAccel,
                 ArmConstants.kCancoderCruiseMaxJerk);
 
@@ -121,8 +121,17 @@ public class Arm extends SubsystemBase {
 
     public void updateSmartDashboard() {
         SmartDashboard.putNumber("ARM Absolute CANCoder Reading", getAbsoluteCANCoderPosition());
-        // SmartDashboard.putNumber("ARM Internal Motor Encoder Reading", armMotor.getPosition() * 360);
         SmartDashboard.putNumber("ARM Internal Motor Encoder Reading", armMotor.getPosition() * 360);
+        SmartDashboard.putNumber("ARM Angle Setpoint", armAngleSetpoint);
+        // SmartDashboard.putNumber("ARM kS", armMotor.getKS());
+        // SmartDashboard.putNumber("ARM kV", armMotor.getKV());
+        // SmartDashboard.putNumber("ARM kA", armMotor.getKA());
+        // SmartDashboard.putNumber("ARM kP", armMotor.getKP());
+        // SmartDashboard.putNumber("ARM kI", armMotor.getKI());
+        // SmartDashboard.putNumber("ARM kD", armMotor.getKD());
+        // SmartDashboard.putNumber("ARM kMaxCruiseVel", armMotor.getKMaxCruiseVelocity());
+        // SmartDashboard.putNumber("ARM kMaxCruiseAccel", armMotor.getKMaxCruiseAccel());
+        // SmartDashboard.putNumber("ARM kMaxCruiseJerk", armMotor.getKMaxCruiseJerk());
 
         SmartDashboard.putNumber("Arm Motor Current", armMotor.getSupplyCurrent());
         SmartDashboard.putNumber("Arm Motor Temperature", armMotor.getMotorTemperature());
@@ -209,11 +218,12 @@ public class Arm extends SubsystemBase {
     }
 
     public void setArmAngle(double angle) {
+        armAngleSetpoint = angle;
         armMotor.setPositionMotionMagic(angle/360);
     }
 
     public double getArmAngleDegrees() {
-        return armCANcoder.getAbsolutePosition().getValueAsDouble() * 360;
+        return (armCANcoder.getAbsolutePosition().getValueAsDouble()/2.0) * 360;
     }
 
     public double getAngleFromDist(double dist) {
@@ -222,17 +232,7 @@ public class Arm extends SubsystemBase {
 
     // Methods to Set Arm to a specific position
 
-    boolean canCall = true;
-
     public void setGroundIntakePosition() {
-        if (!canCall)  
-            return;
-        canCall = false;
-        armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
-                ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
-        armMotor.setMotionMagicParameters(ArmConstants.kCancoderCruiseVelocityRPS, ArmConstants.kCancoderCruiseMaxAccel,
-                ArmConstants.kCancoderCruiseMaxJerk);
-        // armMotor.setPositionMotionMagic(ArmConstants.kArmIntakePositionFromGround / 360);
         setArmAngle(ArmConstants.kArmIntakePositionFromGround);
     }
 
@@ -259,6 +259,9 @@ public class Arm extends SubsystemBase {
     @Override
     public void periodic() {
         angle.update(getAbsoluteCANCoderPosition());
+        SmartDashboard.putBoolean("ARM is at intake angle", isAtGroundIntakeAngle());
         updateSmartDashboard();
+        armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
+        ArmConstants.kArmI, ArmConstants.kArmD, getFeedForward(ArmConstants.kArmG));
     }
 }

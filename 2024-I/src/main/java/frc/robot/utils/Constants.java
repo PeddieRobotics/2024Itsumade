@@ -157,7 +157,7 @@ public final class Constants {
     public static final double kArmD = 0;
     public static final double kArmFF = 0;
     public static final double kArmIZone = 0;
-    public static final double kArmG = 0.28;
+    public static final double kArmG = 0.3;
 
     public static final double kCancoderCruiseVelocityRPS = .3;
     public static final double kCancoderCruiseMaxAccel = .6; // rot/s^2
@@ -176,14 +176,13 @@ public final class Constants {
     public static final double kArmSensorToMechanismRatio = 2.0; // dependednt on feedback device
     // hypothetical values for the arm when going to these various positions
 
-    public static final double kArmIntakeHPPosition = 90; // in deg
-    public static final double kArmPositionEpsilon = 5; // temporarily loose due to arm tuning, can tighten this later when code improves
-    public static final double kArmAmpPosition = 135;
-    public static final double kArmLayupPosition = 40;
+    public static final double kArmIntakeHPPosition = 70; // in deg
+    public static final double kArmPositionEpsilon = 10; // temporarily loose due to arm tuning, can tighten this later when code improves
+    public static final double kArmAmpPosition = 120;
+    public static final double kArmLayupPosition = 32;
     public static final double kArmStowPosition = 0;
-    public static final double kArmIntakePositionFromGround = 35;
+    public static final double kArmIntakePositionFromGround = 32;
 
-    public static final double kArmkG = 0.25;
   }
 
   public static class ClimberConstants {
@@ -228,11 +227,11 @@ public final class Constants {
     public static final double kLeftFlywheelHPIntakeRPM = -750;
     public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;
-    public static final double kShootingStateTime = 1.5;
+    public static final double kShootingStateTime = 0.5;
 
     // Distance, Angle; SAMPLE VALUES, NEEDS TO BE TUNED -TONY
-    public static final double[][] treeMapValues = new double[][] { { 0.5, -55 }, { 1.5, -45 }, { 2.5, -37.5 },
-        { 3.5, -25 }, { 4.5, -20 }, { 5.5, -15 } };
+    public static final double[][] treeMapValues = new double[][] { { 40, 35 }, { 60, 42 }, { 80, 48 }, 
+        { 100, 53}, { 120, 59}, { 140, 64 }, { 160, 67}, { 180, 71}, {200, 75} };
   }
 
   public static class IntakeConstants {
@@ -241,13 +240,17 @@ public final class Constants {
     public static final double kIntakeSensorThreshold = 0;
     public static final double kHopperSensorThreshold = 0;
 
-    public static final double kIntakeSpeed = 0.75;
+    public static final double kIntakeSpeed = 0.85;
   }
 
   public static class HopperConstants {
     public static final double kHPIntakeHopperSpeed = 0; // if used, needs to be negative
-    public static final double kGroundIntakeHopperSpeed = 0.2;
-    public static final double kFeedSpeed = 0.5;
+    public static final double kGroundIntakeHopperSpeed = 0.5;
+    public static final double kFeedFlywheelAmpSpeed = 0.5;
+    public static final double kFeedFlywheelLayupSpeed = 0.5;
+    public static final double kFeedFlywheelSpeakerSpeed = 0.5;
+
+
   }
 
 }

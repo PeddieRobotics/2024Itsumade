@@ -85,7 +85,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     public void runLeftFlywheelVelocitySetpoint(double speed){
-        flywheelRightMotor.setVelocityTorqueFOC(speed/60);
+        flywheelLeftMotor.setVelocityTorqueFOC(speed/60);
         leftSetpoint = speed;
     }
 
@@ -107,7 +107,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     public void runFlywheelLimelight(){
-        runFlywheelVelocitySetpoint(ScoringConstants.kRightFlywheelLLShootingRPM + rpmDelta, ScoringConstants.kRightFlywheelLayupRPM + rpmDelta);
+        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLLShootingRPM + rpmDelta, ScoringConstants.kRightFlywheelLLShootingRPM + rpmDelta);
     }
 
     public double getFlywheelLeftRPM(){
