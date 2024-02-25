@@ -1,11 +1,14 @@
 package frc.robot.utils;
 
+import javax.security.auth.kerberos.DelegationPermission;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ManualArmControl;
 import frc.robot.commands.ClimbCommands.DeployClimber;
 import frc.robot.commands.ClimbCommands.ManualClimberControl;
 import frc.robot.commands.ClimbCommands.RetractClimber;
@@ -34,9 +37,12 @@ public class OperatorOI {
      */
     private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
 
+    private Drivetrain drivetrain;
     private Superstructure superstructure;
     public OperatorOI() {
+        drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
+        
         configureController();
     }
 
@@ -63,14 +69,19 @@ public class OperatorOI {
         Trigger muteButton = new JoystickButton(controller, 15);
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
+        L1Bumper.onTrue(new DeployClimber());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
+        L1Bumper.onTrue(new RetractClimber());
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
+        L2Trigger.whileTrue(new ManualClimberControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
+        R2Trigger.whileTrue(new ManualArmControl());
 
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
+        ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
 

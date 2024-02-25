@@ -79,7 +79,6 @@ public class DriverOI {
 
         Trigger muteButton = new JoystickButton(controller, 15);
 
-
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
