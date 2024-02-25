@@ -115,11 +115,6 @@ public class Climber extends SubsystemBase {
 
     SmartDashboard.putNumber("Left Climber Current", leftClimber.getSupplyCurrent());
     SmartDashboard.putNumber("Right Climber Currrent", rightClimber.getSupplyCurrent());
-    // This method will be called once per scheduler run
-    if (SmartDashboard.getBoolean("Manual Climber Control", false)) {
-      leftClimber.setMotor(OperatorOI.getInstance().getLeftForward() / 5);
-      rightClimber.setMotor(OperatorOI.getInstance().getRightForward() / 5);
-    }
 
     if (SmartDashboard.getBoolean("Climber PID Tuning", false)) {
       leftClimber.setPIDValues(
