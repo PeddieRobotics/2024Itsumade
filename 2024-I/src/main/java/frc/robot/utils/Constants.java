@@ -177,9 +177,9 @@ public final class Constants {
     // hypothetical values for the arm when going to these various positions
 
     public static final double kArmIntakeHPPosition = 90; // in deg
-    public static final double kArmPositionEpsilon = 1;
+    public static final double kArmPositionEpsilon = 5; // temporarily loose due to arm tuning, can tighten this later when code improves
     public static final double kArmAmpPosition = 135;
-    public static final double kArmLayupPosition = 10;
+    public static final double kArmLayupPosition = 40;
     public static final double kArmStowPosition = 0;
     public static final double kArmIntakePositionFromGround = 30;
 
@@ -219,12 +219,17 @@ public final class Constants {
   }
 
   public static class ScoringConstants {
-    public static final double kFlywheelLLShootingRPM = 4000;
-    public static final double kFlywheelLayupRPM = 2500;
-    public static final double kFlywheelAmpRPM = 500;
-    public static final double kFlywheelHPIntakeRPM = -250;
+    public static final double kLeftFlywheelLLShootingRPM = 4300;
+    public static final double kRightFlywheelLLShootingRPM = 3200;
+    public static final double kLeftFlywheelLayupRPM = 3500;
+    public static final double kRightFlywheelLayupRPM = 2500;
+    public static final double kLeftFlywheelAmpRPM = 500;
+    public static final double kRightFlywheelAmpRPM = 500;
+    public static final double kLeftFlywheelHPIntakeRPM = -750;
+    public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 1.5;
+
     // Distance, Angle; SAMPLE VALUES, NEEDS TO BE TUNED -TONY
     public static final double[][] treeMapValues = new double[][] { { 0.5, -55 }, { 1.5, -45 }, { 2.5, -37.5 },
         { 3.5, -25 }, { 4.5, -20 }, { 5.5, -15 } };
@@ -240,8 +245,9 @@ public final class Constants {
   }
 
   public static class HopperConstants {
-    public static final double kHopperSpeed = 0;
-    public static final double kFeedSpeed = 0;
+    public static final double kHPIntakeHopperSpeed = 0; // if used, needs to be negative
+    public static final double kGroundIntakeHopperSpeed = 0.2;
+    public static final double kFeedSpeed = 0.5;
   }
 
 }

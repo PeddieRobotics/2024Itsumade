@@ -45,16 +45,16 @@ public class Hopper extends SubsystemBase {
     return hopper;
   }
 
-  public void runHopper(){
+  public void runHopperGroundIntake(){
     //indexing (but not shooting logic) here
-    setHopper(HopperConstants.kHopperSpeed);
+    setHopper(HopperConstants.kGroundIntakeHopperSpeed);
   }
 
-  public void runHopperHP(){
-    setHopper(-HopperConstants.kHopperSpeed);
+  public void runHopperHPIntake(){
+    setHopper(-HopperConstants.kHPIntakeHopperSpeed);
   }
 
-  public void feed(){
+  public void feedFlywheel(){
     setHopper(HopperConstants.kFeedSpeed);
   }
 

@@ -162,15 +162,6 @@ public class Arm extends SubsystemBase {
         }
     }
 
-    // public void armPrimarySetPositionMotionMagic(double position) {
-    //     armMotor.setPositionMotionMagic(position);
-    // }
-
-    // public void armPrimarySetVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD,
-    //         double kFF) {
-    //     armMotor.setVelocityPIDValues(kS, kV, kA, kP, kI, kD, kFF);
-    // }
-
     public double getFeedForward(double kG){
         return kG * Math.sin(((getAbsoluteCANCoderPosition()+36)/180) * Math.PI);
         //return kG * Math.sin(((armAngleSetpoint + 30)/180) * Math.PI);
@@ -219,7 +210,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setArmAngle(double angle) {
-        armMotor.setPositionWithFeedForward(angle);
+        armMotor.setPositionMotionMagic(angle/360);
     }
 
     public double getArmAngleDegrees() {

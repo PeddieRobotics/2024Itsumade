@@ -79,37 +79,35 @@ public class Flywheel extends SubsystemBase {
         flywheelRightMotor.setMotor(0);
     }
 
-    public void runFlywheelVelocitySetpoint(double speed){
-        flywheelLeftMotor.setVelocityWithFeedForward(speed);
-        flywheelRightMotor.setVelocityWithFeedForward(speed);
-        leftSetpoint = speed;
-        rightSetpoint = speed;
+    public void runFlywheelVelocitySetpoint(double leftSpeed, double rightSpeed){
+        runLeftFlywheelVelocitySetpoint(leftSpeed);
+        runRightFlywheelVelocitySetpoint(rightSpeed);
     }
 
     public void runLeftFlywheelVelocitySetpoint(double speed){
-        flywheelLeftMotor.setVelocityWithFeedForward(speed);
+        flywheelRightMotor.setVelocityTorqueFOC(speed/60);
         leftSetpoint = speed;
     }
 
     public void runRightFlywheelVelocitySetpoint(double speed){
-        flywheelRightMotor.setVelocityWithFeedForward(speed);
+        flywheelRightMotor.setVelocityTorqueFOC(speed/60);
         rightSetpoint = speed;
     }
 
     public void runFlywheelAmp(){
-        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelAmpRPM);
+        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelAmpRPM, ScoringConstants.kRightFlywheelAmpRPM);
     }
 
     public void runFlywheelHP(){
-        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelHPIntakeRPM);
+        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelHPIntakeRPM, ScoringConstants.kRightFlywheelHPIntakeRPM);
     }
 
     public void runFlywheelLayup(){
-        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelLayupRPM + rpmDelta);
+        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLayupRPM + rpmDelta, ScoringConstants.kRightFlywheelLayupRPM + rpmDelta);
     }
 
     public void runFlywheelLimelight(){
-        runFlywheelVelocitySetpoint(ScoringConstants.kFlywheelLLShootingRPM + rpmDelta);
+        runFlywheelVelocitySetpoint(ScoringConstants.kRightFlywheelLLShootingRPM + rpmDelta, ScoringConstants.kRightFlywheelLayupRPM + rpmDelta);
     }
 
     public double getFlywheelLeftRPM(){
