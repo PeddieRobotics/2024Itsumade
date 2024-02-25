@@ -181,7 +181,7 @@ public final class Constants {
     public static final double kArmAmpPosition = 135;
     public static final double kArmLayupPosition = 40;
     public static final double kArmStowPosition = 0;
-    public static final double kArmIntakePositionFromGround = 30;
+    public static final double kArmIntakePositionFromGround = 35;
 
     public static final double kArmkG = 0.25;
   }

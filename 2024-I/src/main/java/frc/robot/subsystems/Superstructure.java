@@ -45,12 +45,16 @@ public class Superstructure extends SubsystemBase {
         timer.start();
 
         systemState = SuperstructureState.STOW;
+        nextSystemState = SuperstructureState.STOW;
         requestedSystemState = SuperstructureState.STOW;
-        isIndexedOverride = SmartDashboard.getBoolean("Piece Indexed Override", false); //overrides, just in case 
-        // hasGamepieceOverride = SmartDashboard.getBoolean("Has Gamepiece Override", false);
+        isIndexedOverride = false;
+        
+        SmartDashboard.putBoolean("Piece Indexed Override", isIndexedOverride); //overrides, just in case 
+        // hasGamepieceOverride = SmartDashboard.putBoolean("Has Gamepiece Override", false);
 
+        SmartDashboard.putString("STATE", systemState.toString());
         stateDuration = 0;
-        shootingSpeed= 0;
+        shootingSpeed = 0;
         internalStateTimer = 0;
     }
 
@@ -66,7 +70,7 @@ public class Superstructure extends SubsystemBase {
     }
 
     public void shoot(double flywheelspeed){
-        requestedSystemState=SuperstructureState.LAYUP_PREP;
+        requestedSystemState = SuperstructureState.LAYUP_PREP;
         shootingSpeed = flywheelspeed;
     }
 
@@ -76,23 +80,24 @@ public class Superstructure extends SubsystemBase {
 
     @Override
     public void periodic(){
-        nextSystemState = systemState;
+        SmartDashboard.putString("STATE", systemState.toString());
+        SmartDashboard.putBoolean("INDEXED?", isGamepieceIndexed());
 
         switch(systemState){
 
             //idle state of robot, arm is in stow position, 
             case STOW:
-                arm.setStowPosition();
-                intake.stopIntake();
-                hopper.stopHopper();
+            //     arm.setStowPosition();
+            //     intake.stopIntake();
+            //     hopper.stopHopper();
 
-                // if(intake.hasGamepiece()){
-                //     //let the note transition from intake to hopper, bensalem thing -- don't really need to use this right now
-                // } else {
-                //     hopper.stopHopper();
-                // }
+            //     // if(intake.hasGamepiece()){
+            //     //     //let the note transition from intake to hopper, bensalem thing -- don't really need to use this right now
+            //     // } else {
+            //     //     hopper.stopHopper();
+            //     // }
 
-                //only go into the prep state if you have a gamepiece
+            //     //only go into the prep state if you have a gamepiece
                 if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){ 
                     nextSystemState = requestedSystemState; 
                 } else if(requestedSystemState == SuperstructureState.LL_PREP && isGamepieceIndexed()){
@@ -101,14 +106,14 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 } 
                 
-                //intake only if you don't have a piece -- ASSUMING WE'RE INDEXING RIGHT AWAY
+            //     //intake only if you don't have a piece -- ASSUMING WE'RE INDEXING RIGHT AWAY
                 else if(requestedSystemState == SuperstructureState.GROUND_INTAKE && !isGamepieceIndexed()){ 
                     nextSystemState = requestedSystemState; 
                 } else if(requestedSystemState == SuperstructureState.HP_INTAKE && !isGamepieceIndexed()){
                     nextSystemState = requestedSystemState; 
                 } 
 
-                //you should not be able to go into scoring from stow **someone please verify if this makes sense
+            //     //you should not be able to go into scoring from stow **someone please verify if this makes sense
                 // else if(requestedSystemState == SuperstructureState.AMP_SCORING && isGamepieceIndexed()){
                 //     nextSystemState = requestedSystemState;
                 // } else if(requestedSystemState == SuperstructureState.LAYUP_SCORING && isGamepieceIndexed()){
@@ -122,175 +127,176 @@ public class Superstructure extends SubsystemBase {
             case GROUND_INTAKE:
                 arm.setGroundIntakePosition();
                 
-                if (arm.isAtGroundIntakeAngle() && !isGamepieceIndexed()){
-                    intake.runIntake();
-                    hopper.runHopperGroundIntake();
-                } else { // if(!arm.isAtGroundIntakeAngle() || isGamepieceIndexed()) 
-                    intake.stopIntake();
-                    hopper.stopHopper();
-                }
+                // if (arm.isAtGroundIntakeAngle() && !isGamepieceIndexed()){
+                //     intake.runIntake();
+                //     hopper.runHopperGroundIntake();
+                // } else { // if(!arm.isAtGroundIntakeAngle() || isGamepieceIndexed()) 
+                //     intake.stopIntake();
+                //     hopper.stopHopper();
+                // }
 
-                intake.runIntake();
+                // intake.runIntake();
 
-                //only switch states from here if done indexing, but let it go into stow from anywhere
-                if(requestedSystemState == SuperstructureState.STOW){ //CHECK THIS
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.LL_PREP && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.HP_INTAKE && !isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState; 
-                } 
+                // //only switch states from here if done indexing, but let it go into stow from anywhere
+                // if(requestedSystemState == SuperstructureState.STOW){ //CHECK THIS
+                //     nextSystemState = requestedSystemState;
+                // } else if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){
+                //     nextSystemState = requestedSystemState; 
+                // } else if(requestedSystemState == SuperstructureState.LL_PREP && isGamepieceIndexed()){
+                //     nextSystemState = requestedSystemState;
+                // } else if(requestedSystemState == SuperstructureState.LAYUP_PREP && isGamepieceIndexed()){
+                //     nextSystemState = requestedSystemState; 
+                // } else if(requestedSystemState == SuperstructureState.HP_INTAKE && !isGamepieceIndexed()){
+                //     nextSystemState = requestedSystemState; 
+                // } 
 
                 break; 
 
-            case HP_INTAKE:
-                if(!isGamepieceIndexed()){
-                    arm.setHPIntakePosition();
-                    flywheel.runFlywheelHP();
-                    intake.stopIntake();
-                } else {
-                    flywheel.stopFlywheel();
-                    hopper.stopHopper();
-                }
+            // case HP_INTAKE:
+            //     if(!isGamepieceIndexed()){
+            //         arm.setHPIntakePosition();
+            //         flywheel.runFlywheelHP();
+            //         intake.stopIntake();
+            //     } else {
+            //         flywheel.stopFlywheel();
+            //         hopper.stopHopper();
+            //     }
 
-                //only switch states from intake if done indexing, but let it go into stow from anywhere
-                if(requestedSystemState == SuperstructureState.STOW){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.LL_PREP && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE && !isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState; 
-                } 
-                break; 
+            //     //only switch states from intake if done indexing, but let it go into stow from anywhere
+            //     if(requestedSystemState == SuperstructureState.STOW){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){
+            //         nextSystemState = requestedSystemState; 
+            //     } else if(requestedSystemState == SuperstructureState.LL_PREP && isGamepieceIndexed()){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.LAYUP_PREP && isGamepieceIndexed()){
+            //         nextSystemState = requestedSystemState; 
+            //     } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE && !isGamepieceIndexed()){
+            //         nextSystemState = requestedSystemState; 
+            //     } 
+            //     break; 
 
-            case AMP_PREP:
-                arm.setAmpPosition();
-                flywheel.runFlywheelAmp();
-                hopper.stopHopper(); //only run hopper when we are shooting in the shooting states 
-                intake.stopIntake();
+            // case AMP_PREP:
+            //     arm.setAmpPosition();
+            //     flywheel.runFlywheelAmp();
+            //     hopper.stopHopper(); //only run hopper when we are shooting in the shooting states 
+            //     intake.stopIntake();
                 
-                if(requestedSystemState == SuperstructureState.STOW){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_SCORING && flywheel.isAtRPM()){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LL_PREP){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
-                    nextSystemState = requestedSystemState; 
-                }
-                break; 
+            //     if(requestedSystemState == SuperstructureState.STOW){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.AMP_SCORING && flywheel.isAtRPM()){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.LL_PREP){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
+            //         nextSystemState = requestedSystemState; 
+            //     }
+            //     break; 
 
-            case AMP_SCORING:
-                if(!timer.hasElapsed(ScoringConstants.kShootingStateTime)){ //stop this once the piece is scored
-                    flywheel.runFlywheelAmp();
-                    hopper.runHopperGroundIntake();
-                    intake.stopIntake();
-                } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
-                    flywheel.stopFlywheel();
-                    hopper.stopHopper();
-                    timer.stop();
-                    timer.reset();
-                    requestState(SuperstructureState.STOW);
-                    break;
-                }
+            // case AMP_SCORING:
+            //     if(!timer.hasElapsed(ScoringConstants.kShootingStateTime)){ //stop this once the piece is scored
+            //         flywheel.runFlywheelAmp();
+            //         hopper.runHopperGroundIntake();
+            //         intake.stopIntake();
+            //     } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
+            //         flywheel.stopFlywheel();
+            //         hopper.stopHopper();
+            //         timer.stop();
+            //         timer.reset();
+            //         requestState(SuperstructureState.STOW);
+            //         break;
+            //     }
 
-                if(requestedSystemState == SuperstructureState.STOW){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
-                    nextSystemState = requestedSystemState; 
-                }
-                break; 
+            //     if(requestedSystemState == SuperstructureState.STOW){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
+            //         nextSystemState = requestedSystemState; 
+            //     } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
+            //         nextSystemState = requestedSystemState; 
+            //     }
+            //     break; 
 
-            case LAYUP_PREP:
-                arm.setLayupPosition();
-                flywheel.runFlywheelLayup();
-                hopper.stopHopper(); //only when we are shooting in the shooting states do we run the hopper
-                intake.stopIntake();
+            // case LAYUP_PREP:
+            //     arm.setLayupPosition();
+            //     flywheel.runFlywheelLayup();
+            //     hopper.stopHopper(); //only when we are shooting in the shooting states do we run the hopper
+            //     intake.stopIntake();
 
-                if(requestedSystemState == SuperstructureState.STOW){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_SCORING && flywheel.isAtRPM()){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LL_PREP){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_PREP){
-                    nextSystemState = requestedSystemState; 
-                }
-                break; 
+            //     if(requestedSystemState == SuperstructureState.STOW){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.LAYUP_SCORING && flywheel.isAtRPM()){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.LL_PREP){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.AMP_PREP){
+            //         nextSystemState = requestedSystemState; 
+            //     }
+            //     break; 
 
-            case LAYUP_SCORING:
-                if(!timer.hasElapsed(ScoringConstants.kShootingStateTime)){
-                    flywheel.runFlywheelLayup();
-                    hopper.runHopperGroundIntake();
-                    intake.stopIntake();
-                } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
-                    flywheel.stopFlywheel();
-                    hopper.stopHopper();
-                    timer.reset();
-                    requestState(SuperstructureState.STOW);
-                    break;
-                }
+            // case LAYUP_SCORING:
+            //     if(!timer.hasElapsed(ScoringConstants.kShootingStateTime)){
+            //         flywheel.runFlywheelLayup();
+            //         hopper.runHopperGroundIntake();
+            //         intake.stopIntake();
+            //     } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
+            //         flywheel.stopFlywheel();
+            //         hopper.stopHopper();
+            //         timer.reset();
+            //         requestState(SuperstructureState.STOW);
+            //         break;
+            //     }
 
-                if(requestedSystemState == SuperstructureState.STOW){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
-                    nextSystemState = requestedSystemState; 
-                }
-                break;
+            //     if(requestedSystemState == SuperstructureState.STOW){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
+            //         nextSystemState = requestedSystemState; 
+            //     } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
+            //         nextSystemState = requestedSystemState; 
+            //     }
+            //     break;
 
-            case LL_PREP:
-                arm.setLLPosition();
-                flywheel.runFlywheelLimelight();
-                hopper.stopHopper(); //only when we are shooting in the shooting states do we run the hopper
-                intake.stopIntake();
+            // case LL_PREP:
+            //     arm.setLLPosition();
+            //     flywheel.runFlywheelLimelight();
+            //     hopper.stopHopper(); //only when we are shooting in the shooting states do we run the hopper
+            //     intake.stopIntake();
 
-                if(requestedSystemState == SuperstructureState.STOW){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LL_SCORING && isGamepieceIndexed() && flywheel.isAtRPM() && arm.isAtLLAngle()){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_PREP){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
-                    nextSystemState = requestedSystemState; 
-                }
-                break; 
+            //     if(requestedSystemState == SuperstructureState.STOW){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.LL_SCORING && isGamepieceIndexed() && flywheel.isAtRPM() && arm.isAtLLAngle()){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.AMP_PREP){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
+            //         nextSystemState = requestedSystemState; 
+            //     }
+            //     break; 
 
-            case LL_SCORING:
-                if(!timer.hasElapsed(ScoringConstants.kShootingStateTime)){
-                    flywheel.runFlywheelLayup();
-                    hopper.runHopperGroundIntake();
-                    intake.stopIntake();
-                } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
-                    flywheel.stopFlywheel();
-                    hopper.stopHopper();
-                    timer.reset();
-                    requestState(SuperstructureState.STOW);
-                    break;
-                }
+            // case LL_SCORING:
+            //     if(!timer.hasElapsed(ScoringConstants.kShootingStateTime)){
+            //         flywheel.runFlywheelLayup();
+            //         hopper.runHopperGroundIntake();
+            //         intake.stopIntake();
+            //     } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
+            //         flywheel.stopFlywheel();
+            //         hopper.stopHopper();
+            //         timer.reset();
+            //         requestState(SuperstructureState.STOW);
+            //         break;
+            //     }
 
-                if(requestedSystemState == SuperstructureState.STOW){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
-                    nextSystemState = requestedSystemState; 
-                }
-                break;
+            //     if(requestedSystemState == SuperstructureState.STOW){
+            //         nextSystemState = requestedSystemState;
+            //     } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
+            //         nextSystemState = requestedSystemState; 
+            //     } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
+            //         nextSystemState = requestedSystemState; 
+            //     }
+            //     break;
 
             
         }
+
         systemState = nextSystemState;
     }
 
@@ -333,6 +339,6 @@ public class Superstructure extends SubsystemBase {
     // }
 
     private boolean isGamepieceIndexed() {
-        return ((hopper.isGamepieceIndexed()) || isIndexedOverride);
+        return (hopper.isGamepieceIndexed() || isIndexedOverride);
     }
 }

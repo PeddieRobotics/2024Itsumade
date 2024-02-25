@@ -97,15 +97,13 @@ public class Hopper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Hopper full", isGamepieceIndexed());
     SmartDashboard.putBoolean("Hopper Top Sensor Status", getTopSensor());
     SmartDashboard.putBoolean("Hopper Bottom Sensor Status", getBottomSensor());
     if (SmartDashboard.getBoolean("Hopper Percent Output", false)){
       hopperMotor.setMotor(SmartDashboard.getNumber("Hopper Motor Percent Output", 0));
     }
-    
-    // IF USING ANALOG INPUTS
-    SmartDashboard.putNumber("Hopper Top Sensor Reading", getTopSensorReading());
-    SmartDashboard.putNumber("Hopper Bottom Sensor Reading", getBottomSensorReading());
+
   }
 
   @Override

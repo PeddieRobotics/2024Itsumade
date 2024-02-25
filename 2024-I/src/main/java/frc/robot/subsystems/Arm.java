@@ -57,7 +57,7 @@ public class Arm extends SubsystemBase {
 
 
         armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
-                ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF); // recaculate offset so 0 is horizontal
+                ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
         armMotor.setMotionMagicParameters(ArmConstants.kCancoderCruiseVelocityRPS, ArmConstants.kCancoderCruiseMaxAccel,
                 ArmConstants.kCancoderCruiseMaxJerk);
 
@@ -90,11 +90,11 @@ public class Arm extends SubsystemBase {
     }
 
     public void setArmPercentOutput(double speed) {
-        armMotor.setMotor(speed);
+        // armMotor.setMotor(speed);
     }
 
     public void stopArm() {
-        armMotor.setMotor(0);
+        // armMotor.setMotor(0);
     }
 
     public void putSmartDashboard() {
@@ -133,33 +133,33 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Motor Jerk RPS^3", angle.getJerk() * ArmConstants.kRotorToSensorRatio);
         SmartDashboard.putNumber("Arm Calculated FF", getFeedForward(SmartDashboard.getNumber("Arm kG", 0)));
 
-        SmartDashboard.putNumber("Open Loop Speed Input", OperatorOI.getInstance().getRightForward() / 2);
-        if (SmartDashboard.getBoolean("Open Loop Arm Control", false)) {
-            setArmPercentOutput(OperatorOI.getInstance().getRightForward() / 2);
-        }
+        // if (SmartDashboard.getBoolean("Open Loop Arm Control", false)) {
+        //     SmartDashboard.putNumber("Open Loop Speed Input", OperatorOI.getInstance().getRightForward() / 2);
+        //     setArmPercentOutput(OperatorOI.getInstance().getRightForward() / 2);
+        // }
 
-        SmartDashboard.putNumber("Calculated Arm FF", getFeedForward(SmartDashboard.getNumber("Arm kG", 0)));
+        // SmartDashboard.putNumber("Calculated Arm FF", getFeedForward(SmartDashboard.getNumber("Arm kG", 0)));
 
-        if (SmartDashboard.getBoolean("Update Arm PID", false)) {
-            armMotor.setMotionMagicParameters(
-                    SmartDashboard.getNumber("Arm Max Cruise Velocity", ArmConstants.kCancoderCruiseVelocityRPS),
-                    SmartDashboard.getNumber("Arm Max Cruise Accel", ArmConstants.kCancoderCruiseMaxAccel),
-                    SmartDashboard.getNumber("Arm Max Cruise Jerk", ArmConstants.kCancoderCruiseMaxJerk));
+        // if (SmartDashboard.getBoolean("Update Arm PID", false)) {
+        //     armMotor.setMotionMagicParameters(
+        //             SmartDashboard.getNumber("Arm Max Cruise Velocity", ArmConstants.kCancoderCruiseVelocityRPS),
+        //             SmartDashboard.getNumber("Arm Max Cruise Accel", ArmConstants.kCancoderCruiseMaxAccel),
+        //             SmartDashboard.getNumber("Arm Max Cruise Jerk", ArmConstants.kCancoderCruiseMaxJerk));
 
-            armMotor.setVelocityPIDValues(
-                    SmartDashboard.getNumber("Arm kS", ArmConstants.kArmS),
-                    SmartDashboard.getNumber("Arm kV", ArmConstants.kArmV),
-                    SmartDashboard.getNumber("Arm kA", ArmConstants.kArmA),
-                    SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
-                    SmartDashboard.getNumber("Arm I", ArmConstants.kArmI),
-                    SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
-                    getFeedForward(SmartDashboard.getNumber("Arm kG", ArmConstants.kArmG)));
+        //     armMotor.setVelocityPIDValues(
+        //             SmartDashboard.getNumber("Arm kS", ArmConstants.kArmS),
+        //             SmartDashboard.getNumber("Arm kV", ArmConstants.kArmV),
+        //             SmartDashboard.getNumber("Arm kA", ArmConstants.kArmA),
+        //             SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
+        //             SmartDashboard.getNumber("Arm I", ArmConstants.kArmI),
+        //             SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
+        //             getFeedForward(SmartDashboard.getNumber("Arm kG", ArmConstants.kArmG)));
  
-            //armMotor.setPositionTorqueFOC(SmartDashboard.getNumber("Arm Position Setpoint", 0)/360);
-            //armMotor.setPositionWithFeedForward(SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0)/360);
-            armAngleSetpoint = SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0);
-            armMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0)/360);
-        }
+        //     //armMotor.setPositionTorqueFOC(SmartDashboard.getNumber("Arm Position Setpoint", 0)/360);
+        //     //armMotor.setPositionWithFeedForward(SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0)/360);
+        //     armAngleSetpoint = SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0);
+        //     armMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0)/360);
+        // }
     }
 
     public double getFeedForward(double kG){
@@ -178,8 +178,7 @@ public class Arm extends SubsystemBase {
         if (instance == null) {
             instance = new Arm();
         }
-        // return instance;
-        return null;
+        return instance;
     }
 
     public void RequestState(ArmState requestedState) {
@@ -223,7 +222,17 @@ public class Arm extends SubsystemBase {
 
     // Methods to Set Arm to a specific position
 
+    boolean canCall = true;
+
     public void setGroundIntakePosition() {
+        if (!canCall)  
+            return;
+        canCall = false;
+        armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
+                ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF);
+        armMotor.setMotionMagicParameters(ArmConstants.kCancoderCruiseVelocityRPS, ArmConstants.kCancoderCruiseMaxAccel,
+                ArmConstants.kCancoderCruiseMaxJerk);
+        // armMotor.setPositionMotionMagic(ArmConstants.kArmIntakePositionFromGround / 360);
         setArmAngle(ArmConstants.kArmIntakePositionFromGround);
     }
 
