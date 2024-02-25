@@ -115,7 +115,7 @@ public class Superstructure extends SubsystemBase {
                 //     nextSystemState = requestedSystemState;
                 // } else if (requestedSystemState == SuperstructureState.LL_SCORING && isGamepieceIndexed()){
                 //     nextSystemState = requestedSystemState;
-                // }
+                // } 
                 
                 break;   
 
@@ -316,6 +316,16 @@ public class Superstructure extends SubsystemBase {
                 return "LL_SCORING";
         }
         return "";
+    }
+
+    public void sendToScore(){
+        if(systemState == SuperstructureState.AMP_PREP){
+            requestState(SuperstructureState.AMP_SCORING);
+        } else if(systemState == SuperstructureState.LL_PREP){
+            requestState(SuperstructureState.LL_SCORING);
+        } else if(systemState == SuperstructureState.LAYUP_PREP){
+            requestState(SuperstructureState.LAYUP_SCORING);
+        }
     }
 
     // private boolean hasGamepiece(){ //this has potential use cases if we want to keep a note in the intake instead of indexing it right away

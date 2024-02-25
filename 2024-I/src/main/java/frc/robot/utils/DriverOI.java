@@ -17,6 +17,7 @@ import frc.robot.commands.DriveCommands.PathPlannerToShoot;
 import frc.robot.commands.DriveCommands.Target;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.OIConstants;
@@ -63,25 +64,6 @@ public class DriverOI {
         return alignGoalColumn;
     }
 
-    public void controlLoop() {
-        // if (xButton.getAsBoolean()) {
-        //     superstructure.requestState(SuperstructureState.GROUND_INTAKE);
-        // } else if (muteButton.getAsBoolean()) {
-        //     superstructure.requestState(SuperstructureState.STOW);
-        // } else if (circleButton.getAsBoolean()) {
-        //     superstructure.requestState(SuperstructureState.HP_INTAKE);
-        // } else if (triangleButton.getAsBoolean()) {
-        //     superstructure.requestState(SuperstructureState.LL_SCORING); // CHANGE THIS LATER BECAUSE THERE IS DEEPER
-        //                                                                  // LOGIC REQUIRED
-        // } else if (squareButton.getAsBoolean()) {
-        //     // drive to note command here
-        // } else if (L1Bumper.getAsBoolean()) {
-        //     // align command here
-        // } else if (R1Bumper.getAsBoolean()) {
-        //     superstructure.requestState(SuperstructureState.CLIMBING);
-        // }
-    }
-
     public void configureController() {
         controller = new PS4Controller(0);
 
@@ -89,39 +71,34 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
-        // Test
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.onTrue(new PathPlannerToShoot(4));
+        triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
-        // Test
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new FollowNoteInAuto(2));
+        // squareButton.onTrue(new DriveToNote());
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
-        touchpadButton.onTrue(new ForcedCalibration());
+        touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger muteButton = new JoystickButton(controller, 15);
-        muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
-        Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
+
+        Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
+
+        Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
-        // L2Trigger.whileTrue(new ManualArmControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
         ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
-        Trigger startButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
+        Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
 
-        //Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
-
-        Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-
-        Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
+        Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
 
