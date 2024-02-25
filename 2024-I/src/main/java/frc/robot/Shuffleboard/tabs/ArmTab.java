@@ -127,29 +127,29 @@ public class ArmTab extends ShuffleboardTabBase {
     @Override
     public void update() { //Some lines here are arbitrary code that should be implemented later but don't have the necessary methods in our subsystems right now.
         try {
-            if(mPIDToggleEntry.getBoolean(false)){
-                arm.armPrimarySetVelocityPIDValues(
-                mkSEntry.getDouble(0.0),
-                mkVEntry.getDouble(0.0),
-                mkAEntry.getDouble(0.0),
-                mkPEntry.getDouble(0.0),
-                mkIEntry.getDouble(0.0),
-                mkDEntry.getDouble(0.0),
-                mkFFEntry.getDouble(0.0)
-                );
-                arm.armPrimarySetPositionMotionMagic(armSetpointEntry.getDouble(0.0) / 360.0);
-            } else if(!mPIDToggleEntry.getBoolean(false)){
-                arm.armPrimarySetVelocityPIDValues(
-                mkSEntry.getDouble(ArmConstants.kArmS),
-                mkVEntry.getDouble(ArmConstants.kArmV),
-                mkAEntry.getDouble(ArmConstants.kArmA),
-                mkPEntry.getDouble(ArmConstants.kArmP),
-                mkIEntry.getDouble(ArmConstants.kArmI),
-                mkDEntry.getDouble(ArmConstants.kArmD),
-                mkFFEntry.getDouble(ArmConstants.kArmFF)
-                );
-            }
-            CANCoderReadingEntry.setDouble(arm.getAbsoluteCANCoderPosition()/360);
+            // if(mPIDToggleEntry.getBoolean(false)){
+            //     arm.armPrimarySetVelocityPIDValues(
+            //     mkSEntry.getDouble(0.0),
+            //     mkVEntry.getDouble(0.0),
+            //     mkAEntry.getDouble(0.0),
+            //     mkPEntry.getDouble(0.0),
+            //     mkIEntry.getDouble(0.0),
+            //     mkDEntry.getDouble(0.0),
+            //     mkFFEntry.getDouble(0.0)
+            //     );
+            //     arm.armPrimarySetPositionMotionMagic(armSetpointEntry.getDouble(0.0) / 360.0);
+            // } else if(!mPIDToggleEntry.getBoolean(false)){
+            //     arm.armPrimarySetVelocityPIDValues(
+            //     mkSEntry.getDouble(ArmConstants.kArmS),
+            //     mkVEntry.getDouble(ArmConstants.kArmV),
+            //     mkAEntry.getDouble(ArmConstants.kArmA),
+            //     mkPEntry.getDouble(ArmConstants.kArmP),
+            //     mkIEntry.getDouble(ArmConstants.kArmI),
+            //     mkDEntry.getDouble(ArmConstants.kArmD),
+            //     mkFFEntry.getDouble(ArmConstants.kArmFF)
+            //     );
+            // }
+            // CANCoderReadingEntry.setDouble(arm.getAbsoluteCANCoderPosition()/360);
             
             // armCurrentEntry.setDouble(arm.getArmCurrent());
             // arm.setArmPercentOutput(armSpeedEntry.getDouble(ArmConstants.kSpeed));

@@ -149,19 +149,19 @@ public final class Constants {
   public static class ArmConstants {
     public static final int kArmPrimaryCurrentLimit = 40;
 
-    public static final double kArmS = 0;
-    public static final double kArmV = 0;
-    public static final double kArmA = 0;
-    public static final double kArmP = 0;
+    public static final double kArmS = 0.5;
+    public static final double kArmV = 16.2652;
+    public static final double kArmA = 0.0628;
+    public static final double kArmP = 1.75;
     public static final double kArmI = 0;
     public static final double kArmD = 0;
     public static final double kArmFF = 0;
     public static final double kArmIZone = 0;
-    public static final double kArmG = 0;
+    public static final double kArmG = 0.28;
 
     public static final double kCancoderCruiseVelocityRPS = .3;
-    public static final double kCancoderCruiseMaxAccel = 200; // rot/s^2
-    public static final double kCancoderCruiseMaxJerk = 1600; // rot/s^3
+    public static final double kCancoderCruiseMaxAccel = .6; // rot/s^2
+    public static final double kCancoderCruiseMaxJerk = 6; // rot/s^3
 
     public static final double kArmForwardSoftLimitDegrees = 140;
     public static final double kArmReverseSoftLimitDegrees = 0;

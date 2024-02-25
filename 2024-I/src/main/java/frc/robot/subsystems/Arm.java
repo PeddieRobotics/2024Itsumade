@@ -28,7 +28,7 @@ public class Arm extends SubsystemBase {
     private CANcoder armCANcoder;
     private InterpolatingDoubleTreeMap LLShotMap = new InterpolatingDoubleTreeMap();
     private Rate angle;
-    private double gravityFeedForward;
+    private double gravityFeedForward, armAngleSetpoint;
 
     public enum ArmState {
         Intaking, Moving, Stowed, Shooting
@@ -53,6 +53,9 @@ public class Arm extends SubsystemBase {
         armMotor.setRotorToSensorRatio(ArmConstants.kRotorToSensorRatio);
         armMotor.setSensorToMechanismRatio(ArmConstants.kArmSensorToMechanismRatio);
         // armMotor.setPositionConversionFactor(1.0);
+        armMotor.setClosedLoopRampRate(0.05);
+
+        //armMotor.setVelocityConversionFactor()
 
         armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
                 ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF); // recaculate offset so 0 is horizontal
@@ -67,6 +70,7 @@ public class Arm extends SubsystemBase {
             LLShotMap.put(pair[0], pair[1]);
         }
 
+        armAngleSetpoint = 0;
         state = ArmState.Stowed;
         goalState = ArmState.Stowed;
         angle = new Rate(0);
@@ -144,30 +148,33 @@ public class Arm extends SubsystemBase {
                     SmartDashboard.getNumber("Arm Max Cruise Jerk", ArmConstants.kCancoderCruiseMaxJerk));
 
             armMotor.setVelocityPIDValues(
-                    SmartDashboard.getNumber("Arm kS", 0),
-                    SmartDashboard.getNumber("Arm kV", 0),
-                    SmartDashboard.getNumber("Arm kA", 0),
-                    SmartDashboard.getNumber("Arm P", 0),
-                    SmartDashboard.getNumber("Arm I", 0),
-                    SmartDashboard.getNumber("Arm D", 0),
-                    getFeedForward(SmartDashboard.getNumber("Arm kG", 0)));
+                    SmartDashboard.getNumber("Arm kS", ArmConstants.kArmS),
+                    SmartDashboard.getNumber("Arm kV", ArmConstants.kArmV),
+                    SmartDashboard.getNumber("Arm kA", ArmConstants.kArmA),
+                    SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
+                    SmartDashboard.getNumber("Arm I", ArmConstants.kArmI),
+                    SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
+                    getFeedForward(SmartDashboard.getNumber("Arm kG", ArmConstants.kArmG)));
  
             //armMotor.setPositionTorqueFOC(SmartDashboard.getNumber("Arm Position Setpoint", 0)/360);
-            armMotor.setPositionWithFeedForward(SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0)/360);
+            //armMotor.setPositionWithFeedForward(SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0)/360);
+            armAngleSetpoint = SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0);
+            armMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0)/360);
         }
     }
 
-    public void armPrimarySetPositionMotionMagic(double position) {
-        armMotor.setPositionMotionMagic(position);
-    }
+    // public void armPrimarySetPositionMotionMagic(double position) {
+    //     armMotor.setPositionMotionMagic(position);
+    // }
 
-    public void armPrimarySetVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD,
-            double kFF) {
-        armMotor.setVelocityPIDValues(kS, kV, kA, kP, kI, kD, kFF);
-    }
+    // public void armPrimarySetVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD,
+    //         double kFF) {
+    //     armMotor.setVelocityPIDValues(kS, kV, kA, kP, kI, kD, kFF);
+    // }
 
     public double getFeedForward(double kG){
-        return kG * Math.sin(((getAbsoluteCANCoderPosition()+18.75)/180) * Math.PI);
+        return kG * Math.sin(((getAbsoluteCANCoderPosition()+36)/180) * Math.PI);
+        //return kG * Math.sin(((armAngleSetpoint + 30)/180) * Math.PI);
     }
     
     //CANcoder reads 0 to 1, we use this to get easier to read angles to put to dashboard 
