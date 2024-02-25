@@ -15,7 +15,6 @@ import frc.robot.commands.DriveCommands.ForcedCalibration;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
 import frc.robot.commands.DriveCommands.Target;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
@@ -43,14 +42,10 @@ public class DriverOI {
     private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     private AlignGoalColumn alignGoalColumn = AlignGoalColumn.kCenter;
 
-    private Arm arm;
     private Superstructure superstructure;
     private Drivetrain drivetrain;
 
-    private boolean usePreScorePose;
-
     public DriverOI() {
-        arm = Arm.getInstance();
         drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
         configureController();
@@ -88,6 +83,7 @@ public class DriverOI {
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
+        R1Bumper.onTrue(new Target());
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 

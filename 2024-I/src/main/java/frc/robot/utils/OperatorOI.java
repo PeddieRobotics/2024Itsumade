@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ClimbCommands.DeployClimber;
 import frc.robot.commands.ClimbCommands.ManualClimberControl;
 import frc.robot.commands.ClimbCommands.RetractClimber;
+import frc.robot.commands.DriveCommands.Target;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -33,18 +34,9 @@ public class OperatorOI {
      */
     private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
 
-    private Arm arm;
-    private Climber climber;
-    private Drivetrain drivetrain;
-    // private Superstructure superstructure;
-    private Trigger xButton, circleButton, ps5Button, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper,
-            L2Trigger, R2Trigger;
-
+    private Superstructure superstructure;
     public OperatorOI() {
-        arm = Arm.getInstance();
-        climber = Climber.getInstance();
-        drivetrain = Drivetrain.getInstance();
-        // superstructure = Superstructure.getInstance();
+        superstructure = Superstructure.getInstance();
         configureController();
     }
 
@@ -52,73 +44,38 @@ public class OperatorOI {
         return alignGoalAprilTagID;
     }
 
-    public void controlLoop() {
-        // if (xButton.getAsBoolean()) {
-        //     superstructure.requestState(SuperstructureState.STOW);
-        // } else if (circleButton.getAsBoolean()) {
-        //     superstructure.requestState(SuperstructureState.AMP_PREP);
-        // } else if (triangleButton.getAsBoolean()) {
-        //     superstructure.requestState(SuperstructureState.LAYUP_PREP); // CHANGE THIS LATER BECAUSE THERE IS DEEPER
-        //                                                                  // LOGIC REQUIRED
-        // } else if (squareButton.getAsBoolean()) {
-        //     superstructure.requestState(SuperstructureState.LL_PREP);
-        // } else if (L1Bumper.getAsBoolean()) {
-        //     // align command here
-        // } else if (R1Bumper.getAsBoolean()) {
-        //     superstructure.requestState(SuperstructureState.DEPLOY_CLIMBER);
-        // }
-
-        // ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
-    }
 
     public void configureController() {
-        controller = new PS4Controller(1);
+        Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
+        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
-        // Arm Poses
-        // L1 score (will move to this pose regardless of having a gamepiece)
-        xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
+        Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.AMP_PREP)));
 
-        // L2 scoring pose
-        circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
+        Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
+        triangleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LAYUP_PREP)));
 
-        // L3 scoring pose - does not include L3 cone forward right now.
-        triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
+        Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+        squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
 
-        // Square button forces the robot to look at odometry updates.
-        squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+        Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
 
-        // Touchpad Button (if we need it)
-        // touchpadButton = new JoystickButton(controller,
-        // PS4Controller.Button.kTouchpad.value);
+        Trigger muteButton = new JoystickButton(controller, 15);
 
-        // Mute homes the entire arm subsystem, both wrist and shoulder.
-        muteButton = new JoystickButton(controller, 15);
+        Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
 
-        // Manual Wrist and Shoulder Override Controls
+        Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
+
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
-        // L2Trigger.whileTrue(new ManualClimberControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
-        Trigger LStick = new JoystickButton(controller, PS4Controller.Axis.kLeftY.value);
-
-        // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
 
-      
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
-        optionButton.onTrue(new RetractClimber());
 
-     
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
-        shareButton.onTrue(new DeployClimber());
 
-        // Game piece selection / LED indication requests to human player
-        L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-
-        R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-
-        // Column Selection
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
 
         Trigger dpadLeftTrigger = new Trigger(() -> controller.getPOV() == 270);
@@ -180,23 +137,5 @@ public class OperatorOI {
         }
         return input;
     }
-
-    /*
-     * public boolean isUsePreScorePose() {
-     * return usePreScorePose;
-     * }
-     * 
-     * // Only update the boolean for using the pre-score pose if it is a state
-     * change
-     * // This is especially important since this requires configuring the
-     * controller mapping
-     * // for the operator, which should be done infrequently/minimally.
-     * public void setUsePreScorePose(boolean usePreScorePose) {
-     * if(this.usePreScorePose != usePreScorePose){
-     * this.usePreScorePose = usePreScorePose;
-     * configureController(usePreScorePose);
-     * }
-     * }
-     */
 
 }

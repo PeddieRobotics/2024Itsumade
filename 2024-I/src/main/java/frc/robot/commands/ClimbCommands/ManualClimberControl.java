@@ -5,7 +5,6 @@ import frc.robot.subsystems.Climber;
 import frc.robot.utils.OperatorOI;
 
 public class ManualClimberControl extends Command{
-   
     private Climber climber;
     private OperatorOI operatorOI;
 
@@ -16,7 +15,7 @@ public class ManualClimberControl extends Command{
 
     @Override
     public void initialize(){
-       operatorOI = OperatorOI.getInstance();
+        operatorOI = OperatorOI.getInstance();
     }
 
     @Override 
@@ -32,6 +31,6 @@ public class ManualClimberControl extends Command{
 
     @Override
     public boolean isFinished(){
-       return false;
+        return false;
     }
 }
