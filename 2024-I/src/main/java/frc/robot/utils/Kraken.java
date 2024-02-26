@@ -105,10 +105,12 @@ public class Kraken {
 
     public void setForwardTorqueCurrentLimit(double currentLimit){
         config.TorqueCurrent.PeakForwardTorqueCurrent = currentLimit;
+        talon.getConfigurator().apply(config);
     }
 
     public void setReverseTorqueCurrentLimit(double currentLimit){
         config.TorqueCurrent.PeakReverseTorqueCurrent = currentLimit;
+        talon.getConfigurator().apply(config);
     }
 
     // invert motor
