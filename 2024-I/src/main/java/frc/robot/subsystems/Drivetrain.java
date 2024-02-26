@@ -265,7 +265,6 @@ public class Drivetrain extends SubsystemBase {
         currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
                 + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
         currentRobotRelativeSpeed = robotRelativeSpeeds; // not sure if robot relative
-
         robotRelativeSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, .02);// real loop time should be .02
 
         // fudge factoring

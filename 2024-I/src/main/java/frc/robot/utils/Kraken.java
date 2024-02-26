@@ -40,6 +40,8 @@ public class Kraken {
         this.config = new TalonFXConfiguration();
         talon.getConfigurator().setPosition(0);
 
+        factoryReset();
+        
         orchestra = new Orchestra();
         orchestra.addInstrument(talon);
         orchestra.loadMusic("output.chrp");

@@ -31,7 +31,7 @@ public class SwerveDriveCommand extends Command {
         SmartDashboard.putNumber("field relative input forward axis", position.getX());
         SmartDashboard.putNumber("field relative input strafe axis", position.getY());
 
-        drivetrain.drive(position, rotation, false, centerOfRotation);
+        drivetrain.drive(position, rotation, true, centerOfRotation);
 
     }
 
