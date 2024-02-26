@@ -252,7 +252,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void drive(Translation2d translation, double rotation, boolean fieldOriented,
             Translation2d centerOfRotation) {
-        ChassisSpeeds fieldRelativeSpeeds = correctHeading(new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
+        ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
         
         ChassisSpeeds robotRelativeSpeeds;
 

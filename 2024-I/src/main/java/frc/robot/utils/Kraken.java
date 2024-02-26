@@ -217,7 +217,7 @@ public class Kraken {
 
     // set PID values for position setpoint control
     public void setPIDValues(double kP, double kI, double kD, double kF) {
-        var pidSlotConfigs = new Slot0Configs();
+        var pidSlotConfigs = config.Slot0;
 
         feedForward = kF;
         pidSlotConfigs.kP = kP;
