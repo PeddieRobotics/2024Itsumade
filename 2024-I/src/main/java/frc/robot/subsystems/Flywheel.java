@@ -25,6 +25,7 @@ public class Flywheel extends SubsystemBase {
 
         flywheelLeftMotor.setSupplyCurrentLimit(FlywheelConstants.kFlywheelLeftCurrentLimit);
         flywheelRightMotor.setSupplyCurrentLimit(FlywheelConstants.kFlywheelRightCurrentLimit);
+        
 
         flywheelLeftMotor.setForwardTorqueCurrentLimit(FlywheelConstants.kFlywheelForwardTorqueCurrentLimit);
         flywheelLeftMotor.setReverseTorqueCurrentLimit(FlywheelConstants.kFlywheelReverseTorqueCurrentLimit);

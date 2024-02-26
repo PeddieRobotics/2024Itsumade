@@ -41,7 +41,6 @@ public class Kraken {
         talon.getConfigurator().setPosition(0);
 
         factoryReset();
-        
         orchestra = new Orchestra();
         orchestra.addInstrument(talon);
         orchestra.loadMusic("output.chrp");
@@ -95,22 +94,12 @@ public class Kraken {
     }
 
     // set the current limit of motor
-    public void setSupplyCurrentLimit(double currentLimit) {
+    public void setCurrentLimit(double currentLimit) {
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.SupplyCurrentLimit = currentLimit;
         // config.CurrentLimits.StatorCurrentLimitEnable = true;
         // config.CurrentLimits.StatorCurrentLimit = currentLimit;
 
-        talon.getConfigurator().apply(config);
-    }
-
-    public void setForwardTorqueCurrentLimit(double currentLimit){
-        config.TorqueCurrent.PeakForwardTorqueCurrent = currentLimit;
-        talon.getConfigurator().apply(config);
-    }
-
-    public void setReverseTorqueCurrentLimit(double currentLimit){
-        config.TorqueCurrent.PeakReverseTorqueCurrent = currentLimit;
         talon.getConfigurator().apply(config);
     }
 
@@ -229,27 +218,25 @@ public class Kraken {
 
     // set PID values for position setpoint control
     public void setPIDValues(double kP, double kI, double kD, double kF) {
-        var pidSlotConfigs = config.Slot0;
 
         feedForward = kF;
-        pidSlotConfigs.kP = kP;
-        pidSlotConfigs.kI = kI;
-        pidSlotConfigs.kD = kD;
-        talon.getConfigurator().apply(pidSlotConfigs);
+        config.Slot0.kP = kP;
+        config.Slot0.kI = kI;
+        config.Slot0.kD = kD;
+        talon.getConfigurator().apply(config);
     }
 
     // set PID values for velocity setpoint control
     public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF) {
-        var pidSlotConfigs = config.Slot0;
 
         feedForward = kF;
-        pidSlotConfigs.kS = kS;
-        pidSlotConfigs.kV = kV;
-        pidSlotConfigs.kA = kA;
-        pidSlotConfigs.kP = kP;
-        pidSlotConfigs.kI = kI;
-        pidSlotConfigs.kD = kD;
-        talon.getConfigurator().apply(pidSlotConfigs);
+        config.Slot0.kS = kS;
+        config.Slot0.kV = kV;
+        config.Slot0.kA = kA;
+        config.Slot0.kP = kP;
+        config.Slot0.kI = kI;
+        config.Slot0.kD = kD;
+        talon.getConfigurator().apply(config);
 
     }
 

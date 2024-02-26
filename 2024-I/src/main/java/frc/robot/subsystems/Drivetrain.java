@@ -269,22 +269,22 @@ public class Drivetrain extends SubsystemBase {
 
         // fudge factoring
 
-        // double fudgefactor = -.11;// -.11
-        // Translation2d commandedVelocity = new Translation2d(robotRelativeSpeeds.vxMetersPerSecond,
-        //         robotRelativeSpeeds.vyMetersPerSecond);
-        // Rotation2d commandedRotation = Rotation2d.fromRadians(robotRelativeSpeeds.omegaRadiansPerSecond);
-        // Translation2d TangentVelocity = commandedVelocity.rotateBy(Rotation2d.fromDegrees(90));
-        // commandedVelocity = commandedVelocity.plus(TangentVelocity.times(fudgefactor * commandedRotation.getRadians())); // adds
-                                                                                                                         // tangent
-                                                                                                                         // veclocity
-                                                                                                                         // times
-                                                                                                                         // rotational
-                                                                                                                         // speed
-                                                                                                                         // times
-                                                                                                                         // fudge
-                                                                                                                         // factor
-        // robotRelativeSpeeds = new ChassisSpeeds(commandedVelocity.getX(), commandedVelocity.getY(),
-        //         commandedRotation.getRadians());
+        double fudgefactor = -.11;// -.11
+        Translation2d commandedVelocity = new Translation2d(robotRelativeSpeeds.vxMetersPerSecond,
+                robotRelativeSpeeds.vyMetersPerSecond);
+        Rotation2d commandedRotation = Rotation2d.fromRadians(robotRelativeSpeeds.omegaRadiansPerSecond);
+        Translation2d TangentVelocity = commandedVelocity.rotateBy(Rotation2d.fromDegrees(90));
+        commandedVelocity = commandedVelocity.plus(TangentVelocity.times(fudgefactor * commandedRotation.getRadians())); // adds
+                                                                                                                         //tangent
+                                                                                                                         //veclocity
+                                                                                                                         //times
+                                                                                                                         //rotational
+                                                                                                                         //speed
+                                                                                                                         //times
+                                                                                                                         //fudge
+                                                                                                                         //factor
+        robotRelativeSpeeds = new ChassisSpeeds(commandedVelocity.getX(), commandedVelocity.getY(),
+                commandedRotation.getRadians());
 
         swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds, centerOfRotation);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxAngularSpeed);
