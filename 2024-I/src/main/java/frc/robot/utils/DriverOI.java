@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DriveCommands.FollowNote;
 import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.ForcedCalibration;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
@@ -39,7 +40,7 @@ public class DriverOI {
 
     private PS4Controller controller;
 
-    private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
+    private int alignGoalAprilTagID = 0; // DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     private AlignGoalColumn alignGoalColumn = AlignGoalColumn.kCenter;
 
     private Superstructure superstructure;
@@ -72,7 +73,7 @@ public class DriverOI {
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        // squareButton.onTrue(new DriveToNote());
+        squareButton.whileTrue(new FollowNote());
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));

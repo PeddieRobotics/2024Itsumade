@@ -229,9 +229,9 @@ public final class Constants {
     public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 0.5;
 
-    // Distance, Angle; SAMPLE VALUES, NEEDS TO BE TUNED -TONY
+    // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) - needs more tuning/initial values only
     public static final double[][] treeMapValues = new double[][] { { 40, 35 }, { 60, 42 }, { 80, 48 }, 
-        { 100, 53}, { 120, 59}, { 140, 64 }, { 160, 67}, { 180, 71}, {200, 75} };
+        { 100, 53}, { 120, 56}, { 140, 58 }, { 160, 60}, { 180, 62}, {200, 64} };
   }
 
   public static class IntakeConstants {

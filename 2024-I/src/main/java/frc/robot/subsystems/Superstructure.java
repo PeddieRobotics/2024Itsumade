@@ -119,6 +119,7 @@ public class Superstructure extends SubsystemBase {
                 break;   
 
             case GROUND_INTAKE:
+                flywheel.stopFlywheel();
                 arm.setGroundIntakePosition();
                 
                 if (arm.isAtGroundIntakeAngle() && !isGamepieceIndexed() && !justIntaked){
@@ -196,7 +197,6 @@ public class Superstructure extends SubsystemBase {
 
 
             case AMP_SCORING:
-            SmartDashboard.putNumber("Shot timer", timer.get());
                 if(!timer.hasElapsed(ScoringConstants.kShootingStateTime)){ //stop this once the piece is scored
                     flywheel.runFlywheelAmp();
                     hopper.feedFlywheelAmp();
@@ -243,9 +243,11 @@ public class Superstructure extends SubsystemBase {
                     flywheel.runFlywheelLayup();
                     hopper.feedFlywheelLayup();
                     intake.stopIntake();
+                    timer.start();
                 } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
+                    timer.stop();
                     timer.reset();
                     requestState(SuperstructureState.STOW);
                     break;
@@ -266,9 +268,13 @@ public class Superstructure extends SubsystemBase {
                 hopper.stopHopper(); //only when we are shooting in the shooting states do we run the hopper
                 intake.stopIntake();
 
+                
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LL_SCORING && isGamepieceIndexed() && flywheel.isAtRPM() && arm.isAtLLAngle()){
+                } 
+                // removed conditions for gamepiece to be indexed and for arm to be at the right angle
+                // Look into this, for now just make sure flywheel is at the right RPM
+                else if(requestedSystemState == SuperstructureState.LL_SCORING && flywheel.isAtRPM()){
                     timer.reset();
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.AMP_PREP){
@@ -283,9 +289,11 @@ public class Superstructure extends SubsystemBase {
                     flywheel.runFlywheelLimelight();
                     hopper.feedFlywheelSpeaker();
                     intake.stopIntake();
+                    timer.start();
                 } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
+                    timer.stop();
                     timer.reset();
                     requestState(SuperstructureState.STOW);
                     break;

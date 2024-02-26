@@ -159,6 +159,8 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Target D", 0);
         SmartDashboard.putNumber("Target FF", 0);
 
+        SmartDashboard.putNumber("Correct Heading P", DriveConstants.kHeadingCorrectionP);
+
         isForcingCalibration = false;
     }
 
@@ -250,7 +252,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void drive(Translation2d translation, double rotation, boolean fieldOriented,
             Translation2d centerOfRotation) {
-        ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+        ChassisSpeeds fieldRelativeSpeeds = correctHeading(new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
         
         ChassisSpeeds robotRelativeSpeeds;
 
@@ -268,12 +270,12 @@ public class Drivetrain extends SubsystemBase {
 
         // fudge factoring
 
-        double fudgefactor = -.11;// -.11
-        Translation2d commandedVelocity = new Translation2d(robotRelativeSpeeds.vxMetersPerSecond,
-                robotRelativeSpeeds.vyMetersPerSecond);
-        Rotation2d commandedRotation = Rotation2d.fromRadians(robotRelativeSpeeds.omegaRadiansPerSecond);
-        Translation2d TangentVelocity = commandedVelocity.rotateBy(Rotation2d.fromDegrees(90));
-        commandedVelocity = commandedVelocity.plus(TangentVelocity.times(fudgefactor * commandedRotation.getRadians())); // adds
+        // double fudgefactor = -.11;// -.11
+        // Translation2d commandedVelocity = new Translation2d(robotRelativeSpeeds.vxMetersPerSecond,
+        //         robotRelativeSpeeds.vyMetersPerSecond);
+        // Rotation2d commandedRotation = Rotation2d.fromRadians(robotRelativeSpeeds.omegaRadiansPerSecond);
+        // Translation2d TangentVelocity = commandedVelocity.rotateBy(Rotation2d.fromDegrees(90));
+        // commandedVelocity = commandedVelocity.plus(TangentVelocity.times(fudgefactor * commandedRotation.getRadians())); // adds
                                                                                                                          // tangent
                                                                                                                          // veclocity
                                                                                                                          // times
@@ -282,9 +284,8 @@ public class Drivetrain extends SubsystemBase {
                                                                                                                          // times
                                                                                                                          // fudge
                                                                                                                          // factor
-
-        robotRelativeSpeeds = new ChassisSpeeds(commandedVelocity.getX(), commandedVelocity.getY(),
-                commandedRotation.getRadians());
+        // robotRelativeSpeeds = new ChassisSpeeds(commandedVelocity.getX(), commandedVelocity.getY(),
+        //         commandedRotation.getRadians());
 
         swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds, centerOfRotation);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxAngularSpeed);
@@ -322,7 +323,7 @@ public class Drivetrain extends SubsystemBase {
             return currentSpeeds;
         }
 
-        double correctedVTheta = deltaHeading.getRadians() / dt * DriveConstants.kHeadingCorrectionP;
+        double correctedVTheta = deltaHeading.getRadians() / dt * SmartDashboard.getNumber("Correct Heading P", DriveConstants.kHeadingCorrectionP);
         previousTime = currentTime;
 
         return new ChassisSpeeds(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond, correctedVTheta);

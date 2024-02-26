@@ -70,17 +70,17 @@ public class LimelightIntake extends Limelight {
     }
 
     public Pose2d getBotpose() {
-        double[] result;
-        if(DriverStation.getAlliance().get() == Alliance.Red){
-            result = LimelightHelper.getBotPose_wpiRed(limelightName);
-        }
-        else{
-            result = LimelightHelper.getBotPose_wpiBlue(limelightName);
-        }
+        // double[] result;
+        // if(DriverStation.getAlliance().get() == Alliance.Red){
+        //     result = LimelightHelper.getBotPose_wpiRed(limelightName);
+        // }
+        // else{
+        //     result = LimelightHelper.getBotPose_wpiBlue(limelightName);
+        // }
 
-        if (result.length > 0.0) {
-            return new Pose2d(new Translation2d(result[0], result[1]), new Rotation2d(Math.toRadians(result[5])));
-        }
+        // if (result.length > 0.0) {
+        //     return new Pose2d(new Translation2d(result[0], result[1]), new Rotation2d(Math.toRadians(result[5])));
+        // }
         return new Pose2d();
     }
 
