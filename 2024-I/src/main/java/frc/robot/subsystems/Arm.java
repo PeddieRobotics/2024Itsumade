@@ -12,6 +12,7 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
+import frc.robot.utils.Conversions;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.OperatorOI;
@@ -52,18 +53,14 @@ public class Arm extends SubsystemBase {
         armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
         armMotor.setRotorToSensorRatio(ArmConstants.kRotorToSensorRatio);
         armMotor.setSensorToMechanismRatio(ArmConstants.kArmSensorToMechanismRatio);
-        // armMotor.setPositionConversionFactor(1.0);
-        armMotor.setClosedLoopRampRate(0.05);
-
+        // armMotor.setClosedLoopRampRate(0.05);
 
         armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
                 ArmConstants.kArmI, ArmConstants.kArmD, 0);
         armMotor.setMotionMagicParameters(ArmConstants.kCancoderCruiseVelocityRPS, ArmConstants.kCancoderCruiseMaxAccel,
                 ArmConstants.kCancoderCruiseMaxJerk);
 
-        armMotor.setSoftLimits(true,
-                (Constants.ArmConstants.kArmForwardSoftLimitDegrees) / 360,
-                (Constants.ArmConstants.kArmReverseSoftLimitDegrees) / 360);
+        armMotor.setSoftLimits(true, Constants.ArmConstants.kArmForwardSoftLimit, Constants.ArmConstants.kArmReverseSoftLimit);
 
         for (double[] pair : Constants.ScoringConstants.treeMapValues) {
             LLShotMap.put(pair[0], pair[1]);
@@ -82,7 +79,7 @@ public class Arm extends SubsystemBase {
     public void configureCANcoder() {
         CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive; // doublecheck this
-        canCoderConfig.MagnetSensor.MagnetOffset = 2 * Constants.ArmConstants.kArmPositionOffsetDegrees / 360; // the value that we put to shuffleboard
+        canCoderConfig.MagnetSensor.MagnetOffset = ArmConstants.kArmMagnetOffset; // the value that we put to shuffleboard
                                                                                                                 // is modified from the actual CANCoder to multiply by 360 for degrees, 
                                                                                                                 //and then divide by 2 for the difference between CANCoder and actual arm shaft.
                                                                                                                 //This just undoes that
@@ -219,7 +216,7 @@ public class Arm extends SubsystemBase {
 
     public void setArmAngle(double angle) {
         armAngleSetpoint = angle;
-        armMotor.setPositionMotionMagic(angle/360);
+        armMotor.setPositionMotionMagic(Conversions.convertArmDegreesToRotations(angle));
     }
 
     public double getArmAngleDegrees() {

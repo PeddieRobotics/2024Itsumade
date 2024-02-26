@@ -163,10 +163,10 @@ public final class Constants {
     public static final double kCancoderCruiseMaxAccel = .6; // rot/s^2
     public static final double kCancoderCruiseMaxJerk = 6; // rot/s^3
 
-    public static final double kArmForwardSoftLimitDegrees = 140;
-    public static final double kArmReverseSoftLimitDegrees = 0;
+    public static final double kArmForwardSoftLimit = 0.3; // in mechanism rotations
+    public static final double kArmReverseSoftLimit = -0.1; // in mechanism rotations
 
-    public static final double kArmPositionOffsetDegrees = 28.3447;
+    public static final double kArmMagnetOffset = -0.04881754; // see spreadsheet "FIRST Calculations" for reference
 
     //TOTAL NET gear reduction from motor ALL THE WAY to shoulder pivot
     public static final double kRotorToArmGearReduction = 16384.0 / 125;
