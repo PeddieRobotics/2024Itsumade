@@ -23,8 +23,13 @@ public class Flywheel extends SubsystemBase {
         flywheelLeftMotor = new Kraken(RobotMap.FLYWHEEL_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
         flywheelRightMotor = new Kraken(RobotMap.FLYWHEEL_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
 
-        flywheelLeftMotor.setCurrentLimit(FlywheelConstants.kFlywheelLeftCurrentLimit);
-        flywheelRightMotor.setCurrentLimit(FlywheelConstants.kFlywheelRightCurrentLimit);
+        flywheelLeftMotor.setSupplyCurrentLimit(FlywheelConstants.kFlywheelLeftCurrentLimit);
+        flywheelRightMotor.setSupplyCurrentLimit(FlywheelConstants.kFlywheelRightCurrentLimit);
+
+        flywheelLeftMotor.setForwardTorqueCurrentLimit(FlywheelConstants.kFlywheelForwardTorqueCurrentLimit);
+        flywheelLeftMotor.setReverseTorqueCurrentLimit(FlywheelConstants.kFlywheelReverseTorqueCurrentLimit);
+        flywheelRightMotor.setForwardTorqueCurrentLimit(FlywheelConstants.kFlywheelForwardTorqueCurrentLimit);
+        flywheelRightMotor.setReverseTorqueCurrentLimit(FlywheelConstants.kFlywheelReverseTorqueCurrentLimit);
 
         flywheelLeftMotor.setVelocityConversionFactor(FlywheelConstants.kFlywheelGearReduction);
         flywheelRightMotor.setVelocityConversionFactor(FlywheelConstants.kFlywheelGearReduction);

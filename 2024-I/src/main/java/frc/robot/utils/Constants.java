@@ -204,15 +204,18 @@ public final class Constants {
     public static final int kFlywheelLeftCurrentLimit = 30;
     public static final int kFlywheelRightCurrentLimit = 30;
 
+    public static final int kFlywheelForwardTorqueCurrentLimit = 40;
+    public static final int kFlywheelReverseTorqueCurrentLimit = 0;
+
     public static final double kFlywheelGearReduction = 30.0 / 24.0;
 
     public static final double kFlywheelSensorThreshold = 0;
 
-    public static final double kFlywheelS = 4;
-    public static final double kFlywheelV = 3.25; // 0.00225;
+    public static final double kFlywheelS = 3.5;
+    public static final double kFlywheelV = 0; // 0.00225;
     public static final double kFlywheelA = 0;
-    public static final double kFlywheelP = 12; // could be changed later... crap tune
-    public static final double kFlywheelI = 0;
+    public static final double kFlywheelP = 5; // could be changed later... crap tune
+    public static final double kFlywheelI = 5;
     public static final double kFlywheelD = 0;
     public static final double kFlywheelFF = 0;
   }

@@ -31,7 +31,7 @@ public class Hopper extends SubsystemBase {
     topHopperSensor = new AnalogInput(RobotMap.TOP_HOPPER_SENSOR_ID);
     bottomHopperSensor = new AnalogInput(RobotMap.BOTTOM_HOPPER_SENSOR_ID);
 
-    hopperMotor.setCurrentLimit(IntakeConstants.kHopperCurrentLimit);
+    hopperMotor.setSupplyCurrentLimit(IntakeConstants.kHopperCurrentLimit);
     hopperMotor.setBrake();
 
     SmartDashboard.putBoolean("Hopper Percent Output", false);

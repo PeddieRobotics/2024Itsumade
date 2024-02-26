@@ -93,12 +93,22 @@ public class Kraken {
     }
 
     // set the current limit of motor
-    public void setCurrentLimit(double currentLimit) {
+    public void setSupplyCurrentLimit(double currentLimit) {
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.SupplyCurrentLimit = currentLimit;
         // config.CurrentLimits.StatorCurrentLimitEnable = true;
         // config.CurrentLimits.StatorCurrentLimit = currentLimit;
 
+        talon.getConfigurator().apply(config);
+    }
+
+    public void setForwardTorqueCurrentLimit(double currentLimit){
+        config.TorqueCurrent.PeakForwardTorqueCurrent = currentLimit;
+        talon.getConfigurator().apply(config);
+    }
+
+    public void setReverseTorqueCurrentLimit(double currentLimit){
+        config.TorqueCurrent.PeakReverseTorqueCurrent = currentLimit;
         talon.getConfigurator().apply(config);
     }
 

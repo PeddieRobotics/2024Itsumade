@@ -30,8 +30,8 @@ public class Climber extends SubsystemBase {
     leftClimber = new Kraken(RobotMap.CLIMBER_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
     // climberSensor = new DigitalInput(ClimberConstants.CLIMBER_SENSOR_ID);
 
-    rightClimber.setCurrentLimit(ClimberConstants.kClimberCurrentLimit);
-    leftClimber.setCurrentLimit(ClimberConstants.kClimberCurrentLimit);
+    rightClimber.setSupplyCurrentLimit(ClimberConstants.kClimberCurrentLimit);
+    leftClimber.setSupplyCurrentLimit(ClimberConstants.kClimberCurrentLimit);
 
     rightClimber.setVelocityConversionFactor(ClimberConstants.kClimberGearReduction);
     leftClimber.setVelocityConversionFactor(ClimberConstants.kClimberGearReduction);

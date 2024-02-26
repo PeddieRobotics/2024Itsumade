@@ -46,7 +46,7 @@ public class Arm extends SubsystemBase {
         armMotor = new Kraken(RobotMap.ARM_MOTOR, RobotMap.CANIVORE_NAME);
 
         armMotor.setInverted(true);
-        armMotor.setCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
+        armMotor.setSupplyCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
         armMotor.setBrake();
         armMotor.setEncoder(0);//wont be 0 if measurement is 0 when horizonal
 
