@@ -30,6 +30,7 @@ public class Arm extends SubsystemBase {
     private InterpolatingDoubleTreeMap LLShotMap = new InterpolatingDoubleTreeMap();
     private Rate angle;
     private double gravityFeedForward, armAngleSetpoint;
+    private String stringState;
 
     public enum ArmState {
         Intaking, Moving, Stowed, Shooting
@@ -68,6 +69,7 @@ public class Arm extends SubsystemBase {
 
         armAngleSetpoint = 0;
         state = ArmState.Stowed;
+        stringState = "";
         goalState = ArmState.Stowed;
         angle = new Rate(0);
         gravityFeedForward = 0;
@@ -143,6 +145,10 @@ public class Arm extends SubsystemBase {
         return Conversions.convertRotationsToArmDegrees(getAbsoluteCANCoderPosition()/2);
     }
 
+    public double getArmTemperature(){
+        return armMotor.getMotorTemperature();
+    }
+
     public static Arm getInstance() {
         if (instance == null) {
             instance = new Arm();
@@ -214,6 +220,14 @@ public class Arm extends SubsystemBase {
 
     public void setArmNeutralMode(){
         armMotor.setNeutralControl();
+    }
+
+    public void setState(String s) { //cheat code way to get the state of the superstructure since you can't directly access it elsewhere
+        stringState = s;
+    }
+
+    public String getState(){
+        return stringState;
     }
 
     @Override

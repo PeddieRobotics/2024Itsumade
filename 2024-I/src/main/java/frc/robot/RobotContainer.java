@@ -14,6 +14,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.Shuffleboard.ShuffleboardMain;
 import frc.robot.utils.Constants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.OperatorOI;
@@ -28,6 +29,7 @@ public class RobotContainer {
   private final LimelightShooter limelightShooter;
   private final Flywheel flywheel;
   private final Superstructure superstructure;
+  private ShuffleboardMain shuffleboard;
   private final OperatorOI operatorOI;
   private final DriverOI driverOI;
 
@@ -47,6 +49,7 @@ public class RobotContainer {
     limelightShooter = LimelightShooter.getInstance();
     flywheel = Flywheel.getInstance();
     superstructure = Superstructure.getInstance();
+    shuffleboard = ShuffleboardMain.getInstance();
     operatorOI = OperatorOI.getInstance();
     driverOI = DriverOI.getInstance();
     // shuffleboardMain = ShuffleboardMain.getInstance();

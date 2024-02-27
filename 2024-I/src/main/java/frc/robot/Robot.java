@@ -28,12 +28,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-
-  // private ShuffleboardMain shuffleboardMain;
-  private PowerDistribution pdh;
-  // private ShuffleboardMain shuffleboardMain;
+  private ShuffleboardMain shuffleboardMain;
   private Logger logger;
-  //private PowerDistribution pdh;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -44,17 +40,15 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    // shuffleboardMain = ShuffleboardMain.getInstance();
+    shuffleboardMain = ShuffleboardMain.getInstance();
     
     DataLogManager.logNetworkTables(false);
     DataLogManager.start("/media/sda1");
     logger = Logger.getInstance();
     DriverStation.startDataLog(DataLogManager.getLog());
 
-    //pdh = new PowerDistribution(1, ModuleType.kRev);
-
-    // shuffleboardMain.setUpTabs();
-    // shuffleboardMain.setUpAutoSelector();
+    shuffleboardMain.setUpTabs();
+    shuffleboardMain.setUpAutoSelector();
   }
 
   /**

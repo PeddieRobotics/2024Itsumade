@@ -83,8 +83,7 @@ public class Superstructure extends SubsystemBase {
 
     @Override
     public void periodic(){
-        SmartDashboard.putString("STATE", systemState.toString());
-        SmartDashboard.putBoolean("INDEXED?", isGamepieceIndexed());
+        arm.setState(systemState.toString());
 
         switch(systemState){
             case LL_TEST:
@@ -240,7 +239,7 @@ public class Superstructure extends SubsystemBase {
                     hopper.stopHopper();
                     timer.stop();
                     timer.reset();
-                    requestState(SuperstructureState.STOW);
+                    setBackToStowAfterShot(); //requestState(SuperstructureState.STOW);
                     break;
                 }
 
@@ -282,7 +281,7 @@ public class Superstructure extends SubsystemBase {
                     hopper.stopHopper();
                     timer.stop();
                     timer.reset();
-                    requestState(SuperstructureState.STOW);
+                    setBackToStowAfterShot(); //requestState(SuperstructureState.STOW);
                     break;
                 }
 
@@ -328,7 +327,7 @@ public class Superstructure extends SubsystemBase {
                     hopper.stopHopper();
                     timer.stop();
                     timer.reset();
-                    requestState(SuperstructureState.STOW);
+                    setBackToStowAfterShot(); //requestState(SuperstructureState.STOW);
                     break;
                 }
 
@@ -388,6 +387,19 @@ public class Superstructure extends SubsystemBase {
     // }
 
     private boolean isGamepieceIndexed() {
+        if(SmartDashboard.getBoolean("Piece Indexed Override", false)){
+        return true;
+        }
         return (hopper.isGamepieceIndexed() || isIndexedOverride);
+    }
+
+    private boolean stowAfterShot(){
+        return SmartDashboard.getBoolean("Stow After Shoot Override", true);
+    }
+
+    public void setBackToStowAfterShot(){
+        if(stowAfterShot()){
+            requestState(SuperstructureState.STOW);
+        }
     }
 }
