@@ -126,31 +126,31 @@ public class Flywheel extends SubsystemBase {
     }
 
     public void putSmartDashboard() {
-        SmartDashboard.putBoolean("Update Flywheel PID", false);
+        // SmartDashboard.putBoolean("Update Flywheel PID", false);
 
-        SmartDashboard.putNumber("Flywheel S", FlywheelConstants.kFlywheelS);
-        SmartDashboard.putNumber("Flywheel V", FlywheelConstants.kFlywheelV);
-        SmartDashboard.putNumber("Flywheel A", FlywheelConstants.kFlywheelA);
-        SmartDashboard.putNumber("Flywheel P", FlywheelConstants.kFlywheelP);
-        SmartDashboard.putNumber("Flywheel I", FlywheelConstants.kFlywheelI);
-        SmartDashboard.putNumber("Flywheel D", FlywheelConstants.kFlywheelD);
-        SmartDashboard.putNumber("Flywheel FF", FlywheelConstants.kFlywheelFF);
-        SmartDashboard.putBoolean("Flywheel Percent Output", false);
-        SmartDashboard.putNumber("Flywheel Left Percent Output", 0);
-        SmartDashboard.putNumber("Flywheel Right Percent Output", 0);
+        // SmartDashboard.putNumber("Flywheel S", FlywheelConstants.kFlywheelS);
+        // SmartDashboard.putNumber("Flywheel V", FlywheelConstants.kFlywheelV);
+        // SmartDashboard.putNumber("Flywheel A", FlywheelConstants.kFlywheelA);
+        // SmartDashboard.putNumber("Flywheel P", FlywheelConstants.kFlywheelP);
+        // SmartDashboard.putNumber("Flywheel I", FlywheelConstants.kFlywheelI);
+        // SmartDashboard.putNumber("Flywheel D", FlywheelConstants.kFlywheelD);
+        // SmartDashboard.putNumber("Flywheel FF", FlywheelConstants.kFlywheelFF);
+        // SmartDashboard.putBoolean("Flywheel Percent Output", false);
+        // SmartDashboard.putNumber("Flywheel Left Percent Output", 0);
+        // SmartDashboard.putNumber("Flywheel Right Percent Output", 0);
     }
 
     public void updateSmartDashboard() {
-        if (SmartDashboard.getBoolean("Flywheel Percent Output", false)) {
-            runLeftFlywheelPercentOutput(SmartDashboard.getNumber("Flywheel Left Percent Output", 0));
-            runRightFlywheelPercentOutput(SmartDashboard.getNumber("Flywheel Right Percent Output", 0));
+        // if (SmartDashboard.getBoolean("Flywheel Percent Output", false)) {
+        //     runLeftFlywheelPercentOutput(SmartDashboard.getNumber("Flywheel Left Percent Output", 0));
+        //     runRightFlywheelPercentOutput(SmartDashboard.getNumber("Flywheel Right Percent Output", 0));
             // flywheelLeftMotor.setMotor(SmartDashboard.getNumber("Flywheel Left Percent
             // Output", 0));
             // flywheelRightMotor.setMotor(SmartDashboard.getNumber("Flywheel Right Percent
             // Output", 0));
-        }
+        // }
 
-        if (SmartDashboard.getBoolean("Update Flywheel PID", false)) {
+        // if (SmartDashboard.getBoolean("Update Flywheel PID", false)) {
             // flywheelLeftMotor.setVelocityPIDValues(
             //         SmartDashboard.getNumber("Flywheel S", FlywheelConstants.kFlywheelS),
             //         SmartDashboard.getNumber("Flywheel V", FlywheelConstants.kFlywheelV),
@@ -169,21 +169,21 @@ public class Flywheel extends SubsystemBase {
             //         SmartDashboard.getNumber("Flywheel D", FlywheelConstants.kFlywheelD),
             //         SmartDashboard.getNumber("Flywheel FF", FlywheelConstants.kFlywheelFF));
 
-            leftSetpoint = SmartDashboard.getNumber("Flywheel Left Motor RPM Setpoint",
-            leftSetpoint);
-            rightSetpoint = SmartDashboard.getNumber("Flywheel Right Motor RPM Setpoint",
-            rightSetpoint);
+        //     leftSetpoint = SmartDashboard.getNumber("Flywheel Left Motor RPM Setpoint",
+        //     leftSetpoint);
+        //     rightSetpoint = SmartDashboard.getNumber("Flywheel Right Motor RPM Setpoint",
+        //     rightSetpoint);
 
-            flywheelLeftMotor.setVelocityTorqueFOC(leftSetpoint / 60);
-            flywheelRightMotor.setVelocityTorqueFOC(rightSetpoint / 60);
-        }
+        //     flywheelLeftMotor.setVelocityTorqueFOC(leftSetpoint / 60);
+        //     flywheelRightMotor.setVelocityTorqueFOC(rightSetpoint / 60);
+        // }
 
-        SmartDashboard.putNumber("Flywheel Left RPM", getFlywheelLeftRPM());
-        SmartDashboard.putNumber("Flywheel Right RPM", getFlywheelRightRPM());
-        SmartDashboard.putBoolean("Flywheel Is At RPM", isAtRPM());
+        // SmartDashboard.putNumber("Flywheel Left RPM", getFlywheelLeftRPM());
+        // SmartDashboard.putNumber("Flywheel Right RPM", getFlywheelRightRPM());
+        // SmartDashboard.putBoolean("Flywheel Is At RPM", isAtRPM());
 
-        SmartDashboard.putNumber("Flywheel Left Motor RPM Setpoint", leftSetpoint);
-        SmartDashboard.putNumber("Flywheel Right Motor RPM Setpoint", rightSetpoint);
+        // SmartDashboard.putNumber("Flywheel Left Motor RPM Setpoint", leftSetpoint);
+        // SmartDashboard.putNumber("Flywheel Right Motor RPM Setpoint", rightSetpoint);
     }
 
     @Override

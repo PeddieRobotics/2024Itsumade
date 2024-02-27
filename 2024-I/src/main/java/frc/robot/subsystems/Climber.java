@@ -48,15 +48,15 @@ public class Climber extends SubsystemBase {
     rightClimber.resetEncoder();
     leftClimber.resetEncoder();
 
-    SmartDashboard.putBoolean("Manual Climber Control", false);
-    SmartDashboard.putBoolean("Climber PID Tuning", false);
+    // SmartDashboard.putBoolean("Manual Climber Control", false);
+    // SmartDashboard.putBoolean("Climber PID Tuning", false);
 
-    SmartDashboard.putNumber("Climber P Value", 0);
-    SmartDashboard.putNumber("Climber I Value", 0);
-    SmartDashboard.putNumber("Climber D Value", 0);
-    SmartDashboard.putNumber("Climber FF Value", 0);
+    // SmartDashboard.putNumber("Climber P Value", 0);
+    // SmartDashboard.putNumber("Climber I Value", 0);
+    // SmartDashboard.putNumber("Climber D Value", 0);
+    // SmartDashboard.putNumber("Climber FF Value", 0);
 
-    SmartDashboard.putNumber("Climber Angle Setpoint", 0);
+    // SmartDashboard.putNumber("Climber Angle Setpoint", 0);
 
   }
 
@@ -116,14 +116,14 @@ public class Climber extends SubsystemBase {
     SmartDashboard.putNumber("Left Climber Current", leftClimber.getSupplyCurrent());
     SmartDashboard.putNumber("Right Climber Currrent", rightClimber.getSupplyCurrent());
 
-    if (SmartDashboard.getBoolean("Climber PID Tuning", false)) {
-      leftClimber.setPIDValues(
-          SmartDashboard.getNumber("Climber P Value", 0),
-          SmartDashboard.getNumber("Climber I Value", 0),
-          SmartDashboard.getNumber("Climber D Value", 0),
-          SmartDashboard.getNumber("Climber FF Value", 0));
-      leftClimber.setPositionWithFeedForward(SmartDashboard.getNumber("Climber Angle Setpoint", 0));
-    }
+    // if (SmartDashboard.getBoolean("Climber PID Tuning", false)) {
+    //   leftClimber.setPIDValues(
+    //       SmartDashboard.getNumber("Climber P Value", 0),
+    //       SmartDashboard.getNumber("Climber I Value", 0),
+    //       SmartDashboard.getNumber("Climber D Value", 0),
+    //       SmartDashboard.getNumber("Climber FF Value", 0));
+    //   leftClimber.setPositionWithFeedForward(SmartDashboard.getNumber("Climber Angle Setpoint", 0));
+    // }
 
   }
 }

@@ -72,7 +72,7 @@ public class Arm extends SubsystemBase {
         angle = new Rate(0);
         gravityFeedForward = 0;
 
-        putSmartDashboard();
+        // putSmartDashboard();
     }
 
     // TODO: update these constants
@@ -115,20 +115,20 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Arm Motor Current", armMotor.getSupplyCurrent());
         SmartDashboard.putNumber("Arm Motor Temperature", armMotor.getMotorTemperature());
 
-        SmartDashboard.putNumber("Arm Motor Velocity", armMotor.getVelocity());
-        SmartDashboard.putNumber("Motor vel RPS", angle.getVel() * ArmConstants.kRotorToSensorRatio);
-        SmartDashboard.putNumber("Motor Accel RPS^2", angle.getAccel() * ArmConstants.kRotorToSensorRatio);
-        SmartDashboard.putNumber("Motor Jerk RPS^3", angle.getJerk() * ArmConstants.kRotorToSensorRatio);
+        // SmartDashboard.putNumber("Arm Motor Velocity", armMotor.getVelocity());
+        // SmartDashboard.putNumber("Motor vel RPS", angle.getVel() * ArmConstants.kRotorToSensorRatio);
+        // SmartDashboard.putNumber("Motor Accel RPS^2", angle.getAccel() * ArmConstants.kRotorToSensorRatio);
+        // SmartDashboard.putNumber("Motor Jerk RPS^3", angle.getJerk() * ArmConstants.kRotorToSensorRatio);
 
-        if (SmartDashboard.getBoolean("Open Loop Arm Control", false)) {
-            armMotor.setMotor(OperatorOI.getInstance().getRightForward());
-        }
+        // if (SmartDashboard.getBoolean("Open Loop Arm Control", false)) {
+        //     armMotor.setMotor(OperatorOI.getInstance().getRightForward());
+        // }
 
-        if (SmartDashboard.getBoolean("Set Arm Setpoint", false)) {
-            setArmAngle(SmartDashboard.getNumber("Arm Setpoint", 0));
-        }
-        SmartDashboard.putNumber("Converted Arm Setpoint",
-                Conversions.convertArmDegreesToRotations(SmartDashboard.getNumber("Arm Setpoint", 0)));
+        // if (SmartDashboard.getBoolean("Set Arm Setpoint", false)) {
+        //     setArmAngle(SmartDashboard.getNumber("Arm Setpoint", 0));
+        // }
+        // SmartDashboard.putNumber("Converted Arm Setpoint",
+        //         Conversions.convertArmDegreesToRotations(SmartDashboard.getNumber("Arm Setpoint", 0)));
     }
 
     // CANcoder reads 0 to 1, we use this to get easier to read angles to put to
@@ -215,7 +215,6 @@ public class Arm extends SubsystemBase {
     @Override
     public void periodic() {
         angle.update(getAbsoluteCANCoderPosition());
-        SmartDashboard.putBoolean("ARM is at intake angle", isAtGroundIntakeAngle());
         updateSmartDashboard();
     }
 }

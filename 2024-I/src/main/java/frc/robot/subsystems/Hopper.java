@@ -109,11 +109,11 @@ public class Hopper extends SubsystemBase {
     SmartDashboard.putBoolean("Hopper full", isGamepieceIndexed());
     SmartDashboard.putBoolean("Hopper Top Sensor Status", getTopSensor());
     SmartDashboard.putBoolean("Hopper Bottom Sensor Status", getBottomSensor());
-    SmartDashboard.putNumber("Hopper Top Sensor Reading", getTopSensorReading());
-    SmartDashboard.putNumber("Hopper Bottom Sensor Reading", getBottomSensorReading());
-    if (SmartDashboard.getBoolean("Hopper Percent Output", false)){
-      hopperMotor.setMotor(SmartDashboard.getNumber("Hopper Motor Percent Output", 0));
-    }
+    // SmartDashboard.putNumber("Hopper Top Sensor Reading", getTopSensorReading());
+    // SmartDashboard.putNumber("Hopper Bottom Sensor Reading", getBottomSensorReading());
+    // if (SmartDashboard.getBoolean("Hopper Percent Output", false)){
+    //   hopperMotor.setMotor(SmartDashboard.getNumber("Hopper Motor Percent Output", 0));
+    // }
 
   }
 

@@ -21,6 +21,7 @@ public class Superstructure extends SubsystemBase {
     private Timer timer;
 
     public enum SuperstructureState{
+        LL_TEST,
         STOW,
         GROUND_INTAKE,
         HP_INTAKE,
@@ -55,6 +56,8 @@ public class Superstructure extends SubsystemBase {
         stateDuration = 0;
         shootingSpeed = 0;
         internalStateTimer = 0;
+
+        SmartDashboard.putNumber("LL Shot Angle", 0);
     }
 
     public static Superstructure getInstance() {
@@ -83,7 +86,16 @@ public class Superstructure extends SubsystemBase {
         SmartDashboard.putBoolean("INDEXED?", isGamepieceIndexed());
 
         switch(systemState){
-            
+            case LL_TEST:
+                arm.setArmAngle(SmartDashboard.getNumber("LL Shot Angle", 0));
+                flywheel.runFlywheelLimelight();
+                hopper.feedFlywheelSpeaker();
+                intake.stopIntake();
+
+                if(requestedSystemState == SuperstructureState.STOW){ 
+                    nextSystemState = requestedSystemState; 
+                }
+
 
             //idle state of robot, arm is in stow position, 
             case STOW:
@@ -91,6 +103,10 @@ public class Superstructure extends SubsystemBase {
                 flywheel.stopFlywheel();
                 intake.stopIntake();
                 hopper.stopHopper();
+
+                if(requestedSystemState == SuperstructureState.LL_TEST){ 
+                    nextSystemState = requestedSystemState; 
+                }
 
                  //only go into the prep state if you have a gamepiece
                 if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){ 
