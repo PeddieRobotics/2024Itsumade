@@ -11,7 +11,7 @@ import frc.robot.utils.Constants.LimelightConstants;
 
 public class FollowNote extends Command {
     private Drivetrain drivetrain;
-    private LimelightIntake limelightBack;
+    private LimelightIntake limelightIntake;
     private DriverOI oi;
     private double targetAngle;
     private double targetThreshold;
@@ -25,7 +25,7 @@ public class FollowNote extends Command {
     //follow a note in Tele-Op
     public FollowNote() {
         drivetrain = Drivetrain.getInstance();
-        limelightBack = LimelightIntake.getInstance();
+        limelightIntake = LimelightIntake.getInstance();
         
         error = 0.0;
         thetaController = new PIDController(LimelightConstants.kFollowNoteTurnP, LimelightConstants.kFollowNoteTurnI, 

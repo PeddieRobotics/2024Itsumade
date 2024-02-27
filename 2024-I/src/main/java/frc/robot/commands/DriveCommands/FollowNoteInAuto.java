@@ -47,7 +47,7 @@ public class FollowNoteInAuto extends Command {
         endBecauseNoNote = false;
         
         addRequirements(drivetrain);
-   }
+    }
 
     @Override
     public void initialize() {
@@ -72,7 +72,8 @@ public class FollowNoteInAuto extends Command {
             doNotSeeFrameCount = 0;
             // current angle
             currentAngle = limelightIntake.getTxAverage();
-            // the next problem: if we stop seeing a note, but there is a note directly behind it
+            // the next problem: if we stop seeing a note, but there is a note directly
+            // behind it
             // the robot will turn towards that note and everything breaks
             // so we say do not turn if the tx suddenly jumps
             // lastTx is initialized to Integer.MAX_VALUE, so we detect that here (makes the first game piece seen not seen as an extra note so the command won't end)
@@ -86,13 +87,15 @@ public class FollowNoteInAuto extends Command {
                     llTurn = thetaController.calculate(currentAngle, targetAngle) - FF;
             }
         }
-        
+
         // if we don't see a note when starting the command, then do not follow anything
-        // and park the robot at the current position 
+        // and park the robot at the current position
         // we end the command if three conditions are met:
-        //  1. in the first EARLY_END_MAX_DURATION seconds
-        //  2. the proportion number of frames where there is no note is above EARLY_END_NO_NOTE_PCT
-        //  3. higher than EARLY_END_MIN_DURATION has passed, so we need to not see a note for a duration of time before we conclude there is no note
+        // 1. in the first EARLY_END_MAX_DURATION seconds
+        // 2. the proportion number of frames where there is no note is above
+        // EARLY_END_NO_NOTE_PCT
+        // 3. higher than EARLY_END_MIN_DURATION has passed, so we need to not see a
+        // note for a duration of time before we conclude there is no note
         double elapsed = Timer.getFPGATimestamp() - startTime;
         if (elapsed <= AutoConstants.kFollowNoteEarlyEndMaxDuration) {
             if (!hasTarget)
@@ -129,4 +132,3 @@ public class FollowNoteInAuto extends Command {
             hopper.isGamepieceIndexed(); // OR has the game piece
     }
 }
-

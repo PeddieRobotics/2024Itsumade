@@ -220,9 +220,9 @@ public class Drivetrain extends SubsystemBase {
         // if (SmartDashboard.getBoolean("Reset Gyro", false)) {
         //     gyro.setYaw(0);
         // }
-        // SmartDashboard.putNumber("Odometry X", odometry.getEstimatedPosition().getX());
-        // SmartDashboard.putNumber("Odometry Y", odometry.getEstimatedPosition().getY());
-        // SmartDashboard.putNumber("Odometry Theta", odometry.getEstimatedPosition().getRotation().getDegrees());
+        SmartDashboard.putNumber("Odometry X", odometry.getEstimatedPosition().getX());
+        SmartDashboard.putNumber("Odometry Y", odometry.getEstimatedPosition().getY());
+        SmartDashboard.putNumber("Odometry Theta", odometry.getEstimatedPosition().getRotation().getDegrees());
     }
 
     @Override
@@ -238,10 +238,9 @@ public class Drivetrain extends SubsystemBase {
 
     public void updateOdometry() {
         odometry.update(getRotation2d(), swerveModulePositions);
-        if (useMegaTag || isForcingCalibration) {
-            limelightShooter.checkForAprilTagUpdates(odometry);
-            // limelightBack.checkForAprilTagUpdates(odometry);
-        }
+        // if (useMegaTag || isForcingCalibration) {
+        //     limelightShooter.checkForAprilTagUpdates(odometry);
+        // }
     }
 
     public void setSwerveModuleStates(SwerveModuleState[] swerveModuleStates) {
