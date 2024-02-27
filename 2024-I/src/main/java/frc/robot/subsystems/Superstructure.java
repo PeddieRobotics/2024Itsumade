@@ -83,6 +83,7 @@ public class Superstructure extends SubsystemBase {
         SmartDashboard.putBoolean("INDEXED?", isGamepieceIndexed());
 
         switch(systemState){
+            
 
             //idle state of robot, arm is in stow position, 
             case STOW:
