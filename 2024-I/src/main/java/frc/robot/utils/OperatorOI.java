@@ -35,7 +35,6 @@ public class OperatorOI {
     /**
      * the center depending on aliance
      */
-    private int alignGoalAprilTagID = 0; //DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
 
     private Drivetrain drivetrain;
     private Superstructure superstructure;
@@ -47,7 +46,7 @@ public class OperatorOI {
     }
 
     public int getAlignGoalAprilTagID() {
-        return alignGoalAprilTagID;
+        return DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     }
 
 

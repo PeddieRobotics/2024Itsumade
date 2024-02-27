@@ -41,7 +41,6 @@ public class DriverOI {
 
     private PS4Controller controller;
 
-    private int alignGoalAprilTagID = 0; // DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     private AlignGoalColumn alignGoalColumn = AlignGoalColumn.kCenter;
 
     private Superstructure superstructure;
@@ -54,7 +53,7 @@ public class DriverOI {
     }
 
     public int getAlignGoalAprilTagID() {
-        return alignGoalAprilTagID;
+        return DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     }
 
     public AlignGoalColumn getAlignGoalColumn() {

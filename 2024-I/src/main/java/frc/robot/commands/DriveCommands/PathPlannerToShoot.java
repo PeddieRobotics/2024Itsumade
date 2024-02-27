@@ -19,8 +19,6 @@ public class PathPlannerToShoot extends Command {
     private double timeLimit;
     private double startTime;
 
-    // Full constructor with all 6 parameters for the climb charge station
-    // algorithm.
     public PathPlannerToShoot(double timeLimit) {
         drivetrain = Drivetrain.getInstance();
         

@@ -20,8 +20,6 @@ public class PathPlannerToPoint extends Command {
     private double timeLimit;
     private double startTime;
 
-    // Full constructor with all 6 parameters for the climb charge station
-    // algorithm.
     public PathPlannerToPoint(double x, double y, double theta, double timeLimit) {
         drivetrain = Drivetrain.getInstance();
         
