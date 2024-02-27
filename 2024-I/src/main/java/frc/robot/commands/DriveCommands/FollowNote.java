@@ -11,7 +11,7 @@ import frc.robot.utils.DriverOI;
 
 public class FollowNote extends Command {
     private Drivetrain drivetrain;
-    private LimelightIntake limelightBack;
+    private LimelightIntake limelightIntake;
     private DriverOI oi;
     private double angleThreshold;
     private double targetAngle;
@@ -26,7 +26,7 @@ public class FollowNote extends Command {
     //follow a note in Tele-Op
     public FollowNote() {
         drivetrain = Drivetrain.getInstance();
-        limelightBack = LimelightIntake.getInstance();
+        limelightIntake = LimelightIntake.getInstance();
         
         angleThreshold = Constants.LimelightConstants.kFollowNoteAngleThreshold;
 
@@ -44,7 +44,7 @@ public class FollowNote extends Command {
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
-        limelightBack.setPipeline(1); 
+        limelightIntake.setPipeline(1); 
     }
 
     @Override
@@ -52,8 +52,8 @@ public class FollowNote extends Command {
         double throttle = oi.getSwerveTranslation().getX();
         Translation2d position = new Translation2d(-throttle, 0.0);
 
-        if (limelightBack.hasTarget()) {
-            currentAngle = limelightBack.getTxAverage();
+        if (limelightIntake.hasTarget()) {
+            currentAngle = limelightIntake.getTxAverage();
             error = currentAngle - targetAngle;
             SmartDashboard.putNumber("DATA: Error", currentAngle);
             if (error < -angleThreshold) {

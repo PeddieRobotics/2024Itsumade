@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 1.33,
-      "y": 5.5
+      "y": 5.56
     },
     "rotation": 180.0
   },
@@ -20,6 +20,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "AutoRoutines",
   "choreoAuto": false
 }

@@ -40,7 +40,6 @@ public class Target extends Command {
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
-        limelightShooter.setPipeline(0);
         logger.logEvent("Started Target Command", true);
     }
 
@@ -66,10 +65,11 @@ public class Target extends Command {
         }
         // SmartDashboard.putBoolean("Targetting", true);
         // SmartDashboard.putNumber("Target Turn Input", turnInput);
-        // SmartDashboard.putBoolean("Limelight has target", limelightShooter.hasTarget());
+        // SmartDashboard.putBoolean("Limelight has target",
+        // limelightShooter.hasTarget());
         drivetrain.drive(oi.getSwerveTranslation(), turnInput * 2, true, oi.getCenterOfRotation());
     }
-    
+
     @Override
     public void end(boolean interrupted) {
         // SmartDashboard.putBoolean("Targetting", false);

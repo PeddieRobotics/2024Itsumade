@@ -3,10 +3,13 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
+    "Test Paths",
     "Path Segments"
   ],
   "autoFolders": [
-    "Initial Testing"
+    "Initial Testing",
+    "Misc. Test",
+    "AutoRoutines"
   ],
   "defaultMaxVel": 1.0,
   "defaultMaxAccel": 1.0,
