@@ -45,7 +45,7 @@ public class FollowNote extends Command {
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
-        limelightBack.setPipeline(LimelightConstants.kIntakeNotePipeline); 
+        limelightIntake.setPipeline(LimelightConstants.kIntakeNotePipeline); 
 
         thetaController = new PIDController(
             SmartDashboard.getNumber("Follow Note P", LimelightConstants.kFollowNoteTurnP),
@@ -62,8 +62,8 @@ public class FollowNote extends Command {
         Translation2d position = new Translation2d(-throttle, 0.0);
 
         double llTurn = 0;
-        if (limelightBack.hasTarget()) {
-            currentAngle = limelightBack.getTxAverage();
+        if (limelightIntake.hasTarget()) {
+            currentAngle = limelightIntake.getTxAverage();
             error = currentAngle - targetAngle;
             SmartDashboard.putNumber("DATA: Error", currentAngle);
             if (error < -targetThreshold)
