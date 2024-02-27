@@ -73,6 +73,8 @@ public class LimelightIntake extends Limelight {
 
     public Pose2d getBotpose() { 
         double[] result;
+        // when booting the roborio DriverStation.getAlliance().get() gives a NoSuchElementExcept
+        // put a try catch around it to get rid of the error
         try {
             if(DriverStation.getAlliance().get() == Alliance.Red){
                 result = LimelightHelper.getBotPose_wpiRed(limelightName);
