@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.NoSuchElementException;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -69,18 +71,22 @@ public class LimelightIntake extends Limelight {
         return new Translation2d(0, 0);
     }
 
-    public Pose2d getBotpose() {
-        // double[] result;
-        // if(DriverStation.getAlliance().get() == Alliance.Red){
-        //     result = LimelightHelper.getBotPose_wpiRed(limelightName);
-        // }
-        // else{
-        //     result = LimelightHelper.getBotPose_wpiBlue(limelightName);
-        // }
+    public Pose2d getBotpose() { 
+        double[] result;
+        try {
+            if(DriverStation.getAlliance().get() == Alliance.Red){
+                result = LimelightHelper.getBotPose_wpiRed(limelightName);
+            }
+            else{
+                result = LimelightHelper.getBotPose_wpiBlue(limelightName);
+            }
+        } catch (java.util.NoSuchElementException e) {
+            return new Pose2d();
+        }
 
-        // if (result.length > 0.0) {
-        //     return new Pose2d(new Translation2d(result[0], result[1]), new Rotation2d(Math.toRadians(result[5])));
-        // }
+        if (result.length > 0.0) {
+            return new Pose2d(new Translation2d(result[0], result[1]), new Rotation2d(Math.toRadians(result[5])));
+        }
         return new Pose2d();
     }
 

@@ -156,13 +156,11 @@ public class Superstructure extends SubsystemBase {
                 arm.setGroundIntakePosition();
                 
                 if (arm.isAtGroundIntakeAngle() && !isGamepieceIndexed() && !justIntaked){
-                    SmartDashboard.putBoolean("intaking", true);
                     intake.runIntake();
                     hopper.runHopperGroundIntake();
                 } else {
                     if (isGamepieceIndexed())
                         justIntaked = true;
-                    SmartDashboard.putBoolean("intaking", false);
                     intake.stopIntake();
                     hopper.stopHopper();
                 }

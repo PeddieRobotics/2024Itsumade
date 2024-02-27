@@ -107,6 +107,12 @@ public final class Constants {
         { 3.81, 5.31, 175.00 },
         { 2.21, 4.47, 125.00 },
     };
+
+    public static final double kFollowNoteEarlyEndMinDuration = 0.10;
+    public static final double kFollowNoteEarlyEndMaxDuration = 0.25;
+    public static final double kFollowNoteNoNotePercent = 0.80;
+    public static final double kFollowNoteNotSameNoteThresh = 2.5;
+    public static final double kFollowNoteSpeed = 1.5;
   }
 
   public static class LimelightConstants {
@@ -132,7 +138,7 @@ public final class Constants {
     public static final double kFollowNoteTurnP = 0;
     public static final double kFollowNoteTurnI = 0;
     public static final double kFollowNoteTurnD = 0;
-    public static final double kFollowNoteAngleThreshold = 0;
+    public static final double kFollowNoteAngleThreshold = 1;
 
     // target apriltag command constants
     public static final double kTargetP = 0.017;
