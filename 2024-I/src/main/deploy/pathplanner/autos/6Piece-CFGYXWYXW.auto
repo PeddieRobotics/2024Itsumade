@@ -1,0 +1,73 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.79,
+      "y": 4.33
+    },
+    "rotation": 120.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C SourceSpeaker-SourceNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F SourceNote-CenterNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "G CenterNote-AmpNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Y ToTopSeekNoteLocation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "X SeekNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "W ToClosestShooting"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Y ToTopSeekNoteLocation"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "X SeekNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "W ToClosestShooting"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "AutoRoutines",
+  "choreoAuto": false
+}
