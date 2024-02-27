@@ -52,7 +52,7 @@ public final class Constants {
     //2. spin all modules so that bevel gears face left relative to robot (shooter in front)
     //3. read the cancoder values from dashboard, and put those values for these offsets (check robotmap for ids)
     public static final double kFrontLeftModuleAngularOffset = -2.837864;
-    public static final double kFrontRightModuleAngularOffset = 0.579844;
+    public static final double kFrontRightModuleAngularOffset = 0.579844 + 0.283786445758;
     public static final double kBackLeftModuleAngularOffset = -2.078543;
     public static final double kBackRightModulelAngularOffset = 2.109223;
 
@@ -61,7 +61,7 @@ public final class Constants {
   }
 
   public static class ModuleConstants {
-    public static final double kWheelDiameterInches = 4.0;
+    public static final double kWheelDiameterInches = 3.6;
 
     public static final double kDriveMotorReduction = 6.12;
     public static final double kDrivingEncoderPostionFactor = (Units.inchesToMeters(kWheelDiameterInches) * Math.PI)

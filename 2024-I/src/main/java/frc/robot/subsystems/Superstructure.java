@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.IntakeConstants;
 import frc.robot.utils.Constants.ScoringConstants;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 
 public class Superstructure extends SubsystemBase {
@@ -82,33 +82,32 @@ public class Superstructure extends SubsystemBase {
     }
 
     @Override
-    public void periodic(){
+    public void periodic() {
         SmartDashboard.putString("STATE", systemState.toString());
         SmartDashboard.putBoolean("INDEXED?", isGamepieceIndexed());
 
-        switch(systemState){
+        switch (systemState) {
             case LL_TEST:
-                if(SmartDashboard.getBoolean("LL Shot Move Arm", false)){
+                if (SmartDashboard.getBoolean("LL Shot Move Arm", false)) {
                     arm.setArmAngle(SmartDashboard.getNumber("LL Shot Angle", 0));
                 }
                 flywheel.runFlywheelLimelight();
 
-                if(flywheel.isAtRPM()){
+                if (flywheel.isAtRPM()) {
                     hopper.feedFlywheelSpeaker();
                 }
 
                 intake.stopIntake();
 
-                if(requestedSystemState == SuperstructureState.STOW){ 
-                    nextSystemState = requestedSystemState; 
+                if (requestedSystemState == SuperstructureState.STOW) {
+                    nextSystemState = requestedSystemState;
                 }
                 break;
 
-
-            //idle state of robot, arm is in stow position, 
+            // idle state of robot, arm is in stow position,
             case STOW:
                 SmartDashboard.putBoolean("ARM At Stow Angle", arm.isAtStowAngle());
-                if(arm.isAtStowAngle()){
+                if (arm.isAtStowAngle()) {
                     SmartDashboard.putBoolean("Neutral Stow", true);
                     arm.setArmNeutralMode();
                 } else {
@@ -116,92 +115,91 @@ public class Superstructure extends SubsystemBase {
                     arm.setStowPosition();
                 }
 
-                flywheel.stopFlywheel();
+                if (DriverStation.isAutonomous()) {
+                    flywheel.runFlywheelLimelight();
+                } else {
+                    flywheel.stopFlywheel();
+                }
                 intake.stopIntake();
                 hopper.stopHopper();
 
-                if(requestedSystemState == SuperstructureState.LL_TEST){ 
-                    nextSystemState = requestedSystemState; 
+                if (requestedSystemState == SuperstructureState.AMP_PREP) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.LL_PREP) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.LAYUP_PREP) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.GROUND_INTAKE) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+                    nextSystemState = requestedSystemState;
                 }
 
-                 //only go into the prep state if you have a gamepiece
-                if(requestedSystemState == SuperstructureState.AMP_PREP){ 
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.LL_PREP){
+                if (requestedSystemState == SuperstructureState.LL_TEST) {
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
-                    nextSystemState = requestedSystemState;
-                } 
-                
-                 //intake only if you don't have a piece -- ASSUMING WE'RE INDEXING RIGHT AWAY
-                else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){ 
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
-                    nextSystemState = requestedSystemState; 
-                } 
+                }
 
-                 //you should not be able to go into scoring from stow **someone please verify if this makes sense
-                // else if(requestedSystemState == SuperstructureState.AMP_SCORING && isGamepieceIndexed()){
-                //     nextSystemState = requestedSystemState;
-                // } else if(requestedSystemState == SuperstructureState.LAYUP_SCORING && isGamepieceIndexed()){
-                //     nextSystemState = requestedSystemState;
-                // } else if (requestedSystemState == SuperstructureState.LL_SCORING && isGamepieceIndexed()){
-                //     nextSystemState = requestedSystemState;
-                // } 
-                
-                break;   
+                break;
 
             case GROUND_INTAKE:
-                flywheel.stopFlywheel();
                 arm.setGroundIntakePosition();
                 intake.runIntake();
                 hopper.runHopperGroundIntake();
-                if (isGamepieceIndexed()){
-                    intake.stopIntake();
-                    hopper.stopHopper();
-                    requestState(SuperstructureState.STOW);
+
+                if (!DriverStation.isAutonomous()) {
+                    flywheel.stopFlywheel();
+                } else {
+                    flywheel.runFlywheelLimelight();
                 }
 
-                //only switch states from here if done indexing, but let it go into stow from anywhere
-                if(requestedSystemState == SuperstructureState.STOW){ //CHECK THIS
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.LL_PREP && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP && isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.HP_INTAKE && !isGamepieceIndexed()){
-                    nextSystemState = requestedSystemState; 
-                } 
+                if (isGamepieceIndexed()) {
+                    intake.stopIntake();
+                    hopper.stopHopper();
+                    if (!DriverStation.isAutonomous()) {
+                        requestState(SuperstructureState.STOW);
+                    }
+                }
 
-                break; 
+                if (requestedSystemState == SuperstructureState.STOW) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.AMP_PREP) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.LL_PREP) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.LAYUP_PREP) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+                    nextSystemState = requestedSystemState;
+                }
+
+                break;
 
             case HP_INTAKE:
-                if(!hopper.getTopSensor() || !hopper.getBottomSensor()){
+                if (!hopper.getTopSensor() || !hopper.getBottomSensor()) {
                     arm.setHPIntakePosition();
                     flywheel.runFlywheelHP();
                     intake.stopIntake();
-                } else if(hopper.getBottomSensor()) {
+                } else if (hopper.getBottomSensor()) {
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     requestState(SuperstructureState.STOW);
                     break;
                 }
 
-                //only switch states from intake if done indexing, but let it go into stow from anywhere
-                if(requestedSystemState == SuperstructureState.STOW){
+                // only switch states from intake if done indexing, but let it go into stow from
+                // anywhere
+                if (requestedSystemState == SuperstructureState.STOW) {
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_PREP){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.LL_PREP){
+                } else if (requestedSystemState == SuperstructureState.AMP_PREP) {
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
-                    nextSystemState = requestedSystemState; 
-                } 
-                break; 
+                } else if (requestedSystemState == SuperstructureState.LL_PREP) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.LAYUP_PREP) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.GROUND_INTAKE) {
+                    nextSystemState = requestedSystemState;
+                }
+                break;
 
             case AMP_PREP:
                 arm.setAmpPosition();
@@ -209,142 +207,143 @@ public class Superstructure extends SubsystemBase {
                 hopper.stopHopper();
                 intake.stopIntake();
 
-                if(requestedSystemState == SuperstructureState.STOW){
+                if (requestedSystemState == SuperstructureState.STOW) {
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_SCORING && flywheel.isAtRPM()){
+                } else if (requestedSystemState == SuperstructureState.AMP_SCORING && flywheel.isAtRPM()) {
                     timer.reset();
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LL_PREP){
+                } else if (requestedSystemState == SuperstructureState.LL_PREP) {
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
-                    nextSystemState = requestedSystemState; 
+                } else if (requestedSystemState == SuperstructureState.LAYUP_PREP) {
+                    nextSystemState = requestedSystemState;
                 }
-                break; 
-
+                break;
 
             case AMP_SCORING:
-                if(!timer.hasElapsed(ScoringConstants.kShootingStateTime)){ //stop this once the piece is scored
+                if (!timer.hasElapsed(ScoringConstants.kShootingStateTime)) { // stop this once the piece is scored
                     flywheel.runFlywheelAmp();
                     hopper.feedFlywheelAmp();
                     intake.stopIntake();
                     timer.start();
-                } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
+                } else if (!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)) {
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
-                    timer.stop();
                     timer.reset();
                     requestState(SuperstructureState.STOW);
                     break;
                 }
 
-                if(requestedSystemState == SuperstructureState.STOW){
+                if (requestedSystemState == SuperstructureState.STOW) {
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
-                    nextSystemState = requestedSystemState; 
+                } else if (requestedSystemState == SuperstructureState.GROUND_INTAKE) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+                    nextSystemState = requestedSystemState;
                 }
-                break; 
+                break;
 
             case LAYUP_PREP:
                 arm.setLayupPosition();
                 flywheel.runFlywheelLayup();
-                hopper.stopHopper(); //only when we are shooting in the shooting states do we run the hopper
+                hopper.stopHopper(); // only when we are shooting in the shooting states do we run the hopper
                 intake.stopIntake();
 
-                if(requestedSystemState == SuperstructureState.STOW){
+                if (requestedSystemState == SuperstructureState.STOW) {
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_SCORING && flywheel.isAtRPM()){
+                } else if (requestedSystemState == SuperstructureState.LAYUP_SCORING && flywheel.isAtRPM()) {
                     timer.reset();
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LL_PREP){
+                } else if (requestedSystemState == SuperstructureState.LL_PREP) {
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_PREP){
-                    nextSystemState = requestedSystemState; 
+                } else if (requestedSystemState == SuperstructureState.AMP_PREP) {
+                    nextSystemState = requestedSystemState;
                 }
-                break; 
+                break;
 
             case LAYUP_SCORING:
-                if(!timer.hasElapsed(ScoringConstants.kShootingStateTime)){
+                if (!timer.hasElapsed(ScoringConstants.kShootingStateTime)) {
                     flywheel.runFlywheelLayup();
                     hopper.feedFlywheelLayup();
                     intake.stopIntake();
                     timer.start();
-                } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
+                } else if (!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)) {
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
-                    timer.stop();
                     timer.reset();
-                    requestState(SuperstructureState.STOW);
+                    if (!DriverStation.isAutonomous()) {
+                        requestState(SuperstructureState.STOW);
+                    }
                     break;
                 }
 
-                if(requestedSystemState == SuperstructureState.STOW){
+                if (requestedSystemState == SuperstructureState.STOW) {
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
-                    nextSystemState = requestedSystemState; 
+                } else if (requestedSystemState == SuperstructureState.GROUND_INTAKE) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+                    nextSystemState = requestedSystemState;
                 }
                 break;
 
             case LL_PREP:
                 arm.setLLPosition();
                 flywheel.runFlywheelLimelight();
-                hopper.stopHopper(); //only when we are shooting in the shooting states do we run the hopper
+                hopper.stopHopper(); // only when we are shooting in the shooting states do we run the hopper
                 intake.stopIntake();
 
-                
-                if(requestedSystemState == SuperstructureState.STOW){
+                if (requestedSystemState == SuperstructureState.STOW) {
                     nextSystemState = requestedSystemState;
-                } 
-                // removed conditions for gamepiece to be indexed and for arm to be at the right angle
+                }
+                // removed conditions for gamepiece to be indexed and for arm to be at the right
+                // angle
                 // Look into this, for now just make sure flywheel is at the right RPM
-                else if(requestedSystemState == SuperstructureState.LL_SCORING && flywheel.isAtRPM()){
+                else if (requestedSystemState == SuperstructureState.LL_SCORING && flywheel.isAtRPM()) {
                     timer.reset();
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_PREP){
+                } else if (requestedSystemState == SuperstructureState.AMP_PREP) {
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
-                    nextSystemState = requestedSystemState; 
+                } else if (requestedSystemState == SuperstructureState.LAYUP_PREP) {
+                    nextSystemState = requestedSystemState;
                 }
-                break; 
+                break;
 
             case LL_SCORING:
-                if(!timer.hasElapsed(ScoringConstants.kShootingStateTime)){
+                if (!timer.hasElapsed(ScoringConstants.kShootingStateTime)) {
                     flywheel.runFlywheelLimelight();
                     hopper.feedFlywheelSpeaker();
                     intake.stopIntake();
                     timer.start();
-                } else if(!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)){
+                } else if (!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)) {
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
-                    timer.stop();
                     timer.reset();
-                    requestState(SuperstructureState.STOW);
+                    if(!DriverStation.isAutonomous()){
+                        requestState(SuperstructureState.STOW);
+                    }
                     break;
                 }
 
-                if(requestedSystemState == SuperstructureState.STOW){
+                if (requestedSystemState == SuperstructureState.STOW) {
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
-                    nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
-                    nextSystemState = requestedSystemState; 
+                } else if (requestedSystemState == SuperstructureState.GROUND_INTAKE) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+                    nextSystemState = requestedSystemState;
                 }
                 break;
 
-            
         }
 
-    if(nextSystemState!=systemState)justIntaked=false;systemState=nextSystemState;
+        if (nextSystemState != systemState)
+            justIntaked = false;
+        systemState = nextSystemState;
 
     }
 
-    public String stateAsString(){ //possibly? using this to print state on shuffleboard
-        switch(systemState){
+    public String stateAsString() { // possibly? using this to print state on shuffleboard
+        switch (systemState) {
             case STOW:
-                return "STOW"; 
+                return "STOW";
             case GROUND_INTAKE:
                 return "GROUND_INTAKE";
             case HP_INTAKE:
@@ -358,19 +357,19 @@ public class Superstructure extends SubsystemBase {
             case LAYUP_SCORING:
                 return "LAYUP_SCORING";
             case LL_PREP:
-                return "LL_PREP"; 
+                return "LL_PREP";
             case LL_SCORING:
                 return "LL_SCORING";
         }
         return "";
     }
 
-    public void sendToScore(){
-        if(systemState == SuperstructureState.AMP_PREP){
+    public void sendToScore() {
+        if (systemState == SuperstructureState.AMP_PREP) {
             requestState(SuperstructureState.AMP_SCORING);
-        } else if(systemState == SuperstructureState.LL_PREP){
+        } else if (systemState == SuperstructureState.LL_PREP) {
             requestState(SuperstructureState.LL_SCORING);
-        } else if(systemState == SuperstructureState.LAYUP_PREP){
+        } else if (systemState == SuperstructureState.LAYUP_PREP) {
             requestState(SuperstructureState.LAYUP_SCORING);
         }
     }
