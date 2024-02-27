@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
@@ -76,25 +78,24 @@ public class Autonomous extends SubsystemBase {
     }
 
     public void registerNamedCommands() {
-        NamedCommands.registerCommand("Stow", new InstantCommand(() -> {
-            superstructure.requestState(SuperstructureState.STOW);
-        }));
-
-        NamedCommands.registerCommand("Intake", new InstantCommand(() -> {
-            superstructure.requestState(SuperstructureState.GROUND_INTAKE);
-        }));
-
-        NamedCommands.registerCommand("LL Prep", new InstantCommand(() -> {
-            superstructure.requestState(SuperstructureState.LL_PREP);
-        }));
-
-        NamedCommands.registerCommand("Layup Prep", new InstantCommand(() -> {
-            superstructure.requestState(SuperstructureState.LAYUP_PREP);
-        }));
-
-        NamedCommands.registerCommand("Score", new InstantCommand(() -> {
-            superstructure.sendToScore();
-        }));
+        NamedCommands.registerCommand("Stow", new InstantCommand(
+            () -> superstructure.requestState(SuperstructureState.STOW)
+        ));
+        NamedCommands.registerCommand("Intake", new InstantCommand(
+            () -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)
+        ));
+        NamedCommands.registerCommand("LL Prep", new ParallelDeadlineGroup(
+            new WaitCommand(AutoConstants.kLimelightPrepDeadlineTime),
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP))
+        ));
+        NamedCommands.registerCommand("Layup Prep", new ParallelDeadlineGroup(
+            new WaitCommand(AutoConstants.kLayupPrepDeadlineTime),
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.LAYUP_PREP))
+        ));
+        NamedCommands.registerCommand("Score", new ParallelDeadlineGroup(
+            new WaitCommand(AutoConstants.kScoreDeadlineTime),
+            new InstantCommand(() -> superstructure.sendToScore())
+        ));
 
         // NamedCommands.registerCommand("Set Odom", new ForcedCalibration());
         // NamedCommands.registerCommand("Turn on MegaTag", new TurnOnMegatag());
