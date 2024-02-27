@@ -44,23 +44,23 @@ public class Arm extends SubsystemBase {
         configureCANcoder();
 
         armMotor = new Kraken(RobotMap.ARM_MOTOR, RobotMap.CANIVORE_NAME);
-
         armMotor.setInverted(true);
         armMotor.setSupplyCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
         armMotor.setBrake();
-        armMotor.setEncoder(0);//wont be 0 if measurement is 0 when horizonal
+        armMotor.setEncoder(0);// wont be 0 if measurement is 0 when horizonal
 
         armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
         armMotor.setRotorToSensorRatio(ArmConstants.kRotorToSensorRatio);
         armMotor.setSensorToMechanismRatio(ArmConstants.kArmSensorToMechanismRatio);
-        // armMotor.setClosedLoopRampRate(0.05);
 
         armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
-                ArmConstants.kArmI, ArmConstants.kArmD, 0);
+                ArmConstants.kArmI, ArmConstants.kArmD, ArmConstants.kArmFF, ArmConstants.kArmG,
+                GravityTypeValue.Arm_Cosine);
         armMotor.setMotionMagicParameters(ArmConstants.kCancoderCruiseVelocityRPS, ArmConstants.kCancoderCruiseMaxAccel,
                 ArmConstants.kCancoderCruiseMaxJerk);
 
-        armMotor.setSoftLimits(true, Constants.ArmConstants.kArmForwardSoftLimit, Constants.ArmConstants.kArmReverseSoftLimit);
+        armMotor.setSoftLimits(true, Constants.ArmConstants.kArmForwardSoftLimit,
+                Constants.ArmConstants.kArmReverseSoftLimit);
 
         for (double[] pair : Constants.ScoringConstants.treeMapValues) {
             LLShotMap.put(pair[0], pair[1]);
@@ -79,10 +79,15 @@ public class Arm extends SubsystemBase {
     public void configureCANcoder() {
         CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive; // doublecheck this
-        canCoderConfig.MagnetSensor.MagnetOffset = ArmConstants.kArmMagnetOffset; // the value that we put to shuffleboard
-                                                                                                                // is modified from the actual CANCoder to multiply by 360 for degrees, 
-                                                                                                                //and then divide by 2 for the difference between CANCoder and actual arm shaft.
-                                                                                                                //This just undoes that
+        canCoderConfig.MagnetSensor.MagnetOffset = ArmConstants.kArmMagnetOffset; // the value that we put to
+                                                                                  // shuffleboard
+                                                                                  // is modified from the actual
+                                                                                  // CANCoder to multiply by 360 for
+                                                                                  // degrees,
+                                                                                  // and then divide by 2 for the
+                                                                                  // difference between CANCoder and
+                                                                                  // actual arm shaft.
+                                                                                  // This just undoes that
         armCANcoder.getConfigurator().apply(canCoderConfig);
     }
 
@@ -96,39 +101,16 @@ public class Arm extends SubsystemBase {
 
     public void putSmartDashboard() {
         SmartDashboard.putBoolean("Open Loop Arm Control", false);
-        SmartDashboard.putBoolean("Update Arm PID", false);
-        SmartDashboard.putNumber("Arm Position Setpoint Degrees", 0);
-
-        SmartDashboard.putNumber("Arm kG", ArmConstants.kArmG);
-        SmartDashboard.putNumber("Arm kS", ArmConstants.kArmS);
-        SmartDashboard.putNumber("Arm kV", ArmConstants.kArmV);
-        SmartDashboard.putNumber("Arm kA", ArmConstants.kArmA);
-
-        SmartDashboard.putNumber("Arm P", ArmConstants.kArmP);
-        SmartDashboard.putNumber("Arm I", ArmConstants.kArmI);
-        SmartDashboard.putNumber("Arm D", ArmConstants.kArmD);
-        SmartDashboard.putNumber("Arm FF", ArmConstants.kArmFF);
-
-        SmartDashboard.putNumber("Arm Max Cruise Velocity", ArmConstants.kCancoderCruiseVelocityRPS);
-        SmartDashboard.putNumber("Arm Max Cruise Accel", ArmConstants.kCancoderCruiseMaxAccel);
-        SmartDashboard.putNumber("Arm Max Cruise Jerk", ArmConstants.kCancoderCruiseMaxJerk);
-
         SmartDashboard.putNumber("Arm Percent Output", 0);
+
+        SmartDashboard.putBoolean("Set Arm Setpoint", false);
+        SmartDashboard.putNumber("Arm Setpoint", 0);
     }
 
     public void updateSmartDashboard() {
         SmartDashboard.putNumber("ARM Absolute CANCoder Reading", getAbsoluteCANCoderPosition());
+        SmartDashboard.putNumber("ARM Current Angle (Degrees)", getArmAngleDegrees());
         SmartDashboard.putNumber("ARM Internal Motor Encoder Reading", armMotor.getPosition() * 360);
-        SmartDashboard.putNumber("ARM Angle Setpoint", armAngleSetpoint);
-        // SmartDashboard.putNumber("ARM kS", armMotor.getKS());
-        // SmartDashboard.putNumber("ARM kV", armMotor.getKV());
-        // SmartDashboard.putNumber("ARM kA", armMotor.getKA());
-        // SmartDashboard.putNumber("ARM kP", armMotor.getKP());
-        // SmartDashboard.putNumber("ARM kI", armMotor.getKI());
-        // SmartDashboard.putNumber("ARM kD", armMotor.getKD());
-        // SmartDashboard.putNumber("ARM kMaxCruiseVel", armMotor.getKMaxCruiseVelocity());
-        // SmartDashboard.putNumber("ARM kMaxCruiseAccel", armMotor.getKMaxCruiseAccel());
-        // SmartDashboard.putNumber("ARM kMaxCruiseJerk", armMotor.getKMaxCruiseJerk());
 
         SmartDashboard.putNumber("Arm Motor Current", armMotor.getSupplyCurrent());
         SmartDashboard.putNumber("Arm Motor Temperature", armMotor.getMotorTemperature());
@@ -137,47 +119,28 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putNumber("Motor vel RPS", angle.getVel() * ArmConstants.kRotorToSensorRatio);
         SmartDashboard.putNumber("Motor Accel RPS^2", angle.getAccel() * ArmConstants.kRotorToSensorRatio);
         SmartDashboard.putNumber("Motor Jerk RPS^3", angle.getJerk() * ArmConstants.kRotorToSensorRatio);
-        SmartDashboard.putNumber("Arm Calculated FF", getFeedForward(SmartDashboard.getNumber("Arm kG", 0)));
 
-        // if (SmartDashboard.getBoolean("Open Loop Arm Control", false)) {
-        //     SmartDashboard.putNumber("Open Loop Speed Input", OperatorOI.getInstance().getRightForward() / 2);
-        //     setArmPercentOutput(OperatorOI.getInstance().getRightForward() / 2);
-        // }
+        if (SmartDashboard.getBoolean("Open Loop Arm Control", false)) {
+            armMotor.setMotor(OperatorOI.getInstance().getRightForward());
+        }
 
-        // SmartDashboard.putNumber("Calculated Arm FF", getFeedForward(SmartDashboard.getNumber("Arm kG", 0)));
-
-        // if (SmartDashboard.getBoolean("Update Arm PID", false)) {
-        //     armMotor.setMotionMagicParameters(
-        //             SmartDashboard.getNumber("Arm Max Cruise Velocity", ArmConstants.kCancoderCruiseVelocityRPS),
-        //             SmartDashboard.getNumber("Arm Max Cruise Accel", ArmConstants.kCancoderCruiseMaxAccel),
-        //             SmartDashboard.getNumber("Arm Max Cruise Jerk", ArmConstants.kCancoderCruiseMaxJerk));
-
-        //     armMotor.setVelocityPIDValues(
-        //             SmartDashboard.getNumber("Arm kS", ArmConstants.kArmS),
-        //             SmartDashboard.getNumber("Arm kV", ArmConstants.kArmV),
-        //             SmartDashboard.getNumber("Arm kA", ArmConstants.kArmA),
-        //             SmartDashboard.getNumber("Arm P", ArmConstants.kArmP),
-        //             SmartDashboard.getNumber("Arm I", ArmConstants.kArmI),
-        //             SmartDashboard.getNumber("Arm D", ArmConstants.kArmD),
-        //             getFeedForward(SmartDashboard.getNumber("Arm kG", ArmConstants.kArmG)));
- 
-        //     //armMotor.setPositionTorqueFOC(SmartDashboard.getNumber("Arm Position Setpoint", 0)/360);
-        //     //armMotor.setPositionWithFeedForward(SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0)/360);
-        //     armAngleSetpoint = SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0);
-        //     armMotor.setPositionMotionMagic(SmartDashboard.getNumber("Arm Position Setpoint Degrees", 0)/360);
-        // }
+        if (SmartDashboard.getBoolean("Set Arm Setpoint", false)) {
+            setArmAngle(SmartDashboard.getNumber("Arm Setpoint", 0));
+        }
+        SmartDashboard.putNumber("Converted Arm Setpoint",
+                Conversions.convertArmDegreesToRotations(SmartDashboard.getNumber("Arm Setpoint", 0)));
     }
 
-    public double getFeedForward(double kG){
-        return kG * Math.sin(((getAbsoluteCANCoderPosition()+36)/180) * Math.PI);
-        //return kG * Math.sin(((armAngleSetpoint + 30)/180) * Math.PI);
-    }
-    
-    //CANcoder reads 0 to 1, we use this to get easier to read angles to put to dashboard 
-    //(* 360 for degrees, /2 for difference between CANcoder output shaft and actual arm shaft)
+    // CANcoder reads 0 to 1, we use this to get easier to read angles to put to
+    // dashboard
+    // (* 360 for degrees, /2 for difference between CANcoder output shaft and
+    // actual arm shaft)
     public double getAbsoluteCANCoderPosition() {
-        return armCANcoder.getPosition().getValueAsDouble() * 360 / 2;
-        //return armCANcoder.getPosition().getValueAsDouble();
+        return armCANcoder.getPosition().getValueAsDouble();
+    }
+
+    public double getArmAngleDegrees() {
+        return Conversions.convertRotationsToArmDegrees(getAbsoluteCANCoderPosition()/2);
     }
 
     public static Arm getInstance() {
@@ -216,11 +179,7 @@ public class Arm extends SubsystemBase {
 
     public void setArmAngle(double angle) {
         armAngleSetpoint = angle;
-        armMotor.setPositionMotionMagic(Conversions.convertArmDegreesToRotations(angle));
-    }
-
-    public double getArmAngleDegrees() {
-        return (armCANcoder.getAbsolutePosition().getValueAsDouble()/2.0) * 360;
+        armMotor.setMotionMagicTorqueCurrentFOC(Conversions.convertArmDegreesToRotations(angle));
     }
 
     public double getAngleFromDist(double dist) {
@@ -258,7 +217,5 @@ public class Arm extends SubsystemBase {
         angle.update(getAbsoluteCANCoderPosition());
         SmartDashboard.putBoolean("ARM is at intake angle", isAtGroundIntakeAngle());
         updateSmartDashboard();
-        armMotor.setVelocityPIDValues(ArmConstants.kArmS, ArmConstants.kArmV, ArmConstants.kArmA, ArmConstants.kArmP,
-        ArmConstants.kArmI, ArmConstants.kArmD, getFeedForward(ArmConstants.kArmG));
     }
 }

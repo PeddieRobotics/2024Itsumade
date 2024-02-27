@@ -8,4 +8,8 @@ public class Conversions {
         return (degrees-37.0)/360.0;
     }
 
+    public static double convertRotationsToArmDegrees(double rotations){
+        return 360.0 * rotations + 37.0;
+    }
+
 }

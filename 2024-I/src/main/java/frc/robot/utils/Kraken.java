@@ -6,6 +6,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
@@ -35,17 +36,15 @@ public class Kraken {
 
     public Kraken(int deviceID, String canbusName) {
         this.talon = new TalonFX(deviceID, canbusName);
+        factoryReset();
         this.deviceID = deviceID;
         this.canbusName = canbusName;
-        this.config = new TalonFXConfiguration();
+        config = new TalonFXConfiguration();
         talon.getConfigurator().setPosition(0);
-
-        factoryReset();
+        
         orchestra = new Orchestra();
         orchestra.addInstrument(talon);
         orchestra.loadMusic("output.chrp");
-
-        // factoryReset();
     }
 
     // completely reset motor configuration to default
@@ -90,7 +89,8 @@ public class Kraken {
     // get the motor rotor velocity in RPMs (must apply conversion factor?)
     public double getRPM() {
         return talon.getRotorVelocity().getValueAsDouble() * 60.0;
-        // return talon.getRotorVelocity().getValueAsDouble() * Constants.FlywheelConstants.kFlywheelGearReduction * 60.0;
+        // return talon.getRotorVelocity().getValueAsDouble() *
+        // Constants.FlywheelConstants.kFlywheelGearReduction * 60.0;
     }
 
     // set the current limit of motor
@@ -103,12 +103,12 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    public void setForwardTorqueCurrentLimit(double currentLimit){
+    public void setForwardTorqueCurrentLimit(double currentLimit) {
         config.TorqueCurrent.PeakForwardTorqueCurrent = currentLimit;
         talon.getConfigurator().apply(config);
     }
 
-    public void setReverseTorqueCurrentLimit(double currentLimit){
+    public void setReverseTorqueCurrentLimit(double currentLimit) {
         config.TorqueCurrent.PeakReverseTorqueCurrent = currentLimit;
         talon.getConfigurator().apply(config);
     }
@@ -145,41 +145,41 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    public double getKS(){
+    public double getKS() {
         return config.Slot0.kS;
     }
 
-    public double getKV(){
+    public double getKV() {
         return config.Slot0.kV;
     }
 
-    public double getKA(){
+    public double getKA() {
         return config.Slot0.kA;
     }
 
-    public double getKP(){
+    public double getKP() {
         return config.Slot0.kP;
     }
 
-    public double getKI(){
+    public double getKI() {
         return config.Slot0.kI;
     }
 
-    public double getKD(){
+    public double getKD() {
         return config.Slot0.kD;
-    }    
+    }
 
-    public double getKMaxCruiseAccel(){
+    public double getKMaxCruiseAccel() {
         return config.MotionMagic.MotionMagicAcceleration;
     }
 
-    public double getKMaxCruiseJerk(){
+    public double getKMaxCruiseJerk() {
         return config.MotionMagic.MotionMagicJerk;
     }
 
-    public double getKMaxCruiseVelocity(){
+    public double getKMaxCruiseVelocity() {
         return config.MotionMagic.MotionMagicCruiseVelocity;
-    }  
+    }
 
     // set forward and backward soft limits
     public void setSoftLimits(boolean enableSoftLimit, double forwardLimitValue, double reverseLimitValue) {
@@ -238,7 +238,6 @@ public class Kraken {
 
     // set PID values for velocity setpoint control
     public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF) {
-
         feedForward = kF;
         config.Slot0.kS = kS;
         config.Slot0.kV = kV;
@@ -247,7 +246,21 @@ public class Kraken {
         config.Slot0.kI = kI;
         config.Slot0.kD = kD;
         talon.getConfigurator().apply(config);
+    }
 
+    public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF, double kG, GravityTypeValue gravityType) {
+        // TODO: update kraken methods to include kG, cosine mode
+        config.Slot0.GravityType = gravityType;
+
+        feedForward = kF;
+        config.Slot0.kS = kS;
+        config.Slot0.kV = kV;
+        config.Slot0.kA = kA;
+        config.Slot0.kP = kP;
+        config.Slot0.kI = kI;
+        config.Slot0.kD = kD;
+        config.Slot0.kG = kG;
+        talon.getConfigurator().apply(config);
     }
 
     // set the SensorToMechanismRatio - used for converting sensor (encoder)
@@ -295,13 +308,13 @@ public class Kraken {
                 .withEnableFOC(true));
     }
 
-    public void setVelocityTorqueFOC(double velocity){
+    public void setVelocityTorqueFOC(double velocity) {
         final VelocityTorqueCurrentFOC request = new VelocityTorqueCurrentFOC(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor));
     }
 
-    //position torque foc
-    public void setPositionTorqueFOC(double setpoint){
+    // position torque foc
+    public void setPositionTorqueFOC(double setpoint) {
         final PositionTorqueCurrentFOC request = new PositionTorqueCurrentFOC(0).withSlot(0);
         talon.setControl(request.withPosition(setpoint).withFeedForward(feedForward));
     }
@@ -310,6 +323,11 @@ public class Kraken {
     public void setPositionMotionMagic(double position) {
         final MotionMagicVoltage request = new MotionMagicVoltage(0).withSlot(0);
         talon.setControl(request.withPosition(position).withFeedForward(feedForward).withEnableFOC(true));
+    }
+
+    public void setMotionMagicTorqueCurrentFOC(double position){
+        final MotionMagicTorqueCurrentFOC request = new MotionMagicTorqueCurrentFOC(0).withSlot(0);
+        talon.setControl(request.withPosition(position).withFeedForward(feedForward));
     }
 
     // set the feedback device of motor - often for using external CANcoders

@@ -153,24 +153,24 @@ public final class Constants {
   public static class ArmConstants {
     public static final int kArmPrimaryCurrentLimit = 40;
 
-    public static final double kArmS = 0.5;
-    public static final double kArmV = 16.2652;
-    public static final double kArmA = 0.0628;
-    public static final double kArmP = 1.75;
+    public static final double kArmS = 4;
+    public static final double kArmV = 0;
+    public static final double kArmA = 6;
+    public static final double kArmP = 700;
     public static final double kArmI = 0;
-    public static final double kArmD = 0;
+    public static final double kArmD = 30;
     public static final double kArmFF = 0;
     public static final double kArmIZone = 0;
-    public static final double kArmG = 0.3;
+    public static final double kArmG = 8.5;
 
-    public static final double kCancoderCruiseVelocityRPS = .3;
-    public static final double kCancoderCruiseMaxAccel = .6; // rot/s^2
-    public static final double kCancoderCruiseMaxJerk = 6; // rot/s^3
+    public static final double kCancoderCruiseVelocityRPS = .5;
+    public static final double kCancoderCruiseMaxAccel = 1; // rot/s^2
+    public static final double kCancoderCruiseMaxJerk = 10; // rot/s^3
 
     public static final double kArmForwardSoftLimit = 0.3; // in mechanism rotations
     public static final double kArmReverseSoftLimit = -0.1; // in mechanism rotations
 
-    public static final double kArmMagnetOffset = -0.04881754; // see spreadsheet "FIRST Calculations" for reference
+    public static final double kArmMagnetOffset = 0.237315444; // see spreadsheet "FIRST Calculations" for reference
 
     //TOTAL NET gear reduction from motor ALL THE WAY to shoulder pivot
     public static final double kRotorToArmGearReduction = 16384.0 / 125;
@@ -183,7 +183,7 @@ public final class Constants {
     public static final double kArmIntakeHPPosition = 70; // in deg
     public static final double kArmPositionEpsilon = 10; // temporarily loose due to arm tuning, can tighten this later when code improves
     public static final double kArmAmpPosition = 120;
-    public static final double kArmLayupPosition = 32;
+    public static final double kArmLayupPosition = 38;
     public static final double kArmStowPosition = 0;
     public static final double kArmIntakePositionFromGround = 32;
 
@@ -223,6 +223,7 @@ public final class Constants {
     public static final double kFlywheelD = 0;
     public static final double kFlywheelFF = 0;
   }
+
 
   public static class ScoringConstants {
     public static final double kLeftFlywheelLLShootingRPM = 4300;

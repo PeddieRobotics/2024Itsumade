@@ -75,7 +75,7 @@ public class Hopper extends SubsystemBase {
   }
 
   public boolean getTopSensor(){
-    return getTopSensorReading() < 0.01;
+    return getTopSensorReading() < 0.03;
   }
 
   public double getTopSensorReading() {
@@ -83,7 +83,7 @@ public class Hopper extends SubsystemBase {
   }
 
   public boolean getBottomSensor(){
-    return getBottomSensorReading() < 0.01;
+    return getBottomSensorReading() < 0.03;
   }
 
   public double getBottomSensorReading() {
@@ -109,6 +109,8 @@ public class Hopper extends SubsystemBase {
     SmartDashboard.putBoolean("Hopper full", isGamepieceIndexed());
     SmartDashboard.putBoolean("Hopper Top Sensor Status", getTopSensor());
     SmartDashboard.putBoolean("Hopper Bottom Sensor Status", getBottomSensor());
+    SmartDashboard.putNumber("Hopper Top Sensor Reading", getTopSensorReading());
+    SmartDashboard.putNumber("Hopper Bottom Sensor Reading", getBottomSensorReading());
     if (SmartDashboard.getBoolean("Hopper Percent Output", false)){
       hopperMotor.setMotor(SmartDashboard.getNumber("Hopper Motor Percent Output", 0));
     }

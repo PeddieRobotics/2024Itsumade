@@ -66,7 +66,7 @@ public class Intake extends SubsystemBase {
 
   // returns if beam is broken
   public boolean getSensor(){
-    return getSensorReading() < 0.01;
+    return getSensorReading() < 0.03;
   }
 
   public double getSensorReading() {
