@@ -26,6 +26,7 @@ import frc.robot.utils.Constants.DriveConstants;
 
 public class Autonomous extends SubsystemBase {
     private static SendableChooser<Command> autoChooser;
+    private Hashtable<String, Command> autoRoutines;
 
     private static Autonomous autonomous;
     private Drivetrain drivetrain;
@@ -110,17 +111,14 @@ public class Autonomous extends SubsystemBase {
         return autoChooser.getSelected();
     }
 
+    public Hashtable<String, Command> getAutoRoutines() {
+        return autoRoutines;
+    }
+
     public static Autonomous getInstance() {
         if (autonomous == null) {
             autonomous = new Autonomous();
         }
         return autonomous;
-    }
-
-    // PLACEHOLDER METHOD FOR THE OPERATOR TAB, ONCE THE SKELETON CODE PEOPLE UPDATE
-    // MERGE FROM DEV
-    public Hashtable<String, Command> getAutoRoutines() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAutoRoutines'");
     }
 }

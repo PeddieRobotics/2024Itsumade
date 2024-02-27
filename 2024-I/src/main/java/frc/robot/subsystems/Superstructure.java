@@ -83,7 +83,6 @@ public class Superstructure extends SubsystemBase {
 
     @Override
     public void periodic(){
-        arm.setState(systemState.toString());
 
         switch(systemState){
             case LL_TEST:

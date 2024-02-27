@@ -53,7 +53,7 @@ public class RobotContainer {
     shuffleboard = ShuffleboardMain.getInstance();
     operatorOI = OperatorOI.getInstance();
     driverOI = DriverOI.getInstance();
-    // shuffleboardMain = ShuffleboardMain.getInstance();
+    shuffleboard = ShuffleboardMain.getInstance();
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand());
     limelightShooter.setPipeline(LimelightConstants.kShooterAprilTagPipeline);

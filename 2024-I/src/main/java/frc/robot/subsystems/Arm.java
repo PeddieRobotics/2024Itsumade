@@ -222,14 +222,6 @@ public class Arm extends SubsystemBase {
         armMotor.setNeutralControl();
     }
 
-    public void setState(String s) { //cheat code way to get the state of the superstructure since you can't directly access it elsewhere
-        stringState = s;
-    }
-
-    public String getState(){
-        return stringState;
-    }
-
     @Override
     public void periodic() {
         angle.update(getAbsoluteCANCoderPosition());

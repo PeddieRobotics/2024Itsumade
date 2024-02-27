@@ -13,6 +13,7 @@ public class ShuffleboardMain {
 
     private AngleOverridesTab angleOverridesTab;
     private ArmTab armTab;
+    private DebugTab debugTab;
     private DrivetrainTab drivetrainTab;
     private FlywheelTab flywheelTab;
     private IntakeHopperTab intakeHopperTab;
@@ -36,6 +37,8 @@ public class ShuffleboardMain {
         tabs.add(armTab);
         drivetrainTab = new DrivetrainTab();
         tabs.add(drivetrainTab);
+        debugTab = new DebugTab();
+        tabs.add(debugTab);
         flywheelTab = new FlywheelTab();
         tabs.add(flywheelTab);
         intakeHopperTab = new IntakeHopperTab();
