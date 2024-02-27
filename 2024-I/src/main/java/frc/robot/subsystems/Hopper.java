@@ -23,13 +23,13 @@ public class Hopper extends SubsystemBase {
   private Kraken hopperMotor;
 
   //TODO: figure out if sensor will be digital input or analog
-  private AnalogInput topHopperSensor, bottomHopperSensor;
+  private DigitalInput topHopperSensor, bottomHopperSensor;
 
   public Hopper() {
     hopperMotor = new Kraken(RobotMap.HOPPER_MOTOR_CAN_ID, RobotMap.CANIVORE_NAME);
 
-    topHopperSensor = new AnalogInput(RobotMap.TOP_HOPPER_SENSOR_ID);
-    bottomHopperSensor = new AnalogInput(RobotMap.BOTTOM_HOPPER_SENSOR_ID);
+    topHopperSensor = new DigitalInput(RobotMap.TOP_HOPPER_SENSOR_ID);
+    bottomHopperSensor = new DigitalInput(RobotMap.BOTTOM_HOPPER_SENSOR_ID);
 
     hopperMotor.setSupplyCurrentLimit(IntakeConstants.kHopperCurrentLimit);
     hopperMotor.setBrake();
@@ -75,19 +75,12 @@ public class Hopper extends SubsystemBase {
   }
 
   public boolean getTopSensor(){
-    return getTopSensorReading() < 0.03;
+    return !topHopperSensor.get();
   }
 
-  public double getTopSensorReading() {
-    return topHopperSensor.getVoltage();
-  }
 
   public boolean getBottomSensor(){
-    return getBottomSensorReading() < 0.03;
-  }
-
-  public double getBottomSensorReading() {
-    return bottomHopperSensor.getVoltage();
+    return !bottomHopperSensor.get();
   }
 
   public boolean hasGamepiece(){

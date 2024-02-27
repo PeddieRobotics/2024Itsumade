@@ -23,11 +23,11 @@ public class Intake extends SubsystemBase {
   public TalonSRX intakeMotor;
   public TalonSRXConfiguration config;
 
-  private AnalogInput intakeSensor;
+  private DigitalInput intakeSensor;
 
   public Intake() {
     intakeMotor = new TalonSRX(RobotMap.INTAKE_MOTOR_CAN_ID);
-    intakeSensor = new AnalogInput(RobotMap.INTAKE_SENSOR_ID);
+    intakeSensor = new DigitalInput(RobotMap.INTAKE_SENSOR_ID);
     SmartDashboard.putNumber("Intake speed", 0);
 
     config = new TalonSRXConfiguration();
@@ -66,11 +66,7 @@ public class Intake extends SubsystemBase {
 
   // returns if beam is broken
   public boolean getSensor(){
-    return getSensorReading() < 0.03;
-  }
-
-  public double getSensorReading() {
-    return intakeSensor.getVoltage();
+    return !intakeSensor.get();
   }
 
   public double getMotorCurrent() {
@@ -83,7 +79,6 @@ public class Intake extends SubsystemBase {
     // intakeMotor.set(TalonSRXControlMode.PercentOutput,SmartDashboard.getNumber("Intake
     // speed", 0));
     SmartDashboard.putNumber("Intake Motor Current", getMotorCurrent());
-    SmartDashboard.putNumber("Intake Sensor Reading", getSensorReading());
     SmartDashboard.putBoolean("Intake Sensor Status", getSensor());
   }
 

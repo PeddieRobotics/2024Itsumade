@@ -18,6 +18,7 @@ import frc.robot.Shuffleboard.ShuffleboardMain;
 import frc.robot.utils.Constants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.OperatorOI;
+import frc.robot.utils.Constants.LimelightConstants;
 
 public class RobotContainer {
   private final Arm arm;
@@ -55,7 +56,7 @@ public class RobotContainer {
     // shuffleboardMain = ShuffleboardMain.getInstance();
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand());
-    limelightShooter.setPipeline(Constants.LimelightConstants.kShooterAprilTagPipeline);
+    limelightShooter.setPipeline(LimelightConstants.kShooterAprilTagPipeline);
   }
 
   public void resetGyro() {

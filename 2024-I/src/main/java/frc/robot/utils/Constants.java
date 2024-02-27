@@ -146,6 +146,7 @@ public final class Constants {
     public static final double kSpeakerAprilTagHeight = 57.125;
 
     public static final int kShooterAprilTagPipeline = 3;
+    public static final int kShooterTargetingPipeline = 4;
 
     public static final int kIntakeNotePipeline = 0;
   }

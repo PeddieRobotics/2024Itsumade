@@ -12,7 +12,7 @@ import frc.robot.utils.DriverOI;
 
 public class PIDToPoint extends Command{
     private Drivetrain drivetrain;
-    private LimelightIntake limelightBack; // TODO: figure out front or back LL
+    private LimelightIntake limelightIntake; // TODO: figure out front or back LL
     private DriverOI oi;
 
     //turn
@@ -26,7 +26,7 @@ public class PIDToPoint extends Command{
     //blue coordinate system, give input
     public PIDToPoint(double x, double y, double theta){
         drivetrain = Drivetrain.getInstance();
-        limelightBack = LimelightIntake.getInstance();
+        limelightIntake = LimelightIntake.getInstance();
 
         turnController = new PIDController(Constants.LimelightConstants.kDriveToTargetTurnP, Constants.LimelightConstants.kDriveToTargetTurnI, 
             Constants.LimelightConstants.kDriveToTargetTurnD);
@@ -55,7 +55,7 @@ public class PIDToPoint extends Command{
         oi = DriverOI.getInstance();
 
         //TODO: update
-        limelightBack.setPipeline(0);
+        limelightIntake.setPipeline(0);
     }
 
     @Override 
@@ -63,10 +63,10 @@ public class PIDToPoint extends Command{
         Translation2d position = new Translation2d();
         double turnAngle = 0.0, xMove = 0.0, yMove = 0.0;
 
-        if (limelightBack.hasTarget()) {
-            double currentAngle = limelightBack.getRotationAverage();
-            double currentTX = limelightBack.getRXAverage(); 
-            double currentTY = limelightBack.getRYAverage(); 
+        if (limelightIntake.hasTarget()) {
+            double currentAngle = limelightIntake.getRotationAverage();
+            double currentTX = limelightIntake.getRXAverage(); 
+            double currentTY = limelightIntake.getRYAverage(); 
 
             double turnError = currentAngle - turnTarget;
             double xError = currentTX - xTarget; 

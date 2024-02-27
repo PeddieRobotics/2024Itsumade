@@ -29,11 +29,11 @@ public class Autonomous extends SubsystemBase {
 
     private static Autonomous autonomous;
     private Drivetrain drivetrain;
-    // private Superstructure superstructure;
+    private Superstructure superstructure;
 
     public Autonomous() {
         drivetrain = Drivetrain.getInstance();
-        // superstructure = Superstructure.getInstance();
+        superstructure = Superstructure.getInstance();
 
         registerNamedCommands();
         configureAutoBuilder();
@@ -76,18 +76,25 @@ public class Autonomous extends SubsystemBase {
     }
 
     public void registerNamedCommands() {
-        // NamedCommands.registerCommand("Intake", new InstantCommand(() -> {
-        //     superstructure.requestState(SuperstructureState.GROUND_INTAKE);
-        // }));
-        // NamedCommands.registerCommand("SideLayup", new InstantCommand( () ->
-        // {superstructure.shoot(Constants.FlywheelConstants.SideLayupFlywheelSpeed);} )
-        // );
-        // NamedCommands.registerCommand("FrontLayup", new InstantCommand( () ->
-        // {superstructure.shoot(Constants.FlywheelConstants.FrontLayupFlywheelSpeed);}
-        // ) );
-        // NamedCommands.registerCommand("Stow", new InstantCommand(() -> {
-        //     superstructure.requestState(SuperstructureState.STOW);
-        // }));
+        NamedCommands.registerCommand("Stow", new InstantCommand(() -> {
+            superstructure.requestState(SuperstructureState.STOW);
+        }));
+
+        NamedCommands.registerCommand("Intake", new InstantCommand(() -> {
+            superstructure.requestState(SuperstructureState.GROUND_INTAKE);
+        }));
+
+        NamedCommands.registerCommand("LL Prep", new InstantCommand(() -> {
+            superstructure.requestState(SuperstructureState.LL_PREP);
+        }));
+
+        NamedCommands.registerCommand("Layup Prep", new InstantCommand(() -> {
+            superstructure.requestState(SuperstructureState.LAYUP_PREP);
+        }));
+
+        NamedCommands.registerCommand("Score", new InstantCommand(() -> {
+            superstructure.sendToScore();
+        }));
 
         // NamedCommands.registerCommand("Set Odom", new ForcedCalibration());
         // NamedCommands.registerCommand("Turn on MegaTag", new TurnOnMegatag());

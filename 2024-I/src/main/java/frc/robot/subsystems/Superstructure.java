@@ -7,7 +7,6 @@ import frc.robot.utils.Constants.ScoringConstants;
 
 import edu.wpi.first.wpilibj.Timer;
 
-
 public class Superstructure extends SubsystemBase {
     private static Superstructure superstructure;
     private final Arm arm;
@@ -20,7 +19,7 @@ public class Superstructure extends SubsystemBase {
     private boolean isIndexedOverride, hasGamepieceOverride, justIntaked;
     private Timer timer;
 
-    public enum SuperstructureState{
+    public enum SuperstructureState {
         LL_TEST,
         STOW,
         GROUND_INTAKE,
@@ -37,7 +36,7 @@ public class Superstructure extends SubsystemBase {
     SuperstructureState nextSystemState;
     SuperstructureState requestedSystemState;
 
-    public Superstructure(){
+    public Superstructure() {
         arm = Arm.getInstance();
         flywheel = Flywheel.getInstance();
         intake = Intake.getInstance();
@@ -48,9 +47,10 @@ public class Superstructure extends SubsystemBase {
         nextSystemState = SuperstructureState.STOW;
         requestedSystemState = SuperstructureState.STOW;
         isIndexedOverride = false;
-        
-        SmartDashboard.putBoolean("Piece Indexed Override", isIndexedOverride); //overrides, just in case 
-        // hasGamepieceOverride = SmartDashboard.putBoolean("Has Gamepiece Override", false);
+
+        SmartDashboard.putBoolean("Piece Indexed Override", isIndexedOverride); // overrides, just in case
+        // hasGamepieceOverride = SmartDashboard.putBoolean("Has Gamepiece Override",
+        // false);
 
         SmartDashboard.putString("STATE", systemState.toString());
         stateDuration = 0;
@@ -68,16 +68,16 @@ public class Superstructure extends SubsystemBase {
         return superstructure;
     }
 
-    public void requestState(SuperstructureState request){
+    public void requestState(SuperstructureState request) {
         requestedSystemState = request;
     }
 
-    public void shoot(double flywheelspeed){
+    public void shoot(double flywheelspeed) {
         requestedSystemState = SuperstructureState.LAYUP_PREP;
         shootingSpeed = flywheelspeed;
     }
 
-    public String getRobotState(){
+    public String getRobotState() {
         return systemState.toString();
     }
 
@@ -124,18 +124,18 @@ public class Superstructure extends SubsystemBase {
                 }
 
                  //only go into the prep state if you have a gamepiece
-                if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){ 
+                if(requestedSystemState == SuperstructureState.AMP_PREP){ 
                     nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.LL_PREP && isGamepieceIndexed()){
+                } else if(requestedSystemState == SuperstructureState.LL_PREP){
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP && isGamepieceIndexed()){
+                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
                     nextSystemState = requestedSystemState;
                 } 
                 
                  //intake only if you don't have a piece -- ASSUMING WE'RE INDEXING RIGHT AWAY
-                else if(requestedSystemState == SuperstructureState.GROUND_INTAKE && !isGamepieceIndexed()){ 
+                else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){ 
                     nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.HP_INTAKE && !isGamepieceIndexed()){
+                } else if(requestedSystemState == SuperstructureState.HP_INTAKE){
                     nextSystemState = requestedSystemState; 
                 } 
 
@@ -153,17 +153,12 @@ public class Superstructure extends SubsystemBase {
             case GROUND_INTAKE:
                 flywheel.stopFlywheel();
                 arm.setGroundIntakePosition();
-                
-                if (arm.isAtGroundIntakeAngle() && !isGamepieceIndexed() && !justIntaked){
-                    SmartDashboard.putBoolean("intaking", true);
-                    intake.runIntake();
-                    hopper.runHopperGroundIntake();
-                } else {
-                    if (isGamepieceIndexed())
-                        justIntaked = true;
-                    SmartDashboard.putBoolean("intaking", false);
+                intake.runIntake();
+                hopper.runHopperGroundIntake();
+                if (isGamepieceIndexed()){
                     intake.stopIntake();
                     hopper.stopHopper();
+                    requestState(SuperstructureState.STOW);
                 }
 
                 //only switch states from here if done indexing, but let it go into stow from anywhere
@@ -196,13 +191,13 @@ public class Superstructure extends SubsystemBase {
                 //only switch states from intake if done indexing, but let it go into stow from anywhere
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.AMP_PREP && isGamepieceIndexed()){
+                } else if(requestedSystemState == SuperstructureState.AMP_PREP){
                     nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.LL_PREP && isGamepieceIndexed()){
+                } else if(requestedSystemState == SuperstructureState.LL_PREP){
                     nextSystemState = requestedSystemState;
-                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP && isGamepieceIndexed()){
+                } else if(requestedSystemState == SuperstructureState.LAYUP_PREP){
                     nextSystemState = requestedSystemState; 
-                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE && !isGamepieceIndexed()){
+                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
                     nextSystemState = requestedSystemState; 
                 } 
                 break; 
@@ -210,10 +205,8 @@ public class Superstructure extends SubsystemBase {
             case AMP_PREP:
                 arm.setAmpPosition();
                 flywheel.runFlywheelAmp();
-                hopper.stopHopper(); //only run hopper when we are shooting in the shooting states 
+                hopper.stopHopper();
                 intake.stopIntake();
-                SmartDashboard.putBoolean("FLYWHEEL at rpm?", flywheel.isAtRPM());
-                SmartDashboard.putNumber("Shot timer", timer.get());
 
                 if(requestedSystemState == SuperstructureState.STOW){
                     nextSystemState = requestedSystemState;
@@ -343,9 +336,8 @@ public class Superstructure extends SubsystemBase {
             
         }
 
-        if (nextSystemState != systemState)
-            justIntaked = false;
-        systemState = nextSystemState;
+    if(nextSystemState!=systemState)justIntaked=false;systemState=nextSystemState;
+
     }
 
     public String stateAsString(){ //possibly? using this to print state on shuffleboard
@@ -382,8 +374,10 @@ public class Superstructure extends SubsystemBase {
         }
     }
 
-    // private boolean hasGamepiece(){ //this has potential use cases if we want to keep a note in the intake instead of indexing it right away
-    //     return ((intake.hasGamepiece() || hopper.hasGamepiece()) || hasGamepieceOverride);
+    // private boolean hasGamepiece(){ //this has potential use cases if we want to
+    // keep a note in the intake instead of indexing it right away
+    // return ((intake.hasGamepiece() || hopper.hasGamepiece()) ||
+    // hasGamepieceOverride);
     // }
 
     private boolean isGamepieceIndexed() {

@@ -32,7 +32,6 @@ public class LimelightShooter extends Limelight {
         xAverage = new RollingAverage(4,getBotpose().getX());
         distAverage = new RollingAverage();
 
-        //tbd
         setPipeline(Constants.LimelightConstants.kShooterAprilTagPipeline);
     }
 
