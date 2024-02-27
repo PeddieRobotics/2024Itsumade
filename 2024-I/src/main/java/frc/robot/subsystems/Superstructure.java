@@ -57,6 +57,7 @@ public class Superstructure extends SubsystemBase {
         shootingSpeed = 0;
         internalStateTimer = 0;
 
+        SmartDashboard.putBoolean("LL Shot Move Arm", false);
         SmartDashboard.putNumber("LL Shot Angle", 0);
     }
 
@@ -87,19 +88,34 @@ public class Superstructure extends SubsystemBase {
 
         switch(systemState){
             case LL_TEST:
-                arm.setArmAngle(SmartDashboard.getNumber("LL Shot Angle", 0));
+                if(SmartDashboard.getBoolean("LL Shot Move Arm", false)){
+                    arm.setArmAngle(SmartDashboard.getNumber("LL Shot Angle", 0));
+                }
                 flywheel.runFlywheelLimelight();
-                hopper.feedFlywheelSpeaker();
+
+                if(flywheel.isAtRPM()){
+                    hopper.feedFlywheelSpeaker();
+                }
+
                 intake.stopIntake();
 
                 if(requestedSystemState == SuperstructureState.STOW){ 
                     nextSystemState = requestedSystemState; 
                 }
+                break;
 
 
             //idle state of robot, arm is in stow position, 
             case STOW:
-                arm.setStowPosition();
+                SmartDashboard.putBoolean("ARM At Stow Angle", arm.isAtStowAngle());
+                if(arm.isAtStowAngle()){
+                    SmartDashboard.putBoolean("Neutral Stow", true);
+                    arm.setArmNeutralMode();
+                } else {
+                    SmartDashboard.putBoolean("Neutral Stow", false);
+                    arm.setStowPosition();
+                }
+
                 flywheel.stopFlywheel();
                 intake.stopIntake();
                 hopper.stopHopper();

@@ -163,7 +163,7 @@ public class Arm extends SubsystemBase {
     }
 
     public boolean isAtStowAngle() {
-        return Math.abs(armCANcoder.getAbsolutePosition().getValueAsDouble() * 360
+        return Math.abs(getArmAngleDegrees()
                 - ArmConstants.kArmStowPosition) < ArmConstants.kArmPositionEpsilon;
     }
 
@@ -210,6 +210,10 @@ public class Arm extends SubsystemBase {
 
     public void setStowPosition() {
         setArmAngle(ArmConstants.kArmStowPosition);
+    }
+
+    public void setArmNeutralMode(){
+        armMotor.setNeutralControl();
     }
 
     @Override

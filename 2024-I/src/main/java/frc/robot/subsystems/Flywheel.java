@@ -178,12 +178,12 @@ public class Flywheel extends SubsystemBase {
         //     flywheelRightMotor.setVelocityTorqueFOC(rightSetpoint / 60);
         // }
 
-        // SmartDashboard.putNumber("Flywheel Left RPM", getFlywheelLeftRPM());
-        // SmartDashboard.putNumber("Flywheel Right RPM", getFlywheelRightRPM());
-        // SmartDashboard.putBoolean("Flywheel Is At RPM", isAtRPM());
+        SmartDashboard.putNumber("Flywheel Left RPM", getFlywheelLeftRPM());
+        SmartDashboard.putNumber("Flywheel Right RPM", getFlywheelRightRPM());
+        SmartDashboard.putBoolean("Flywheel Is At RPM", isAtRPM());
 
-        // SmartDashboard.putNumber("Flywheel Left Motor RPM Setpoint", leftSetpoint);
-        // SmartDashboard.putNumber("Flywheel Right Motor RPM Setpoint", rightSetpoint);
+        SmartDashboard.putNumber("Flywheel Left Motor RPM Setpoint", leftSetpoint);
+        SmartDashboard.putNumber("Flywheel Right Motor RPM Setpoint", rightSetpoint);
     }
 
     @Override

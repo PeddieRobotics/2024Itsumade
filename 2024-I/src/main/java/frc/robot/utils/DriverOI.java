@@ -15,6 +15,7 @@ import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.ForcedCalibration;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
+import frc.robot.commands.DriveCommands.RotateToAngle;
 import frc.robot.commands.DriveCommands.Target;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -67,13 +68,14 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new FollowNote());
+        squareButton.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.AMP_PREP)));
+
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
@@ -81,6 +83,7 @@ public class DriverOI {
         Trigger muteButton = new JoystickButton(controller, 15);
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
+        L1Bumper.whileTrue(new Target());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new Target());

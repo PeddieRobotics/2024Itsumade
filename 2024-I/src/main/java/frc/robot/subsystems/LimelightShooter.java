@@ -18,7 +18,7 @@ import frc.robot.utils.RollingAverage;
 public class LimelightShooter extends Limelight {
     private static LimelightShooter limelightShooter;
 
-    private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage;
+    private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage, distAverage;
 
     private String limelightName = "limelight-shooter";
 
@@ -30,6 +30,7 @@ public class LimelightShooter extends Limelight {
         rxAverage = new RollingAverage(); 
         ryAverage = new RollingAverage(); 
         xAverage = new RollingAverage(4,getBotpose().getX());
+        distAverage = new RollingAverage();
 
         //tbd
         setPipeline(Constants.LimelightConstants.kShooterAprilTagPipeline);
@@ -156,6 +157,10 @@ public class LimelightShooter extends Limelight {
         }
     }
 
+    public double getAverageDistance(){
+        return distAverage.getAverage();
+    }
+
     public int getTagsSeen() {
         return LimelightHelper.getNumberOfAprilTagsSeen(limelightName);
     }
@@ -170,6 +175,7 @@ public class LimelightShooter extends Limelight {
             txAverage.add(getTx());
             tyAverage.add(getTy());
             taAverage.add(getTa());
+            distAverage.add(getDistance());
             
             // rotationAverage.add(getBotpose().getRotation().getDegrees());//based on alliance of driverstation, awaiting testing 
             rotationAverage.add(getBotpose().getRotation().getDegrees()); 

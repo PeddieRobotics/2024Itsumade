@@ -37,8 +37,8 @@ public final class Constants {
         swerveModuleLocations[3]);
 
     // TODO: Change this value
-    public static final double kMaxFloorSpeed = 4; // meters per second
-    public static final double kMaxAngularSpeed = 3 * 2 / Math.PI; // radians per second
+    public static final double kMaxFloorSpeed = 4.5; // meters per second
+    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
     // public static final double kMaxFloorSpeed = 4.0; // meters per second
     // public static final double kMaxAngularSpeed = Math.PI; // radians per second
 
@@ -135,10 +135,10 @@ public final class Constants {
     public static final double kFollowNoteAngleThreshold = 0;
 
     // target apriltag command constants
-    public static final double kTargetP = 0.03;
-    public static final double kTargetI = 0.1;
-    public static final double kTargetD = 0;
-    public static final double kTargetFF = 0;
+    public static final double kTargetP = 0.017;
+    public static final double kTargetI = 0;
+    public static final double kTargetD = 0.002;
+    public static final double kTargetFF = 0.05;
 
     public static final double kTargetAngleThreshold = 2.0;
 
@@ -181,7 +181,7 @@ public final class Constants {
     // hypothetical values for the arm when going to these various positions
 
     public static final double kArmIntakeHPPosition = 70; // in deg
-    public static final double kArmPositionEpsilon = 10; // temporarily loose due to arm tuning, can tighten this later when code improves
+    public static final double kArmPositionEpsilon = 3; // temporarily loose due to arm tuning, can tighten this later when code improves
     public static final double kArmAmpPosition = 120;
     public static final double kArmLayupPosition = 38;
     public static final double kArmStowPosition = 0;
@@ -238,8 +238,8 @@ public final class Constants {
     public static final double kShootingStateTime = 0.5;
 
     // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) - needs more tuning/initial values only
-    public static final double[][] treeMapValues = new double[][] { { 40, 35 }, { 60, 42 }, { 80, 48 }, 
-        { 100, 53}, { 120, 56}, { 140, 58 }, { 160, 60}, { 180, 62}, {200, 64} };
+    public static final double[][] treeMapValues = new double[][] { { 47.5, 43 }, { 60, 50 }, { 80, 56 }, 
+        { 93.8, 61}, { 112.5, 66}, { 130, 68 }, { 147.8, 69.5}, { 158.6, 70.5 }, { 175.6, 72 }, { 179.6, 72.3 }, { 213, 73.25 }};
   }
 
   public static class IntakeConstants {

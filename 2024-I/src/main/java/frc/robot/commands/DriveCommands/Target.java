@@ -46,11 +46,11 @@ public class Target extends Command {
 
     @Override
     public void execute() {
-        turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
-        turnPIDController.setI(SmartDashboard.getNumber("Target I", 0));
-        turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
+        // turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
+        // turnPIDController.setI(SmartDashboard.getNumber("Target I", 0));
+        // turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
         turnPIDController.setIZone(4.0);
-        turnFF = (SmartDashboard.getNumber("Target FF", 0));
+        // turnFF = (SmartDashboard.getNumber("Target FF", 0));
 
         if (limelightShooter.hasTarget()) {
             error = limelightShooter.getTxAverage();
@@ -64,15 +64,15 @@ public class Target extends Command {
         } else {
             turnInput = 0;
         }
-        SmartDashboard.putBoolean("Targetting", true);
-        SmartDashboard.putNumber("Target Turn Input", turnInput);
-        SmartDashboard.putBoolean("Limelight has target", limelightShooter.hasTarget());
+        // SmartDashboard.putBoolean("Targetting", true);
+        // SmartDashboard.putNumber("Target Turn Input", turnInput);
+        // SmartDashboard.putBoolean("Limelight has target", limelightShooter.hasTarget());
         drivetrain.drive(oi.getSwerveTranslation(), turnInput * 2, true, oi.getCenterOfRotation());
     }
     
     @Override
     public void end(boolean interrupted) {
-        SmartDashboard.putBoolean("Targetting", false);
+        // SmartDashboard.putBoolean("Targetting", false);
         drivetrain.stop();
         logger.logEvent("Started Target Command", false);
     }
