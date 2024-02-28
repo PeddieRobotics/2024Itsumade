@@ -81,6 +81,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     // m_robotContainer.resetGyro();
+    m_robotContainer.coastClimber();
     Superstructure.getInstance().requestState(SuperstructureState.STOW);
     logger.logEvent("Disabled Mode", true);
   }
@@ -129,6 +130,8 @@ public class Robot extends TimedRobot {
 
     Drivetrain.getInstance().setIsParkedAuto(false);
     Drivetrain.getInstance().setUseMegaTag(true);
+
+    m_robotContainer.brakeClimber();
   }
 
   /** This function is called periodically during operator control. */
