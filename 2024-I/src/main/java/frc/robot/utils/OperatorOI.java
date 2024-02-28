@@ -76,7 +76,7 @@ public class OperatorOI {
         L1Bumper.onTrue(new RetractClimber());
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
-        // L2Trigger.whileTrue(new ManualClimberControl());
+        L2Trigger.whileTrue(new ManualClimberControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
         // R2Trigger.whileTrue(new ManualArmControl());

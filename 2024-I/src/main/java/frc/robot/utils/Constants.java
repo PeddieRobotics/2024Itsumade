@@ -114,11 +114,9 @@ public final class Constants {
     public static final double kFollowNoteNotSameNoteThresh = 2.5;
     public static final double kFollowNoteSpeed = 1.5;
 
-    public static final double kStowDeadlineTime = 1.0;
-    public static final double kIntakeDeadlineTime = 1.0;
     public static final double kLimelightPrepDeadlineTime = 0.5;
-    public static final double kLayupPrepDeadlineTime = 1.0;
-    public static final double kScoreDeadlineTime = 1.0;
+    public static final double kLayupPrepDeadlineTime = 0.5;
+    public static final double kScoreDeadlineTime = 0.4;
   }
 
   public static class LimelightConstants {
