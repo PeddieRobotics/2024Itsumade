@@ -21,7 +21,7 @@ public class ManualClimberControl extends Command {
     @Override
     public void execute() {
         climber.runLeftMotor(operatorOI.getLeftForward());
-        climber.runRigthMotor(operatorOI.getRightForward());
+        climber.runRightMotor(operatorOI.getRightForward());
     }
 
     @Override

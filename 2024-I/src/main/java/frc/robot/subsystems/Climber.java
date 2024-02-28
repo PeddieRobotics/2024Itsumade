@@ -28,7 +28,12 @@ public class Climber extends SubsystemBase {
   public Climber() {
     rightClimber = new Kraken(RobotMap.CLIMBER_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
     leftClimber = new Kraken(RobotMap.CLIMBER_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
-    // climberSensor = new DigitalInput(ClimberConstants.CLIMBER_SENSOR_ID);
+
+    rightClimber.resetEncoder();
+    leftClimber.resetEncoder();
+
+    rightClimber.setSoftLimits(true, ClimberConstants.kClimberForwardSoftLimit, ClimberConstants.kClimberReverseSoftLimit);
+    leftClimber.setSoftLimits(true, ClimberConstants.kClimberForwardSoftLimit, ClimberConstants.kClimberReverseSoftLimit);
 
     rightClimber.setSupplyCurrentLimit(ClimberConstants.kClimberCurrentLimit);
     leftClimber.setSupplyCurrentLimit(ClimberConstants.kClimberCurrentLimit);
@@ -42,15 +47,11 @@ public class Climber extends SubsystemBase {
     leftClimber.setPIDValues(ClimberConstants.kClimberP, ClimberConstants.kClimberI, ClimberConstants.kClimberD,
         ClimberConstants.kClimberFF);
 
-    rightClimber.setCoast();
-    leftClimber.setCoast();
-
-    rightClimber.resetEncoder();
-    leftClimber.resetEncoder();
+    rightClimber.setBrake();
+    leftClimber.setBrake();
 
     // SmartDashboard.putBoolean("Manual Climber Control", false);
     // SmartDashboard.putBoolean("Climber PID Tuning", false);
-
     // SmartDashboard.putNumber("Climber P Value", 0);
     // SmartDashboard.putNumber("Climber I Value", 0);
     // SmartDashboard.putNumber("Climber D Value", 0);
@@ -67,45 +68,80 @@ public class Climber extends SubsystemBase {
     return climber;
   }
 
-  public boolean climberSensorState() {
-    // return climberSensor.get();
-    return false;
-  }
-
-  public void deployClimber() {
-    rightClimber.setPositionWithFeedForward(ClimberConstants.kClimberUnwindPosition);
-    leftClimber.setPositionWithFeedForward(ClimberConstants.kClimberUnwindPosition);
-  }
-
   public void retractClimber() {
-    if (!isDoneClimbing()) {
-      // leftClimber.setMotor(ClimberConstants.kClimberPercentOutput);
+    if (!leftArmRetracted()) {
+      runLeftMotor(ClimberConstants.kClimberRetractPercentOutput);
+    } else {
+      runLeftMotor(0.0);
+    }
+    if (!rightArmRetracted()) {
+      runRightMotor(ClimberConstants.kClimberRetractPercentOutput);
+    } else {
+      runRightMotor(0.0);
     }
   }
 
-  public boolean isDoneClimbing() {
-    return climberSensorState();
+  // public void deployClimber() {
+  //   rightClimber.setPositionWithFeedForward(ClimberConstants.kClimberDeployPosition);
+  //   leftClimber.setPositionWithFeedForward(ClimberConstants.kClimberDeployPosition);
+  // }
+
+  public void deployClimber(){
+    if(!leftArmDeployed()){
+      runLeftMotor(ClimberConstants.kClimberDeployPercentOutput);
+    } else {
+      runLeftMotor(0.0);
+    }
+
+    if(!rightArmDeployed()){
+      runRightMotor(ClimberConstants.kClimberDeployPercentOutput);
+    } else {
+      runRightMotor(0.0);
+    }
+
   }
 
-  public boolean isClimberDeployed() {
-    if (leftClimber.getPosition() == ClimberConstants.kClimberUnwindPosition
-        && rightClimber.getPosition() == ClimberConstants.kClimberUnwindPosition) {
-      return true;
-    } else
-      return false;
+  public boolean leftArmRetracted() {
+    return leftClimber.getPosition() < ClimberConstants.kClimberRetractPosition;
+  }
+
+  public boolean rightArmRetracted() {
+    return rightClimber.getPosition() < ClimberConstants.kClimberRetractPosition;
+  }
+
+  public boolean leftArmDeployed() {
+    return leftClimber.getPosition() > ClimberConstants.kClimberDeployPosition;
+  }
+
+  public boolean rightArmDeployed() {
+    return rightClimber.getPosition() > ClimberConstants.kClimberDeployPosition;
+  }
+
+  public boolean isClimberDeployed(){
+    return leftArmDeployed() && rightArmDeployed();
   }
 
   public void runLeftMotor(double speed) {
     leftClimber.setMotor(speed);
   }
 
-  public void runRigthMotor(double speed) {
+  public void runRightMotor(double speed) {
     rightClimber.setMotor(speed);
   }
 
   public void stopClimber() {
     leftClimber.setMotor(0);
     rightClimber.setMotor(0);
+  }
+
+  public void setBrake() {
+    leftClimber.setBrake();
+    rightClimber.setBrake();
+  }
+
+  public void setCoast() {
+    leftClimber.setCoast();
+    rightClimber.setCoast();
   }
 
   @Override
@@ -116,13 +152,16 @@ public class Climber extends SubsystemBase {
     SmartDashboard.putNumber("Left Climber Current", leftClimber.getSupplyCurrent());
     SmartDashboard.putNumber("Right Climber Currrent", rightClimber.getSupplyCurrent());
 
+    SmartDashboard.putBoolean("Climber Deployed", isClimberDeployed());
+
     // if (SmartDashboard.getBoolean("Climber PID Tuning", false)) {
-    //   leftClimber.setPIDValues(
-    //       SmartDashboard.getNumber("Climber P Value", 0),
-    //       SmartDashboard.getNumber("Climber I Value", 0),
-    //       SmartDashboard.getNumber("Climber D Value", 0),
-    //       SmartDashboard.getNumber("Climber FF Value", 0));
-    //   leftClimber.setPositionWithFeedForward(SmartDashboard.getNumber("Climber Angle Setpoint", 0));
+    // leftClimber.setPIDValues(
+    // SmartDashboard.getNumber("Climber P Value", 0),
+    // SmartDashboard.getNumber("Climber I Value", 0),
+    // SmartDashboard.getNumber("Climber D Value", 0),
+    // SmartDashboard.getNumber("Climber FF Value", 0));
+    // leftClimber.setPositionWithFeedForward(SmartDashboard.getNumber("Climber
+    // Angle Setpoint", 0));
     // }
 
   }

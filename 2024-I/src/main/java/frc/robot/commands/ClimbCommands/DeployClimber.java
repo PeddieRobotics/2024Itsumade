@@ -32,6 +32,6 @@ public class DeployClimber extends Command{
 
     @Override
     public boolean isFinished(){
-       return climber.isClimberDeployed();
+       return climber.leftArmDeployed() && climber.rightArmDeployed();
     }
 }
