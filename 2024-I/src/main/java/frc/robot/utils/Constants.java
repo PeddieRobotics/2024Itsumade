@@ -51,10 +51,10 @@ public final class Constants {
     //1. remove offsets (set all to 0) and then deploy code
     //2. spin all modules so that bevel gears face left relative to robot (shooter in front)
     //3. read the cancoder values from dashboard, and put those values for these offsets (check robotmap for ids)
-    public static final double kFrontLeftModuleAngularOffset = -2.837864;
-    public static final double kFrontRightModuleAngularOffset = 0.579844 + 0.283786445758;
-    public static final double kBackLeftModuleAngularOffset = -2.078543;
-    public static final double kBackRightModulelAngularOffset = 2.109223;
+    public static final double kFrontLeftModuleAngularOffset = -2.896;
+    public static final double kFrontRightModuleAngularOffset = -3.073;
+    public static final double kBackLeftModuleAngularOffset = -2.045;
+    public static final double kBackRightModulelAngularOffset = -1.978;
 
     public static final double kHeadingCorrectionP = 0.1;
     public static final double kHeadingCorrectionTolerance = 1.0;
@@ -116,7 +116,7 @@ public final class Constants {
 
     public static final double kStowDeadlineTime = 1.0;
     public static final double kIntakeDeadlineTime = 1.0;
-    public static final double kLimelightPrepDeadlineTime = 1.0;
+    public static final double kLimelightPrepDeadlineTime = 0.5;
     public static final double kLayupPrepDeadlineTime = 1.0;
     public static final double kScoreDeadlineTime = 1.0;
   }

@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Shuffleboard.ShuffleboardMain;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
+import frc.robot.utils.Constants.LimelightConstants;
 import frc.robot.utils.Logger;
 
 /**
@@ -91,6 +93,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // m_robotContainer.resetGyro();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    LimelightShooter.getInstance().setPipeline(LimelightConstants.kShooterAprilTagPipeline);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.81,
-      "y": 6.73
+      "x": 0.73,
+      "y": 6.62
     },
     "rotation": -120.0
   },
@@ -81,6 +81,12 @@
           "type": "path",
           "data": {
             "pathName": "E CenterNote-SourceNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Target"
           }
         },
         {

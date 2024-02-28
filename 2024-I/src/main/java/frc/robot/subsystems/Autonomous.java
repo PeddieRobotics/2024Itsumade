@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
+import frc.robot.commands.DriveCommands.Target;
 // import frc.robot.commands.DriveCommands.ForcedCalibration;
 // import frc.robot.commands.DriveCommands.TurnOffMegatag;
 // import frc.robot.commands.DriveCommands.TurnOnMegatag;
@@ -65,13 +66,13 @@ public class Autonomous extends SubsystemBase {
                     // Boolean supplier that controls when the path will be mirrored for the red
                     // alliance
                     // This will flip the path being followed to the red side of the field.
-                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+                    // THE ORIGIN WILL REMAIN ON THE RED SIDE (FOR THE LAB)
 
                     var alliance = DriverStation.getAlliance();
                     if (alliance.isPresent()) {
                         return alliance.get() == DriverStation.Alliance.Red;
                     }
-                    return false;
+                    return true;
                 },
                 drivetrain // Reference to this subsystem to set requirements
         );
@@ -96,6 +97,7 @@ public class Autonomous extends SubsystemBase {
             new WaitCommand(AutoConstants.kScoreDeadlineTime),
             new InstantCommand(() -> superstructure.sendToScore())
         ));
+        NamedCommands.registerCommand("Target", new Target());
 
         // NamedCommands.registerCommand("Set Odom", new ForcedCalibration());
         // NamedCommands.registerCommand("Turn on MegaTag", new TurnOnMegatag());
