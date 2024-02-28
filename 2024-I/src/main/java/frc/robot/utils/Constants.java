@@ -34,7 +34,8 @@ public final class Constants {
         swerveModuleLocations[0],
         swerveModuleLocations[1],
         swerveModuleLocations[2],
-        swerveModuleLocations[3]);
+        swerveModuleLocations[3]
+    );
 
     // TODO: Change this value
     public static final double kMaxFloorSpeed = 4.5; // meters per second
@@ -43,7 +44,7 @@ public final class Constants {
     // public static final double kMaxAngularSpeed = Math.PI; // radians per second
 
     public static final int kDriveCurrentLimit = 30;
-    public static final int kTurningCurrentLimit = 30;
+    public static final int kTurningCurrentLimit = 20;
 
     public static final double kWheelRadius = 2.0;
 
@@ -108,13 +109,14 @@ public final class Constants {
         { 3.95, 6.88, -160.00 },
         { 3.81, 5.31, 175.00 },
         { 2.21, 4.47, 125.00 },
+        { 3.19, 2.68, 135.00 }
     };
 
     public static final double kFollowNoteEarlyEndMinDuration = 0.10;
     public static final double kFollowNoteEarlyEndMaxDuration = 0.25;
     public static final double kFollowNoteNoNotePercent = 0.80;
     public static final double kFollowNoteNotSameNoteThresh = 2.5;
-    public static final double kFollowNoteSpeed = 1.5;
+    public static final double kFollowNoteSpeed = 0.6;
 
     public static final double kLimelightPrepDeadlineTime = 0.5;
     public static final double kLayupPrepDeadlineTime = 0.5;
@@ -141,9 +143,10 @@ public final class Constants {
     public static final double kDriveToTargetMoveThreshhold = 0;
 
     // follow note command constants
-    public static final double kFollowNoteTurnP = 0;
+    public static final double kFollowNoteTurnP = 0.07;
     public static final double kFollowNoteTurnI = 0;
     public static final double kFollowNoteTurnD = 0;
+    public static final double kFollowNoteTurnFF = 0;
     public static final double kFollowNoteAngleThreshold = 1;
 
     // target apriltag command constants

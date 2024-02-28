@@ -24,34 +24,27 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Stow"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "L SourceSpeaker-MidNote5"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "M MidNote5-Score"
+            "name": "X SeekNote"
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Target"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "LL Prep"
-                }
-              }
-            ]
+            "name": "W ToClosestShooting"
           }
         }
       ]

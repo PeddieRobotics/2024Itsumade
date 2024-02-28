@@ -39,6 +39,7 @@ public class FollowNote extends Command {
         SmartDashboard.putNumber("Follow Note P", LimelightConstants.kFollowNoteTurnP);
         SmartDashboard.putNumber("Follow Note I", LimelightConstants.kFollowNoteTurnI);
         SmartDashboard.putNumber("Follow Note D", LimelightConstants.kFollowNoteTurnD);
+        SmartDashboard.putNumber("Follow Note FF", LimelightConstants.kFollowNoteTurnFF);
         SmartDashboard.putNumber("Follow Note Threshold", LimelightConstants.kFollowNoteAngleThreshold);
    }
 
@@ -52,6 +53,7 @@ public class FollowNote extends Command {
             SmartDashboard.getNumber("Follow Note I", LimelightConstants.kFollowNoteTurnI),
             SmartDashboard.getNumber("Follow Note D", LimelightConstants.kFollowNoteTurnD)
         );
+        FF = SmartDashboard.getNumber("Follow Note FF", LimelightConstants.kFollowNoteTurnFF);
 
         targetThreshold = SmartDashboard.getNumber("Follow Note Threshold", LimelightConstants.kFollowNoteAngleThreshold);
     }
@@ -65,7 +67,6 @@ public class FollowNote extends Command {
         if (limelightIntake.hasTarget()) {
             currentAngle = limelightIntake.getTxAverage();
             error = currentAngle - targetAngle;
-            SmartDashboard.putNumber("DATA: Error", currentAngle);
             if (error < -targetThreshold)
                 llTurn = thetaController.calculate(currentAngle, targetAngle) + FF;
             else if (error > targetThreshold)
@@ -73,8 +74,6 @@ public class FollowNote extends Command {
         }
 
         drivetrain.drive(position, llTurn, false, new Translation2d(0, 0));
-        SmartDashboard.putNumber("DATA: Note Tx", currentAngle);
-        SmartDashboard.putNumber("DATA: Note Turn", llTurn);
     }
 
     @Override

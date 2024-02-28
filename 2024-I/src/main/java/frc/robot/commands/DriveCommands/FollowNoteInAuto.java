@@ -3,9 +3,10 @@ package frc.robot.commands.DriveCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimelightIntake;
 import frc.robot.utils.Constants.AutoConstants;
 import frc.robot.utils.Constants.LimelightConstants;
@@ -13,11 +14,10 @@ import frc.robot.utils.Constants.LimelightConstants;
 public class FollowNoteInAuto extends Command {
     private Drivetrain drivetrain;
     private LimelightIntake limelightIntake;
-    private Hopper hopper;
+    private Intake intake;
     private double targetAngle;
 
     private double FF;
-    private double llTurn;
     private PIDController thetaController;
 
     private double currentAngle;
@@ -31,7 +31,7 @@ public class FollowNoteInAuto extends Command {
     public FollowNoteInAuto(double timeLimit) {
         drivetrain = Drivetrain.getInstance();
         limelightIntake = LimelightIntake.getInstance();
-        hopper = Hopper.getInstance();
+        intake = Intake.getInstance();
         
         this.timeLimit = timeLimit;
 
@@ -39,9 +39,8 @@ public class FollowNoteInAuto extends Command {
         thetaController = new PIDController(LimelightConstants.kFollowNoteTurnP, LimelightConstants.kFollowNoteTurnI,
             LimelightConstants.kFollowNoteTurnD);
         thetaController.enableContinuousInput(-180, 180);
-        FF = 0.1;
+        FF = LimelightConstants.kFollowNoteTurnFF;
         targetAngle = 0;
-        llTurn = 0;
 
         doNotSeeFrameCount = 0;
         endBecauseNoNote = false;
@@ -61,9 +60,9 @@ public class FollowNoteInAuto extends Command {
 
     @Override
     public void execute() {
-        Translation2d position = new Translation2d(AutoConstants.kFollowNoteSpeed, 0.0);
+        Translation2d position = new Translation2d(-AutoConstants.kFollowNoteSpeed, 0.0);
 
-        llTurn = 0;
+        double llTurn = 0;
         boolean hasTarget = limelightIntake.hasTarget();
 
         // when the limelight has a target
@@ -109,6 +108,8 @@ public class FollowNoteInAuto extends Command {
         }
 
         drivetrain.drive(position, llTurn, false, new Translation2d(0, 0));
+
+        SmartDashboard.putNumber("Note TY", limelightIntake.getTyAverage());
     }
 
     @Override
@@ -129,6 +130,6 @@ public class FollowNoteInAuto extends Command {
         // and set a cap on total time so that we do not get stuck in this command
         return endBecauseNoNote ||
             Timer.getFPGATimestamp() - startTime >= timeLimit ||
-            hopper.isGamepieceIndexed(); // OR has the game piece
+            intake.hasGamepiece(); // or the INTAKE has the game piece (NOT hopper because it takes too long)
     }
 }
