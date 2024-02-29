@@ -73,15 +73,6 @@ public class LimelightTab extends ShuffleboardTabBase{
     @Override
     public void update(){
         try{
-        /*  mTxEntry.setDouble(LLBack.getTx());
-            mTyEntry.setDouble(LLBack.getTy());
-            mTaEntry.setDouble(LLBack.getTa());
-            limelightHasTargetEntry.setBoolean(LLBack.hasTarget());
-            mDistToTargetEntry.setDouble(LLBack.getDistance());
-            limelightTagsSeenEntry.setInteger(LLBack.getTagsSeen());
-            mBotposeXEntry.setDouble(LLBack.getBotpose().getX());
-            mBotposeYEntry.setDouble(LLBack.getBotpose().getY());
-            mBotposeAEntry.setDouble(LLBack.getBotpose().getRotation().getDegrees()); */
         } catch (IllegalArgumentException e){}
     }
 }

@@ -3,6 +3,8 @@ package frc.robot.Shuffleboard.tabs;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -22,7 +24,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Superstructure;
 
 public class OperatorTab extends ShuffleboardTabBase{
-    private ComplexWidget autoChooser, cameraWidget;
+    private ComplexWidget autoChooserWidget, cameraWidget;
 
     private Arm arm;
     private Autonomous autonomous;
@@ -38,7 +40,8 @@ public class OperatorTab extends ShuffleboardTabBase{
     hasGamePieceEntry;
 
     //Sendable Chooser
-    private SendableChooser<Command> autoRoutineSelector;
+    private static SendableChooser<Command> autoRoutineSelector;
+    private Hashtable<String, Command> autoRoutines;
 
     public OperatorTab(){
         arm = Arm.getInstance();
@@ -47,12 +50,14 @@ public class OperatorTab extends ShuffleboardTabBase{
         hopper = Hopper.getInstance();
         intake = Intake.getInstance();
         superstructure = Superstructure.getInstance();
+        autoRoutineSelector = AutoBuilder.buildAutoChooser();
     }
 
     public void createEntries() {
         tab = Shuffleboard.getTab("Operator");
 
         autoRoutineSelector = new SendableChooser<Command>();
+        SmartDashboard.putData("Auto Chooser", autoRoutineSelector);
 
         try{ 
             stateEntry = tab.add("State", "STOW")
@@ -148,20 +153,11 @@ public class OperatorTab extends ShuffleboardTabBase{
         } catch(IllegalArgumentException e){}
     }
 
-    public void setUpAutoSelector() {
-        //TODO setting up the auto selector
-        Hashtable<String,Command> autoRoutines = autonomous.getAutoRoutines();
-        Enumeration<String> e = autoRoutines.keys();
-
-        while (e.hasMoreElements()) {
-            String autoRoutineName = e.nextElement();
-            autoRoutineSelector.addOption(autoRoutineName, autoRoutines.get(autoRoutineName));
-        }
-        autoChooser = tab.add("Auto routine", autoRoutineSelector).withSize(5,2).withPosition(1,3);
+    public static Command getAutonomousCommand() {
+        return autoRoutineSelector.getSelected();
     }
 
-    public Command getAutonomousCommand() {
-        // TODO getting the selected autonomous routine
-        return autoRoutineSelector.getSelected();
+    public Hashtable<String, Command> getAutoRoutines() {
+        return autoRoutines;
     }
 }

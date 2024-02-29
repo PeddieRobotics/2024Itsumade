@@ -113,30 +113,6 @@ public class DrivetrainTab extends ShuffleboardTabBase{
     @Override
     public void update(){
         try{
-            // mHeadingEntry.setDouble(drivetrain.getHeading());
-
-            // mModuleRotations1Entry.setDouble(drivetrain.getModuleRotations()[0]);
-            // mModuleRotations2Entry.setDouble(drivetrain.getModuleRotations()[1]);
-            // mModuleRotations3Entry.setDouble(drivetrain.getModuleRotations()[2]);
-            // mModuleRotations4Entry.setDouble(drivetrain.getModuleRotations()[3]);
-
-            // mOdometryXEntry.setDouble(drivetrain.getPose().getX());
-            // mOdometryYEntry.setDouble(drivetrain.getPose().getY());
-            // mOdometryThetaEntry.setDouble(drivetrain.getPose().getRotation().getDegrees());
-            /*
-             * Adjustable Drivetrain PID below, DO THIS LATER, copied in the flywheel pid toggle tentative logic that I didn't double check
-             * if(flywheelToggleEntry.getBoolean()){
-             *      flywheel.setFlywheelSetpoint(flywheelSetpointEntry.getDouble())
-             *      if(flywheelPIDToggleEntry.getBoolean()){
-             *          flywheel.updatePIDController(mkPEntry.getDouble(),
-             *          mkIEntry.getDouble(), mkDEntry.getDouble(),
-             *          mkIzEntry.getDouble(), mkFFEntry.getDouble(), 0);
-             *      } else if(flywheelPIDToggleEntry.getBoolean(false)){
-             *      flywheel.updatePIDController(FlywheelConstants.kP, FlywheelConstants.kI,
-             *      FlywheelConstants.kD, FlywheelConstants.kIz, FlywheelConstants.kFF, 0)
-             *      }
-             * }
-             */
         } catch (IllegalArgumentException e) {}
     }
 }

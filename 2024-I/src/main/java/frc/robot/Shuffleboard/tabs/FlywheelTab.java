@@ -119,36 +119,6 @@ public class FlywheelTab extends ShuffleboardTabBase{
     @Override
     public void update() {
         try{
-
-            // if(flywheelToggleEntry.getBoolean(false)){
-            //     flywheel.runFlywheelPercentOutput(flywheelPercentOutputEntry.getDouble(0.0));
-            //     flywheel.runRightFlywheelPercentOutput(flywheelRightPercentOutputEntry.getDouble(0.0));
-            //     flywheel.runLeftFlywheelPercentOutput(flywheelLeftPercentOutputEntry.getDouble(0.0));
-
-            //     flywheel.runFlywheelVelocitySetpoint(flywheelVelocitySetpointEntry.getDouble(0.0));
-            //     flywheel.runRightFlywheelVelocitySetpoint(flywheelVelocityRightSetpointEntry.getDouble(0.0));
-            //     flywheel.runLeftFlywheelVelocitySetpoint(flywheelVelocityLeftSetpointEntry.getDouble(0.0));
-
-            // }
-            /* 
-             * flywheelAtRPMEntry.setBoolean((flywheel.AtRPM());
-             * flywheelCurrentEntry.setDouble((flywheel.getCurrent());
-             * flywheel.setFlywheelDelta(flywheelDeltaEntry.getDouble());
-             * flywheelMotorTempEntry.setDouble((flywheel.getMotorTemperature());
-             * flywheelRPMEntry().setDouble(flywheel.getRPM());
-             * 
-             * if(flywheelToggleEntry.getBoolean()){
-             *      flywheel.setFlywheelSetpoint(flywheelSetpointEntry.getDouble())
-             *      if(flywheelPIDToggleEntry.getBoolean()){
-             *          flywheel.updatePIDController(mkPEntry.getDouble(),
-             *          mkIEntry.getDouble(), mkDEntry.getDouble(),
-             *          mkIzEntry.getDouble(), mkFFEntry.getDouble(), 0);
-             *      } else if(flywheelPIDToggleEntry.getBoolean(false)){
-             *      flywheel.updatePIDController(FlywheelConstants.kP, FlywheelConstants.kI,
-             *      FlywheelConstants.kD, FlywheelConstants.kIz, FlywheelConstants.kFF, 0)
-             *      }
-             * }
-            */
         }  catch (IllegalArgumentException e){}
     }
 }

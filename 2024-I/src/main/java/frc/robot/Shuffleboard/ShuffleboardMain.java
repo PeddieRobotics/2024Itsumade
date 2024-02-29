@@ -31,20 +31,20 @@ public class ShuffleboardMain {
     }
 
     public void setUpTabs(){
-        angleOverridesTab = new AngleOverridesTab();
-        tabs.add(angleOverridesTab);
-        armTab = new ArmTab();
-        tabs.add(armTab);
-        drivetrainTab = new DrivetrainTab();
-        tabs.add(drivetrainTab);
-        debugTab = new DebugTab();
-        tabs.add(debugTab);
-        flywheelTab = new FlywheelTab();
-        tabs.add(flywheelTab);
-        intakeHopperTab = new IntakeHopperTab();
-        tabs.add(intakeHopperTab);
-        limelightTab = new LimelightTab();
-        tabs.add(limelightTab);
+        // angleOverridesTab = new AngleOverridesTab();
+        // tabs.add(angleOverridesTab);
+        // armTab = new ArmTab();
+        // tabs.add(armTab);
+        // drivetrainTab = new DrivetrainTab();
+        // tabs.add(drivetrainTab);
+        // debugTab = new DebugTab();
+        // tabs.add(debugTab);
+        // flywheelTab = new FlywheelTab();
+        // tabs.add(flywheelTab);
+        // intakeHopperTab = new IntakeHopperTab();
+        // tabs.add(intakeHopperTab);
+        // limelightTab = new LimelightTab();
+        // tabs.add(limelightTab);
         operatorTab = new OperatorTab();
         tabs.add(operatorTab);
 
