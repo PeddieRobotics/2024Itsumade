@@ -257,6 +257,8 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.AMP_PREP) {
                     nextSystemState = requestedSystemState;
+                }  else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
+                    nextSystemState=requestedSystemState;
                 }
                 break;
 
@@ -304,6 +306,8 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.LAYUP_PREP) {
                     nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
+                    nextSystemState=requestedSystemState;
                 }
                 break;
 

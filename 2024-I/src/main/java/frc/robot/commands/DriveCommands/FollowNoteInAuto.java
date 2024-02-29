@@ -134,7 +134,7 @@ public class FollowNoteInAuto extends Command {
     @Override
     public boolean isFinished() {
         // endBecauseNoNote is a condition we invented earlier
-        // and set a cap on total time so that we do not get stuck in this command            
+        // and set a cap on total time so that we do not get stuck in this command 
         return endBecauseNoNote ||
             consecutiveNoNote >= 2 ||
             Timer.getFPGATimestamp() - startTime >= timeLimit ||
