@@ -259,6 +259,12 @@ public final class Constants {
     public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 0.5;
+
+        // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
+    // needs more tuning/initial values only
+    public static final double[][] treeMapValues = new double[][] { { 47.5, 43 }, { 60, 50 }, { 80, 56 },
+    { 93.8, 61 }, { 112.5, 66 }, { 130, 68 }, { 147.8, 69.5 }, { 158.6, 70.5 }, { 175.6, 72 }, { 179.6, 72.3 },
+    { 213, 73.25 } };
   }
 
   public static class IntakeConstants {

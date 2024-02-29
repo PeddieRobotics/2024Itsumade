@@ -11,6 +11,7 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants.ScoringConstants;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Conversions;
 import frc.robot.utils.DriverOI;
@@ -31,7 +32,6 @@ public class Arm extends SubsystemBase {
     private Rate angle;
     private double gravityFeedForward, armAngleSetpoint, armDelta;
     private String stringState;
-    private double[][] treeMapValues;
 
     public enum ArmState {
         Intaking, Moving, Stowed, Shooting
@@ -41,12 +41,6 @@ public class Arm extends SubsystemBase {
 
     public Arm() {
         limelightShooter = LimelightShooter.getInstance();
-        
-    // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
-    // needs more tuning/initial values only
-    treeMapValues = new double[][] { { 47.5, 43 + armDelta}, { 60, 50 + armDelta}, { 80, 56 + armDelta},
-    { 93.8, 61 + armDelta}, { 112.5, 66 + armDelta}, { 130, 68 + armDelta}, { 147.8, 69.5 + armDelta }, { 158.6, 70.5 + armDelta}, { 175.6, 72 + armDelta}, { 179.6, 72.3 + armDelta},
-    { 213, 73.25 + armDelta} };
 
         armDelta = 0.0;
 
@@ -72,7 +66,7 @@ public class Arm extends SubsystemBase {
         armMotor.setSoftLimits(true, Constants.ArmConstants.kArmForwardSoftLimit,
                 Constants.ArmConstants.kArmReverseSoftLimit);
 
-        for (double[] pair : treeMapValues) {
+        for (double[] pair : Constants.ScoringConstants.treeMapValues) {
             LLShotMap.put(pair[0], pair[1]);
         }
 
@@ -110,9 +104,8 @@ public class Arm extends SubsystemBase {
         // armMotor.setMotor(0);
     }
 
-    public double setArmDelta(double delta){
+    public void setArmDelta(double delta){
         armDelta = delta;
-        return armDelta;
     }
 
     public void putSmartDashboard() {
@@ -225,7 +218,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setLLPosition() {
-        setArmAngle(getAngleFromDist(limelightShooter.getDistance()));
+        setArmAngle(getAngleFromDist(limelightShooter.getDistance())+armDelta);
     }
 
     public void setStowPosition() {
