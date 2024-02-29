@@ -62,4 +62,12 @@ public class RobotContainer {
   public void resetGyro() {
     drivetrain.resetGyro();
   }
+
+  public void coastClimber(){
+    climber.setCoast();
+  }
+
+  public void brakeClimber(){
+    climber.setBrake();
+  }
 }

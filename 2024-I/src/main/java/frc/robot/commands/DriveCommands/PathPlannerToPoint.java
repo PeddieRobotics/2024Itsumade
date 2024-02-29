@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 
@@ -20,8 +21,6 @@ public class PathPlannerToPoint extends Command {
     private double timeLimit;
     private double startTime;
 
-    // Full constructor with all 6 parameters for the climb charge station
-    // algorithm.
     public PathPlannerToPoint(double x, double y, double theta, double timeLimit) {
         drivetrain = Drivetrain.getInstance();
         

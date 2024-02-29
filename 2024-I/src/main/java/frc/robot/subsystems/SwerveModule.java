@@ -69,14 +69,6 @@ public class SwerveModule extends SubsystemBase {
     steerMotor.setFeedbackDevice(CANCoderId, FeedbackSensorSourceValue.FusedCANcoder);
 
     driveMotor.setVelocityConversionFactor(ModuleConstants.kDrivingEncoderVelocityFactor);
-
-    // REMOTE CANCODER
-   // steerMotor.setPositionConversionFactor(1.0);
-
-    // INTERNAL SENSOR
-    // steerMotor.setPositionConversionFactor(ModuleConstants.kTurningEncoderPositonFactor);
-
-    // FUSED CANCODER
     steerMotor.setRotorToSensorRatio(ModuleConstants.kTurningMotorReduction);
     steerMotor.setSensorToMechanismRatio(1.0);
 
@@ -86,8 +78,6 @@ public class SwerveModule extends SubsystemBase {
         ModuleConstants.kTurningFF);
 
     putSmartDashboard();
-
-    SmartDashboard.putBoolean("play music", false);
   }
 
   public SwerveModuleState getState() {
@@ -105,11 +95,6 @@ public class SwerveModule extends SubsystemBase {
 
   public void setDesiredState(SwerveModuleState desiredModuleState) {
     desiredState = desiredModuleState;
-    // desiredState.speedMetersPerSecond = -desiredState.speedMetersPerSecond;
-    // desiredState.angle = Rotation2d.fromDegrees(-desiredState.angle.getDegrees());
-
-    // SmartDashboard.putNumber(drivingCANId + " desired velocity", desiredState.speedMetersPerSecond);
-    // SmartDashboard.putNumber(steeringCANId + " desired position", desiredState.angle.getRadians());
 
     SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(desiredState,
         new Rotation2d(getCANCoderReading()));
@@ -159,7 +144,6 @@ public class SwerveModule extends SubsystemBase {
   public void periodic() {
     updateSmartdashBoard();
     // This method will be called once per scheduler run
-    driveMotor.playMusic(SmartDashboard.getBoolean("play music", false));
   }
 
   @Override
@@ -205,7 +189,7 @@ public class SwerveModule extends SubsystemBase {
 
     // SmartDashboard.putNumber(drivingCANId + " Drive Motor Current", driveMotor.getSupplyCurrent());
 
-    // SmartDashboard.putNumber(CANCoderId + " canCoder position (rad)", getCANCoderReading());
+    SmartDashboard.putNumber(CANCoderId + " canCoder position (rad)", getCANCoderReading());
     // SmartDashboard.putNumber(drivingCANId + " driving speed (mps)", driveMotor.getMPS());
     // SmartDashboard.putNumber(CANCoderId + " steer motor raw position", steerMotor.getPosition());
 

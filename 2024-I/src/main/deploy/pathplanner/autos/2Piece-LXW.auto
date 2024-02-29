@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.81,
-      "y": 6.73
+      "x": 0.71,
+      "y": 4.46
     },
-    "rotation": -120.0
+    "rotation": 120.0
   },
   "command": {
     "type": "sequential",
@@ -26,31 +26,25 @@
         {
           "type": "named",
           "data": {
-            "name": "Intake"
+            "name": "Stow"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "A AmpSpeaker-AmpNote"
+            "pathName": "L SourceSpeaker-MidNote5"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "LL Prep"
+            "name": "X SeekNote"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Score"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stow"
+            "name": "W ToClosestShooting"
           }
         }
       ]

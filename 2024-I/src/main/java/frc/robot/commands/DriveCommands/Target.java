@@ -2,6 +2,7 @@ package frc.robot.commands.DriveCommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
@@ -80,6 +81,10 @@ public class Target extends Command {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(error) < turnThreshold && oi.getSwerveTranslation() == new Translation2d(0, 0);
+        if(DriverStation.isAutonomous()){
+            return Math.abs(error) < turnThreshold;
+        } else {
+            return Math.abs(error) < turnThreshold && oi.getSwerveTranslation() == new Translation2d(0, 0);
+        }
     }
 }

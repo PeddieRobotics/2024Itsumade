@@ -3,50 +3,50 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.7662964416823987,
-        "y": 6.921929480222598
+        "x": 3.1946162817056813,
+        "y": 2.6775841365302795
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8768718097044599,
-        "y": 6.723027960948415
+        "x": 4.740446705748839,
+        "y": 2.2442831843363633
       },
       "isLocked": false,
-      "linkedName": "AmpNote"
+      "linkedName": "MidNote5Score"
     },
     {
       "anchor": {
-        "x": 2.7500434953137205,
-        "y": 5.564296379189416
+        "x": 7.9774856268685435,
+        "y": 2.3538781457020823
       },
       "prevControl": {
-        "x": 1.5858559198928315,
-        "y": 5.553840287889016
+        "x": 6.525341895191635,
+        "y": 1.4638545682226887
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CenterNote"
+      "linkedName": "MidNote4"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 520.0,
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": -160.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Path Segments",
   "previewStartingState": {
-    "rotation": -160.0,
+    "rotation": 144.21102654081668,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

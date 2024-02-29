@@ -34,7 +34,8 @@ public final class Constants {
         swerveModuleLocations[0],
         swerveModuleLocations[1],
         swerveModuleLocations[2],
-        swerveModuleLocations[3]);
+        swerveModuleLocations[3]
+    );
 
     // TODO: Change this value
     public static final double kMaxFloorSpeed = 4.5; // meters per second
@@ -43,25 +44,27 @@ public final class Constants {
     // public static final double kMaxAngularSpeed = Math.PI; // radians per second
 
     public static final int kDriveCurrentLimit = 30;
-    public static final int kTurningCurrentLimit = 30;
+    public static final int kTurningCurrentLimit = 20;
 
     public static final double kWheelRadius = 2.0;
 
-    //Steps to doing offsets for swerves:
-    //1. remove offsets (set all to 0) and then deploy code
-    //2. spin all modules so that bevel gears face left relative to robot (shooter in front)
-    //3. read the cancoder values from dashboard, and put those values for these offsets (check robotmap for ids)
-    public static final double kFrontLeftModuleAngularOffset = -2.844;
-    public static final double kFrontRightModuleAngularOffset = 1.316;
-    public static final double kBackLeftModuleAngularOffset = -2.083;
-    public static final double kBackRightModulelAngularOffset = 2.155;
+    // Steps to doing offsets for swerves:
+    // 1. remove offsets (set all to 0) and then deploy code
+    // 2. spin all modules so that bevel gears face left relative to robot (shooter
+    // in front)
+    // 3. read the cancoder values from dashboard, and put those values for these
+    // offsets (check robotmap for ids)
+    public static final double kFrontLeftModuleAngularOffset = -2.896;
+    public static final double kFrontRightModuleAngularOffset = -3.073;
+    public static final double kBackLeftModuleAngularOffset = -2.045;
+    public static final double kBackRightModulelAngularOffset = -1.978;
 
     public static final double kHeadingCorrectionP = 0.1;
     public static final double kHeadingCorrectionTolerance = 1.0;
   }
 
   public static class ModuleConstants {
-    public static final double kWheelDiameterInches = 4.0;
+    public static final double kWheelDiameterInches = 3.6;
 
     public static final double kDriveMotorReduction = 6.12;
     public static final double kDrivingEncoderPostionFactor = (Units.inchesToMeters(kWheelDiameterInches) * Math.PI)
@@ -106,7 +109,18 @@ public final class Constants {
         { 3.95, 6.88, -160.00 },
         { 3.81, 5.31, 175.00 },
         { 2.21, 4.47, 125.00 },
+        { 3.19, 2.68, 135.00 }
     };
+
+    public static final double kFollowNoteEarlyEndMinDuration = 0.10;
+    public static final double kFollowNoteEarlyEndMaxDuration = 0.25;
+    public static final double kFollowNoteNoNotePercent = 0.80;
+    public static final double kFollowNoteNotSameNoteThresh = 2.5;
+    public static final double kFollowNoteSpeed = 0.6;
+
+    public static final double kLimelightPrepDeadlineTime = 0.5;
+    public static final double kLayupPrepDeadlineTime = 0.5;
+    public static final double kScoreDeadlineTime = 0.4;
   }
 
   public static class LimelightConstants {
@@ -129,10 +143,11 @@ public final class Constants {
     public static final double kDriveToTargetMoveThreshhold = 0;
 
     // follow note command constants
-    public static final double kFollowNoteTurnP = 0;
+    public static final double kFollowNoteTurnP = 0.07;
     public static final double kFollowNoteTurnI = 0;
     public static final double kFollowNoteTurnD = 0;
-    public static final double kFollowNoteAngleThreshold = 0;
+    public static final double kFollowNoteTurnFF = 0;
+    public static final double kFollowNoteAngleThreshold = 1;
 
     // target apriltag command constants
     public static final double kTargetP = 0.017;
@@ -173,16 +188,17 @@ public final class Constants {
 
     public static final double kArmMagnetOffset = 0.237315444; // see spreadsheet "FIRST Calculations" for reference
 
-    //TOTAL NET gear reduction from motor ALL THE WAY to shoulder pivot
+    // TOTAL NET gear reduction from motor ALL THE WAY to shoulder pivot
     public static final double kRotorToArmGearReduction = 16384.0 / 125;
 
-    //gear reduction from motor to CANCoder Shaft
-    public static final double kRotorToSensorRatio = (kRotorToArmGearReduction/2);
+    // gear reduction from motor to CANCoder Shaft
+    public static final double kRotorToSensorRatio = (kRotorToArmGearReduction / 2);
     public static final double kArmSensorToMechanismRatio = 2.0; // dependednt on feedback device
     // hypothetical values for the arm when going to these various positions
 
     public static final double kArmIntakeHPPosition = 70; // in deg
-    public static final double kArmPositionEpsilon = 3; // temporarily loose due to arm tuning, can tighten this later when code improves
+    public static final double kArmPositionEpsilon = 3; // temporarily loose due to arm tuning, can tighten this later
+                                                        // when code improves
     public static final double kArmAmpPosition = 120;
     public static final double kArmLayupPosition = 38;
     public static final double kArmStowPosition = 0;
@@ -192,13 +208,18 @@ public final class Constants {
 
   public static class ClimberConstants {
     public static final double kClimberCurrentLimit = 60;
+    public static final double kClimberForwardSoftLimit = 150;
+    public static final double kClimberReverseSoftLimit = 0;
+
     public static final double kClimberP = 0.0;
     public static final double kClimberI = 0.0;
     public static final double kClimberD = 0.0;
     public static final double kClimberFF = 0.0;
-    public static final double kClimberPercentOutput = -0.7; // percent putput the climber would
-    public static final double kClimberUnwindPosition = 0.0; // the angle the kraken needs to go backwards to retract
-                                                             // back
+    public static final double kClimberRetractPercentOutput = -0.7; // percent putput the climber would
+    public static final double kClimberDeployPercentOutput = 0.7; // percent putput the climber would
+    public static final double kClimberDeployPosition = 140.0;
+    public static final double kClimberRetractPosition = 30.0;
+    public static final double kClimberAngleTolerance = 2.0;
 
     public static final double kClimberGearReduction = 35.0 / 1.0;
 
@@ -225,7 +246,6 @@ public final class Constants {
     public static final double kFlywheelFF = 0;
   }
 
-
   public static class ScoringConstants {
     public static final double kLeftFlywheelLLShootingRPM = 4300;
     public static final double kRightFlywheelLLShootingRPM = 3200;
@@ -238,9 +258,11 @@ public final class Constants {
     public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 0.5;
 
-    // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) - needs more tuning/initial values only
-    public static final double[][] treeMapValues = new double[][] { { 47.5, 43 }, { 60, 50 }, { 80, 56 }, 
-        { 93.8, 61}, { 112.5, 66}, { 130, 68 }, { 147.8, 69.5}, { 158.6, 70.5 }, { 175.6, 72 }, { 179.6, 72.3 }, { 213, 73.25 }};
+    // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
+    // needs more tuning/initial values only
+    public static final double[][] treeMapValues = new double[][] { { 47.5, 43 }, { 60, 50 }, { 80, 56 },
+        { 93.8, 61 }, { 112.5, 66 }, { 130, 68 }, { 147.8, 69.5 }, { 158.6, 70.5 }, { 175.6, 72 }, { 179.6, 72.3 },
+        { 213, 73.25 } };
   }
 
   public static class IntakeConstants {
@@ -258,7 +280,6 @@ public final class Constants {
     public static final double kFeedFlywheelAmpSpeed = 0.5;
     public static final double kFeedFlywheelLayupSpeed = 0.5;
     public static final double kFeedFlywheelSpeakerSpeed = 0.5;
-
 
   }
 

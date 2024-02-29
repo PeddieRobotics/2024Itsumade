@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Shuffleboard.ShuffleboardMain;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
+import frc.robot.utils.Constants.LimelightConstants;
 import frc.robot.utils.Logger;
 
 /**
@@ -73,6 +75,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     // m_robotContainer.resetGyro();
+    m_robotContainer.coastClimber();
     Superstructure.getInstance().requestState(SuperstructureState.STOW);
     logger.logEvent("Disabled Mode", true);
   }
@@ -85,6 +88,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // m_robotContainer.resetGyro();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    LimelightShooter.getInstance().setPipeline(LimelightConstants.kShooterAprilTagPipeline);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -120,6 +124,8 @@ public class Robot extends TimedRobot {
 
     Drivetrain.getInstance().setIsParkedAuto(false);
     Drivetrain.getInstance().setUseMegaTag(true);
+
+    m_robotContainer.brakeClimber();
   }
 
   /** This function is called periodically during operator control. */

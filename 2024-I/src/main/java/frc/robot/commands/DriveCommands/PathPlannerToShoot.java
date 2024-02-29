@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.Constants;
@@ -19,8 +20,6 @@ public class PathPlannerToShoot extends Command {
     private double timeLimit;
     private double startTime;
 
-    // Full constructor with all 6 parameters for the climb charge station
-    // algorithm.
     public PathPlannerToShoot(double timeLimit) {
         drivetrain = Drivetrain.getInstance();
         
@@ -64,7 +63,7 @@ public class PathPlannerToShoot extends Command {
         // point[0] = x, point[1] = y, point[2] = rotation
         xTarget = isRed ? 16.542 - point[0] : point[0];
         yTarget = point[1];
-        turnTarget = isRed ? point[2] - 180 : point[2];
+        turnTarget = isRed ? point[2] - 90 : point[2];
 
         // pathplanner on the fly pathfinding
         PathConstraints constraints = new PathConstraints(
@@ -75,14 +74,19 @@ public class PathPlannerToShoot extends Command {
         followPathCommand = AutoBuilder.pathfindToPose(
             targetPose, constraints, 0.0, 0.0
         );
-
+        
+        followPathCommand.addRequirements(drivetrain);
         followPathCommand.initialize();
     }
 
+    int test = 0;
     @Override
     public void execute() {
-        if (followPathCommand != null)
+        if (followPathCommand != null) {
             followPathCommand.execute();
+            SmartDashboard.putNumber("OTF dummy test", test);
+            test++;
+        }
     }
 
     @Override
@@ -93,8 +97,9 @@ public class PathPlannerToShoot extends Command {
 
     @Override
     public boolean isFinished() {
-        return followPathCommand == null || 
-            followPathCommand.isFinished() ||
-            Timer.getFPGATimestamp() - startTime >= timeLimit; 
+        return false;
+        // return followPathCommand == null || 
+        //     followPathCommand.isFinished() ||
+        //     Timer.getFPGATimestamp() - startTime >= timeLimit; 
     }
 }

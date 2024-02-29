@@ -13,10 +13,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
+import frc.robot.commands.DriveCommands.Target;
 // import frc.robot.commands.DriveCommands.ForcedCalibration;
 // import frc.robot.commands.DriveCommands.TurnOffMegatag;
 // import frc.robot.commands.DriveCommands.TurnOnMegatag;
@@ -64,47 +67,47 @@ public class Autonomous extends SubsystemBase {
                     // Boolean supplier that controls when the path will be mirrored for the red
                     // alliance
                     // This will flip the path being followed to the red side of the field.
-                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+                    // THE ORIGIN WILL REMAIN ON THE RED SIDE (FOR THE LAB)
 
                     var alliance = DriverStation.getAlliance();
                     if (alliance.isPresent()) {
                         return alliance.get() == DriverStation.Alliance.Red;
                     }
-                    return false;
+                    return true;
                 },
                 drivetrain // Reference to this subsystem to set requirements
         );
     }
 
     public void registerNamedCommands() {
-        NamedCommands.registerCommand("Stow", new InstantCommand(() -> {
-            superstructure.requestState(SuperstructureState.STOW);
-        }));
-
-        NamedCommands.registerCommand("Intake", new InstantCommand(() -> {
-            superstructure.requestState(SuperstructureState.GROUND_INTAKE);
-        }));
-
-        NamedCommands.registerCommand("LL Prep", new InstantCommand(() -> {
-            superstructure.requestState(SuperstructureState.LL_PREP);
-        }));
-
-        NamedCommands.registerCommand("Layup Prep", new InstantCommand(() -> {
-            superstructure.requestState(SuperstructureState.LAYUP_PREP);
-        }));
-
-        NamedCommands.registerCommand("Score", new InstantCommand(() -> {
-            superstructure.sendToScore();
-        }));
+        NamedCommands.registerCommand("Stow", new InstantCommand(
+            () -> superstructure.requestState(SuperstructureState.STOW)
+        ));
+        NamedCommands.registerCommand("Intake", new InstantCommand(
+            () -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)
+        ));
+        NamedCommands.registerCommand("LL Prep", new ParallelDeadlineGroup(
+            new WaitCommand(AutoConstants.kLimelightPrepDeadlineTime),
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP))
+        ));
+        NamedCommands.registerCommand("Layup Prep", new ParallelDeadlineGroup(
+            new WaitCommand(AutoConstants.kLayupPrepDeadlineTime),
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.LAYUP_PREP))
+        ));
+        NamedCommands.registerCommand("Score", new ParallelDeadlineGroup(
+            new WaitCommand(AutoConstants.kScoreDeadlineTime),
+            new InstantCommand(() -> superstructure.sendToScore())
+        ));
+        NamedCommands.registerCommand("Target", new Target());
 
         // NamedCommands.registerCommand("Set Odom", new ForcedCalibration());
         // NamedCommands.registerCommand("Turn on MegaTag", new TurnOnMegatag());
         // NamedCommands.registerCommand("Turn off MegaTag", new TurnOffMegatag());
 
-        NamedCommands.registerCommand("Alpha ToClosestShooting", new PathPlannerToShoot(4));
-        NamedCommands.registerCommand("Beta SeekNote", new FollowNoteInAuto(2));
-        NamedCommands.registerCommand("Gamma ToTopSeekNoteLocation", new PathPlannerToPoint(6.36, 6.65, 0, 4));
-        NamedCommands.registerCommand("Delta ToBottomSeekNoteLocation", new PathPlannerToPoint(6.36, 1.64, 0, 4));
+        NamedCommands.registerCommand("W ToClosestShooting", new PathPlannerToShoot(4));
+        NamedCommands.registerCommand("X SeekNote", new FollowNoteInAuto(2));
+        NamedCommands.registerCommand("Y ToTopSeekNoteLocation", new PathPlannerToPoint(6.36, 6.65, 0, 4));
+        NamedCommands.registerCommand("Z ToBottomSeekNoteLocation", new PathPlannerToPoint(6.36, 1.64, 0, 4));
     }
 
     public static Command getAutonomousCommand() {

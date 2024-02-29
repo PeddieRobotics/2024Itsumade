@@ -27,11 +27,11 @@ public class RetractClimber extends Command{
 
     @Override
     public void end(boolean interrupted){
-      
+      climber.stopClimber();
     }
 
     @Override
     public boolean isFinished(){
-       return climber.isDoneClimbing();
+       return climber.leftArmRetracted() && climber.rightArmRetracted();
     }
 }

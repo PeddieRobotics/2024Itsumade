@@ -41,7 +41,6 @@ public class DriverOI {
 
     private PS4Controller controller;
 
-    private int alignGoalAprilTagID = 0; // DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     private AlignGoalColumn alignGoalColumn = AlignGoalColumn.kCenter;
 
     private Superstructure superstructure;
@@ -54,7 +53,7 @@ public class DriverOI {
     }
 
     public int getAlignGoalAprilTagID() {
-        return alignGoalAprilTagID;
+        return DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     }
 
     public AlignGoalColumn getAlignGoalColumn() {
@@ -68,14 +67,13 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.AMP_PREP)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.AMP_PREP)));
-
+        squareButton.onTrue(new FollowNoteInAuto(3));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
