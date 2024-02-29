@@ -200,7 +200,7 @@ public final class Constants {
     public static final double kArmPositionEpsilon = 3; // temporarily loose due to arm tuning, can tighten this later
                                                         // when code improves
     public static final double kArmAmpPosition = 120;
-    public static final double kArmLayupPosition = 38; // 38
+    public static final double kArmFrontLayupPosition = 38; // 38
     public static final double kArmSideLayupPosition = 35;
     public static final double kArmStowPosition = 0;
     public static final double kArmIntakePositionFromGround = 32;

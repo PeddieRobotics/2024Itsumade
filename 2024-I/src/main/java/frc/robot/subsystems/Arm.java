@@ -200,8 +200,12 @@ public class Arm extends SubsystemBase {
         setArmAngle(ArmConstants.kArmAmpPosition);
     }
 
-    public void setLayupPosition() {
-        setArmAngle(ArmConstants.kArmLayupPosition);
+    public void setFrontLayupPosition() {
+        setArmAngle(ArmConstants.kArmFrontLayupPosition);
+    }
+
+    public void setSideLayupPosition() {
+        setArmAngle(ArmConstants.kArmSideLayupPosition);
     }
 
     public void setLLPosition() {

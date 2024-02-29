@@ -60,7 +60,7 @@ public class OperatorOI {
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.AMP_PREP)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LAYUP_PREP)));
+        triangleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.FRONT_LAYUP_PREP)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));

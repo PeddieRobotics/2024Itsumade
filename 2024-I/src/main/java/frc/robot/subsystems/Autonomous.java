@@ -91,7 +91,7 @@ public class Autonomous extends SubsystemBase {
         ));
         NamedCommands.registerCommand("Layup Prep", new ParallelDeadlineGroup(
             new WaitCommand(AutoConstants.kLayupPrepDeadlineTime),
-            new InstantCommand(() -> superstructure.requestState(SuperstructureState.LAYUP_PREP))
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.FRONT_LAYUP_PREP))
         ));
         NamedCommands.registerCommand("Score", new ParallelDeadlineGroup(
             new WaitCommand(AutoConstants.kScoreDeadlineTime),
