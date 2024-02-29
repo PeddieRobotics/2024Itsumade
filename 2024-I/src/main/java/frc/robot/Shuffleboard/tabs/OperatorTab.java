@@ -39,6 +39,8 @@ public class OperatorTab extends ShuffleboardTabBase{
     isGamePieceIndexedEntry, stowAfterShootOverrideEntry, topSensorEntry, bottomSensorEntry,
     hasGamePieceEntry;
 
+    private ComplexWidget mAutoChooser;
+
     //Sendable Chooser
     private static SendableChooser<Command> autoRoutineSelector;
     private Hashtable<String, Command> autoRoutines;
@@ -152,6 +154,19 @@ public class OperatorTab extends ShuffleboardTabBase{
             hasGamePieceEntry.setBoolean(hopper.hasGamepiece());
         } catch(IllegalArgumentException e){}
     }
+
+    public void setupAutoSelector(){
+        Hashtable<String,Command> autoRoutines = autonomous.getAutoRoutines();
+        Enumeration<String> e = autoRoutines.keys();
+
+        while (e.hasMoreElements()) {
+            String autoRoutineName = e.nextElement();
+            autoRoutineSelector.addOption(autoRoutineName, autoRoutines.get(autoRoutineName));
+        }
+        mAutoChooser = tab.add("Auto routine", autoRoutineSelector).withSize(5,2).withPosition(16,1); // comp settings: withPosition(16,1);
+
+    } 
+
 
     public static Command getAutonomousCommand() {
         return autoRoutineSelector.getSelected();
