@@ -32,7 +32,7 @@ public class OperatorTab extends ShuffleboardTabBase{
     private Superstructure superstructure;
 
     private GenericEntry stateEntry, armAngleEntry,
-    flywheelAtRPMEntry, flywheelDeltaEntry, flywheelLeftRPMEntry, 
+    flywheelAtRPMEntry, armDeltaEntry, flywheelDeltaEntry, flywheelLeftRPMEntry, 
     flywheelRightRPMEntry, isIndexedOverrideEntry, 
     isGamePieceIndexedEntry, stowAfterShootOverrideEntry, topSensorEntry, bottomSensorEntry,
     hasGamePieceEntry;
@@ -57,63 +57,68 @@ public class OperatorTab extends ShuffleboardTabBase{
         try{ 
             stateEntry = tab.add("State", "STOW")
             .withSize(1,1)
-            .withPosition(0,0)
+            .withPosition(0,1)
             .getEntry();
 
             armAngleEntry = tab.add("Arm Angle", 0.0)
             .withSize(1,1)
-            .withPosition(0,1)
+            .withPosition(0,0)
             .getEntry();
 
-            // cameraWidget = tab.addCamera("Camera", "CameraName", "url") //LATER, with one of the limelights
-            // .withSize(5,5)
-            // .withPosition(4,3);
+            cameraWidget = tab.addCamera("Camera", "LL Shooter", "http://10.58.95.41:5800") //LATER, with one of the limelights
+            .withSize(5,5)
+            .withPosition(5,1);
 
             flywheelDeltaEntry = tab.add("Flywheel Delta", 0.0)
             .withSize(1,1)
-            .withPosition(0, 2)
+            .withPosition(1, 2)
+            .getEntry();
+
+            armDeltaEntry = tab.add("Arm Delta", 0.0)
+            .withSize(1,1)
+            .withPosition(1, 2)
             .getEntry();
 
             flywheelLeftRPMEntry = tab.add("Flywheel Left RPM", 0.0) 
-            .withSize(1, 1)
-            .withPosition(0, 3)
+            .withSize(2, 1)
+            .withPosition(1, 0)
             .getEntry();
 
             flywheelRightRPMEntry = tab.add("Flywheel Right RPM", 0.0) 
-            .withSize(1, 1)
-            .withPosition(0, 4)
+            .withSize(2, 1)
+            .withPosition(1, 1)
             .getEntry();
 
             isIndexedOverrideEntry = tab.add("Piece Indexed Override", false)
             .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(1,1)
-            .withPosition(0, 5)
+            .withSize(2,1)
+            .withPosition(3, 0)
             .getEntry();
 
-            isGamePieceIndexedEntry = tab.add("INDEXED?", hopper.isGamepieceIndexed())
-            .withSize(1,1)
-            .withPosition(0, 6)
-            .getEntry();
+            // isGamePieceIndexedEntry = tab.add("INDEXED?", hopper.isGamepieceIndexed())
+            // .withSize(2,2)
+            // .withPosition(7, 0)
+            // .getEntry();
 
             stowAfterShootOverrideEntry = tab.add("Stow After Shoot Override", true)
             .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(1,1)
+            .withSize(2,2)
             .withPosition(0, 7)
             .getEntry();
 
             topSensorEntry = tab.add("Top Sensor?", false)
-            .withSize(2,1)
-            .withPosition(1, 0)
+            .withSize(1,1)
+            .withPosition(0, 2)
             .getEntry();
 
             bottomSensorEntry = tab.add("Bottom Sensor?", false)
-            .withSize(2,1)
-            .withPosition(1, 2)
+            .withSize(1,1)
+            .withPosition(0, 3)
             .getEntry();   
 
             hasGamePieceEntry = tab.add("Has Gamepiece?", false)
-            .withSize(4,4)
-            .withPosition(3, 3)
+            .withSize(2,2)
+            .withPosition(3, 1)
             .getEntry();            
         } catch (IllegalArgumentException e){
         }
@@ -124,20 +129,22 @@ public class OperatorTab extends ShuffleboardTabBase{
         try {
             armAngleEntry.setDouble(arm.getArmAngleDegrees());
 
-            flywheelAtRPMEntry.getBoolean(false);
+            //flywheelAtRPMEntry.getBoolean(false);
             flywheelLeftRPMEntry.setDouble(flywheel.getFlywheelLeftRPM());
             flywheelRightRPMEntry.setDouble(flywheel.getFlywheelRightRPM());
             flywheel.setRPMDelta(flywheelDeltaEntry.getDouble(0));
 
-            stowAfterShootOverrideEntry.getBoolean(true);
+            arm.setArmDelta(armDeltaEntry.getDouble(0));
+
+            //stowAfterShootOverrideEntry.getBoolean(true);
             isIndexedOverrideEntry.getBoolean(false);
-            isGamePieceIndexedEntry.getBoolean(false); //check this and the above later
+            //isGamePieceIndexedEntry.getBoolean(false); //check this and the above later
             stateEntry.setString(superstructure.getRobotState());
 
             topSensorEntry.setBoolean(hopper.getTopSensor());
             bottomSensorEntry.setBoolean(hopper.getBottomSensor());
 
-            hasGamePieceEntry.setBoolean(hopper.hasGamepiece() || intake.hasGamepiece());
+            hasGamePieceEntry.setBoolean(hopper.hasGamepiece());
         } catch(IllegalArgumentException e){}
     }
 
@@ -150,7 +157,7 @@ public class OperatorTab extends ShuffleboardTabBase{
             String autoRoutineName = e.nextElement();
             autoRoutineSelector.addOption(autoRoutineName, autoRoutines.get(autoRoutineName));
         }
-        autoChooser = tab.add("Auto routine", autoRoutineSelector).withSize(5,2).withPosition(7,7); 
+        autoChooser = tab.add("Auto routine", autoRoutineSelector).withSize(5,2).withPosition(1,3);
     }
 
     public Command getAutonomousCommand() {

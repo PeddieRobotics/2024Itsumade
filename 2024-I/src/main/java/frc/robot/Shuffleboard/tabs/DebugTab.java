@@ -13,7 +13,7 @@ public class DebugTab extends ShuffleboardTabBase{
     }
 
     public void createEntries() {
-        tab = Shuffleboard.getTab("Operator");
+        tab = Shuffleboard.getTab("DebugTab");
 
         try{ 
             swerveModule1OffsetEntry = tab.add("Front Left Offset", 0.0)

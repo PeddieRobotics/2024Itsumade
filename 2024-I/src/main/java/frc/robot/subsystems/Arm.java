@@ -29,8 +29,9 @@ public class Arm extends SubsystemBase {
     private CANcoder armCANcoder;
     private InterpolatingDoubleTreeMap LLShotMap = new InterpolatingDoubleTreeMap();
     private Rate angle;
-    private double gravityFeedForward, armAngleSetpoint;
+    private double gravityFeedForward, armAngleSetpoint, armDelta;
     private String stringState;
+    private double[][] treeMapValues;
 
     public enum ArmState {
         Intaking, Moving, Stowed, Shooting
@@ -40,6 +41,14 @@ public class Arm extends SubsystemBase {
 
     public Arm() {
         limelightShooter = LimelightShooter.getInstance();
+        
+    // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
+    // needs more tuning/initial values only
+    treeMapValues = new double[][] { { 47.5, 43 + armDelta}, { 60, 50 + armDelta}, { 80, 56 + armDelta},
+    { 93.8, 61 + armDelta}, { 112.5, 66 + armDelta}, { 130, 68 + armDelta}, { 147.8, 69.5 + armDelta }, { 158.6, 70.5 + armDelta}, { 175.6, 72 + armDelta}, { 179.6, 72.3 + armDelta},
+    { 213, 73.25 + armDelta} };
+
+        armDelta = 0.0;
 
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
         configureCANcoder();
@@ -63,7 +72,7 @@ public class Arm extends SubsystemBase {
         armMotor.setSoftLimits(true, Constants.ArmConstants.kArmForwardSoftLimit,
                 Constants.ArmConstants.kArmReverseSoftLimit);
 
-        for (double[] pair : Constants.ScoringConstants.treeMapValues) {
+        for (double[] pair : treeMapValues) {
             LLShotMap.put(pair[0], pair[1]);
         }
 
@@ -99,6 +108,11 @@ public class Arm extends SubsystemBase {
 
     public void stopArm() {
         // armMotor.setMotor(0);
+    }
+
+    public double setArmDelta(double delta){
+        armDelta = delta;
+        return armDelta;
     }
 
     public void putSmartDashboard() {

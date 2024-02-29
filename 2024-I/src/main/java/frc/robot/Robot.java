@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    // shuffleboardMain.update();
+    shuffleboardMain.update();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

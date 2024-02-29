@@ -64,6 +64,8 @@ public class ShuffleboardMain {
     }
 
     public void setUpAutoSelector() {
-        operatorTab.setUpAutoSelector();
+        try{
+            operatorTab.setUpAutoSelector();
+        } catch(NullPointerException e){}
     }
 }
