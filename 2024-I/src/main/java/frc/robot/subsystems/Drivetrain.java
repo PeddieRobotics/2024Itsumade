@@ -276,11 +276,7 @@ public class Drivetrain extends SubsystemBase {
         }
 
         if (fieldOriented) {
-<<<<<<< Updated upstream
-            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getRotation2d().plus(new Rotation2d(autoAdjustAngle)));
-=======
-            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d());
->>>>>>> Stashed changes
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d().plus(new Rotation2d(autoAdjustAngle)));
         } else {
             robotRelativeSpeeds = fieldRelativeSpeeds;
         }
