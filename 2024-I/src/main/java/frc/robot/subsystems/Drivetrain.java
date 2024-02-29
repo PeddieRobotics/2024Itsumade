@@ -38,6 +38,7 @@ public class Drivetrain extends SubsystemBase {
 
     private final Pigeon2 gyro;
     private double heading;
+    private double autoAdjustAngle = 0;
     private double currentDrivetrainSpeed = 0;
     private ChassisSpeeds currentRobotRelativeSpeed;
 
@@ -162,6 +163,10 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Correct Heading P", DriveConstants.kHeadingCorrectionP);
 
         isForcingCalibration = false;
+
+        SmartDashboard.putBoolean("STARTING AUTO: LEFT", false);
+        SmartDashboard.putBoolean("STARTING AUTO: CENTER", false);
+        SmartDashboard.putBoolean("STARTING AUTO: RIGHT", false);
     }
 
     public static Drivetrain getInstance() {
@@ -255,8 +260,20 @@ public class Drivetrain extends SubsystemBase {
         
         ChassisSpeeds robotRelativeSpeeds;
 
+        // Get Angle Adjust Transitioning From Auto
+        autoAdjustAngle = 0;
+        if(SmartDashboard.getBoolean("STARTING AUTO: LEFT", false)){
+            autoAdjustAngle = 80;
+        }
+        if(SmartDashboard.getBoolean("STARTING AUTO: CENTER", false)){
+            autoAdjustAngle = 180;
+        }
+        if(SmartDashboard.getBoolean("STARTING AUTO: RIGHT", false)){
+            autoAdjustAngle = 80;
+        }
+
         if (fieldOriented) {
-            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getRotation2d());
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getRotation2d().plus(new Rotation2d(autoAdjustAngle)));
         } else {
             robotRelativeSpeeds = fieldRelativeSpeeds;
         }
