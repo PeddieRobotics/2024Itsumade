@@ -116,11 +116,11 @@ public final class Constants {
     public static final double kFollowNoteEarlyEndMaxDuration = 0.25;
     public static final double kFollowNoteNoNotePercent = 0.80;
     public static final double kFollowNoteNotSameNoteThresh = 2.5;
-    public static final double kFollowNoteSpeed = 0.6;
+    public static final double kFollowNoteSpeed = 1.3;
 
-    public static final double kLimelightPrepDeadlineTime = 0.5;
-    public static final double kLayupPrepDeadlineTime = 0.5;
-    public static final double kScoreDeadlineTime = 0.4;
+    public static final double kLimelightPrepDeadlineTime = 0.7;
+    public static final double kLayupPrepDeadlineTime = 0.7;
+    public static final double kScoreDeadlineTime = 0.75;
   }
 
   public static class LimelightConstants {
@@ -143,7 +143,7 @@ public final class Constants {
     public static final double kDriveToTargetMoveThreshhold = 0;
 
     // follow note command constants
-    public static final double kFollowNoteTurnP = 0.07;
+    public static final double kFollowNoteTurnP = 0.05;
     public static final double kFollowNoteTurnI = 0;
     public static final double kFollowNoteTurnD = 0;
     public static final double kFollowNoteTurnFF = 0;

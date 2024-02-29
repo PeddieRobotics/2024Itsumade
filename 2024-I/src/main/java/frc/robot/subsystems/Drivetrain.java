@@ -86,6 +86,7 @@ public class Drivetrain extends SubsystemBase {
     public boolean getUseMegaTag() {
         return useMegaTag;
     }
+
     public void setUseMegaTag(boolean useMegaTag) {
         this.useMegaTag = useMegaTag;
     }
@@ -93,13 +94,15 @@ public class Drivetrain extends SubsystemBase {
     public boolean getIsForcingCalibration() {
         return isForcingCalibration;
     }
+
     public void setIsForcingCalibration(boolean isForcingCalibration) {
         this.isForcingCalibration = isForcingCalibration;
     }
 
-    public boolean getIsParkedAuto()  {
+    public boolean getIsParkedAuto() {
         return isParkedAuto;
     }
+
     public void setIsParkedAuto(boolean isParked) {
         this.isParkedAuto = isParked;
     }
@@ -221,9 +224,9 @@ public class Drivetrain extends SubsystemBase {
 
         // SmartDashboard.putNumber("Gyro Angle", getHeading());
         // for (SwerveModule m : swerveModules)
-        //     m.updateSmartdashBoard();
+        // m.updateSmartdashBoard();
         // if (SmartDashboard.getBoolean("Reset Gyro", false)) {
-        //     gyro.setYaw(0);
+        // gyro.setYaw(0);
         // }
         SmartDashboard.putNumber("Odometry X", odometry.getEstimatedPosition().getX());
         SmartDashboard.putNumber("Odometry Y", odometry.getEstimatedPosition().getY());
@@ -242,9 +245,9 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void updateOdometry() {
-        odometry.update(getRotation2d(), swerveModulePositions);
+        odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
         // if (useMegaTag || isForcingCalibration) {
-        //     limelightShooter.checkForAprilTagUpdates(odometry);
+        // limelightShooter.checkForAprilTagUpdates(odometry);
         // }
     }
 
@@ -257,7 +260,7 @@ public class Drivetrain extends SubsystemBase {
     public void drive(Translation2d translation, double rotation, boolean fieldOriented,
             Translation2d centerOfRotation) {
         ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
-        
+
         ChassisSpeeds robotRelativeSpeeds;
 
         // Get Angle Adjust Transitioning From Auto
@@ -273,7 +276,11 @@ public class Drivetrain extends SubsystemBase {
         }
 
         if (fieldOriented) {
+<<<<<<< Updated upstream
             robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getRotation2d().plus(new Rotation2d(autoAdjustAngle)));
+=======
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d());
+>>>>>>> Stashed changes
         } else {
             robotRelativeSpeeds = fieldRelativeSpeeds;
         }
@@ -291,14 +298,14 @@ public class Drivetrain extends SubsystemBase {
         Rotation2d commandedRotation = Rotation2d.fromRadians(robotRelativeSpeeds.omegaRadiansPerSecond);
         Translation2d TangentVelocity = commandedVelocity.rotateBy(Rotation2d.fromDegrees(90));
         commandedVelocity = commandedVelocity.plus(TangentVelocity.times(fudgefactor * commandedRotation.getRadians())); // adds
-                                                                                                                         //tangent
-                                                                                                                         //veclocity
-                                                                                                                         //times
-                                                                                                                         //rotational
-                                                                                                                         //speed
-                                                                                                                         //times
-                                                                                                                         //fudge
-                                                                                                                         //factor
+                                                                                                                         // tangent
+                                                                                                                         // veclocity
+                                                                                                                         // times
+                                                                                                                         // rotational
+                                                                                                                         // speed
+                                                                                                                         // times
+                                                                                                                         // fudge
+                                                                                                                         // factor
         robotRelativeSpeeds = new ChassisSpeeds(commandedVelocity.getX(), commandedVelocity.getY(),
                 commandedRotation.getRadians());
 
@@ -318,27 +325,28 @@ public class Drivetrain extends SubsystemBase {
 
         if (Math.abs(vTheta) > 0.01) {
             offTime = currentTime;
-            holdHeading = getRotation2d();
+            holdHeading = getHeadingAsRotation2d();
             return currentSpeeds;
         }
         if (currentTime - offTime < 0.5) {
-            holdHeading = getRotation2d();
+            holdHeading = getHeadingAsRotation2d();
             return currentSpeeds;
         }
         if (vTranslation < 0.1) {
-            holdHeading = getRotation2d();
+            holdHeading = getHeadingAsRotation2d();
             return currentSpeeds;
         }
 
         holdHeading = holdHeading.plus(new Rotation2d(vTheta * dt));
 
-        Rotation2d deltaHeading = holdHeading.minus(getRotation2d());
+        Rotation2d deltaHeading = holdHeading.minus(getHeadingAsRotation2d());
 
         if (Math.abs(deltaHeading.getDegrees()) < DriveConstants.kHeadingCorrectionTolerance) {
             return currentSpeeds;
         }
 
-        double correctedVTheta = deltaHeading.getRadians() / dt * SmartDashboard.getNumber("Correct Heading P", DriveConstants.kHeadingCorrectionP);
+        double correctedVTheta = deltaHeading.getRadians() / dt
+                * SmartDashboard.getNumber("Correct Heading P", DriveConstants.kHeadingCorrectionP);
         previousTime = currentTime;
 
         return new ChassisSpeeds(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond, correctedVTheta);
@@ -372,7 +380,7 @@ public class Drivetrain extends SubsystemBase {
         return Math.IEEEremainder(heading, 360);
     }
 
-    public Rotation2d getRotation2d() {
+    public Rotation2d getHeadingAsRotation2d() {
         Rotation2d rotation = gyro.getRotation2d();
         // return rotation.times(-1.0);
         return rotation;
@@ -384,7 +392,8 @@ public class Drivetrain extends SubsystemBase {
 
     public void resetPose(Pose2d pose) {
         gyro.reset();
-        odometry.resetPosition(getRotation2d(), swerveModulePositions, pose);
+        odometry.resetPosition(getHeadingAsRotation2d(), swerveModulePositions, pose);
+        
     }
 
     public double getSpeed() {
