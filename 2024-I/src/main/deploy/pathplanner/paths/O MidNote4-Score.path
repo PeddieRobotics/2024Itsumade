@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.103751779543502,
-        "y": 1.4872762413142506
+        "x": 5.998354250631467,
+        "y": 1.3701678758564357
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 3.2556125597272594
       },
       "prevControl": {
-        "x": 4.393969643859401,
-        "y": 1.7683363184130072
+        "x": 4.440812990042526,
+        "y": 1.5692520971347208
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.3,
       "command": {
         "type": "parallel",
         "data": {
@@ -42,6 +42,23 @@
               "type": "named",
               "data": {
                 "name": "LL Prep"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.95,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Score"
               }
             }
           ]
@@ -57,7 +74,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 145.0,
+    "rotation": 132.0,
     "rotateFast": false
   },
   "reversed": false,

@@ -104,7 +104,7 @@ public class Autonomous extends SubsystemBase {
         // NamedCommands.registerCommand("Turn off MegaTag", new TurnOffMegatag());
 
         NamedCommands.registerCommand("W ToClosestShooting", new PathPlannerToShoot(4));
-        NamedCommands.registerCommand("X SeekNote", new FollowNoteInAuto(2));
+        NamedCommands.registerCommand("X SeekNote", new FollowNoteInAuto(1));
         NamedCommands.registerCommand("Y ToTopSeekNoteLocation", new PathPlannerToPoint(6.36, 6.65, 0, 4));
         NamedCommands.registerCommand("Z ToBottomSeekNoteLocation", new PathPlannerToPoint(6.36, 1.64, 0, 4));
     }

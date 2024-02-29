@@ -48,12 +48,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Score"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "N Score-MidNote4"
@@ -69,18 +63,6 @@
           "type": "path",
           "data": {
             "pathName": "O MidNote4-Score"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Target"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Score"
           }
         },
         {
