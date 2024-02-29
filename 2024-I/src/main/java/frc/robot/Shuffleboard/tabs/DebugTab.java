@@ -23,17 +23,17 @@ public class DebugTab extends ShuffleboardTabBase{
 
             swerveModule2OffsetEntry = tab.add("Front Right Offset", 0.0)
             .withSize(1,1)
-            .withPosition(0,2)
+            .withPosition(0,1)
             .getEntry();   
             
             swerveModule3OffsetEntry = tab.add("Back Left Offset", 0.0)
             .withSize(2,1)
-            .withPosition(0,4)
+            .withPosition(0,1)
             .getEntry();   
 
             swerveModule4OffsetEntry = tab.add("Back Right Offset", 0.0)
             .withSize(2,1)
-            .withPosition(0,6)
+            .withPosition(1,1)
             .getEntry();   
         } catch (IllegalArgumentException e){
         }
