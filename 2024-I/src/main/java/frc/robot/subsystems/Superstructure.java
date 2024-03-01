@@ -15,7 +15,7 @@ public class Superstructure extends SubsystemBase {
     private final Hopper hopper;
     private double stateDuration;
     private double internalStateTimer;
-    private double shootingSpeed;
+    private double customShotAngle;
     private boolean isIndexedOverride, hasGamepieceOverride, justIntaked;
     private Timer timer;
 
@@ -30,7 +30,8 @@ public class Superstructure extends SubsystemBase {
         SIDE_LAYUP_PREP,
         LAYUP_SCORING,
         LL_PREP,
-        LL_SCORING
+        LL_SCORING,
+        CUSTOM_SHOT_PREP
     }
 
     SuperstructureState systemState;
@@ -55,7 +56,6 @@ public class Superstructure extends SubsystemBase {
 
         SmartDashboard.putString("STATE", systemState.toString());
         stateDuration = 0;
-        shootingSpeed = 0;
         internalStateTimer = 0;
 
         SmartDashboard.putBoolean("LL Shot Move Arm", false);
@@ -71,6 +71,14 @@ public class Superstructure extends SubsystemBase {
 
     public void requestState(SuperstructureState request) {
         requestedSystemState = request;
+    }
+
+    public void requestState(SuperstructureState request, double val) {
+        if(request==SuperstructureState.CUSTOM_SHOT_PREP){
+            requestedSystemState = request;
+            customShotAngle=val;
+        }
+        return; //throw error or smth? idk
     }
 
     public String getRobotState() {
@@ -131,6 +139,8 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
                     nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.CUSTOM_SHOT_PREP) {
+                    nextSystemState = requestedSystemState;
                 }
 
                 if (requestedSystemState == SuperstructureState.LL_TEST) {
@@ -170,6 +180,8 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
                     nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.CUSTOM_SHOT_PREP) {
+                    nextSystemState = requestedSystemState;
                 }
 
                 break;
@@ -199,6 +211,8 @@ public class Superstructure extends SubsystemBase {
                 } else if (requestedSystemState == SuperstructureState.SIDE_LAYUP_PREP) {
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.GROUND_INTAKE) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.CUSTOM_SHOT_PREP) {
                     nextSystemState = requestedSystemState;
                 }
                 break;
@@ -285,6 +299,8 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 }  else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
                     nextSystemState=requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.CUSTOM_SHOT_PREP) {
+                    nextSystemState = requestedSystemState;
                 }
                 break;
 
@@ -336,6 +352,8 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
                     nextSystemState=requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.CUSTOM_SHOT_PREP) {
+                    nextSystemState = requestedSystemState;
                 }
                 break;
 
@@ -361,6 +379,31 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
                     nextSystemState = requestedSystemState;
+                }
+                break;
+            case CUSTOM_SHOT_PREP:
+                arm.setArmAngle(customShotAngle);
+                flywheel.runFlywheelLimelight();
+                hopper.stopHopper(); // only when we are shooting in the shooting states do we run the hopper
+                intake.stopIntake();
+
+                if (requestedSystemState == SuperstructureState.STOW) {
+                    nextSystemState = requestedSystemState;
+                }
+                // removed conditions for gamepiece to be indexed and for arm to be at the right
+                // angle
+                // Look into this, for now just make sure flywheel is at the right RPM
+                else if (requestedSystemState == SuperstructureState.LL_SCORING && flywheel.isAtRPM()) {
+                    timer.reset();
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.AMP_PREP) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.FRONT_LAYUP_PREP) {
+                    nextSystemState = requestedSystemState;
+                } else if (requestedSystemState == SuperstructureState.SIDE_LAYUP_PREP) {
+                    nextSystemState = requestedSystemState;
+                } else if(requestedSystemState == SuperstructureState.GROUND_INTAKE){
+                    nextSystemState=requestedSystemState;
                 }
                 break;
 
@@ -419,4 +462,10 @@ public class Superstructure extends SubsystemBase {
     private boolean isGamepieceIndexed() {
         return (hopper.isGamepieceIndexed() || isIndexedOverride);
     }
+
+    public void setCustomShotAngle(double angle){
+        customShotAngle = angle;
+    }
+
+    
 }

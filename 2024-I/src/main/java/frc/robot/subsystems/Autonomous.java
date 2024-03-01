@@ -89,9 +89,17 @@ public class Autonomous extends SubsystemBase {
             new WaitCommand(AutoConstants.kLimelightPrepDeadlineTime),
             new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP))
         ));
-        NamedCommands.registerCommand("Layup Prep", new ParallelDeadlineGroup(
+        NamedCommands.registerCommand("Layup Prep", new ParallelDeadlineGroup( //refactor to 'front layup prep' after hatboro
             new WaitCommand(AutoConstants.kLayupPrepDeadlineTime),
             new InstantCommand(() -> superstructure.requestState(SuperstructureState.FRONT_LAYUP_PREP))
+        ));
+        NamedCommands.registerCommand("Side Layup Prep", new ParallelDeadlineGroup(
+            new WaitCommand(AutoConstants.kLayupPrepDeadlineTime),
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.SIDE_LAYUP_PREP))
+        ));
+        NamedCommands.registerCommand("O Path Shot Prep", new ParallelDeadlineGroup(
+            new WaitCommand(AutoConstants.kLayupPrepDeadlineTime),
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.CUSTOM_SHOT_PREP,52)) //tune val i guess
         ));
         NamedCommands.registerCommand("Score", new ParallelDeadlineGroup(
             new WaitCommand(AutoConstants.kScoreDeadlineTime),

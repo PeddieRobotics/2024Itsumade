@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 0.73,
-      "y": 8.794838245881913
+      "y": 6.616167853492605
     },
     "rotation": -120.0
   },
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Layup Prep"
+            "name": "Side Layup Prep"
           }
         },
         {
