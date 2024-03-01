@@ -3,6 +3,7 @@ package frc.robot.commands.DriveCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
@@ -15,31 +16,29 @@ import frc.robot.utils.Logger;
 import frc.robot.utils.Constants.LimelightConstants;
 
 //Turn to target using PID
-public class Target extends Command {
+public class TargetInAuto extends Command {
     private Drivetrain drivetrain;
     private LimelightShooter limelightShooter; // TODO: figure out front or back LL
     private DriverOI oi;
 
-    private double error, turnThreshold, turnFF, turnInput;
+    private double error, turnThreshold, turnFF, turnInput, initialTime, currentTime;
     private PIDController turnPIDController;
     private Logger logger;
 
-    public Target() {
+    public TargetInAuto() {
         drivetrain = Drivetrain.getInstance();
         limelightShooter = LimelightShooter.getInstance();
 
         turnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
                 LimelightConstants.kTargetD);
+        turnPIDController.setIZone(4.0);
+
         turnFF = LimelightConstants.kTargetFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;
         logger = Logger.getInstance();
 
         addRequirements(drivetrain);
-        // SmartDashboard.putNumber("Target P", 0);
-        // SmartDashboard.putNumber("Target I", 0);
-        // SmartDashboard.putNumber("Target D", 0);
-        // SmartDashboard.putNumber("Target FF", 0);
     }
 
     @Override
@@ -47,16 +46,13 @@ public class Target extends Command {
         oi = DriverOI.getInstance();
         logger.logEvent("Started Target Command", true);
         limelightShooter.setPipeline(LimelightConstants.kShooterTargetingPipeline);
+        initialTime = Timer.getFPGATimestamp();
+        currentTime = Timer.getFPGATimestamp();
     }
 
     @Override
     public void execute() {
-        // turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
-        // turnPIDController.setI(SmartDashboard.getNumber("Target I", 0));
-        // turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
-        turnPIDController.setIZone(4.0);
-        // turnFF = (SmartDashboard.getNumber("Target FF", 0));
-
+        currentTime = Timer.getFPGATimestamp();
         if (limelightShooter.hasTarget()) {
             error = limelightShooter.getTxAverage();
             if (error < -turnThreshold) {
@@ -69,22 +65,18 @@ public class Target extends Command {
         } else {
             turnInput = 0;
         }
-        // SmartDashboard.putBoolean("Targetting", true);
-        // SmartDashboard.putNumber("Target Turn Input", turnInput);
-        // SmartDashboard.putBoolean("Limelight has target",
-        // limelightShooter.hasTarget());
+
         drivetrain.drive(oi.getSwerveTranslation(), turnInput * 2, true, oi.getCenterOfRotation());
     }
 
     @Override
     public void end(boolean interrupted) {
-        // SmartDashboard.putBoolean("Targetting", false);
         drivetrain.stop();
         logger.logEvent("Started Target Command", false);
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(error) < turnThreshold && oi.getSwerveTranslation() == new Translation2d(0, 0);
+        return Math.abs(error) < turnThreshold || (currentTime - initialTime > 3.0);
     }
 }

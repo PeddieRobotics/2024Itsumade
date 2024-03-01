@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 0.73,
-      "y": 8.794838245881913
+      "y": 6.62
     },
     "rotation": -120.0
   },
@@ -84,15 +84,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Target"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LL Prep"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Target"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "LL Prep"
+                }
+              }
+            ]
           }
         },
         {

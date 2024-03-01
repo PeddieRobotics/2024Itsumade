@@ -120,7 +120,8 @@ public final class Constants {
 
     public static final double kLimelightPrepDeadlineTime = 0.7;
     public static final double kLayupPrepDeadlineTime = 0.7;
-    public static final double kScoreDeadlineTime = 0.75;
+    public static final double kScoreDeadlineTime = 1.0;
+    public static final double kTargetDeadlineTime = 3.0;
   }
 
   public static class LimelightConstants {
@@ -273,11 +274,13 @@ public final class Constants {
     public static final double kHopperSensorThreshold = 0;
 
     public static final double kIntakeSpeed = 0.85;
+    public static final double kReverseIntakeSpeed = -0.85;
   }
 
   public static class HopperConstants {
     public static final double kHPIntakeHopperSpeed = 0; // if used, needs to be negative
     public static final double kGroundIntakeHopperSpeed = 0.5;
+    public static final double kOuttakeHopperSpeed = -0.5;
     public static final double kFeedFlywheelAmpSpeed = 0.5;
     public static final double kFeedFlywheelLayupSpeed = 0.5;
     public static final double kFeedFlywheelSpeakerSpeed = 0.5;

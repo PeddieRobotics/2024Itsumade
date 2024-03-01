@@ -5,6 +5,7 @@ import javax.security.auth.kerberos.DelegationPermission;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -38,17 +39,17 @@ public class OperatorOI {
 
     private Drivetrain drivetrain;
     private Superstructure superstructure;
+
     public OperatorOI() {
         drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
-        
+
         configureController();
     }
 
     public int getAlignGoalAprilTagID() {
         return DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     }
-
 
     public void configureController() {
         controller = new PS4Controller(1);
@@ -60,7 +61,13 @@ public class OperatorOI {
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.AMP_PREP)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.FRONT_LAYUP_PREP)));
+        triangleButton.onTrue(new InstantCommand(() -> {
+            if (rightTriggerHeld()) {
+                superstructure.requestState(SuperstructureState.SIDE_LAYUP_PREP);
+            } else {
+                superstructure.requestState(SuperstructureState.FRONT_LAYUP_PREP);
+            }
+        }));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
@@ -68,6 +75,7 @@ public class OperatorOI {
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
 
         Trigger muteButton = new JoystickButton(controller, 15);
+        muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         L1Bumper.onTrue(new DeployClimber());
@@ -79,7 +87,6 @@ public class OperatorOI {
         L2Trigger.whileTrue(new ManualClimberControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
-        // R2Trigger.whileTrue(new ManualArmControl());
 
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
         ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
@@ -95,7 +102,7 @@ public class OperatorOI {
         Trigger dpadRightTrigger = new Trigger(() -> controller.getPOV() == 90);
 
         Trigger dpadDownTrigger = new Trigger(() -> controller.getPOV() == 180);
-}
+    }
 
     private boolean bothBumpersHeld() {
         return controller.getL1Button() && controller.getR1Button();
@@ -139,7 +146,7 @@ public class OperatorOI {
         return input;
     }
 
-    public double getRightForward(){
+    public double getRightForward() {
         double input = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
         if (Math.abs(input) < OIConstants.kDrivingDeadband) {
             input = 0;

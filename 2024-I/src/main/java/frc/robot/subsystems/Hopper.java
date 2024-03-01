@@ -50,6 +50,11 @@ public class Hopper extends SubsystemBase {
     setHopper(HopperConstants.kGroundIntakeHopperSpeed);
   }
 
+  public void runHopperOuttake(){
+    //indexing (but not shooting logic) here
+    setHopper(HopperConstants.kOuttakeHopperSpeed);
+  }
+
   public void runHopperHPIntake(){
     setHopper(-HopperConstants.kHPIntakeHopperSpeed);
   }

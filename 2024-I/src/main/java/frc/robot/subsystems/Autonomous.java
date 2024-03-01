@@ -20,6 +20,7 @@ import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
 import frc.robot.commands.DriveCommands.Target;
+import frc.robot.commands.DriveCommands.TargetInAuto;
 // import frc.robot.commands.DriveCommands.ForcedCalibration;
 // import frc.robot.commands.DriveCommands.TurnOffMegatag;
 // import frc.robot.commands.DriveCommands.TurnOnMegatag;
@@ -93,11 +94,15 @@ public class Autonomous extends SubsystemBase {
             new WaitCommand(AutoConstants.kLayupPrepDeadlineTime),
             new InstantCommand(() -> superstructure.requestState(SuperstructureState.FRONT_LAYUP_PREP))
         ));
+        NamedCommands.registerCommand("Side Layup Prep", new ParallelDeadlineGroup(
+            new WaitCommand(AutoConstants.kLayupPrepDeadlineTime),
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.SIDE_LAYUP_PREP))
+        ));
         NamedCommands.registerCommand("Score", new ParallelDeadlineGroup(
             new WaitCommand(AutoConstants.kScoreDeadlineTime),
             new InstantCommand(() -> superstructure.sendToScore())
         ));
-        NamedCommands.registerCommand("Target", new Target());
+        NamedCommands.registerCommand("Target", new TargetInAuto());
 
         // NamedCommands.registerCommand("Set Odom", new ForcedCalibration());
         // NamedCommands.registerCommand("Turn on MegaTag", new TurnOnMegatag());
