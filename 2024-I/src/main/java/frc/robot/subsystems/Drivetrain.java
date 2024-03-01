@@ -265,18 +265,20 @@ public class Drivetrain extends SubsystemBase {
 
         // Get Angle Adjust Transitioning From Auto
         autoAdjustAngle = 0;
-        if(SmartDashboard.getBoolean("STARTING AUTO: LEFT", false)){
-            autoAdjustAngle = 80;
+        if(SmartDashboard.getBoolean("STARTING AUTO: SOURCE", false)){
+            autoAdjustAngle = -120;
         }
         if(SmartDashboard.getBoolean("STARTING AUTO: CENTER", false)){
             autoAdjustAngle = 180;
         }
-        if(SmartDashboard.getBoolean("STARTING AUTO: RIGHT", false)){
-            autoAdjustAngle = 80;
+        if(SmartDashboard.getBoolean("STARTING AUTO: AMP", false)){
+            autoAdjustAngle = 120;
         }
 
+        SmartDashboard.putNumber("AUTO ADJUST", autoAdjustAngle);
+
         if (fieldOriented) {
-            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d().plus(new Rotation2d(autoAdjustAngle)));
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d().plus(new Rotation2d(Math.toRadians(autoAdjustAngle))));
         } else {
             robotRelativeSpeeds = fieldRelativeSpeeds;
         }
