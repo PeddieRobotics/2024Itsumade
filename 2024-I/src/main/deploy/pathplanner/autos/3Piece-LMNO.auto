@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.79,
-      "y": 4.33
+      "x": 0.71,
+      "y": 4.46
     },
     "rotation": 120.0
   },
@@ -12,27 +12,27 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "C SourceSpeaker-SourceNote"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "F SourceNote-CenterNote"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "G CenterNote-AmpNote"
+            "name": "Side Layup Prep"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Y ToTopSeekNoteLocation"
+            "name": "Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L SourceSpeaker-MidNote5"
           }
         },
         {
@@ -42,15 +42,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "W ToClosestShooting"
+            "pathName": "M MidNote5-Score"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Y ToTopSeekNoteLocation"
+            "pathName": "N Score-MidNote4"
           }
         },
         {
@@ -60,9 +60,15 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "O MidNote4-Score"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "W ToClosestShooting"
+            "name": "Stow"
           }
         }
       ]

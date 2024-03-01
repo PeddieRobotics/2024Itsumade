@@ -24,7 +24,7 @@ public class FollowNoteInAuto extends Command {
     private double error;
     
     private double startTime, timeLimit;
-    private int totalFrameCount, doNotSeeFrameCount;
+    private int totalFrameCount, doNotSeeFrameCount, consecutiveNoNote;
     private boolean endBecauseNoNote;
     private double lastTx;
 
@@ -106,6 +106,14 @@ public class FollowNoteInAuto extends Command {
                 return;
             }
         }
+        // if we stop seeing a note assume it's about to be eaten
+        // waiting for the note to be indexed takes too long
+        else {
+            if (!hasTarget)
+                consecutiveNoNote++;
+            else
+                consecutiveNoNote = 0;
+        }
 
         drivetrain.drive(position, llTurn, false, new Translation2d(0, 0));
 
@@ -118,17 +126,17 @@ public class FollowNoteInAuto extends Command {
         // park the robot at the current location
         // set isParkedAuto to true in drivetrain
         // this disables other PathPlanner OTF commands and PathPlanner paths
-        if (endBecauseNoNote) {
+        if (endBecauseNoNote)
             drivetrain.setIsParkedAuto(true);
-            drivetrain.stop();
-        }
+        drivetrain.stop();
     }
 
     @Override
     public boolean isFinished() {
         // endBecauseNoNote is a condition we invented earlier
-        // and set a cap on total time so that we do not get stuck in this command
+        // and set a cap on total time so that we do not get stuck in this command 
         return endBecauseNoNote ||
+            consecutiveNoNote >= 2 ||
             Timer.getFPGATimestamp() - startTime >= timeLimit ||
             intake.hasGamepiece(); // or the INTAKE has the game piece (NOT hopper because it takes too long)
     }
