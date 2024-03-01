@@ -13,13 +13,17 @@ public abstract class Limelight extends SubsystemBase {
 
     public abstract double getTxAverage();
 
+    public abstract double getTyAverage();
+
     public abstract double getTaAverage();
 
-    public abstract boolean hasGamepiece();
+    public abstract double getRotationAverage();
+
+    public abstract double getRXAverage(); 
+
+    public abstract double getRYAverage(); 
 
     public abstract void forceAprilTagLocalization(SwerveDrivePoseEstimator odometry);
 
-    public abstract Pose2d getBotPose();
-
-
+    public abstract Pose2d getBotpose();
 }

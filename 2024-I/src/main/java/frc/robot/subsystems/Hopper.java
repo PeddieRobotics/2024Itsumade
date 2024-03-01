@@ -4,60 +4,115 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
+import au.grapplerobotics.LaserCan;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
+import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
+import frc.robot.utils.Constants.HopperConstants;
 import frc.robot.utils.Constants.IntakeConstants;
-
 
 public class Hopper extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
   private static Hopper hopper;
-  private CANSparkMax hopperMotor;
+  private Kraken hopperMotor;
+
+  //TODO: figure out if sensor will be digital input or analog
+  private DigitalInput topHopperSensor, bottomHopperSensor;
 
   public Hopper() {
-    hopperMotor = new CANSparkMax(RobotMap.HOPPER_MOTOR, MotorType.kBrushless);
-    hopperMotor.setSmartCurrentLimit(IntakeConstants.HOPPER_MOTOR_LIIMT);
+    hopperMotor = new Kraken(RobotMap.HOPPER_MOTOR_CAN_ID, RobotMap.CANIVORE_NAME);
+
+    topHopperSensor = new DigitalInput(RobotMap.TOP_HOPPER_SENSOR_ID);
+    bottomHopperSensor = new DigitalInput(RobotMap.BOTTOM_HOPPER_SENSOR_ID);
+
+    hopperMotor.setSupplyCurrentLimit(IntakeConstants.kHopperCurrentLimit);
+    hopperMotor.setBrake();
+
+    SmartDashboard.putBoolean("Hopper Percent Output", false);
+    SmartDashboard.putNumber("Hopper Motor Percent Output", 0);
   }
 
-  public static Hopper getInstance(){
-    if(hopper == null){
+  public static Hopper getInstance() {
+    if (hopper == null) {
       hopper = new Hopper();
-    }return hopper;
+    }
+    return hopper;
   }
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
+  public void runHopperGroundIntake(){
+    //indexing (but not shooting logic) here
+    setHopper(HopperConstants.kGroundIntakeHopperSpeed);
   }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
+  public void runHopperOuttake(){
+    //indexing (but not shooting logic) here
+    setHopper(HopperConstants.kOuttakeHopperSpeed);
+  }
+
+  public void runHopperHPIntake(){
+    setHopper(-HopperConstants.kHPIntakeHopperSpeed);
+  }
+
+  public void feedFlywheelLayup(){
+    setHopper(HopperConstants.kFeedFlywheelLayupSpeed);
+  }
+
+  public void feedFlywheelAmp() {
+    setHopper(HopperConstants.kFeedFlywheelAmpSpeed);
+  }
+
+    public void feedFlywheelSpeaker() {
+    setHopper(HopperConstants.kFeedFlywheelSpeakerSpeed);
+  }
+
+  public void setHopper(double speed) {
+    hopperMotor.setMotor(speed);
+  }
+
+  public void stopHopper() {
+    hopperMotor.setMotor(0);
+  }
+
+  public boolean getTopSensor(){
+    return !topHopperSensor.get();
+  }
+
+
+  public boolean getBottomSensor(){
+    return !bottomHopperSensor.get();
+  }
+
+  public boolean hasGamepiece(){
+    return (getTopSensor() || getBottomSensor());
+  }
+
+  public boolean isGamepieceIndexed(){
+    return getTopSensor();
+    // return (getTopSensor() && getBottomSensor());
+  }
+
+  public double getMotorCurrent(){
+    return hopperMotor.getSupplyCurrent();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Hopper full", isGamepieceIndexed());
+    SmartDashboard.putBoolean("Hopper Top Sensor Status", getTopSensor());
+    SmartDashboard.putBoolean("Hopper Bottom Sensor Status", getBottomSensor());
+    // SmartDashboard.putNumber("Hopper Top Sensor Reading", getTopSensorReading());
+    // SmartDashboard.putNumber("Hopper Bottom Sensor Reading", getBottomSensorReading());
+    // if (SmartDashboard.getBoolean("Hopper Percent Output", false)){
+    //   hopperMotor.setMotor(SmartDashboard.getNumber("Hopper Motor Percent Output", 0));
+    // }
+
   }
 
   @Override

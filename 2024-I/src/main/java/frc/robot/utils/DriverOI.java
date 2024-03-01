@@ -4,17 +4,24 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.Arm;
+import frc.robot.commands.DriveCommands.FollowNote;
+import frc.robot.commands.DriveCommands.FollowNoteInAuto;
+import frc.robot.commands.DriveCommands.ForcedCalibration;
+import frc.robot.commands.DriveCommands.PathPlannerToPoint;
+import frc.robot.commands.DriveCommands.PathPlannerToShoot;
+import frc.robot.commands.DriveCommands.RotateToAngle;
+import frc.robot.commands.DriveCommands.Target;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.OIConstants;
-//import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure;
 
 public class DriverOI {
@@ -34,96 +41,62 @@ public class DriverOI {
 
     private PS4Controller controller;
 
-    /**
-     * the center depending on aliance
-     */
-    private int alignGoalAprilTagID = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     private AlignGoalColumn alignGoalColumn = AlignGoalColumn.kCenter;
 
-    private Arm arm;
     private Superstructure superstructure;
-
-    private boolean usePreScorePose;
-
-    private Trigger xButton, touchpadButton, circleButton, triangleButton, muteButton, squareButton, L1Bumper, R1Bumper;
+    private Drivetrain drivetrain;
 
     public DriverOI() {
-        arm = Arm.getInstance();
+        drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
-        configureController(false);
+        configureController();
     }
 
     public int getAlignGoalAprilTagID() {
-        return alignGoalAprilTagID;
+        return DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 2;
     }
 
     public AlignGoalColumn getAlignGoalColumn() {
         return alignGoalColumn;
     }
 
-    public void controlLoop() {
-        if (xButton.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.GROUND_INTAKE);
-        } else if (muteButton.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.STOW);
-        } else if (circleButton.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.HP_INTAKE);
-        } else if (triangleButton.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.LL_SCORING); // CHANGE THIS LATER BECAUSE THERE IS DEEPER
-                                                                         // LOGIC REQUIRED
-        } else if (squareButton.getAsBoolean()) {
-            // drive to note command here
-        } else if (L1Bumper.getAsBoolean()) {
-            // align command here
-        } else if (R1Bumper.getAsBoolean()) {
-            superstructure.requestState(SuperstructureState.CLIMBING);
-        }
-    }
-
-    public void configureController(boolean usePreScorePose) {
+    public void configureController() {
         controller = new PS4Controller(0);
 
-        // Arm Poses
-        // L1 score (will move to this pose regardless of having a gamepiece)
-        xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
+        Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
+        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
-        // L2 scoring pose
-        circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
+        Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
 
-        // L3 scoring pose - does not include L3 cone forward right now.
-        triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
+        Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
+        triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
-        // Square button forces the robot to look at odometry updates.
-        squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+        Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+        squareButton.whileTrue(new FollowNote());
 
-        // Stowed pose
-        touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
+        Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
+        touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
-        // Mute homes the entire arm subsystem, both wrist and shoulder.
-        muteButton = new JoystickButton(controller, 15);
+        Trigger muteButton = new JoystickButton(controller, 15);
 
-        // Manual Wrist and Shoulder Override Controls
+        Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
+        L1Bumper.whileTrue(new Target());
+
+        Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
+        R1Bumper.onTrue(new Target());
+
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
-        // Gyro reset
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
+        ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
-        // Press and hold for outtaking slow (gamepiece adjustment), with down arrow
-        // this becomes full speed.
-        Trigger startButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
+        Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
 
-        // Press and hold for intaking slow (gamepiece adjustment), with down arrow this
-        // becomes full speed.
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
-        // Game piece selection / LED indication requests to human player
-        L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-
-        R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-
-        // Column Selection
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
 
         Trigger dpadLeftTrigger = new Trigger(() -> controller.getPOV() == 270);
@@ -166,28 +139,8 @@ public class DriverOI {
         return controller.getPOV() == 180;
     }
 
-    public boolean isUsePreScorePose() {
-        return usePreScorePose;
-    }
-
-    // Only update the boolean for using the pre-score pose if it is a state change
-    // This is especially important since this requires configuring the controller
-    // mapping
-    // for the operator, which should be done infrequently/minimally.
-    public void setUsePreScorePose(boolean usePreScorePose) {
-        if (this.usePreScorePose != usePreScorePose) {
-            this.usePreScorePose = usePreScorePose;
-            configureController(usePreScorePose);
-        }
-    }
-
-    public void configureController() {
-        controller = new PS4Controller(0);
-        Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-    }
-
     public double getForward() {
-        double input = controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
+        double input = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
         if (Math.abs(input) < 0.9) {
             input *= 0.7777;
         } else {
@@ -196,8 +149,19 @@ public class DriverOI {
         return input;
     }
 
+    public double getRightForward(){
+        double input = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
+        if (Math.abs(input) < 0.9) {
+            input *= 0.7777;
+        } else {
+            input = Math.pow(input, 3);
+        }
+        return input;
+
+    }
+
     public double getStrafe() {
-        double input = controller.getRawAxis(PS4Controller.Axis.kLeftX.value);
+        double input = -controller.getRawAxis(PS4Controller.Axis.kLeftX.value);
         if (Math.abs(input) < 0.9) {
             input *= 0.7777;
         } else {
@@ -243,7 +207,7 @@ public class DriverOI {
         double rightRotation = controller.getRawAxis(PS4Controller.Axis.kR2.value);
 
         double combinedRotation;
-        combinedRotation = (rightRotation - leftRotation) / 2.0;
+        combinedRotation = (leftRotation - rightRotation) / 2.0;
 
         return combinedRotation * DriveConstants.kMaxAngularSpeed;
     }

@@ -25,11 +25,11 @@ public class SwerveDriveCommand extends Command {
     @Override
     public void execute() {
         Translation2d position =  driverOI.getSwerveTranslation();
-        double rotation = -driverOI.getRotation();
+        double rotation = driverOI.getRotation();
         Translation2d centerOfRotation = driverOI.getCenterOfRotation();
 
-        // SmartDashboard.putNumber("field relative input forward axis", position.getX());
-        // SmartDashboard.putNumber("field relative input strafe axis", position.getY());
+        SmartDashboard.putNumber("field relative input forward axis", position.getX());
+        SmartDashboard.putNumber("field relative input strafe axis", position.getY());
 
         drivetrain.drive(position, rotation, true, centerOfRotation);
 

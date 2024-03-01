@@ -4,9 +4,21 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import frc.robot.Shuffleboard.ShuffleboardMain;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.LimelightShooter;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
+import frc.robot.utils.Constants.LimelightConstants;
+import frc.robot.utils.Logger;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -18,6 +30,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private ShuffleboardMain shuffleboardMain;
+  private Logger logger;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -28,6 +42,15 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    shuffleboardMain = ShuffleboardMain.getInstance();
+    
+    DataLogManager.logNetworkTables(false);
+    DataLogManager.start("/media/sda1");
+    logger = Logger.getInstance();
+    DriverStation.startDataLog(DataLogManager.getLog());
+
+    shuffleboardMain.setUpTabs();
+    shuffleboardMain.setUpAutoSelectors();
   }
 
   /**
@@ -44,11 +67,18 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    shuffleboardMain.update();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    // m_robotContainer.resetGyro();
+    m_robotContainer.coastClimber();
+    Superstructure.getInstance().requestState(SuperstructureState.STOW);
+    logger.logEvent("Disabled Mode", true);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -56,17 +86,27 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    // m_robotContainer.resetGyro();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    LimelightShooter.getInstance().setPipeline(LimelightConstants.kShooterTargetingPipeline);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    logger.logEvent("Autonomous Mode", true);
+    logger.signalRobotEnable();
+    System.out.println("LOGGING: " + DataLogManager.getLogDir());
+
+    Drivetrain.getInstance().setIsParkedAuto(false);
+    Drivetrain.getInstance().setUseMegaTag(false);
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    logger.updateLogs();
+  }
 
   @Override
   public void teleopInit() {
@@ -77,11 +117,25 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    logger.logEvent("TeleOp Mode", true);
+    logger.signalRobotEnable();
+    System.out.println("LOGGING: " + DataLogManager.getLogDir());
+
+    Drivetrain.getInstance().setIsParkedAuto(false);
+    Drivetrain.getInstance().setUseMegaTag(true);
+
+    // Set the initial gyro offset used for field-oriented swerve drive to be correct coming out of autonomous mode
+    Drivetrain.getInstance().setAutoAdjustAngle(ShuffleboardMain.getInstance().getGyroOffsetForTeleop());
+
+    m_robotContainer.brakeClimber();
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    logger.updateLogs();
+  }
 
   @Override
   public void testInit() {
