@@ -29,7 +29,6 @@ import frc.robot.utils.Constants.DriveConstants;
 
 public class Autonomous extends SubsystemBase {
     private static SendableChooser<Command> autoChooser;
-    private Hashtable<String, Command> autoRoutines;
 
     private static Autonomous autonomous;
     private Drivetrain drivetrain;
@@ -42,7 +41,6 @@ public class Autonomous extends SubsystemBase {
         registerNamedCommands();
         configureAutoBuilder();
         autoChooser = AutoBuilder.buildAutoChooser();
-        SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
     public void configureAutoBuilder() {
@@ -122,8 +120,8 @@ public class Autonomous extends SubsystemBase {
         return autoChooser.getSelected();
     }
 
-    public Hashtable<String, Command> getAutoRoutines() {
-        return autoRoutines;
+    public SendableChooser<Command> getAutoChooser() {
+        return autoChooser;
     }
 
     public static Autonomous getInstance() {

@@ -13,7 +13,8 @@ public class ShuffleboardMain {
 
     private AngleOverridesTab angleOverridesTab;
     private ArmTab armTab;
-    private DebugTab debugTab;
+    // private DebugTab debugTab;
+    private LiveTuningTab liveTuningTab;
     private DrivetrainTab drivetrainTab;
     private FlywheelTab flywheelTab;
     private IntakeHopperTab intakeHopperTab;
@@ -46,6 +47,7 @@ public class ShuffleboardMain {
         // limelightTab = new LimelightTab();
         // tabs.add(limelightTab);
         operatorTab = new OperatorTab();
+        liveTuningTab = new LiveTuningTab();
         tabs.add(operatorTab);
 
         for (ShuffleboardTabBase tab : tabs){
@@ -69,3 +71,4 @@ public class ShuffleboardMain {
         } catch(NullPointerException e){}
     }
 }
+;

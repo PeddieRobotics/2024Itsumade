@@ -35,16 +35,13 @@ public class OperatorTab extends ShuffleboardTabBase{
 
     private GenericEntry stateEntry, armAngleEntry,
     flywheelAtRPMEntry, armDeltaEntry, flywheelDeltaEntry, flywheelLeftRPMEntry, 
-    flywheelRightRPMEntry, isIndexedOverrideEntry, 
-    isGamePieceIndexedEntry, stowAfterShootOverrideEntry, topSensorEntry, bottomSensorEntry,
+    flywheelRightRPMEntry, isIndexedOverrideEntry, stowAfterShootOverrideEntry, topSensorEntry, bottomSensorEntry,
     hasGamePieceEntry;
 
     private ComplexWidget mAutoChooser;
 
     //Sendable Chooser
     private static SendableChooser<Command> autoRoutineSelector;
-    private Hashtable<String, Command> autoRoutines;
-
     public OperatorTab(){
         arm = Arm.getInstance();
         autonomous = Autonomous.getInstance();
@@ -72,7 +69,7 @@ public class OperatorTab extends ShuffleboardTabBase{
             .withPosition(0,0)
             .getEntry();
 
-            cameraWidget = tab.addCamera("Camera", "LL Shooter", "http://10.58.95.41:5800") //LATER, with one of the limelights
+            cameraWidget = tab.addCamera("Camera", "LL Intake", "http://10.58.95.53:5800")
             .withSize(5,5)
             .withPosition(5,1);
 
@@ -96,15 +93,16 @@ public class OperatorTab extends ShuffleboardTabBase{
             .withPosition(1, 1)
             .getEntry();
 
-            isIndexedOverrideEntry = tab.add("Piece Indexed Override", false)
-            .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(2,1)
-            .withPosition(3, 0)
+            flywheelIsAtRPMEntry = tab.add("Flywheel At RPM", 0.0) 
+            .withSize(2, 1)
+            .withPosition(1, 1)
             .getEntry();
 
-            // isGamePieceIndexedEntry = tab.add("INDEXED?", hopper.isGamepieceIndexed())
-            // .withSize(2,2)
-            // .withPosition(7, 0)
+            // Return to this later
+            // isIndexedOverrideEntry = tab.add("Piece Indexed Override", false)
+            // .withWidget(BuiltInWidgets.kToggleButton)
+            // .withSize(2,1)
+            // .withPosition(3, 0)
             // .getEntry();
 
             stowAfterShootOverrideEntry = tab.add("Stow After Shoot Override", true)
@@ -136,16 +134,14 @@ public class OperatorTab extends ShuffleboardTabBase{
         try {
             armAngleEntry.setDouble(arm.getArmAngleDegrees());
 
-            //flywheelAtRPMEntry.getBoolean(false);
+            flywheelAtRPMEntry.getBoolean(flywheel.isAtRPM());
             flywheelLeftRPMEntry.setDouble(flywheel.getFlywheelLeftRPM());
             flywheelRightRPMEntry.setDouble(flywheel.getFlywheelRightRPM());
             flywheel.setRPMDelta(flywheelDeltaEntry.getDouble(0));
 
             arm.setArmDelta(armDeltaEntry.getDouble(0));
 
-            //stowAfterShootOverrideEntry.getBoolean(true);
-            isIndexedOverrideEntry.getBoolean(false);
-            //isGamePieceIndexedEntry.getBoolean(false); //check this and the above later
+            // isIndexedOverrideEntry.getBoolean(false);  // Return to this later
             stateEntry.setString(superstructure.getRobotState());
 
             topSensorEntry.setBoolean(hopper.getTopSensor());
@@ -156,23 +152,13 @@ public class OperatorTab extends ShuffleboardTabBase{
     }
 
     public void setupAutoSelector(){
-        Hashtable<String,Command> autoRoutines = autonomous.getAutoRoutines();
-        Enumeration<String> e = autoRoutines.keys();
-
-        while (e.hasMoreElements()) {
-            String autoRoutineName = e.nextElement();
-            autoRoutineSelector.addOption(autoRoutineName, autoRoutines.get(autoRoutineName));
-        }
-        mAutoChooser = tab.add("Auto routine", autoRoutineSelector).withSize(5,2).withPosition(16,1); // comp settings: withPosition(16,1);
+        SendableChooser<Command> autoChooser = autonomous.getAutoChooser();
+        mAutoChooser = tab.add("Auto routine", autoChooser).withSize(5,2).withPosition(0,8); // comp settings: withPosition(16,1);
 
     } 
-
 
     public static Command getAutonomousCommand() {
         return autoRoutineSelector.getSelected();
     }
 
-    public Hashtable<String, Command> getAutoRoutines() {
-        return autoRoutines;
-    }
 }
