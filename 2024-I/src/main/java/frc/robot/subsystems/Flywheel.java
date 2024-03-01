@@ -125,9 +125,8 @@ public class Flywheel extends SubsystemBase {
         return flywheelRightMotor.getRPM();
     }
 
-    public double setRPMDelta(double delta){
+    public void setRPMDelta(double delta){
         rpmDelta = delta;
-        return delta;
     }
 
     public void putSmartDashboard() {

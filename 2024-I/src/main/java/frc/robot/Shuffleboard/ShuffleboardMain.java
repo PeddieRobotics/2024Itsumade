@@ -69,9 +69,10 @@ public class ShuffleboardMain {
         return operatorTab.getGyroOffsetForTeleop();
     }
 
-    public void setUpAutoSelector() {
+    public void setUpAutoSelectors() {
         try{
             operatorTab.configureAutoSelector();
+            operatorTab.configureAutoSetupSelector();
         } catch(NullPointerException e){}
     }
 }

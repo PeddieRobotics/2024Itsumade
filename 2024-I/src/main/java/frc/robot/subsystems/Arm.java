@@ -186,8 +186,7 @@ public class Arm extends SubsystemBase {
     }
 
     public boolean isAtLLAngle() {
-        return Math.abs(getArmAngleDegrees()
-                - getAngleFromDist(limelightShooter.getDistance())) < ArmConstants.kArmPositionEpsilon;
+        return Math.abs(getArmAngleDegrees()-armAngleSetpoint) < ArmConstants.kArmPositionEpsilon;
     }
 
     public void setArmAngle(double angle) {
@@ -214,15 +213,15 @@ public class Arm extends SubsystemBase {
     }
 
     public void setFrontLayupPosition() {
-        setArmAngle(ArmConstants.kArmFrontLayupPosition);
+        setArmAngle(ArmConstants.kArmFrontLayupPosition + armDelta);
     }
 
     public void setSideLayupPosition() {
-        setArmAngle(ArmConstants.kArmSideLayupPosition);
+        setArmAngle(ArmConstants.kArmSideLayupPosition + armDelta);
     }
 
     public void setLLPosition() {
-        setArmAngle(getAngleFromDist(limelightShooter.getDistance())+armDelta);
+        setArmAngle(getAngleFromDist(limelightShooter.getDistance()) + armDelta);
     }
 
     public void setStowPosition() {

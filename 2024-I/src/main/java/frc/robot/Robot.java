@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     DriverStation.startDataLog(DataLogManager.getLog());
 
     shuffleboardMain.setUpTabs();
-    shuffleboardMain.setUpAutoSelector();
+    shuffleboardMain.setUpAutoSelectors();
   }
 
   /**

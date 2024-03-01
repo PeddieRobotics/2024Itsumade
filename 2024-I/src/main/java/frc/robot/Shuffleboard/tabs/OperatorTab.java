@@ -27,7 +27,7 @@ public class OperatorTab extends ShuffleboardTabBase{
     private SendableChooser<Command> autoChooser;
     private SendableChooser<String> autoSetupChooser;
 
-    private ComplexWidget autoChooserWidget, autoSetupWidget, cameraWidget;
+    private ComplexWidget autoChooserWidget, autoSetupWidget, intakeCameraWidget, shooterCameraWidget;
 
     private Arm arm;
     private Autonomous autonomous;
@@ -55,42 +55,46 @@ public class OperatorTab extends ShuffleboardTabBase{
 
         try{ 
             stateEntry = tab.add("State", "STOW")
-            .withSize(1,1)
-            .withPosition(0,0)
+            .withSize(2,1)
+            .withPosition(12,1)
             .getEntry();
 
             armAngleEntry = tab.add("Arm Angle", 0.0)
             .withSize(1,1)
-            .withPosition(0,1)
+            .withPosition(12,2)
             .getEntry();
 
-            cameraWidget = tab.addCamera("Camera", "LL Intake", "http://10.58.95.53:5800")
-            .withSize(5,5)
-            .withPosition(5,1);
+            intakeCameraWidget = tab.addCamera("Intake Camera", "LL Intake", "http://10.58.95.53:5800")
+            .withSize(5,4)
+            .withPosition(5,0);
+
+            shooterCameraWidget = tab.addCamera("Shooter Camera", "LL Shooter", "http://10.58.95.41:5800")
+            .withSize(5,4)
+            .withPosition(0, 0);
 
             flywheelDeltaEntry = tab.add("Flywheel Delta", 0.0)
             .withSize(1,1)
-            .withPosition(1, 2)
+            .withPosition(14, 1)
             .getEntry();
 
             armDeltaEntry = tab.add("Arm Delta", 0.0)
             .withSize(1,1)
-            .withPosition(0, 2)
+            .withPosition(13, 2)
             .getEntry();
 
             flywheelLeftRPMEntry = tab.add("Flywheel Left RPM", 0.0) 
             .withSize(2, 1)
-            .withPosition(1, 0)
+            .withPosition(12, 0)
             .getEntry();
 
             flywheelRightRPMEntry = tab.add("Flywheel Right RPM", 0.0) 
             .withSize(2, 1)
-            .withPosition(1, 1)
+            .withPosition(14, 0)
             .getEntry();
 
-            flywheelAtRPMEntry = tab.add("Flywheel At RPM", 0.0) 
-            .withSize(2, 1)
-            .withPosition(1, 3)
+            flywheelAtRPMEntry = tab.add("Flywheel At RPM?", false) 
+            .withSize(1, 1)
+            .withPosition(15, 1)
             .getEntry();
 
             // Return to this later
@@ -101,18 +105,18 @@ public class OperatorTab extends ShuffleboardTabBase{
             // .getEntry();
 
             topSensorEntry = tab.add("Top Sensor?", false)
-            .withSize(1,1)
-            .withPosition(2, 0)
+            .withSize(1, 1)
+            .withPosition(11, 0)
             .getEntry();
 
             bottomSensorEntry = tab.add("Bottom Sensor?", false)
             .withSize(1,1)
-            .withPosition(2, 1)
+            .withPosition(11, 1)
             .getEntry();   
 
             hasGamePieceEntry = tab.add("Has Gamepiece?", false)
-            .withSize(2,2)
-            .withPosition(0, 3)
+            .withSize(5,5)
+            .withPosition(16, 0)
             .getEntry();            
         } catch (IllegalArgumentException e){
         }
@@ -142,7 +146,9 @@ public class OperatorTab extends ShuffleboardTabBase{
 
     public void configureAutoSelector(){
         autoChooser = autonomous.getAutoChooser();
-        autoChooserWidget = tab.add("Auto routine", autoChooser).withSize(4,1).withPosition(0,4);
+        autoChooserWidget = tab.add("Auto routine", autoChooser)
+        .withSize(2,1)
+        .withPosition(11,3);
     }
 
     public void configureAutoSetupSelector(){
@@ -151,7 +157,9 @@ public class OperatorTab extends ShuffleboardTabBase{
         autoSetupChooser.addOption("SOURCE", "SOURCE");
         autoSetupChooser.addOption("AMP", "AMP");
         autoSetupChooser.addOption("CENTER", "CENTER");
-        autoSetupWidget = tab.add("Auto setup", autoSetupChooser).withSize(4,1).withPosition(0,5);
+        autoSetupWidget = tab.add("Auto setup", autoSetupChooser)
+        .withSize(2,1)
+        .withPosition(13,3);
     }
 
     public Command getAutonomousCommand() {
