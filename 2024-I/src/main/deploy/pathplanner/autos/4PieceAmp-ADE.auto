@@ -60,9 +60,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "LL Prep"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "LL Prep"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Target"
+                }
+              }
+            ]
           }
         },
         {

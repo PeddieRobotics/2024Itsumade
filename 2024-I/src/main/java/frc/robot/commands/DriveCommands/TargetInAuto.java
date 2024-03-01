@@ -77,6 +77,6 @@ public class TargetInAuto extends Command {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(error) < turnThreshold || (currentTime - initialTime > 3.0);
+        return Math.abs(error) < turnThreshold || (currentTime - initialTime > 1.0);
     }
 }

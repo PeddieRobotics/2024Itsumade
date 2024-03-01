@@ -8,27 +8,33 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3328624118018553,
-        "y": 6.487803446362955
+        "x": 1.9651421442643155,
+        "y": 6.445644434798142
       },
       "isLocked": false,
       "linkedName": "AmpNote"
     },
     {
       "anchor": {
-        "x": 2.7500434953137205,
-        "y": 5.564296379189416
+        "x": 3.3442710692570645,
+        "y": 5.573307213576476
       },
       "prevControl": {
-        "x": 2.0635131712488803,
-        "y": 5.492382339971527
+        "x": 2.3511921301747924,
+        "y": 5.620150559759602
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "CenterNote"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 150.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -39,7 +45,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 168.6135712035908,
     "rotateFast": false
   },
   "reversed": false,
