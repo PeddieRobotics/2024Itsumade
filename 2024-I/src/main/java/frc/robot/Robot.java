@@ -30,12 +30,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-
-  // private ShuffleboardMain shuffleboardMain;
-  private PowerDistribution pdh;
-  // private ShuffleboardMain shuffleboardMain;
+  private ShuffleboardMain shuffleboardMain;
   private Logger logger;
-  //private PowerDistribution pdh;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -46,17 +42,15 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    // shuffleboardMain = ShuffleboardMain.getInstance();
+    shuffleboardMain = ShuffleboardMain.getInstance();
     
     DataLogManager.logNetworkTables(false);
     DataLogManager.start("/media/sda1");
     logger = Logger.getInstance();
     DriverStation.startDataLog(DataLogManager.getLog());
 
-    //pdh = new PowerDistribution(1, ModuleType.kRev);
-
-    // shuffleboardMain.setUpTabs();
-    // shuffleboardMain.setUpAutoSelector();
+    shuffleboardMain.setUpTabs();
+    shuffleboardMain.setUpAutoSelector();
   }
 
   /**
@@ -74,7 +68,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    // shuffleboardMain.update();
+    shuffleboardMain.update();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -130,6 +124,9 @@ public class Robot extends TimedRobot {
 
     Drivetrain.getInstance().setIsParkedAuto(false);
     Drivetrain.getInstance().setUseMegaTag(true);
+
+    // Set the initial gyro offset used for field-oriented swerve drive to be correct coming out of autonomous mode
+    Drivetrain.getInstance().setAutoAdjustAngle(ShuffleboardMain.getInstance().getGyroOffsetForTeleop());
 
     m_robotContainer.brakeClimber();
   }

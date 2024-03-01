@@ -11,6 +11,7 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants.ScoringConstants;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Conversions;
 import frc.robot.utils.DriverOI;
@@ -29,7 +30,8 @@ public class Arm extends SubsystemBase {
     private CANcoder armCANcoder;
     private InterpolatingDoubleTreeMap LLShotMap = new InterpolatingDoubleTreeMap();
     private Rate angle;
-    private double gravityFeedForward, armAngleSetpoint;
+    private double gravityFeedForward, armAngleSetpoint, armDelta;
+    private String stringState;
 
     public enum ArmState {
         Intaking, Moving, Stowed, Shooting
@@ -39,6 +41,8 @@ public class Arm extends SubsystemBase {
 
     public Arm() {
         limelightShooter = LimelightShooter.getInstance();
+
+        armDelta = 0.0;
 
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
         configureCANcoder();
@@ -68,6 +72,7 @@ public class Arm extends SubsystemBase {
 
         armAngleSetpoint = 0;
         state = ArmState.Stowed;
+        stringState = "";
         goalState = ArmState.Stowed;
         angle = new Rate(0);
         gravityFeedForward = 0;
@@ -97,6 +102,10 @@ public class Arm extends SubsystemBase {
 
     public void stopArm() {
         // armMotor.setMotor(0);
+    }
+
+    public void setArmDelta(double delta){
+        armDelta = delta;
     }
 
     public void putSmartDashboard() {
@@ -141,6 +150,10 @@ public class Arm extends SubsystemBase {
 
     public double getArmAngleDegrees() {
         return Conversions.convertRotationsToArmDegrees(getAbsoluteCANCoderPosition()/2);
+    }
+
+    public double getArmTemperature(){
+        return armMotor.getMotorTemperature();
     }
 
     public static Arm getInstance() {
@@ -209,7 +222,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setLLPosition() {
-        setArmAngle(getAngleFromDist(limelightShooter.getDistance()));
+        setArmAngle(getAngleFromDist(limelightShooter.getDistance())+armDelta);
     }
 
     public void setStowPosition() {

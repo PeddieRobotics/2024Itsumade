@@ -64,22 +64,6 @@ public class IntakeHopperTab extends ShuffleboardTabBase{
     @Override
     public void update(){
         try{
-            // if(intakeToggleEntry.getBoolean(false)){
-            //     intake.setIntake(intakeSetSpeedEntry.getDouble(0.0));
-            // }
-
-            // if(hopperToggleEntry.getBoolean(false)){
-            //     hopper.setHopper(hopperSetSpeedEntry.getDouble(0.0));
-            // }
-            /*
-             * intakeCurrentSpeedEntry.setDouble(intake.getSpeed());
-             * intakeHasGamepieceEntry.setBoolean(intake.hasGamepiece());
-             * intakeMotorTempEntry.setDouble(intake.getMotorTemperature());
-             * 
-             * if(intakeToggleEntry.getBoolean()){
-             *      intake.setSpeed(intakeSetSpeedEntry.getDouble())
-             * }
-             */
         } catch (IllegalArgumentException e){}
     }
 }

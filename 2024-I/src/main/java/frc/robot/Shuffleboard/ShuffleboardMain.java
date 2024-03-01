@@ -13,6 +13,8 @@ public class ShuffleboardMain {
 
     private AngleOverridesTab angleOverridesTab;
     private ArmTab armTab;
+    // private DebugTab debugTab;
+    private LiveTuningTab liveTuningTab;
     private DrivetrainTab drivetrainTab;
     private FlywheelTab flywheelTab;
     private IntakeHopperTab intakeHopperTab;
@@ -30,19 +32,22 @@ public class ShuffleboardMain {
     }
 
     public void setUpTabs(){
-        angleOverridesTab = new AngleOverridesTab();
-        tabs.add(angleOverridesTab);
-        armTab = new ArmTab();
-        tabs.add(armTab);
-        drivetrainTab = new DrivetrainTab();
-        tabs.add(drivetrainTab);
-        flywheelTab = new FlywheelTab();
-        tabs.add(flywheelTab);
-        intakeHopperTab = new IntakeHopperTab();
-        tabs.add(intakeHopperTab);
-        limelightTab = new LimelightTab();
-        tabs.add(limelightTab);
+        // angleOverridesTab = new AngleOverridesTab();
+        // tabs.add(angleOverridesTab);
+        // armTab = new ArmTab();
+        // tabs.add(armTab);
+        // drivetrainTab = new DrivetrainTab();
+        // tabs.add(drivetrainTab);
+        // debugTab = new DebugTab();
+        // tabs.add(debugTab);
+        // flywheelTab = new FlywheelTab();
+        // tabs.add(flywheelTab);
+        // intakeHopperTab = new IntakeHopperTab();
+        // tabs.add(intakeHopperTab);
+        // limelightTab = new LimelightTab();
+        // tabs.add(limelightTab);
         operatorTab = new OperatorTab();
+        // liveTuningTab = new LiveTuningTab();
         tabs.add(operatorTab);
 
         for (ShuffleboardTabBase tab : tabs){
@@ -60,7 +65,14 @@ public class ShuffleboardMain {
         return operatorTab.getAutonomousCommand();
     }
 
+    public double getGyroOffsetForTeleop(){
+        return operatorTab.getGyroOffsetForTeleop();
+    }
+
     public void setUpAutoSelector() {
-        operatorTab.setUpAutoSelector();
+        try{
+            operatorTab.configureAutoSelector();
+        } catch(NullPointerException e){}
     }
 }
+;

@@ -5,6 +5,8 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
+import frc.robot.subsystems.Arm;
+
 public final class Constants {
   public static class GlobalConstants {
     public static final int kDriverControllerPort = 0;
@@ -260,7 +262,7 @@ public final class Constants {
     public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 0.5;
 
-    // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
+        // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
     // needs more tuning/initial values only
     public static final double[][] treeMapValues = new double[][] { { 44.0, 42.0 }, { 47.5, 43 }, { 60, 50 }, { 65.0, 53.0 }, { 70.1, 55.0 }, { 80, 56 }, { 85.2, 60.0 },
         { 93.8, 61 }, { 108.2, 65.6 }, { 112.5, 66 }, { 130, 68 }, { 134.6, 69.0 }, { 147.8, 69.5 }, { 154.5, 70.5 }, { 158.6, 70.5 }, { 166.2, 71.5}, { 175.6, 72 }, { 179.6, 72.3 },

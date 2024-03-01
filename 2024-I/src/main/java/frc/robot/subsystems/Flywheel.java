@@ -17,7 +17,7 @@ public class Flywheel extends SubsystemBase {
     private double rpmDelta;
 
     public Flywheel() {
-        rpmDelta = SmartDashboard.getNumber("Flywheel Delta", 0.0);
+        rpmDelta = 0.0;
 
         flywheelLeftMotor = new Kraken(RobotMap.FLYWHEEL_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
         flywheelRightMotor = new Kraken(RobotMap.FLYWHEEL_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
@@ -123,6 +123,11 @@ public class Flywheel extends SubsystemBase {
 
     public double getFlywheelRightRPM() {
         return flywheelRightMotor.getRPM();
+    }
+
+    public double setRPMDelta(double delta){
+        rpmDelta = delta;
+        return delta;
     }
 
     public void putSmartDashboard() {
