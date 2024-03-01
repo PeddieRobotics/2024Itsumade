@@ -155,9 +155,9 @@ public final class Constants {
     public static final double kTargetP = 0.017;
     public static final double kTargetI = 0;
     public static final double kTargetD = 0.002;
-    public static final double kTargetFF = 0.05;
+    public static final double kTargetFF = 0.01;
 
-    public static final double kTargetAngleThreshold = 2.0;
+    public static final double kTargetAngleThreshold = 1.0;
 
     // speaker april tag height because that is what will be used the most
     public static final double kSpeakerAprilTagHeight = 57.125;
@@ -263,9 +263,9 @@ public final class Constants {
 
         // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
     // needs more tuning/initial values only
-    public static final double[][] treeMapValues = new double[][] { { 47.5, 43 }, { 60, 50 }, { 80, 56 },
-    { 93.8, 61 }, { 112.5, 66 }, { 130, 68 }, { 147.8, 69.5 }, { 158.6, 70.5 }, { 175.6, 72 }, { 179.6, 72.3 },
-    { 213, 73.25 } };
+    public static final double[][] treeMapValues = new double[][] { { 44.0, 42.0 }, { 47.5, 43 }, { 60, 50 }, { 65.0, 53.0 }, { 70.1, 55.0 }, { 80, 56 }, { 85.2, 60.0 },
+        { 93.8, 61 }, { 108.2, 65.6 }, { 112.5, 66 }, { 130, 68 }, { 134.6, 69.0 }, { 147.8, 69.5 }, { 154.5, 70.5 }, { 158.6, 70.5 }, { 166.2, 71.5}, { 175.6, 72 }, { 179.6, 72.3 },
+        { 213, 73.25 } };
   }
 
   public static class IntakeConstants {
