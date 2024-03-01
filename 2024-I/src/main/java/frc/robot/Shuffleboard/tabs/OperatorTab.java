@@ -24,7 +24,10 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Superstructure;
 
 public class OperatorTab extends ShuffleboardTabBase{
-    private ComplexWidget autoChooserWidget, cameraWidget;
+    private SendableChooser<Command> autoChooser;
+    private SendableChooser<String> autoSetupChooser;
+
+    private ComplexWidget autoChooserWidget, autoSetupWidget, cameraWidget;
 
     private Arm arm;
     private Autonomous autonomous;
@@ -35,13 +38,9 @@ public class OperatorTab extends ShuffleboardTabBase{
 
     private GenericEntry stateEntry, armAngleEntry,
     flywheelAtRPMEntry, armDeltaEntry, flywheelDeltaEntry, flywheelLeftRPMEntry, 
-    flywheelRightRPMEntry, isIndexedOverrideEntry, stowAfterShootOverrideEntry, topSensorEntry, bottomSensorEntry,
+    flywheelRightRPMEntry, isIndexedOverrideEntry, topSensorEntry, bottomSensorEntry,
     hasGamePieceEntry;
 
-    private ComplexWidget mAutoChooser;
-
-    //Sendable Chooser
-    private static SendableChooser<Command> autoRoutineSelector;
     public OperatorTab(){
         arm = Arm.getInstance();
         autonomous = Autonomous.getInstance();
@@ -49,24 +48,20 @@ public class OperatorTab extends ShuffleboardTabBase{
         hopper = Hopper.getInstance();
         intake = Intake.getInstance();
         superstructure = Superstructure.getInstance();
-        autoRoutineSelector = AutoBuilder.buildAutoChooser();
     }
 
     public void createEntries() {
         tab = Shuffleboard.getTab("Operator");
 
-        autoRoutineSelector = new SendableChooser<Command>();
-        SmartDashboard.putData("Auto Chooser", autoRoutineSelector);
-
         try{ 
             stateEntry = tab.add("State", "STOW")
             .withSize(1,1)
-            .withPosition(0,1)
+            .withPosition(0,0)
             .getEntry();
 
             armAngleEntry = tab.add("Arm Angle", 0.0)
             .withSize(1,1)
-            .withPosition(0,0)
+            .withPosition(0,1)
             .getEntry();
 
             cameraWidget = tab.addCamera("Camera", "LL Intake", "http://10.58.95.53:5800")
@@ -80,7 +75,7 @@ public class OperatorTab extends ShuffleboardTabBase{
 
             armDeltaEntry = tab.add("Arm Delta", 0.0)
             .withSize(1,1)
-            .withPosition(1, 2)
+            .withPosition(0, 2)
             .getEntry();
 
             flywheelLeftRPMEntry = tab.add("Flywheel Left RPM", 0.0) 
@@ -93,9 +88,9 @@ public class OperatorTab extends ShuffleboardTabBase{
             .withPosition(1, 1)
             .getEntry();
 
-            flywheelIsAtRPMEntry = tab.add("Flywheel At RPM", 0.0) 
+            flywheelAtRPMEntry = tab.add("Flywheel At RPM", 0.0) 
             .withSize(2, 1)
-            .withPosition(1, 1)
+            .withPosition(1, 3)
             .getEntry();
 
             // Return to this later
@@ -105,32 +100,26 @@ public class OperatorTab extends ShuffleboardTabBase{
             // .withPosition(3, 0)
             // .getEntry();
 
-            stowAfterShootOverrideEntry = tab.add("Stow After Shoot Override", true)
-            .withWidget(BuiltInWidgets.kToggleButton)
-            .withSize(2,2)
-            .withPosition(0, 7)
-            .getEntry();
-
             topSensorEntry = tab.add("Top Sensor?", false)
             .withSize(1,1)
-            .withPosition(0, 2)
+            .withPosition(2, 0)
             .getEntry();
 
             bottomSensorEntry = tab.add("Bottom Sensor?", false)
             .withSize(1,1)
-            .withPosition(0, 3)
+            .withPosition(2, 1)
             .getEntry();   
 
             hasGamePieceEntry = tab.add("Has Gamepiece?", false)
             .withSize(2,2)
-            .withPosition(3, 1)
+            .withPosition(0, 3)
             .getEntry();            
         } catch (IllegalArgumentException e){
         }
     }
 
     @Override
-    public void update() { //Some lines here are arbitrary code that should be implemented later but don't have the necessary methods in our subsystems right now.
+    public void update() {
         try {
             armAngleEntry.setDouble(arm.getArmAngleDegrees());
 
@@ -151,14 +140,40 @@ public class OperatorTab extends ShuffleboardTabBase{
         } catch(IllegalArgumentException e){}
     }
 
-    public void setupAutoSelector(){
-        SendableChooser<Command> autoChooser = autonomous.getAutoChooser();
-        mAutoChooser = tab.add("Auto routine", autoChooser).withSize(5,2).withPosition(0,8); // comp settings: withPosition(16,1);
+    public void configureAutoSelector(){
+        autoChooser = autonomous.getAutoChooser();
+        autoChooserWidget = tab.add("Auto routine", autoChooser).withSize(4,1).withPosition(0,4);
+    }
 
-    } 
+    public void configureAutoSetupSelector(){
+        autoSetupChooser = new SendableChooser<String>();
+        autoSetupChooser.setDefaultOption("NONE/TELEOP", "NONE/TELEOP");
+        autoSetupChooser.addOption("SOURCE", "SOURCE");
+        autoSetupChooser.addOption("AMP", "AMP");
+        autoSetupChooser.addOption("CENTER", "CENTER");
+        autoSetupWidget = tab.add("Auto setup", autoSetupChooser).withSize(4,1).withPosition(0,5);
+    }
 
-    public static Command getAutonomousCommand() {
-        return autoRoutineSelector.getSelected();
+    public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
+    }
+
+    public double getGyroOffsetForTeleop(){
+        if(autoSetupChooser.getSelected().equals("NONE/TELEOP")){
+            return 0.0;
+        }
+        else if(autoSetupChooser.getSelected().equals("SOURCE")){
+            return -120.0;
+        }
+        else if(autoSetupChooser.getSelected().equals("AMP")){
+            return 120.0;
+        }
+        else if(autoSetupChooser.getSelected().equals("CENTER")){
+            return 180.0;
+        }       
+        else{
+            return 0.0;
+        }
     }
 
 }

@@ -125,6 +125,9 @@ public class Robot extends TimedRobot {
     Drivetrain.getInstance().setIsParkedAuto(false);
     Drivetrain.getInstance().setUseMegaTag(true);
 
+    // Set the initial gyro offset used for field-oriented swerve drive to be correct coming out of autonomous mode
+    Drivetrain.getInstance().setAutoAdjustAngle(ShuffleboardMain.getInstance().getGyroOffsetForTeleop());
+
     m_robotContainer.brakeClimber();
   }
 

@@ -49,7 +49,6 @@ public class Drivetrain extends SubsystemBase {
     private final LimelightShooter limelightShooter;
     private final LimelightIntake limelightIntake;
 
-    private RollingAverage gyroTiltAverage;
     private Field2d field;
 
     // logistic function for if two apriltags are seen
@@ -139,37 +138,35 @@ public class Drivetrain extends SubsystemBase {
 
         isParkedAuto = false;
 
+        autoAdjustAngle = 0.0;
+
         limelightShooter = LimelightShooter.getInstance();
         limelightIntake = LimelightIntake.getInstance();
 
-        SmartDashboard.putBoolean("Reset Gyro", false);
+        // SmartDashboard.putBoolean("Reset Gyro", false);
 
         // constant for logistic function scaling the vision std based on distance
-        SmartDashboard.putNumber("Logistic S2", S2);
-        SmartDashboard.putNumber("Logistic I2", I2);
-        SmartDashboard.putNumber("Logistic K2", K2);
-        SmartDashboard.putNumber("Logistic H2", H2);
+        // SmartDashboard.putNumber("Logistic S2", S2);
+        // SmartDashboard.putNumber("Logistic I2", I2);
+        // SmartDashboard.putNumber("Logistic K2", K2);
+        // SmartDashboard.putNumber("Logistic H2", H2);
 
-        SmartDashboard.putNumber("Logistic S3", S3);
-        SmartDashboard.putNumber("Logistic I3", I3);
-        SmartDashboard.putNumber("Logistic K3", K3);
-        SmartDashboard.putNumber("Logistic H3", H3);
+        // SmartDashboard.putNumber("Logistic S3", S3);
+        // SmartDashboard.putNumber("Logistic I3", I3);
+        // SmartDashboard.putNumber("Logistic K3", K3);
+        // SmartDashboard.putNumber("Logistic H3", H3);
 
-        SmartDashboard.putBoolean("Megatag updates", true);
+        // SmartDashboard.putBoolean("Megatag updates", true);
 
-        // temp
-        SmartDashboard.putNumber("Target P", 0);
-        SmartDashboard.putNumber("Target I", 0);
-        SmartDashboard.putNumber("Target D", 0);
-        SmartDashboard.putNumber("Target FF", 0);
+        // // temp
+        // SmartDashboard.putNumber("Target P", 0);
+        // SmartDashboard.putNumber("Target I", 0);
+        // SmartDashboard.putNumber("Target D", 0);
+        // SmartDashboard.putNumber("Target FF", 0);
 
-        SmartDashboard.putNumber("Correct Heading P", DriveConstants.kHeadingCorrectionP);
+        // SmartDashboard.putNumber("Correct Heading P", DriveConstants.kHeadingCorrectionP);
 
         isForcingCalibration = false;
-
-        SmartDashboard.putBoolean("STARTING AUTO: LEFT", false);
-        SmartDashboard.putBoolean("STARTING AUTO: CENTER", false);
-        SmartDashboard.putBoolean("STARTING AUTO: RIGHT", false);
     }
 
     public static Drivetrain getInstance() {
@@ -191,7 +188,7 @@ public class Drivetrain extends SubsystemBase {
         // K3 = SmartDashboard.getNumber("Logistic K3", K3);
         // H3 = SmartDashboard.getNumber("Logistic H3", H3);
 
-        useMegaTag = SmartDashboard.getBoolean("Megatag updates", useMegaTag);
+        // useMegaTag = SmartDashboard.getBoolean("Megatag updates", useMegaTag);
 
         field.setRobotPose(getPose());
         // SmartDashboard.putData(field);
@@ -204,7 +201,7 @@ public class Drivetrain extends SubsystemBase {
 
         double distance = Units.inchesToMeters(limelightShooter.getDistance());
         int numAprilTag = LimelightHelper.getNumberOfAprilTagsSeen(limelightShooter.getLimelightName());
-        SmartDashboard.putNumber("Number of Tags Seems", numAprilTag);
+        // SmartDashboard.putNumber("Number of Tags Seems", numAprilTag);
 
         if (numAprilTag >= 2) {
             // if forcing calibration make visionstd minimal otherwise choose between
@@ -233,11 +230,6 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Odometry Theta", odometry.getEstimatedPosition().getRotation().getDegrees());
     }
 
-    @Override
-    public void simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
-    }
-
     public void updateModulePositions() {
         for (int i = 0; i < swerveModulePositions.length; i++) {
             swerveModulePositions[i] = swerveModules[i].getPosition();
@@ -263,19 +255,7 @@ public class Drivetrain extends SubsystemBase {
 
         ChassisSpeeds robotRelativeSpeeds;
 
-        // Get Angle Adjust Transitioning From Auto
-        autoAdjustAngle = 0;
-        if(SmartDashboard.getBoolean("STARTING AUTO: SOURCE", false)){
-            autoAdjustAngle = -120;
-        }
-        if(SmartDashboard.getBoolean("STARTING AUTO: CENTER", false)){
-            autoAdjustAngle = 180;
-        }
-        if(SmartDashboard.getBoolean("STARTING AUTO: AMP", false)){
-            autoAdjustAngle = 120;
-        }
-
-        SmartDashboard.putNumber("AUTO ADJUST", autoAdjustAngle);
+        SmartDashboard.putNumber("Auto adjust angle", autoAdjustAngle);
 
         if (fieldOriented) {
             robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d().plus(new Rotation2d(Math.toRadians(autoAdjustAngle))));
@@ -426,6 +406,14 @@ public class Drivetrain extends SubsystemBase {
 
     public SwerveDrivePoseEstimator getOdometry() {
         return odometry;
+    }
+
+    public void setAutoAdjustAngle(double angleOffset){
+        autoAdjustAngle = angleOffset;
+    }
+
+    public double getAutoAdjustAngle(){
+        return autoAdjustAngle;
     }
 
 }

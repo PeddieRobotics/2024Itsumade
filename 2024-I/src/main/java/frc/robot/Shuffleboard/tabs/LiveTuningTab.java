@@ -45,7 +45,7 @@ public class LiveTuningTab extends ShuffleboardTabBase{
     private static SendableChooser<Command> autoRoutineSelector;
     private Hashtable<String, Command> autoRoutines;
 
-    public OperatorTab(){
+    public LiveTuningTab(){
         arm = Arm.getInstance();
         autonomous = Autonomous.getInstance();
         flywheel = Flywheel.getInstance();
@@ -68,5 +68,12 @@ public class LiveTuningTab extends ShuffleboardTabBase{
             .getEntry();
         } catch(IllegalArgumentException e){}
     }
+
+    @Override
+    public void update() { //Some lines here are arbitrary code that should be implemented later but don't have the necessary methods in our subsystems right now.
+        try {
+        } catch(IllegalArgumentException e){}
+    }
+
 
 }

@@ -47,7 +47,7 @@ public class ShuffleboardMain {
         // limelightTab = new LimelightTab();
         // tabs.add(limelightTab);
         operatorTab = new OperatorTab();
-        liveTuningTab = new LiveTuningTab();
+        // liveTuningTab = new LiveTuningTab();
         tabs.add(operatorTab);
 
         for (ShuffleboardTabBase tab : tabs){
@@ -65,9 +65,13 @@ public class ShuffleboardMain {
         return operatorTab.getAutonomousCommand();
     }
 
+    public double getGyroOffsetForTeleop(){
+        return operatorTab.getGyroOffsetForTeleop();
+    }
+
     public void setUpAutoSelector() {
         try{
-            operatorTab.setupAutoSelector();
+            operatorTab.configureAutoSelector();
         } catch(NullPointerException e){}
     }
 }
