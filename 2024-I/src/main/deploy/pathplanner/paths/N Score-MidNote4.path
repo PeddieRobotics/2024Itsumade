@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.11,
-        "y": 3.26
+        "x": 2.77,
+        "y": 3.13
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.0192228743943925,
-        "y": 1.6629387895009728
+        "x": 3.9255361820281403,
+        "y": 2.3070347995189566
       },
       "isLocked": false,
       "linkedName": null
@@ -63,7 +63,7 @@
   "reversed": false,
   "folder": "Path Segments",
   "previewStartingState": {
-    "rotation": 135.0,
+    "rotation": 136.04,
     "velocity": 0
   },
   "useDefaultConstraints": false

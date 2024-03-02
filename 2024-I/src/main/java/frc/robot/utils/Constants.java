@@ -118,7 +118,7 @@ public final class Constants {
     public static final double kFollowNoteEarlyEndMaxDuration = 0.25;
     public static final double kFollowNoteNoNotePercent = 0.80;
     public static final double kFollowNoteNotSameNoteThresh = 2.5;
-    public static final double kFollowNoteSpeed = 1.3;
+    public static final double kFollowNoteSpeed = 1.75;
 
     public static final double kLimelightPrepDeadlineTime = 0.7;
     public static final double kLayupPrepDeadlineTime = 0.7;

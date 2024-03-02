@@ -61,7 +61,7 @@ public class FollowNote extends Command {
     @Override
     public void execute() {
         double throttle = oi.getSwerveTranslation().getX();
-        Translation2d position = new Translation2d(-throttle, 0.0);
+        Translation2d position = new Translation2d(-Math.abs(throttle), 0.0);
 
         double llTurn = 0;
         if (limelightIntake.hasTarget()) {
