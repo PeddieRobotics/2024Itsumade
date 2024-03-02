@@ -21,6 +21,7 @@ public class LimelightShooter extends Limelight {
     private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage, distAverage;
 
     private String limelightName = "limelight-shooter";
+    private double lastDistance;
 
     public LimelightShooter() {
         txAverage = new RollingAverage();
@@ -33,6 +34,7 @@ public class LimelightShooter extends Limelight {
         distAverage = new RollingAverage();
 
         setPipeline(Constants.LimelightConstants.kShooterAprilTagPipeline);
+        lastDistance=0;
     }
 
     public static LimelightShooter getInstance() {
@@ -49,6 +51,7 @@ public class LimelightShooter extends Limelight {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("LL Distance", getDistance());
+        if(hasTarget()) lastDistance=getDistance();
         updateRollingAverages();
     }
 
@@ -229,5 +232,9 @@ public class LimelightShooter extends Limelight {
         if(getTv()){
             odometry.addVisionMeasurement(this.getBotpose(), Timer.getFPGATimestamp());
         }
+    }
+
+    public double getLastDistance(){
+        return lastDistance;
     }
 }

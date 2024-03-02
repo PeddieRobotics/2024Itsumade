@@ -226,7 +226,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setLLPosition() {
-        setArmAngle(getAngleFromDist(limelightShooter.getDistance()) + armDelta);
+        setArmAngle(getAngleFromDist(limelightShooter.getLastDistance()) + armDelta);
     }
 
     public void setStowPosition() {

@@ -98,25 +98,23 @@ public class FollowNoteInAuto extends Command {
         // EARLY_END_NO_NOTE_PCT
         // 3. higher than EARLY_END_MIN_DURATION has passed, so we need to not see a
         // note for a duration of time before we conclude there is no note
-        double elapsed = Timer.getFPGATimestamp() - startTime;
-        if (elapsed <= AutoConstants.kFollowNoteEarlyEndMaxDuration) {
-            if (!hasTarget)
-                doNotSeeFrameCount++;
-            totalFrameCount++;
-            if (elapsed >= AutoConstants.kFollowNoteEarlyEndMinDuration &&
-                doNotSeeFrameCount / totalFrameCount >= AutoConstants.kFollowNoteNoNotePercent) {
-                endBecauseNoNote = true;
-                return;
-            }
-        }
+        // double elapsed = Timer.getFPGATimestamp() - startTime;
+        // if (elapsed <= AutoConstants.kFollowNoteEarlyEndMaxDuration) {
+        //     if (!hasTarget)
+        //         doNotSeeFrameCount++;
+        //     totalFrameCount++;
+        //     if (elapsed >= AutoConstants.kFollowNoteEarlyEndMinDuration &&
+        //         doNotSeeFrameCount / totalFrameCount >= AutoConstants.kFollowNoteNoNotePercent) {
+        //         endBecauseNoNote = true;
+        //         return;
+        //     }
+        // }
         // if we stop seeing a note assume it's about to be eaten
         // waiting for the note to be indexed takes too long
-        else {
-            if (!hasTarget)
-                consecutiveNoNote++;
-            else
-                consecutiveNoNote = 0;
-        }
+        if (!hasTarget)
+            consecutiveNoNote++;
+        else
+            consecutiveNoNote = 0;
 
         drivetrain.drive(position, llTurn, false, new Translation2d(0, 0));
 
@@ -140,10 +138,10 @@ public class FollowNoteInAuto extends Command {
         // endBecauseNoNote is a condition we invented earlier
         // and set a cap on total time so that we do not get stuck in this command 
         String reason = null;
-        if (endBecauseNoNote)
-            reason = "early no note";
-        else if (consecutiveNoNote >= 2)
-            reason = "late no note";
+        // if (endBecauseNoNote)
+        //     reason = "no notes seen";
+        if (consecutiveNoNote >= 5) //tune maybe
+            reason = "no note for 5 frames";
         else if (Timer.getFPGATimestamp() - startTime >= timeLimit)
             reason = "timeout";
         else if (intake.hasGamepiece())
