@@ -34,7 +34,7 @@ public class Logger {
     private Arm arm;
     private LimelightShooter limelightShooter;
     // private Hopper hopper;
-    // private Superstructure superstructure;
+    private Superstructure superstructure;
 
     public static Logger getInstance() {
         if (instance == null) {
@@ -50,7 +50,7 @@ public class Logger {
         flywheel = Flywheel.getInstance();
         limelightShooter=LimelightShooter.getInstance();
         // hopper = Hopper.getInstance();
-        // superstructure = Superstructure.getInstance();
+        superstructure = Superstructure.getInstance();
 
         // Superstructure Logs
         robotStateEntry = new StringLogEntry(log, "/Superstructure/Robot State");
@@ -94,7 +94,7 @@ public class Logger {
 
     public void updateLogs() {
         // Superstructure
-        // robotStateEntry.append(superstructure.getRobotState());
+        robotStateEntry.append(superstructure.getRobotState());
 
         // Drivetrain
         updateDrivetrainLogs();
