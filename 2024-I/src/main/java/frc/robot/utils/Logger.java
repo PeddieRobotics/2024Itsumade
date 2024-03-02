@@ -14,12 +14,14 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure;
 
 public class Logger {
     private static Logger instance;
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
-    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry, leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry;
+    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry, 
+                leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,LLDistancEntry;
     private StringLogEntry robotStateEntry, commandEntry;
     private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
@@ -30,6 +32,7 @@ public class Logger {
     private Intake intake;
     private Flywheel flywheel;
     private Arm arm;
+    private LimelightShooter limelightShooter;
     // private Hopper hopper;
     // private Superstructure superstructure;
 
@@ -45,6 +48,7 @@ public class Logger {
         intake = Intake.getInstance();
         arm = Arm.getInstance();
         flywheel = Flywheel.getInstance();
+        limelightShooter=LimelightShooter.getInstance();
         // hopper = Hopper.getInstance();
         // superstructure = Superstructure.getInstance();
 
@@ -76,6 +80,9 @@ public class Logger {
 
         //arm logs
         armAngleEntry = new DoubleLogEntry(log, "/Arm/Angle Degrees");
+
+        //LL logs
+        LLDistancEntry = new DoubleLogEntry(log, "/Limelight/Distance");
 
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
     }
@@ -110,6 +117,9 @@ public class Logger {
 
         //arm
         armAngleEntry.append(arm.getArmAngleDegrees());
+
+        //limelight
+        LLDistancEntry.append(limelightShooter.getDistance());
     }
 
     //put pose to log for field visualization

@@ -81,7 +81,7 @@ public class Arm extends SubsystemBase {
 
         // putSmartDashboard();
         SmartDashboard.putNumber("AMP SCORING ANGLE", ampAngle);
-        SmartDashboard.putNumber("LL DIST MULTIPLIER", 0.96);
+        SmartDashboard.putNumber("LL DIST MULTIPLIER", 0.97);
     }
 
     // TODO: update these constants

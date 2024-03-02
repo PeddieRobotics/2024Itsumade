@@ -166,7 +166,7 @@ public class OperatorTab extends ShuffleboardTabBase{
         return autoChooser.getSelected();
     }
 
-    public double getGyroOffsetForTeleop(){
+    public double getGyroOffsetForTeleop(){ //only for red side. Negated for blue side in main.
         if(autoSetupChooser.getSelected().equals("NONE/TELEOP")){
             return 0.0;
         }
