@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Logger;
 import frc.robot.utils.Constants.IntakeConstants;
 import frc.robot.utils.Constants.ScoringConstants;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -421,6 +422,8 @@ public class Superstructure extends SubsystemBase {
                     intake.stopIntake();
                     timer.start();
                 } else if (!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)) {
+                    Logger.getInstance().logEvent("LL shot finished, distance " + LimelightShooter.getInstance().getDistance() +
+                        ", arm angle " + arm.getArmAngleDegrees(), false);
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.reset();
