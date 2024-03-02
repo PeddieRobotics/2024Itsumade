@@ -255,7 +255,7 @@ public final class Constants {
     public static final double kRightFlywheelLLShootingRPM = 3200;
     public static final double kLeftFlywheelLayupRPM = 3500;
     public static final double kRightFlywheelLayupRPM = 2500;
-    public static final double kLeftFlywheelAmpRPM = 2000; //if ok, maybe revert if spin is useful
+    public static final double kLeftFlywheelAmpRPM = 750; //if ok, maybe revert if spin is useful
     public static final double kRightFlywheelAmpRPM = 2000; //was 750
     public static final double kLeftFlywheelHPIntakeRPM = -750;
     public static final double kRightFlywheelHPIntakeRPM = -750;

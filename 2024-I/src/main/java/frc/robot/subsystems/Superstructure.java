@@ -115,10 +115,10 @@ public class Superstructure extends SubsystemBase {
             case STOW:
                 SmartDashboard.putBoolean("ARM At Stow Angle", arm.isAtStowAngle());
                 if (arm.isAtStowAngle()) {
-                    SmartDashboard.putBoolean("Neutral Stow", true);
+                    Logger.getInstance().logEvent("arm at neutral mode", true);
                     arm.setArmNeutralMode();
                 } else {
-                    SmartDashboard.putBoolean("Neutral Stow", false);
+                    Logger.getInstance().logEvent("arm at neutral mode", false);
                     arm.setStowPosition();
                 }
 
