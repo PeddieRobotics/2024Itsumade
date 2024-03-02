@@ -33,6 +33,8 @@ public class Arm extends SubsystemBase {
     private double gravityFeedForward, armAngleSetpoint, armDelta;
     private String stringState;
 
+    private double angleOffset = ArmConstants.kArmAmpPosition;
+
     public enum ArmState {
         Intaking, Moving, Stowed, Shooting
     }
@@ -78,6 +80,8 @@ public class Arm extends SubsystemBase {
         gravityFeedForward = 0;
 
         // putSmartDashboard();
+        SmartDashboard.putNumber("AMP SCORING OFFSET", angleOffset);
+        SmartDashboard.putNumber("LL DIST OFFSET", 0);
     }
 
     // TODO: update these constants
@@ -195,7 +199,7 @@ public class Arm extends SubsystemBase {
     }
 
     public double getAngleFromDist(double dist) {
-        return LLShotMap.get(dist);
+        return LLShotMap.get(dist + SmartDashboard.getNumber("LL DIST OFFSET", 0));
     }
 
     // Methods to Set Arm to a specific position
@@ -209,7 +213,8 @@ public class Arm extends SubsystemBase {
     }
 
     public void setAmpPosition() {
-        setArmAngle(ArmConstants.kArmAmpPosition);
+        setArmAngle(SmartDashboard.getNumber("AMP SCORING OFFSET", ArmConstants.kArmAmpPosition));
+        // setArmAngle(ArmConstants.kArmAmpPosition);
     }
 
     public void setFrontLayupPosition() {

@@ -202,7 +202,7 @@ public final class Constants {
     public static final double kArmIntakeHPPosition = 70; // in deg
     public static final double kArmPositionEpsilon = 3; // temporarily loose due to arm tuning, can tighten this later
                                                         // when code improves
-    public static final double kArmAmpPosition = 120;
+    public static final double kArmAmpPosition = 124;
     public static final double kArmFrontLayupPosition = 38; // 38
     public static final double kArmSideLayupPosition = 35;
     public static final double kArmStowPosition = 0;
@@ -222,7 +222,7 @@ public final class Constants {
     public static final double kClimberRetractPercentOutput = -0.7; // percent putput the climber would
     public static final double kClimberDeployPercentOutput = 0.7; // percent putput the climber would
     public static final double kClimberDeployPosition = 140.0;
-    public static final double kClimberRetractPosition = 30.0;
+    public static final double kClimberRetractPosition = 0.0;
     public static final double kClimberAngleTolerance = 2.0;
 
     public static final double kClimberGearReduction = 35.0 / 1.0;
@@ -255,12 +255,12 @@ public final class Constants {
     public static final double kRightFlywheelLLShootingRPM = 3200;
     public static final double kLeftFlywheelLayupRPM = 3500;
     public static final double kRightFlywheelLayupRPM = 2500;
-    public static final double kLeftFlywheelAmpRPM = 500;
-    public static final double kRightFlywheelAmpRPM = 500;
+    public static final double kLeftFlywheelAmpRPM = 750;
+    public static final double kRightFlywheelAmpRPM = 750;
     public static final double kLeftFlywheelHPIntakeRPM = -750;
     public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;
-    public static final double kShootingStateTime = 0.5;
+    public static final double kShootingStateTime = 1.0;
 
         // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
     // needs more tuning/initial values only

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimelightIntake;
+import frc.robot.utils.Logger;
 import frc.robot.utils.Constants.AutoConstants;
 import frc.robot.utils.Constants.LimelightConstants;
 
@@ -56,6 +57,8 @@ public class FollowNoteInAuto extends Command {
         lastTx = Integer.MAX_VALUE;
         startTime = Timer.getFPGATimestamp();
         limelightIntake.setPipeline(LimelightConstants.kIntakeNotePipeline); 
+
+        Logger.getInstance().logEvent("Follow Note In Auto", true);
     }
 
     @Override
@@ -129,6 +132,7 @@ public class FollowNoteInAuto extends Command {
         if (endBecauseNoNote)
             drivetrain.setIsParkedAuto(true);
         drivetrain.stop();
+        Logger.getInstance().logEvent("Follow Note In Auto", false);
     }
 
     @Override
