@@ -33,7 +33,7 @@ public class Arm extends SubsystemBase {
     private double gravityFeedForward, armAngleSetpoint, armDelta;
     private String stringState;
 
-    private double angleOffset = ArmConstants.kArmAmpPosition;
+    private double ampAngle = 140.0; // should be ArmConstants.kArmAmpPosition, testing offset
 
     public enum ArmState {
         Intaking, Moving, Stowed, Shooting
@@ -80,7 +80,7 @@ public class Arm extends SubsystemBase {
         gravityFeedForward = 0;
 
         // putSmartDashboard();
-        SmartDashboard.putNumber("AMP SCORING OFFSET", angleOffset);
+        SmartDashboard.putNumber("AMP SCORING ANGLE", ampAngle);
         SmartDashboard.putNumber("LL DIST MULTIPLIER", 0.95);
     }
 
@@ -213,7 +213,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setAmpPosition() {
-        setArmAngle(SmartDashboard.getNumber("AMP SCORING OFFSET", ArmConstants.kArmAmpPosition));
+        setArmAngle(SmartDashboard.getNumber("AMP SCORING Angle", ArmConstants.kArmAmpPosition));
         // setArmAngle(ArmConstants.kArmAmpPosition);
     }
 
