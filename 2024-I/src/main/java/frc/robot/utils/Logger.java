@@ -21,7 +21,7 @@ public class Logger {
     private static Logger instance;
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
     private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry, 
-                leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,LLDistancEntry;
+                leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,LLDistancEntry, armCurrentEntry, armAngleSetpointEntry;
     private StringLogEntry robotStateEntry, commandEntry;
     private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
@@ -80,6 +80,8 @@ public class Logger {
 
         //arm logs
         armAngleEntry = new DoubleLogEntry(log, "/Arm/Angle Degrees");
+        armCurrentEntry = new DoubleLogEntry(log, "/Arm/Current");
+        armAngleSetpointEntry = new DoubleLogEntry(log, "/Arm/Angle Setpoint");
 
         //LL logs
         LLDistancEntry = new DoubleLogEntry(log, "/Limelight/Distance");
@@ -117,6 +119,8 @@ public class Logger {
 
         //arm
         armAngleEntry.append(arm.getArmAngleDegrees());
+        armCurrentEntry.append(arm.getSupplyCurrent());
+        armAngleSetpointEntry.append(arm.getArmAngleSetpoint());
 
         //limelight
         LLDistancEntry.append(limelightShooter.getDistance());

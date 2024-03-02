@@ -202,10 +202,18 @@ public class Arm extends SubsystemBase {
         return LLShotMap.get(dist * SmartDashboard.getNumber("LL DIST MULTIPLIER", 0.96));
     }
 
+    public double getArmAngleSetpoint(){
+        return armAngleSetpoint;
+    }
+
     // Methods to Set Arm to a specific position
 
     public void setGroundIntakePosition() {
         setArmAngle(ArmConstants.kArmIntakePositionFromGround);
+    }
+
+    public double getSupplyCurrent(){
+        return armMotor.getSupplyCurrent();
     }
 
     public void setHPIntakePosition() {
