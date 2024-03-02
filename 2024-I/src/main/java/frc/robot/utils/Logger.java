@@ -43,6 +43,8 @@ public class Logger {
     public Logger() {
         drivetrain = Drivetrain.getInstance();
         intake = Intake.getInstance();
+        arm = Arm.getInstance();
+        flywheel = Flywheel.getInstance();
         // hopper = Hopper.getInstance();
         // superstructure = Superstructure.getInstance();
 
