@@ -139,9 +139,24 @@ public class FollowNoteInAuto extends Command {
     public boolean isFinished() {
         // endBecauseNoNote is a condition we invented earlier
         // and set a cap on total time so that we do not get stuck in this command 
-        return endBecauseNoNote ||
-            consecutiveNoNote >= 2 ||
-            Timer.getFPGATimestamp() - startTime >= timeLimit ||
-            intake.hasGamepiece(); // or the INTAKE has the game piece (NOT hopper because it takes too long)
+        String reason = null;
+        if (endBecauseNoNote)
+            reason = "early no note";
+        else if (consecutiveNoNote >= 2)
+            reason = "late no note";
+        else if (Timer.getFPGATimestamp() - startTime >= timeLimit)
+            reason = "timeout";
+        else if (intake.hasGamepiece())
+            reason = "note indexed";
+        else
+            return false;
+
+        Logger.getInstance().logEvent("Finished FollowNoteInAuto, reason " + reason, false);
+        return true;
+        
+        // return endBecauseNoNote ||
+        //     consecutiveNoNote >= 2 ||
+        //     Timer.getFPGATimestamp() - startTime >= timeLimit ||
+        //     intake.hasGamepiece(); // or the INTAKE has the game piece (NOT hopper because it takes too long)
     }
 }
