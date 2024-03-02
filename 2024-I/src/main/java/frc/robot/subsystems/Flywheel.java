@@ -107,7 +107,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     public void runFlywheelAmp() {
-        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelAmpRPM, ScoringConstants.kRightFlywheelAmpRPM + SmartDashboard.getNumber("AMP Shot Offset RPM", 0));
+        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelAmpRPM + SmartDashboard.getNumber("AMP Shot Offset RPM", 0), ScoringConstants.kRightFlywheelAmpRPM + SmartDashboard.getNumber("AMP Shot Offset RPM", 0));
     }
 
     public void runFlywheelHP() {

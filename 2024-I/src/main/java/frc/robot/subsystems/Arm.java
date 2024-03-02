@@ -33,7 +33,7 @@ public class Arm extends SubsystemBase {
     private double gravityFeedForward, armAngleSetpoint, armDelta;
     private String stringState;
 
-    private double ampAngle = 140.0; // should be ArmConstants.kArmAmpPosition, testing offset
+    private double ampAngle = ArmConstants.kArmAmpPosition; // should be ArmConstants.kArmAmpPosition, testing offset
 
     public enum ArmState {
         Intaking, Moving, Stowed, Shooting

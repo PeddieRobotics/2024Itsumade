@@ -202,7 +202,7 @@ public final class Constants {
     public static final double kArmIntakeHPPosition = 70; // in deg
     public static final double kArmPositionEpsilon = 3; // temporarily loose due to arm tuning, can tighten this later
                                                         // when code improves
-    public static final double kArmAmpPosition = 124;
+    public static final double kArmAmpPosition = 140; //124 in lab, 140 at comp
     public static final double kArmFrontLayupPosition = 38; // 38
     public static final double kArmSideLayupPosition = 35;
     public static final double kArmStowPosition = 0;
@@ -255,8 +255,8 @@ public final class Constants {
     public static final double kRightFlywheelLLShootingRPM = 3200;
     public static final double kLeftFlywheelLayupRPM = 3500;
     public static final double kRightFlywheelLayupRPM = 2500;
-    public static final double kLeftFlywheelAmpRPM = 750;
-    public static final double kRightFlywheelAmpRPM = 750;
+    public static final double kLeftFlywheelAmpRPM = 2000; //if ok, maybe revert if spin is useful
+    public static final double kRightFlywheelAmpRPM = 2000; //was 750
     public static final double kLeftFlywheelHPIntakeRPM = -750;
     public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;

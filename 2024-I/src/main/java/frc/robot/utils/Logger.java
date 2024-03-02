@@ -19,7 +19,7 @@ import frc.robot.subsystems.Superstructure;
 public class Logger {
     private static Logger instance;
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
-    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry, leftFlywheelCurrentEntry,rightFlywheelCurrentEntry, armAngleEntry;
+    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry, leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry;
     private StringLogEntry robotStateEntry, commandEntry;
     private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
@@ -71,6 +71,9 @@ public class Logger {
         rightFlywheelCurrentEntry = new DoubleLogEntry(log, "/Flywheel/Right Motor Current");
         leftFlywheelCurrentEntry = new DoubleLogEntry(log, "/Flywheel/Left Motor Current");
 
+        rightFlywheelRPMEntry = new DoubleLogEntry(log, "/Flywheel/Right RPM");
+        leftFlywheelRPMEntry = new DoubleLogEntry(log, "/Flywheel/Left RPM");
+
         //arm logs
         armAngleEntry = new DoubleLogEntry(log, "/Arm/Angle Degrees");
 
@@ -101,6 +104,9 @@ public class Logger {
         //Flywheel
         rightFlywheelCurrentEntry.append(flywheel.getRightMotorCurrent());
         leftFlywheelCurrentEntry.append(flywheel.getLeftMotorCurrent());
+
+        rightFlywheelRPMEntry.append(flywheel.getFlywheelRightRPM());
+        leftFlywheelRPMEntry.append(flywheel.getFlywheelLeftRPM());
 
         //arm
         armAngleEntry.append(arm.getArmAngleDegrees());
