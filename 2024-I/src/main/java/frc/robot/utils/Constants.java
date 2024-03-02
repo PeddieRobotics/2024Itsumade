@@ -219,8 +219,8 @@ public final class Constants {
     public static final double kClimberI = 0.0;
     public static final double kClimberD = 0.0;
     public static final double kClimberFF = 0.0;
-    public static final double kClimberRetractPercentOutput = -0.7; // percent putput the climber would
-    public static final double kClimberDeployPercentOutput = 0.7; // percent putput the climber would
+    public static final double kClimberRetractPercentOutput = -1; // percent putput the climber would
+    public static final double kClimberDeployPercentOutput = 1; // percent putput the climber would (was .7)
     public static final double kClimberDeployPosition = 140.0;
     public static final double kClimberRetractPosition = 0.0;
     public static final double kClimberAngleTolerance = 2.0;
