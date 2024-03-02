@@ -78,6 +78,14 @@ public class Flywheel extends SubsystemBase {
         flywheelRightMotor.setMotor(speed);
     }
 
+    public double getLeftMotorCurrent(){
+        return flywheelLeftMotor.getSupplyCurrent();
+    }
+
+    public double getRightMotorCurrent(){
+        return flywheelRightMotor.getSupplyCurrent();
+    }
+
     public void stopFlywheel() {
         flywheelLeftMotor.setMotor(0);
         flywheelRightMotor.setMotor(0);
@@ -99,7 +107,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     public void runFlywheelAmp() {
-        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelAmpRPM, ScoringConstants.kRightFlywheelAmpRPM);
+        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelAmpRPM, ScoringConstants.kRightFlywheelAmpRPM + SmartDashboard.getNumber("AMP Shot Offset RPM", 0));
     }
 
     public void runFlywheelHP() {
@@ -131,6 +139,7 @@ public class Flywheel extends SubsystemBase {
 
     public void putSmartDashboard() {
         // SmartDashboard.putBoolean("Update Flywheel PID", false);
+        SmartDashboard.putNumber("AMP Shot Offset RPM", 0);
 
         // SmartDashboard.putNumber("Flywheel S", FlywheelConstants.kFlywheelS);
         // SmartDashboard.putNumber("Flywheel V", FlywheelConstants.kFlywheelV);
@@ -185,6 +194,8 @@ public class Flywheel extends SubsystemBase {
         SmartDashboard.putNumber("Flywheel Left RPM", getFlywheelLeftRPM());
         SmartDashboard.putNumber("Flywheel Right RPM", getFlywheelRightRPM());
         SmartDashboard.putBoolean("Flywheel Is At RPM", isAtRPM());
+        SmartDashboard.putNumber("Flywheel Left Current", flywheelLeftMotor.getSupplyCurrent());
+        SmartDashboard.putNumber("Flywheel Right Current", flywheelRightMotor.getSupplyCurrent());
 
         SmartDashboard.putNumber("Flywheel Left Motor RPM Setpoint", leftSetpoint);
         SmartDashboard.putNumber("Flywheel Right Motor RPM Setpoint", rightSetpoint);

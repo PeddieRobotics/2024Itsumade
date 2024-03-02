@@ -81,7 +81,7 @@ public class Arm extends SubsystemBase {
 
         // putSmartDashboard();
         SmartDashboard.putNumber("AMP SCORING OFFSET", angleOffset);
-        SmartDashboard.putNumber("LL DIST OFFSET", 0);
+        SmartDashboard.putNumber("LL DIST MULTIPLIER", 0.95);
     }
 
     // TODO: update these constants
@@ -199,7 +199,7 @@ public class Arm extends SubsystemBase {
     }
 
     public double getAngleFromDist(double dist) {
-        return LLShotMap.get(dist + SmartDashboard.getNumber("LL DIST OFFSET", 0));
+        return LLShotMap.get(dist * SmartDashboard.getNumber("LL DIST MULTIPLIER", 0.95));
     }
 
     // Methods to Set Arm to a specific position

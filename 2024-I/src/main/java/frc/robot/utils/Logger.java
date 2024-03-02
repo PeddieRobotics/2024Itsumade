@@ -9,7 +9,9 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Superstructure;
@@ -17,7 +19,7 @@ import frc.robot.subsystems.Superstructure;
 public class Logger {
     private static Logger instance;
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
-    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry;
+    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry, leftFlywheelCurrentEntry,rightFlywheelCurrentEntry, armAngleEntry;
     private StringLogEntry robotStateEntry, commandEntry;
     private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
@@ -26,6 +28,8 @@ public class Logger {
 
     private Drivetrain drivetrain;
     private Intake intake;
+    private Flywheel flywheel;
+    private Arm arm;
     // private Hopper hopper;
     // private Superstructure superstructure;
 
@@ -61,6 +65,13 @@ public class Logger {
         // hopperTopSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
         // hopperCurrentEntry = new DoubleLogEntry(log, "/Hopper/Hopper Current");
 
+        //flywheel Loges
+        rightFlywheelCurrentEntry = new DoubleLogEntry(log, "/Flywheel/Right Motor Current");
+        leftFlywheelCurrentEntry = new DoubleLogEntry(log, "/Flywheel/Left Motor Current");
+
+        //arm logs
+        armAngleEntry = new DoubleLogEntry(log, "/Arm/Angle Degrees");
+
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
     }
 
@@ -84,6 +95,13 @@ public class Logger {
         // hopperBottomSensorEntry.append(hopper.bottomSensor());
         // hopperTopSensorEntry.append(hopper.topSensor());
         // hopperCurrentEntry.append(hopper.getMotorCurrent());
+
+        //Flywheel
+        rightFlywheelCurrentEntry.append(flywheel.getRightMotorCurrent());
+        leftFlywheelCurrentEntry.append(flywheel.getLeftMotorCurrent());
+
+        //arm
+        armAngleEntry.append(arm.getArmAngleDegrees());
     }
 
     //put pose to log for field visualization

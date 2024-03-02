@@ -12,27 +12,9 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Side Layup Prep"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Score"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stow"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "L SourceSpeaker-MidNote5"
+            "pathName": "2L SourceSpeakerLL-MidNote5"
           }
         },
         {

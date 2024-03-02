@@ -292,6 +292,7 @@ public class Superstructure extends SubsystemBase {
                     intake.stopIntake();
                     timer.start();
                 } else if (!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)) {
+                    Logger.getInstance().logEvent("Amp shot finished, arm angle " + arm.getArmAngleDegrees(), false);
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.reset();
@@ -365,6 +366,7 @@ public class Superstructure extends SubsystemBase {
                     intake.stopIntake();
                     timer.start();
                 } else if (!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)) {
+                    Logger.getInstance().logEvent("Layup shot finished, arm angle " + arm.getArmAngleDegrees(), false);
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.reset();
