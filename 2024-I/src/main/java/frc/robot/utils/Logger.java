@@ -10,6 +10,7 @@ import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
@@ -21,7 +22,7 @@ public class Logger {
     private static Logger instance;
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
     private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry, 
-                leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,LLDistancEntry, armCurrentEntry, armAngleSetpointEntry;
+                leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,LLDistancEntry, armCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition, climberLeftArmCurrent, climberRightArmCurrent;
     private StringLogEntry robotStateEntry, commandEntry;
     private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
@@ -32,8 +33,9 @@ public class Logger {
     private Intake intake;
     private Flywheel flywheel;
     private Arm arm;
+    private Climber climber;
     private LimelightShooter limelightShooter;
-    // private Hopper hopper;
+    private Hopper hopper;
     private Superstructure superstructure;
 
     public static Logger getInstance() {
@@ -49,7 +51,7 @@ public class Logger {
         arm = Arm.getInstance();
         flywheel = Flywheel.getInstance();
         limelightShooter=LimelightShooter.getInstance();
-        // hopper = Hopper.getInstance();
+        hopper = Hopper.getInstance();
         superstructure = Superstructure.getInstance();
 
         // Superstructure Logs
@@ -67,9 +69,9 @@ public class Logger {
         intakeCurrentEntry = new DoubleLogEntry(log, "/Intake/Intake Current");
 
         // Hopper Logs
-        // hopperBottomSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
-        // hopperTopSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
-        // hopperCurrentEntry = new DoubleLogEntry(log, "/Hopper/Hopper Current");
+        hopperBottomSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
+        hopperTopSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
+        hopperCurrentEntry = new DoubleLogEntry(log, "/Hopper/Hopper Current");
 
         //flywheel Loges
         rightFlywheelCurrentEntry = new DoubleLogEntry(log, "/Flywheel/Right Motor Current");
@@ -82,6 +84,12 @@ public class Logger {
         armAngleEntry = new DoubleLogEntry(log, "/Arm/Angle Degrees");
         armCurrentEntry = new DoubleLogEntry(log, "/Arm/Current");
         armAngleSetpointEntry = new DoubleLogEntry(log, "/Arm/Angle Setpoint");
+
+        //climber logs
+        climberLeftArmPosition = new DoubleLogEntry(log, "/Climber/Left Arm Motor Position");
+        climberRightArmPosition = new DoubleLogEntry(log, "/Climber/Right Arm Motor Position");
+        climberLeftArmCurrent = new DoubleLogEntry(log, "/Climber/Left Arm Motor Current");
+        climberRightArmCurrent = new DoubleLogEntry(log, "/Climber/Right Arm Motor Current");
 
         //LL logs
         LLDistancEntry = new DoubleLogEntry(log, "/Limelight/Distance");
@@ -106,9 +114,9 @@ public class Logger {
         intakeCurrentEntry.append(intake.getMotorCurrent());
 
         // Hopper
-        // hopperBottomSensorEntry.append(hopper.bottomSensor());
-        // hopperTopSensorEntry.append(hopper.topSensor());
-        // hopperCurrentEntry.append(hopper.getMotorCurrent());
+        hopperBottomSensorEntry.append(hopper.getBottomSensor());
+        hopperTopSensorEntry.append(hopper.getTopSensor());
+        hopperCurrentEntry.append(hopper.getMotorCurrent());
 
         //Flywheel
         rightFlywheelCurrentEntry.append(flywheel.getRightMotorCurrent());

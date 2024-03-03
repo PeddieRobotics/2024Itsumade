@@ -181,7 +181,7 @@ public class Arm extends SubsystemBase {
 
     public boolean isAtStowAngle() {
         return Math.abs(getArmAngleDegrees()
-                - ArmConstants.kArmStowPosition) < ArmConstants.kArmPositionEpsilon;
+                - ArmConstants.kArmStowPosition) < ArmConstants.kArmStowPositionEpsilon;
     }
 
     public boolean isAtGroundIntakeAngle() {
