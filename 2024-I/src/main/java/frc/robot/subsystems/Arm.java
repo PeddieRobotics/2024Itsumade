@@ -221,7 +221,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setAmpPosition() {
-        setArmAngle(SmartDashboard.getNumber("AMP SCORING Angle", ArmConstants.kArmAmpPosition));
+        setArmAngle(SmartDashboard.getNumber("AMP SCORING ANGLE", ArmConstants.kArmAmpPosition));
         // setArmAngle(ArmConstants.kArmAmpPosition);
     }
 
