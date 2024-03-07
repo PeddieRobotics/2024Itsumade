@@ -266,7 +266,7 @@ public final class Constants {
     // needs more tuning/initial values only
     public static final double[][] treeMapValues = new double[][] { { 44.0, 42.0 }, { 47.5, 43 }, { 60, 50 }, { 65.0, 53.0 }, { 70.1, 55.0 }, { 80, 56 }, { 85.2, 60.0 },
         { 93.8, 61 }, { 108.2, 65.6 }, { 112.5, 66 }, { 130, 68 }, { 134.6, 69.0 }, { 147.8, 69.5 }, { 154.5, 70.5 }, { 158.6, 70.5 }, { 166.2, 71.5}, { 175.6, 72 }, { 179.6, 72.3 },
-        { 213, 73.25 } };
+        { 213, 73.0 } };
   }
 
   public static class IntakeConstants {
@@ -275,8 +275,10 @@ public final class Constants {
     public static final double kIntakeSensorThreshold = 0;
     public static final double kHopperSensorThreshold = 0;
 
-    public static final double kIntakeSpeed = 0.85;
-    public static final double kReverseIntakeSpeed = -0.85;
+    public static final double kIntakeSpeed = 1.0;
+    public static final double kReverseIntakeSpeed = -1.0;
+
+    public static final double kIntakeOpenLoopRampRate = 0.25;
   }
 
   public static class HopperConstants {

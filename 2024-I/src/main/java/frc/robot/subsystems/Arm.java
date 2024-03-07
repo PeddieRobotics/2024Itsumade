@@ -193,6 +193,16 @@ public class Arm extends SubsystemBase {
         return Math.abs(getArmAngleDegrees()-armAngleSetpoint) < ArmConstants.kArmPositionEpsilon;
     }
 
+    public boolean isAtFrontLayupAngle() {
+        return Math.abs(
+                getArmAngleDegrees() - ArmConstants.kArmFrontLayupPosition) < ArmConstants.kArmPositionEpsilon;
+    }
+
+    public boolean isAtSideLayupAngle() {
+        return Math.abs(
+                getArmAngleDegrees() - ArmConstants.kArmSideLayupPosition) < ArmConstants.kArmPositionEpsilon;
+    }
+
     public void setArmAngle(double angle) {
         armAngleSetpoint = angle;
         armMotor.setMotionMagicTorqueCurrentFOC(Conversions.convertArmDegreesToRotations(angle));

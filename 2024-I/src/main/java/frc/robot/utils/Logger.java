@@ -69,7 +69,7 @@ public class Logger {
         intakeCurrentEntry = new DoubleLogEntry(log, "/Intake/Intake Current");
 
         // Hopper Logs
-        hopperBottomSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
+        hopperBottomSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Bottom Sensor");
         hopperTopSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Top Sensor");
         hopperCurrentEntry = new DoubleLogEntry(log, "/Hopper/Hopper Current");
 

@@ -12,9 +12,27 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Side Layup Prep"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stow"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "2L SourceSpeakerLL-MidNote5"
+            "pathName": "L SourceSpeaker-MidNote5"
           }
         },
         {
@@ -26,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "M MidNote5-Score"
+            "pathName": "P MidNote5-Score"
           }
         },
         {
@@ -51,7 +69,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "N Score-MidNote4"
+            "pathName": "Q Score-MidNote4"
           }
         },
         {
@@ -63,11 +81,11 @@
         {
           "type": "path",
           "data": {
-            "pathName": "O MidNote4-Score"
+            "pathName": "R MidNote4-Score"
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -89,6 +107,30 @@
           "type": "named",
           "data": {
             "name": "Stow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "S Score-MidNote3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "X SeekNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "T MidNote3-Score"
           }
         }
       ]

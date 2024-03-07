@@ -32,6 +32,7 @@ public class Intake extends SubsystemBase {
 
     config = new TalonSRXConfiguration();
     config.continuousCurrentLimit = IntakeConstants.kIntakeCurrentLimit;
+    config.openloopRamp = IntakeConstants.kIntakeOpenLoopRampRate;
     intakeMotor.configAllSettings(config);
 
     intakeMotor.enableCurrentLimit(true);
