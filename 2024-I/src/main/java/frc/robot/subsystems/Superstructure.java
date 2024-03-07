@@ -390,7 +390,13 @@ public class Superstructure extends SubsystemBase {
             case LL_PREP:
                 arm.setLLPosition();
                 flywheel.runFlywheelLimelight();
-                hopper.stopHopper(); // only when we are shooting in the shooting states do we run the hopper
+
+                if(hopper.getTopSensor()){
+                    hopper.stopHopper(); // only when we are shooting in the shooting states do we run the hopper
+                } else {
+                    hopper.setHopper(0.25);
+                }
+
                 intake.stopIntake();
 
                 if (requestedSystemState == SuperstructureState.STOW) {
