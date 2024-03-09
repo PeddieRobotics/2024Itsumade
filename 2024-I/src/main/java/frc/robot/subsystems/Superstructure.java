@@ -2,9 +2,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.LimelightHelper;
 import frc.robot.utils.Logger;
 import frc.robot.utils.Constants.IntakeConstants;
 import frc.robot.utils.Constants.ScoringConstants;
+
+import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.StrobeAnimation;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -14,9 +19,12 @@ public class Superstructure extends SubsystemBase {
     private final Intake intake;
     private final Flywheel flywheel;
     private final Hopper hopper;
+    private final CANdle candle;
+
     private double stateDuration;
     private double internalStateTimer;
     private double customShotAngle;
+    private double latestIntakeTime;
     private boolean isIndexedOverride, hasGamepieceOverride, justIntaked;
     private Timer timer;
 
@@ -53,6 +61,8 @@ public class Superstructure extends SubsystemBase {
         requestedSystemState = SuperstructureState.STOW;
         isIndexedOverride = false;
 
+        candle = new CANdle(0);
+
         SmartDashboard.putBoolean("Piece Indexed Override", isIndexedOverride); // overrides, just in case
         // hasGamepieceOverride = SmartDashboard.putBoolean("Has Gamepiece Override",
         // false);
@@ -60,6 +70,7 @@ public class Superstructure extends SubsystemBase {
         SmartDashboard.putString("STATE", systemState.toString());
         stateDuration = 0;
         internalStateTimer = 0;
+        latestIntakeTime = 0;
 
         SmartDashboard.putBoolean("LL Shot Move Arm", false);
         SmartDashboard.putNumber("LL Shot Angle", 0);
@@ -114,7 +125,8 @@ public class Superstructure extends SubsystemBase {
             // idle state of robot, arm is in stow position,
             case STOW:
                 SmartDashboard.putBoolean("ARM At Stow Angle", arm.isAtStowAngle());
-                if (arm.isAtStowAngle()) {
+
+                if(arm.isAtStowAngle()) {
                     Logger.getInstance().logEvent("arm at neutral mode", true);
                     arm.setArmNeutralMode();
                 } else {
@@ -122,10 +134,17 @@ public class Superstructure extends SubsystemBase {
                     arm.setStowPosition();
                 }
 
-                if (DriverStation.isAutonomous()) {
+                if(DriverStation.isAutonomous()) {
                     flywheel.runFlywheelLimelight();
                 } else {
                     flywheel.stopFlywheel();
+
+                    if(Math.abs(Timer.getFPGATimestamp() - latestIntakeTime) > 1.0){
+                        LimelightHelper.setLEDMode_PipelineControl("limelight-intake");
+                        LimelightHelper.setLEDMode_PipelineControl("limelight-shooter");
+                        candle.clearAnimation(0);
+                        justIntaked = false;
+                    }
                 }
                 intake.stopIntake();
                 hopper.stopHopper();
@@ -171,8 +190,16 @@ public class Superstructure extends SubsystemBase {
                 if (isGamepieceIndexed()) {
                     intake.stopIntake();
                     hopper.stopHopper();
+                    latestIntakeTime = Timer.getFPGATimestamp();
+                    justIntaked = true;
+
                     if (!DriverStation.isAutonomous()) {
                         requestState(SuperstructureState.STOW);
+                        LimelightHelper.setLEDMode_ForceBlink("limelight-intake");
+                        LimelightHelper.setLEDMode_ForceBlink("limelight-shooter");
+
+                        candle.animate(new StrobeAnimation(125, 35, 250), 0);
+                        // candle.setLEDs(125, 35, 250);
                     }
                 }
 
@@ -506,12 +533,8 @@ public class Superstructure extends SubsystemBase {
                 } else if (requestedSystemState == SuperstructureState.CUSTOM_SHOT_PREP) {
                     nextSystemState = requestedSystemState;
                 }
-
+                break;
         }
-
-        if (nextSystemState != systemState)
-            justIntaked = false;
-        systemState = nextSystemState;
 
     }
 
