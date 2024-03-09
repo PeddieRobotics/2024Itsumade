@@ -19,7 +19,7 @@ public class Superstructure extends SubsystemBase {
     private final Intake intake;
     private final Flywheel flywheel;
     private final Hopper hopper;
-    private final CANdle candle;
+    // private final CANdle candle;
 
     private double stateDuration;
     private double internalStateTimer;
@@ -61,7 +61,7 @@ public class Superstructure extends SubsystemBase {
         requestedSystemState = SuperstructureState.STOW;
         isIndexedOverride = false;
 
-        candle = new CANdle(0);
+        // candle = new CANdle(0);
 
         SmartDashboard.putBoolean("Piece Indexed Override", isIndexedOverride); // overrides, just in case
         // hasGamepieceOverride = SmartDashboard.putBoolean("Has Gamepiece Override",
@@ -141,8 +141,7 @@ public class Superstructure extends SubsystemBase {
 
                     if(Math.abs(Timer.getFPGATimestamp() - latestIntakeTime) > 1.0){
                         LimelightHelper.setLEDMode_PipelineControl("limelight-intake");
-                        LimelightHelper.setLEDMode_PipelineControl("limelight-shooter");
-                        candle.clearAnimation(0);
+                        // candle.clearAnimation(0);
                         justIntaked = false;
                     }
                 }
@@ -196,9 +195,8 @@ public class Superstructure extends SubsystemBase {
                     if (!DriverStation.isAutonomous()) {
                         requestState(SuperstructureState.STOW);
                         LimelightHelper.setLEDMode_ForceBlink("limelight-intake");
-                        LimelightHelper.setLEDMode_ForceBlink("limelight-shooter");
 
-                        candle.animate(new StrobeAnimation(125, 35, 250), 0);
+                        // candle.animate(new StrobeAnimation(125, 35, 250), 0);
                         // candle.setLEDs(125, 35, 250);
                     }
                 }
@@ -535,6 +533,8 @@ public class Superstructure extends SubsystemBase {
                 }
                 break;
         }
+
+        systemState = nextSystemState;
 
     }
 
