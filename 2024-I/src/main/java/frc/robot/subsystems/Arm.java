@@ -52,10 +52,10 @@ public class Arm extends SubsystemBase {
         armMotor = new Kraken(RobotMap.ARM_MOTOR, RobotMap.CANIVORE_NAME);
         armMotor.setInverted(true);
         armMotor.setSupplyCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
-        armMotor.setForwardTorqueCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
-        armMotor.setReverseTorqueCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
+        armMotor.setForwardTorqueCurrentLimit(ArmConstants.kArmForwardTorqueCurrentLimit);
+        armMotor.setReverseTorqueCurrentLimit(ArmConstants.kArmReverseTorqueCurrentLimit);
         armMotor.setBrake();
-        armMotor.setEncoder(0);// wont be 0 if measurement is 0 when horizonal
+        armMotor.setEncoder(0);// wont be 0 if measurement is 0 when horizontal
 
         armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
         armMotor.setRotorToSensorRatio(ArmConstants.kRotorToSensorRatio);
@@ -83,10 +83,10 @@ public class Arm extends SubsystemBase {
 
         // putSmartDashboard();
         SmartDashboard.putNumber("AMP SCORING ANGLE", ampAngle);
-        SmartDashboard.putNumber("LL DIST MULTIPLIER", 0.97);
+        //Made LL dist multiplier a constant
+        SmartDashboard.putNumber("LL DIST MULTIPLIER", ArmConstants.kArmLLDistMultiplier);
     }
 
-    // TODO: update these constants
     public void configureCANcoder() {
         CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive; // doublecheck this
@@ -211,7 +211,7 @@ public class Arm extends SubsystemBase {
     }
 
     public double getAngleFromDist(double dist) {
-        return LLShotMap.get(dist * SmartDashboard.getNumber("LL DIST MULTIPLIER", 0.96));
+        return LLShotMap.get(dist * SmartDashboard.getNumber("LL DIST MULTIPLIER", ArmConstants.kArmLLDistMultiplier));
     }
 
     public double getArmAngleSetpoint(){
