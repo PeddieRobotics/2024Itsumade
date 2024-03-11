@@ -118,22 +118,22 @@ public class Logger {
         hopperTopSensorEntry.append(hopper.getTopSensor());
         hopperCurrentEntry.append(hopper.getMotorCurrent());
 
-        // Flywheel
+        //Flywheel
         rightFlywheelCurrentEntry.append(flywheel.getRightMotorCurrent());
         leftFlywheelCurrentEntry.append(flywheel.getLeftMotorCurrent());
 
         rightFlywheelRPMEntry.append(flywheel.getFlywheelRightRPM());
         leftFlywheelRPMEntry.append(flywheel.getFlywheelLeftRPM());
 
-        // Arm
+        //Arm
         armAngleEntry.append(arm.getArmAngleDegrees());
         armCurrentEntry.append(arm.getSupplyCurrent());
         armAngleSetpointEntry.append(arm.getArmAngleSetpoint());
 
-        // Limelight
+        //limelight
         LLDistancEntry.append(limelightShooter.getDistance());
 
-        // Climber
+        //Climber
         climberLeftArmCurrent.append(climber.getLeftArmCurrent());
         climberRightArmCurrent.append(climber.getRightArmCurrent());
 
