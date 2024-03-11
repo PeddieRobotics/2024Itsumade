@@ -53,6 +53,7 @@ public class Logger {
         limelightShooter=LimelightShooter.getInstance();
         hopper = Hopper.getInstance();
         superstructure = Superstructure.getInstance();
+        climber = Climber.getInstance();
 
         // Superstructure Logs
         robotStateEntry = new StringLogEntry(log, "/Superstructure/Robot State");
