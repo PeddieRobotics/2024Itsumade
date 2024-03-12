@@ -171,6 +171,8 @@ public final class Constants {
 
   public static class ArmConstants {
     public static final int kArmPrimaryCurrentLimit = 40;
+    public static final int kArmForwardTorqueCurrentLimit = 40;
+    public static final int kArmReverseTorqueCurrentLimit = -40;
 
     public static final double kArmS = 4;
     public static final double kArmV = 0;
@@ -202,12 +204,15 @@ public final class Constants {
     public static final double kArmIntakeHPPosition = 70; // in deg
     public static final double kArmPositionEpsilon = 3; // in deg
     public static final double kArmStowPositionEpsilon = 10; // in deg
-    public static final double kArmAmpPosition = 134; //124 in lab, 140 at comp
+    public static final double kArmAmpPosition = 134; //124 in lab, 140 at comp 134 IS LAST USED ANGLE AT HATBORO
     public static final double kArmFrontLayupPosition = 38; // 38
     public static final double kArmSideLayupPosition = 35;
     public static final double kArmStowPosition = 0;
     public static final double kArmIntakePositionFromGround = 32;
     public static final double kArmPodiumShotPosition = 62;
+
+    //multiplier to arm angle for lookuptable since real field is different from lab
+    public static final double kArmLLDistMultiplier = 0.97;
 
   }
 

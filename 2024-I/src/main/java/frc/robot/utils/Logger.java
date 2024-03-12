@@ -53,6 +53,7 @@ public class Logger {
         limelightShooter=LimelightShooter.getInstance();
         hopper = Hopper.getInstance();
         superstructure = Superstructure.getInstance();
+        climber = Climber.getInstance();
 
         // Superstructure Logs
         robotStateEntry = new StringLogEntry(log, "/Superstructure/Robot State");
@@ -127,13 +128,20 @@ public class Logger {
         rightFlywheelRPMEntry.append(flywheel.getFlywheelRightRPM());
         leftFlywheelRPMEntry.append(flywheel.getFlywheelLeftRPM());
 
-        //arm
+        //Arm
         armAngleEntry.append(arm.getArmAngleDegrees());
         armCurrentEntry.append(arm.getSupplyCurrent());
         armAngleSetpointEntry.append(arm.getArmAngleSetpoint());
 
         //limelight
         LLDistancEntry.append(limelightShooter.getDistance());
+
+        //Climber
+        climberLeftArmCurrent.append(climber.getLeftArmCurrent());
+        climberRightArmCurrent.append(climber.getRightArmCurrent());
+
+        climberLeftArmPosition.append(climber.getLeftArmPosition());
+        climberRightArmPosition.append(climber.getRightArmPosition());
     }
 
     //put pose to log for field visualization

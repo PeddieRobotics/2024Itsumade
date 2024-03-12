@@ -52,8 +52,10 @@ public class Arm extends SubsystemBase {
         armMotor = new Kraken(RobotMap.ARM_MOTOR, RobotMap.CANIVORE_NAME);
         armMotor.setInverted(true);
         armMotor.setSupplyCurrentLimit(ArmConstants.kArmPrimaryCurrentLimit);
+        armMotor.setForwardTorqueCurrentLimit(ArmConstants.kArmForwardTorqueCurrentLimit);
+        armMotor.setReverseTorqueCurrentLimit(ArmConstants.kArmReverseTorqueCurrentLimit);
         armMotor.setBrake();
-        armMotor.setEncoder(0);// wont be 0 if measurement is 0 when horizonal
+        armMotor.setEncoder(0);// wont be 0 if measurement is 0 when horizontal
 
         armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
         armMotor.setRotorToSensorRatio(ArmConstants.kRotorToSensorRatio);
@@ -82,7 +84,6 @@ public class Arm extends SubsystemBase {
         // putSmartDashboard();
     }
 
-    // TODO: update these constants
     public void configureCANcoder() {
         CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive; // doublecheck this
