@@ -202,11 +202,12 @@ public final class Constants {
     public static final double kArmIntakeHPPosition = 70; // in deg
     public static final double kArmPositionEpsilon = 3; // in deg
     public static final double kArmStowPositionEpsilon = 10; // in deg
-    public static final double kArmAmpPosition = 135; //124 in lab, 140 at comp
+    public static final double kArmAmpPosition = 134; //124 in lab, 140 at comp
     public static final double kArmFrontLayupPosition = 38; // 38
     public static final double kArmSideLayupPosition = 35;
     public static final double kArmStowPosition = 0;
     public static final double kArmIntakePositionFromGround = 32;
+    public static final double kArmPodiumShotPosition = 62;
 
   }
 
@@ -276,6 +277,7 @@ public final class Constants {
     public static final double kHopperSensorThreshold = 0;
 
     public static final double kIntakeSpeed = 1.0;
+    public static final double kIntakeFeedSpeed = 0.5;
     public static final double kReverseIntakeSpeed = -1.0;
 
     public static final double kIntakeOpenLoopRampRate = 0.25;
@@ -283,12 +285,12 @@ public final class Constants {
 
   public static class HopperConstants {
     public static final double kHPIntakeHopperSpeed = 0; // if used, needs to be negative
-    public static final double kGroundIntakeHopperSpeed = 0.5;
+    public static final double kGroundIntakeHopperSpeed = 0.75;
     public static final double kOuttakeHopperSpeed = -0.5;
     public static final double kFeedFlywheelAmpSpeed = 0.5;
     public static final double kFeedFlywheelLayupSpeed = 0.5;
     public static final double kFeedFlywheelSpeakerSpeed = 0.5;
-
+    public static final double kFeedFlywheelPodiumSpeed = 0.5; 
   }
 
 }

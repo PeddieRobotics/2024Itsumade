@@ -67,8 +67,12 @@ public class Hopper extends SubsystemBase {
     setHopper(HopperConstants.kFeedFlywheelAmpSpeed);
   }
 
-    public void feedFlywheelSpeaker() {
+  public void feedFlywheelSpeaker() {
     setHopper(HopperConstants.kFeedFlywheelSpeakerSpeed);
+  }
+
+  public void feedFlywheelPodium() {
+    setHopper(HopperConstants.kFeedFlywheelPodiumSpeed);
   }
 
   public void setHopper(double speed) {

@@ -21,9 +21,11 @@ import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.utils.Constants.ArmConstants;
 
-public class OperatorTab extends ShuffleboardTabBase{
+public class OperatorTab extends ShuffleboardTabBase {
     private SendableChooser<Command> autoChooser;
     private SendableChooser<String> autoSetupChooser;
 
@@ -35,67 +37,74 @@ public class OperatorTab extends ShuffleboardTabBase{
     private Hopper hopper;
     private Intake intake;
     private Superstructure superstructure;
+    private LimelightShooter limelightShooter;
 
     private GenericEntry stateEntry, armAngleEntry,
-    flywheelAtRPMEntry, armDeltaEntry, flywheelDeltaEntry, flywheelLeftRPMEntry, 
-    flywheelRightRPMEntry, isIndexedOverrideEntry, topSensorEntry, bottomSensorEntry,
-    hasGamePieceEntry;
+            flywheelAtRPMEntry, flywheelLeftRPMEntry, llDistanceMultiplierEntry, llDistanceEntry, ampAngleEntry,
+            flywheelRightRPMEntry, isIndexedOverrideEntry, topSensorEntry, bottomSensorEntry,
+            hasGamePieceEntry;
 
-    public OperatorTab(){
+    public OperatorTab() {
         arm = Arm.getInstance();
         autonomous = Autonomous.getInstance();
         flywheel = Flywheel.getInstance();
         hopper = Hopper.getInstance();
         intake = Intake.getInstance();
         superstructure = Superstructure.getInstance();
+        limelightShooter = LimelightShooter.getInstance();
     }
 
     public void createEntries() {
         tab = Shuffleboard.getTab("Operator");
 
-        try{ 
+        try {
             stateEntry = tab.add("State", "STOW")
-            .withSize(2,1)
-            .withPosition(12,1)
-            .getEntry();
+                    .withSize(2, 1)
+                    .withPosition(12, 1)
+                    .getEntry();
 
             armAngleEntry = tab.add("Arm Angle", 0.0)
-            .withSize(1,1)
-            .withPosition(12,2)
-            .getEntry();
+                    .withSize(1, 1)
+                    .withPosition(12, 2)
+                    .getEntry();
 
             intakeCameraWidget = tab.addCamera("Intake Camera", "LL Intake", "http://10.58.95.53:5800")
-            .withSize(5,4)
-            .withPosition(5,0);
+                    .withSize(5, 4)
+                    .withPosition(5, 0);
 
             shooterCameraWidget = tab.addCamera("Shooter Camera", "LL Shooter", "http://10.58.95.41:5800")
-            .withSize(5,4)
-            .withPosition(0, 0);
+                    .withSize(5, 4)
+                    .withPosition(0, 0);
 
-            flywheelDeltaEntry = tab.add("Flywheel Delta", 0.0)
-            .withSize(1,1)
-            .withPosition(14, 1)
-            .getEntry();
+            llDistanceEntry = tab.add("LL Distance", 0.0)
+                    .withSize(1, 1)
+                    .withPosition(14, 1)
+                    .getEntry();
 
-            armDeltaEntry = tab.add("Arm Delta", 0.0)
-            .withSize(1,1)
-            .withPosition(13, 2)
-            .getEntry();
+            llDistanceMultiplierEntry = tab.add("LL Dist Multiplier", 1.0)
+                    .withSize(1, 1)
+                    .withPosition(13, 2)
+                    .getEntry();
 
-            flywheelLeftRPMEntry = tab.add("Flywheel Left RPM", 0.0) 
-            .withSize(2, 1)
-            .withPosition(12, 0)
-            .getEntry();
+            ampAngleEntry = tab.add("Amp Scoring Angle", ArmConstants.kArmAmpPosition)
+                    .withSize(2, 1)
+                    .withPosition(14, 2)
+                    .getEntry();
 
-            flywheelRightRPMEntry = tab.add("Flywheel Right RPM", 0.0) 
-            .withSize(2, 1)
-            .withPosition(14, 0)
-            .getEntry();
+            flywheelLeftRPMEntry = tab.add("Flywheel Left RPM", 0.0)
+                    .withSize(2, 1)
+                    .withPosition(12, 0)
+                    .getEntry();
 
-            flywheelAtRPMEntry = tab.add("Flywheel At RPM?", false) 
-            .withSize(1, 1)
-            .withPosition(15, 1)
-            .getEntry();
+            flywheelRightRPMEntry = tab.add("Flywheel Right RPM", 0.0)
+                    .withSize(2, 1)
+                    .withPosition(14, 0)
+                    .getEntry();
+
+            flywheelAtRPMEntry = tab.add("Flywheel At RPM?", false)
+                    .withSize(1, 1)
+                    .withPosition(15, 1)
+                    .getEntry();
 
             // Return to this later
             // isIndexedOverrideEntry = tab.add("Piece Indexed Override", false)
@@ -105,20 +114,20 @@ public class OperatorTab extends ShuffleboardTabBase{
             // .getEntry();
 
             topSensorEntry = tab.add("Top Sensor?", false)
-            .withSize(1, 1)
-            .withPosition(11, 0)
-            .getEntry();
+                    .withSize(1, 1)
+                    .withPosition(11, 0)
+                    .getEntry();
 
             bottomSensorEntry = tab.add("Bottom Sensor?", false)
-            .withSize(1,1)
-            .withPosition(11, 1)
-            .getEntry();   
+                    .withSize(1, 1)
+                    .withPosition(11, 1)
+                    .getEntry();
 
             hasGamePieceEntry = tab.add("Has Gamepiece?", false)
-            .withSize(5,5)
-            .withPosition(16, 0)
-            .getEntry();            
-        } catch (IllegalArgumentException e){
+                    .withSize(5, 5)
+                    .withPosition(16, 0)
+                    .getEntry();
+        } catch (IllegalArgumentException e) {
         }
     }
 
@@ -126,13 +135,14 @@ public class OperatorTab extends ShuffleboardTabBase{
     public void update() {
         try {
             armAngleEntry.setDouble(arm.getArmAngleDegrees());
+            llDistanceEntry.setDouble(limelightShooter.getDistance());
 
             flywheelAtRPMEntry.getBoolean(flywheel.isAtRPM());
             flywheelLeftRPMEntry.setDouble(flywheel.getFlywheelLeftRPM());
             flywheelRightRPMEntry.setDouble(flywheel.getFlywheelRightRPM());
-            flywheel.setRPMDelta(flywheelDeltaEntry.getDouble(0));
-
-            arm.setArmDelta(armDeltaEntry.getDouble(0));
+            
+            arm.setLLDistanceMultiplier(llDistanceMultiplierEntry.getDouble(1.0));
+            arm.setAmpScoringAngle(ampAngleEntry.getDouble(ArmConstants.kArmAmpPosition));
 
             // isIndexedOverrideEntry.getBoolean(false);  // Return to this later
             stateEntry.setString(superstructure.getRobotState());
@@ -144,42 +154,38 @@ public class OperatorTab extends ShuffleboardTabBase{
         } catch(IllegalArgumentException e){}
     }
 
-    public void configureAutoSelector(){
+    public void configureAutoSelector() {
         autoChooser = autonomous.getAutoChooser();
         autoChooserWidget = tab.add("Auto routine", autoChooser)
-        .withSize(2,1)
-        .withPosition(11,3);
+                .withSize(2, 1)
+                .withPosition(11, 3);
     }
 
-    public void configureAutoSetupSelector(){
+    public void configureAutoSetupSelector() {
         autoSetupChooser = new SendableChooser<String>();
         autoSetupChooser.setDefaultOption("NONE/TELEOP", "NONE/TELEOP");
         autoSetupChooser.addOption("SOURCE", "SOURCE");
         autoSetupChooser.addOption("AMP", "AMP");
         autoSetupChooser.addOption("CENTER", "CENTER");
         autoSetupWidget = tab.add("Auto setup", autoSetupChooser)
-        .withSize(2,1)
-        .withPosition(13,3);
+                .withSize(2, 1)
+                .withPosition(13, 3);
     }
 
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
     }
 
-    public double getGyroOffsetForTeleop(){ //only for red side. Negated for blue side in main.
-        if(autoSetupChooser.getSelected().equals("NONE/TELEOP")){
+    public double getGyroOffsetForTeleop() { // only for red side. Negated for blue side in main.
+        if (autoSetupChooser.getSelected().equals("NONE/TELEOP")) {
             return 0.0;
-        }
-        else if(autoSetupChooser.getSelected().equals("SOURCE")){
+        } else if (autoSetupChooser.getSelected().equals("SOURCE")) {
             return -120.0;
-        }
-        else if(autoSetupChooser.getSelected().equals("AMP")){
+        } else if (autoSetupChooser.getSelected().equals("AMP")) {
             return 120.0;
-        }
-        else if(autoSetupChooser.getSelected().equals("CENTER")){
+        } else if (autoSetupChooser.getSelected().equals("CENTER")) {
             return 180.0;
-        }       
-        else{
+        } else {
             return 0.0;
         }
     }

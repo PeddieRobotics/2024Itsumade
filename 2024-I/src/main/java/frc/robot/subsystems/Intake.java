@@ -57,8 +57,16 @@ public class Intake extends SubsystemBase {
     setIntake(IntakeConstants.kIntakeSpeed);
   }
 
+  public void runIntakeFeed(){
+    setIntake(IntakeConstants.kIntakeFeedSpeed);
+  }
+
   public void reverseIntake(){
     setIntake(-IntakeConstants.kIntakeSpeed);
+  }
+
+  public double getIntakeSpeed(){
+    return intakeMotor.getMotorOutputPercent();
   }
 
   public boolean hasGamepiece(){

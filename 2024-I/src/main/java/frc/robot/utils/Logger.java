@@ -21,7 +21,7 @@ import frc.robot.subsystems.Superstructure;
 public class Logger {
     private static Logger instance;
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
-    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, hopperCurrentEntry, 
+    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, intakeSpeedEntry, hopperCurrentEntry, 
                 leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,LLDistancEntry, armCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition, climberLeftArmCurrent, climberRightArmCurrent;
     private StringLogEntry robotStateEntry, commandEntry;
     private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
@@ -67,6 +67,7 @@ public class Logger {
         // Intake Logs
         intakeSensorEntry = new BooleanLogEntry(log, "/Intake/Intake Sensor");
         intakeCurrentEntry = new DoubleLogEntry(log, "/Intake/Intake Current");
+        intakeSpeedEntry = new DoubleLogEntry(log, "/Intake/Intake Speed");
 
         // Hopper Logs
         hopperBottomSensorEntry = new BooleanLogEntry(log, "/Hopper/Hopper Bottom Sensor");
@@ -112,6 +113,7 @@ public class Logger {
         // Intake
         intakeSensorEntry.append(intake.getSensor());
         intakeCurrentEntry.append(intake.getMotorCurrent());
+        intakeSpeedEntry.append(intake.getIntakeSpeed());
 
         // Hopper
         hopperBottomSensorEntry.append(hopper.getBottomSensor());

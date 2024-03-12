@@ -30,10 +30,8 @@ public class Arm extends SubsystemBase {
     private CANcoder armCANcoder;
     private InterpolatingDoubleTreeMap LLShotMap = new InterpolatingDoubleTreeMap();
     private Rate angle;
-    private double gravityFeedForward, armAngleSetpoint, armDelta;
+    private double gravityFeedForward, armAngleSetpoint, armDelta, llDistanceMultiplier, ampScoringAngle;
     private String stringState;
-
-    private double ampAngle = ArmConstants.kArmAmpPosition; // should be ArmConstants.kArmAmpPosition, testing offset
 
     public enum ArmState {
         Intaking, Moving, Stowed, Shooting
@@ -45,6 +43,8 @@ public class Arm extends SubsystemBase {
         limelightShooter = LimelightShooter.getInstance();
 
         armDelta = 0.0;
+        ampScoringAngle = ArmConstants.kArmAmpPosition;
+        llDistanceMultiplier = 1.0;
 
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
         configureCANcoder();
@@ -80,8 +80,6 @@ public class Arm extends SubsystemBase {
         gravityFeedForward = 0;
 
         // putSmartDashboard();
-        SmartDashboard.putNumber("AMP SCORING ANGLE", ampAngle);
-        SmartDashboard.putNumber("LL DIST MULTIPLIER", 0.97);
     }
 
     // TODO: update these constants
@@ -209,7 +207,7 @@ public class Arm extends SubsystemBase {
     }
 
     public double getAngleFromDist(double dist) {
-        return LLShotMap.get(dist * SmartDashboard.getNumber("LL DIST MULTIPLIER", 0.96));
+        return LLShotMap.get(dist * llDistanceMultiplier);
     }
 
     public double getArmAngleSetpoint(){
@@ -231,8 +229,11 @@ public class Arm extends SubsystemBase {
     }
 
     public void setAmpPosition() {
-        setArmAngle(SmartDashboard.getNumber("AMP SCORING ANGLE", ArmConstants.kArmAmpPosition));
-        // setArmAngle(ArmConstants.kArmAmpPosition);
+        setArmAngle(ampScoringAngle);
+    }
+
+    public void setPodiumPosition() {
+        setArmAngle(ArmConstants.kArmPodiumShotPosition + armDelta);
     }
 
     public void setFrontLayupPosition() {
@@ -253,6 +254,22 @@ public class Arm extends SubsystemBase {
 
     public void setArmNeutralMode(){
         armMotor.setNeutralControl();
+    }
+
+    public double getLLDistanceMultiplier(){
+        return llDistanceMultiplier;
+    }
+
+    public void setLLDistanceMultiplier(double multiplier){
+        llDistanceMultiplier = multiplier;
+    }
+
+    public double getAmpScoringAngle(){
+        return ampScoringAngle;
+    }
+
+    public void setAmpScoringAngle(double angle){
+        ampScoringAngle = angle;
     }
 
     @Override
