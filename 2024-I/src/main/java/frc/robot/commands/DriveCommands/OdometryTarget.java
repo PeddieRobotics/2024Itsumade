@@ -78,6 +78,9 @@ public class OdometryTarget extends Command {
         // SmartDashboard.putNumber("Target Turn Input", turnInput);
         // SmartDashboard.putBoolean("Limelight has target",
         // limelightShooter.hasTarget());    }
+
+        SmartDashboard.putNumber("ODOMETRY TARGET: Target Angle", targetAngle);
+        SmartDashboard.putNumber("ODOMETRY TARGET: Angle Error", error);
     }
 
     @Override
