@@ -79,6 +79,13 @@ public class OdometryTarget extends Command {
         // SmartDashboard.putBoolean("Limelight has target",
         // limelightShooter.hasTarget());    }
 
+        SmartDashboard.putNumber("ODOMETRY TARGET: Current Odometry X", currentOdometry.getX());
+        SmartDashboard.putNumber("ODOMETRY TARGET: Current Odometry Y", currentOdometry.getY());
+        SmartDashboard.putNumber("ODOMETRY TARGET: Current Odometry Theta", currentAngle);
+
+        SmartDashboard.putNumber("ODOMETRY TARGET: Speaker Odometry X", speakerPoseX);
+        SmartDashboard.putNumber("ODOMETRY TARGET: Speaker Odometry Y", speakerPoseY);
+
         SmartDashboard.putNumber("ODOMETRY TARGET: Target Angle", targetAngle);
         SmartDashboard.putNumber("ODOMETRY TARGET: Angle Error", error);
     }
