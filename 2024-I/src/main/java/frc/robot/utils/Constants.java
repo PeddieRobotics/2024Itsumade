@@ -1,5 +1,6 @@
 package frc.robot.utils;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -157,6 +158,9 @@ public final class Constants {
     public static final double kTargetI = 0;
     public static final double kTargetD = 0.002;
     public static final double kTargetFF = 0.01;
+    // TODO: Replace these with actual speaker values
+    public static final double kSpeakerPositionX = 0;
+    public static final double kSpeakerPositionY = 0; 
 
     public static final double kTargetAngleThreshold = 1.0;
 
