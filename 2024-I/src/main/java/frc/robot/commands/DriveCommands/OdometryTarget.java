@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
@@ -13,6 +14,7 @@ import frc.robot.subsystems.LimelightIntake;
 import frc.robot.subsystems.LimelightShooter;
 import frc.robot.utils.Constants;
 import frc.robot.utils.DriverOI;
+import frc.robot.utils.LimelightHelper;
 import frc.robot.utils.Logger;
 import frc.robot.utils.Constants.LimelightConstants;
 
@@ -29,41 +31,58 @@ public class OdometryTarget extends Command {
 
     public OdometryTarget() {
         drivetrain = Drivetrain.getInstance();
+        limelightShooter = LimelightShooter.getInstance();
         logger = Logger.getInstance();
 
-        turnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI, LimelightConstants.kTargetD);
-        turnFF = LimelightConstants.kTargetFF;
+        turnPIDController = new PIDController(LimelightConstants.kOdometryTargetP, LimelightConstants.kOdometryTargetI, LimelightConstants.kOdometryTargetD);
+        turnFF = LimelightConstants.kOdometryTargetFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;
 
         currentOdometry = drivetrain.getPose();
-        speakerPoseX = LimelightConstants.kSpeakerPositionX;
-        speakerPoseY = LimelightConstants.kSpeakerPositionY;
+        
+        speakerPoseX = 0;
+        speakerPoseY = 0;
 
         addRequirements(drivetrain);
-        // SmartDashboard.putNumber("Target P", 0);
-        // SmartDashboard.putNumber("Target I", 0);
-        // SmartDashboard.putNumber("Target D", 0);
-        // SmartDashboard.putNumber("Target FF", 0);
+        SmartDashboard.putNumber("Target P", 0);
+        SmartDashboard.putNumber("Target I", 0);
+        SmartDashboard.putNumber("Target D", 0);
+        SmartDashboard.putNumber("Target FF", 0);
     }
 
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
         logger.logEvent("Started Odometry Target Command", true);
-        limelightShooter.setPipeline(LimelightConstants.kShooterTargetingPipeline);
+        limelightShooter.setPipeline(LimelightConstants.kShooterAprilTagPipeline);
+
+        if(DriverStation.getAlliance().get() == Alliance.Red){
+            speakerPoseX = LimelightConstants.kRedSpeakerPositionX;
+            speakerPoseY = LimelightConstants.kRedSpeakerPositionY;
+        }
+        else{
+            speakerPoseX = LimelightConstants.kBlueSpeakerPositionX;
+            speakerPoseY = LimelightConstants.kBlueSpeakerPositionY;
+        }
+
     }
 
     @Override
     public void execute() {
+        turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
+        turnPIDController.setI(SmartDashboard.getNumber("Target I", 0));
+        turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
+        turnFF = SmartDashboard.getNumber("Target FF", 0);
+
         currentOdometry = drivetrain.getPose();
         double deltaX = speakerPoseX - currentOdometry.getX();
         double deltaY = speakerPoseY - currentOdometry.getY();
-        targetAngle = Math.atan2(deltaY, deltaX);
+        targetAngle = Math.toDegrees(Math.atan2(deltaY, deltaX));
 
-        currentAngle = currentOdometry.getRotation().getRadians();
+        currentAngle = currentOdometry.getRotation().getDegrees();
 
-        error = targetAngle - currentAngle;
+        error = currentAngle - targetAngle;
         
         if (error > turnThreshold) {
             turnInput = turnPIDController.calculate(error) + turnFF;
@@ -86,7 +105,8 @@ public class OdometryTarget extends Command {
         SmartDashboard.putNumber("ODOMETRY TARGET: Speaker Odometry X", speakerPoseX);
         SmartDashboard.putNumber("ODOMETRY TARGET: Speaker Odometry Y", speakerPoseY);
 
-        SmartDashboard.putNumber("ODOMETRY TARGET: Target Angle", targetAngle);
+        SmartDashboard.putNumber("ODOMETRY TARGET: Target Angle Radians", Math.toRadians(targetAngle));
+        SmartDashboard.putNumber("ODOMETRY TARGET: Target Angle Degrees", targetAngle);
         SmartDashboard.putNumber("ODOMETRY TARGET: Angle Error", error);
     }
 

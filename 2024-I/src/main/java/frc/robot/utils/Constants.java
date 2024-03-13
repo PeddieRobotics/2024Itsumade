@@ -64,6 +64,8 @@ public final class Constants {
 
     public static final double kHeadingCorrectionP = 0.1;
     public static final double kHeadingCorrectionTolerance = 1.0;
+
+    public static final boolean kUseMegaTag = false;
   }
 
   public static class ModuleConstants {
@@ -158,9 +160,19 @@ public final class Constants {
     public static final double kTargetI = 0;
     public static final double kTargetD = 0.002;
     public static final double kTargetFF = 0.01;
-    // TODO: Replace these with actual speaker values
-    public static final double kSpeakerPositionX = 0;
-    public static final double kSpeakerPositionY = 0; 
+
+    // target apriltag command constants
+    public static final double kOdometryTargetP = 0.03;
+    public static final double kOdometryTargetI = 0.0;
+    public static final double kOdometryTargetD = 0.0;
+    public static final double kOdometryTargetFF = 0.04;
+
+    // TODO: Replace these with actual speaker values, these are approximated from pathplanner
+    public static final double kRedSpeakerPositionX = 16.1;
+    public static final double kRedSpeakerPositionY = 5.53; 
+    
+    public static final double kBlueSpeakerPositionX = 0.48;
+    public static final double kBlueSpeakerPositionY = 5.53; 
 
     public static final double kTargetAngleThreshold = 1.0;
 

@@ -81,12 +81,14 @@ public class LimelightShooter extends Limelight {
     public Pose2d getBotpose() {
         double[] result;
         try {
-            if(DriverStation.getAlliance().get() == Alliance.Red){
-                result = LimelightHelper.getBotPose_wpiRed(limelightName);
-            }
-            else{
-                result = LimelightHelper.getBotPose_wpiBlue(limelightName);
-            }
+            // Use blue coordinates by default for all odometry
+            result = LimelightHelper.getBotPose_wpiBlue(limelightName);
+            // if(DriverStation.getAlliance().get() == Alliance.Red){
+            //     result = LimelightHelper.getBotPose_wpiRed(limelightName);
+            // }
+            // else{
+            //     result = LimelightHelper.getBotPose_wpiBlue(limelightName);
+            // }
         } catch (java.util.NoSuchElementException e) {
             return new Pose2d();
         }

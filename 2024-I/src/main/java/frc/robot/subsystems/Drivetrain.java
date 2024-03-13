@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.RollingAverage;
 import frc.robot.utils.Constants.DriveConstants;
+import frc.robot.utils.Constants;
 import frc.robot.utils.LimelightHelper;
 
 public class Drivetrain extends SubsystemBase {
@@ -167,6 +168,7 @@ public class Drivetrain extends SubsystemBase {
         // SmartDashboard.putNumber("Correct Heading P", DriveConstants.kHeadingCorrectionP);
 
         isForcingCalibration = false;
+        useMegaTag = Constants.DriveConstants.kUseMegaTag;
     }
 
     public static Drivetrain getInstance() {
@@ -191,7 +193,7 @@ public class Drivetrain extends SubsystemBase {
         // useMegaTag = SmartDashboard.getBoolean("Megatag updates", useMegaTag);
 
         field.setRobotPose(getPose());
-        // SmartDashboard.putData(field);
+        SmartDashboard.putData(field);
 
         // Updating the odometry
         for (int i = 0; i < 4; i++) {
@@ -238,9 +240,9 @@ public class Drivetrain extends SubsystemBase {
 
     public void updateOdometry() {
         odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
-        // if (useMegaTag || isForcingCalibration) {
-        // limelightShooter.checkForAprilTagUpdates(odometry);
-        // }
+        if (useMegaTag || isForcingCalibration) {
+            limelightShooter.checkForAprilTagUpdates(odometry);
+        }
     }
 
     public void setSwerveModuleStates(SwerveModuleState[] swerveModuleStates) {

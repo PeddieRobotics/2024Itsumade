@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -14,12 +15,14 @@ import frc.robot.commands.ClimbCommands.RetractClimber;
 import frc.robot.commands.DriveCommands.FollowNote;
 import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.ForcedCalibration;
+import frc.robot.commands.DriveCommands.OdometryTarget;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
 import frc.robot.commands.DriveCommands.RotateToAngle;
 import frc.robot.commands.DriveCommands.Target;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.OIConstants;
@@ -68,7 +71,8 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PODIUM_PREP)));
+        // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PODIUM_PREP)));
+        circleButton.whileTrue(new OdometryTarget());
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
@@ -83,7 +87,8 @@ public class DriverOI {
         muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.whileTrue(new Target());
+        L1Bumper.whileTrue(new ForcedCalibration());
+        // L1Bumper.whileTrue(new Target());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new RetractClimber());

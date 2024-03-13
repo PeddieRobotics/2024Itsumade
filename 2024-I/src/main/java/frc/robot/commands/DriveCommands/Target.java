@@ -81,6 +81,7 @@ public class Target extends Command {
         // SmartDashboard.putBoolean("Targetting", false);
         drivetrain.stop();
         logger.logEvent("Started Target Command", false);
+        limelightShooter.setPipeline(LimelightConstants.kShooterAprilTagPipeline);
     }
 
     @Override
