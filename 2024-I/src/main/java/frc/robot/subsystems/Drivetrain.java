@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -240,8 +241,15 @@ public class Drivetrain extends SubsystemBase {
 
     public void updateOdometry() {
         odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
-        if (useMegaTag || isForcingCalibration) {
-            limelightShooter.checkForAprilTagUpdates(odometry);
+        if(DriverStation.isAutonomous()){
+            if (isForcingCalibration) {
+                limelightShooter.checkForAprilTagUpdates(odometry);
+            }
+        }
+        else{
+            if (useMegaTag || isForcingCalibration) {
+                limelightShooter.checkForAprilTagUpdates(odometry);
+            }
         }
     }
 
