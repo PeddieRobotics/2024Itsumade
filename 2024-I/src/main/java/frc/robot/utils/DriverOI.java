@@ -71,8 +71,8 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PODIUM_PREP)));
-        circleButton.whileTrue(new OdometryTarget());
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
+        // circleButton.whileTrue(new OdometryTarget());
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
@@ -87,11 +87,12 @@ public class DriverOI {
         muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.whileTrue(new ForcedCalibration());
-        // L1Bumper.whileTrue(new Target());
+        // L1Bumper.whileTrue(new ForcedCalibration());
+        L1Bumper.whileTrue(new Target());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.onTrue(new RetractClimber());
+        R1Bumper.whileTrue(new OdometryTarget());
+        // R1Bumper.onTrue(new RetractClimber());
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 

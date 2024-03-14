@@ -45,10 +45,10 @@ public class OdometryTarget extends Command {
         speakerPoseY = 0;
 
         addRequirements(drivetrain);
-        SmartDashboard.putNumber("Target P", 0);
-        SmartDashboard.putNumber("Target I", 0);
-        SmartDashboard.putNumber("Target D", 0);
-        SmartDashboard.putNumber("Target FF", 0);
+        // SmartDashboard.putNumber("Target P", 0);
+        // SmartDashboard.putNumber("Target I", 0);
+        // SmartDashboard.putNumber("Target D", 0);
+        // SmartDashboard.putNumber("Target FF", 0);
     }
 
     @Override
@@ -70,10 +70,10 @@ public class OdometryTarget extends Command {
 
     @Override
     public void execute() {
-        turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
-        turnPIDController.setI(SmartDashboard.getNumber("Target I", 0));
-        turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
-        turnFF = SmartDashboard.getNumber("Target FF", 0);
+        // turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
+        // turnPIDController.setI(SmartDashboard.getNumber("Target I", 0));
+        // turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
+        // turnFF = SmartDashboard.getNumber("Target FF", 0);
 
         currentOdometry = drivetrain.getPose();
         double deltaX = speakerPoseX - currentOdometry.getX();

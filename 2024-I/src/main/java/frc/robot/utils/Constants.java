@@ -156,9 +156,9 @@ public final class Constants {
     public static final double kFollowNoteAngleThreshold = 1;
 
     // target apriltag command constants
-    public static final double kTargetP = 0.017;
+    public static final double kTargetP = 0.01;
     public static final double kTargetI = 0;
-    public static final double kTargetD = 0.002;
+    public static final double kTargetD = 0.0015;
     public static final double kTargetFF = 0.01;
 
     // target apriltag command constants
