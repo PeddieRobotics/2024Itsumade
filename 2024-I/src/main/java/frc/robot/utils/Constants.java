@@ -156,10 +156,10 @@ public final class Constants {
     public static final double kFollowNoteAngleThreshold = 1;
 
     // target apriltag command constants
-    public static final double kTargetP = 0.01;
-    public static final double kTargetI = 0;
-    public static final double kTargetD = 0.0015;
-    public static final double kTargetFF = 0.01;
+    public static final double kTargetP = 0.0175;
+    public static final double kTargetI = 0.001;
+    public static final double kTargetD = 0.002;
+    public static final double kTargetFF = 0.05;
 
     // target apriltag command constants
     public static final double kOdometryTargetP = 0.03;
@@ -180,7 +180,6 @@ public final class Constants {
     public static final double kSpeakerAprilTagHeight = 57.125;
 
     public static final int kShooterPipeline = 0;
-
     public static final int kIntakeNotePipeline = 0;
   }
 

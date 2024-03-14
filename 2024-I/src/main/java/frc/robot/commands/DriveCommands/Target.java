@@ -36,10 +36,10 @@ public class Target extends Command {
         logger = Logger.getInstance();
 
         addRequirements(drivetrain);
-        // SmartDashboard.putNumber("Target P", 0);
-        // SmartDashboard.putNumber("Target I", 0);
-        // SmartDashboard.putNumber("Target D", 0);
-        // SmartDashboard.putNumber("Target FF", 0);
+        SmartDashboard.putNumber("Target P", LimelightConstants.kTargetP);
+        SmartDashboard.putNumber("Target I", LimelightConstants.kTargetI);
+        SmartDashboard.putNumber("Target D", LimelightConstants.kTargetD);
+        SmartDashboard.putNumber("Target FF", LimelightConstants.kTargetFF);
     }
 
     @Override
@@ -50,11 +50,11 @@ public class Target extends Command {
 
     @Override
     public void execute() {
-        // turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
-        // turnPIDController.setI(SmartDashboard.getNumber("Target I", 0));
-        // turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
+        turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
+        turnPIDController.setI(SmartDashboard.getNumber("Target I", 0));
+        turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
         turnPIDController.setIZone(4.0);
-        // turnFF = (SmartDashboard.getNumber("Target FF", 0));
+        turnFF = (SmartDashboard.getNumber("Target FF", 0));
 
         if (limelightShooter.hasTarget()) {
             error = limelightShooter.getTxAverage();

@@ -94,6 +94,7 @@ public class OperatorOI {
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
 
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
+        shareButton.onTrue(new InstantCommand(() -> DriverOI.getInstance().toggleUseOdometryTarget()));
 
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
 

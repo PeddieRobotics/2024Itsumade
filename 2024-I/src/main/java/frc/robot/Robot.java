@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -67,7 +68,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
     shuffleboardMain.update();
   }
 
@@ -89,6 +89,12 @@ public class Robot extends TimedRobot {
     // m_robotContainer.resetGyro();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     LimelightShooter.getInstance().setPipeline(LimelightConstants.kShooterPipeline);
+
+    if(DriverStation.getAlliance().get() == Alliance.Red){
+      LimelightShooter.getInstance().setPriorityTag(4);
+    } else {
+      LimelightShooter.getInstance().setPriorityTag(7);
+    }
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -116,6 +122,12 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+    }
+
+    if(DriverStation.getAlliance().get() == Alliance.Red){
+      LimelightShooter.getInstance().setPriorityTag(4);
+    } else {
+      LimelightShooter.getInstance().setPriorityTag(7);
     }
 
     logger.logEvent("TeleOp Mode", true);

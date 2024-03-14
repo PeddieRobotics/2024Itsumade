@@ -235,6 +235,10 @@ public class LimelightShooter extends Limelight {
             odometry.addVisionMeasurement(this.getBotpose(), Timer.getFPGATimestamp());
         }
     }
+    
+    public void setPriorityTag(int tagID){
+        LimelightHelper.setPriorityTag(limelightName, tagID);
+    }
 
     public double getLastDistance(){
         return lastDistance;

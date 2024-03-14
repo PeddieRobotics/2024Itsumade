@@ -714,7 +714,7 @@ public class LimelightHelper {
     }
 
     public static void setPriorityTag(String limelightName, int tagID){
-        // setLimelightNTDouble(limelightName, , 0);
+        setLimelightNTDouble(limelightName, "priorityid", tagID);
     }
 
     public static double[] getPythonScriptData(String limelightName) {

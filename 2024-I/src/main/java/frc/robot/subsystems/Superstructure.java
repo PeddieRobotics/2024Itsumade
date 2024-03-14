@@ -20,6 +20,7 @@ public class Superstructure extends SubsystemBase {
     private final Intake intake;
     private final Flywheel flywheel;
     private final Hopper hopper;
+    private final Drivetrain drivetrain;
     // private final CANdle candle;
 
     private double stateDuration;
@@ -57,6 +58,7 @@ public class Superstructure extends SubsystemBase {
         flywheel = Flywheel.getInstance();
         intake = Intake.getInstance();
         hopper = Hopper.getInstance();
+        drivetrain = Drivetrain.getInstance();
 
         timer = new Timer();
 
@@ -469,6 +471,7 @@ public class Superstructure extends SubsystemBase {
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.reset();
+                    drivetrain.setIsForcingCalibration(true);
                     if (!DriverStation.isAutonomous()) {
                         requestState(SuperstructureState.STOW);
                     }
@@ -537,6 +540,7 @@ public class Superstructure extends SubsystemBase {
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.reset();
+                    drivetrain.setIsForcingCalibration(true);
                     if (!DriverStation.isAutonomous()) {
                         requestState(SuperstructureState.STOW);
                     }

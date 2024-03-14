@@ -249,6 +249,7 @@ public class Drivetrain extends SubsystemBase {
         else{
             if (useMegaTag || isForcingCalibration) {
                 limelightShooter.checkForAprilTagUpdates(odometry);
+                isForcingCalibration = false;
             }
         }
     }

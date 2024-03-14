@@ -21,23 +21,25 @@ public class HybridTarget extends Command {
     private LimelightShooter limelightShooter;
     private DriverOI oi;
 
-    private double error, turnThreshold, turnFF, turnInput;
+    private double error, turnThreshold, llTurnFF, odometryTurnFF, turnInput;
     // Odometry Target Values
-    private double speakerPoseX, speakerPoseY ,targetAngle, currentAngle;
+    private double speakerPoseX, speakerPoseY, targetAngle, currentAngle;
     private Pose2d currentOdometry;
 
-    private PIDController turnPIDController;
+    private PIDController llTurnPIDController, odometryTurnPIDController;
     private Logger logger;
-    
+
     public HybridTarget() {
         drivetrain = Drivetrain.getInstance();
         limelightShooter = LimelightShooter.getInstance();
         logger = Logger.getInstance();
 
-        turnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
-        LimelightConstants.kTargetD);
-        
-        turnFF = LimelightConstants.kTargetFF;
+        llTurnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
+                LimelightConstants.kTargetD);
+        odometryTurnPIDController = new PIDController(LimelightConstants.kOdometryTargetP, LimelightConstants.kOdometryTargetI, LimelightConstants.kOdometryTargetD);
+
+        llTurnFF = LimelightConstants.kTargetFF;
+        odometryTurnFF = LimelightConstants.kOdometryTargetFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;
         currentOdometry = drivetrain.getPose();
@@ -46,7 +48,7 @@ public class HybridTarget extends Command {
         speakerPoseY = 0;
 
         addRequirements(drivetrain);
-       
+
     }
 
     @Override
@@ -54,11 +56,10 @@ public class HybridTarget extends Command {
         oi = DriverOI.getInstance();
         logger.logEvent("Started Hybrid Target Command", true);
 
-        if(DriverStation.getAlliance().get() == Alliance.Red){
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
             speakerPoseX = LimelightConstants.kRedSpeakerPositionX;
             speakerPoseY = LimelightConstants.kRedSpeakerPositionY;
-        }
-        else{
+        } else {
             speakerPoseX = LimelightConstants.kBlueSpeakerPositionX;
             speakerPoseY = LimelightConstants.kBlueSpeakerPositionY;
         }
@@ -66,17 +67,46 @@ public class HybridTarget extends Command {
 
     @Override
     public void execute() {
-        
-        
+        if (limelightShooter.hasTarget() && Math.abs(limelightShooter.getTxAverage()) < 13.0) {
+
+            error = limelightShooter.getTxAverage();
+            if (error < -turnThreshold) {
+                turnInput = llTurnPIDController.calculate(error) + llTurnFF;
+            } else if (error > turnThreshold) {
+                turnInput = llTurnPIDController.calculate(error) - llTurnFF;
+            } else {
+                turnInput = 0;
+            }
+        } else {
+            currentOdometry = drivetrain.getPose();
+            double deltaX = speakerPoseX - currentOdometry.getX();
+            double deltaY = speakerPoseY - currentOdometry.getY();
+            targetAngle = Math.toDegrees(Math.atan2(deltaY, deltaX));
+
+            currentAngle = currentOdometry.getRotation().getDegrees();
+
+            error = currentAngle - targetAngle;
+
+            if (error > turnThreshold) {
+                turnInput = odometryTurnPIDController.calculate(error) + odometryTurnFF;
+            } else if (error < -turnThreshold) {
+                turnInput = odometryTurnPIDController.calculate(error) - odometryTurnFF;
+            } else {
+                turnInput = 0;
+            }
+        }
+        drivetrain.drive(oi.getSwerveTranslation(), turnInput * 2, true, oi.getCenterOfRotation());
+
     }
 
     @Override
     public void end(boolean interrupted) {
-       
+        drivetrain.stop();
+        logger.logEvent("Started Hybrid Target Command", false);
     }
 
     @Override
     public boolean isFinished() {
-        return true;
+        return Math.abs(error) < turnThreshold && oi.getSwerveTranslation() == new Translation2d(0, 0);
     }
 }
