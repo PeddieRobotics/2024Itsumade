@@ -55,8 +55,7 @@ public class OdometryTarget extends Command {
     public void initialize() {
         oi = DriverOI.getInstance();
         logger.logEvent("Started Odometry Target Command", true);
-        limelightShooter.setPipeline(LimelightConstants.kShooterAprilTagPipeline);
-
+        
         if(DriverStation.getAlliance().get() == Alliance.Red){
             speakerPoseX = LimelightConstants.kRedSpeakerPositionX;
             speakerPoseY = LimelightConstants.kRedSpeakerPositionY;

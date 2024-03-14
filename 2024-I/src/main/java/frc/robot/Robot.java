@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // m_robotContainer.resetGyro();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    LimelightShooter.getInstance().setPipeline(LimelightConstants.kShooterTargetingPipeline);
+    LimelightShooter.getInstance().setPipeline(LimelightConstants.kShooterPipeline);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

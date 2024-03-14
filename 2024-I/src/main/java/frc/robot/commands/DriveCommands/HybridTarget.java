@@ -1,9 +1,10 @@
 package frc.robot.commands.DriveCommands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
@@ -15,67 +16,67 @@ import frc.robot.utils.DriverOI;
 import frc.robot.utils.Logger;
 import frc.robot.utils.Constants.LimelightConstants;
 
-//Turn to target using PID
-public class TargetInAuto extends Command {
+public class HybridTarget extends Command {
     private Drivetrain drivetrain;
-    private LimelightShooter limelightShooter; // TODO: figure out front or back LL
+    private LimelightShooter limelightShooter;
     private DriverOI oi;
 
-    private double error, turnThreshold, turnFF, turnInput, initialTime, currentTime;
+    private double error, turnThreshold, turnFF, turnInput;
+    // Odometry Target Values
+    private double speakerPoseX, speakerPoseY ,targetAngle, currentAngle;
+    private Pose2d currentOdometry;
+
     private PIDController turnPIDController;
     private Logger logger;
-
-    public TargetInAuto() {
+    
+    public HybridTarget() {
         drivetrain = Drivetrain.getInstance();
         limelightShooter = LimelightShooter.getInstance();
+        logger = Logger.getInstance();
 
         turnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
-                LimelightConstants.kTargetD);
-        turnPIDController.setIZone(4.0);
-
+        LimelightConstants.kTargetD);
+        
         turnFF = LimelightConstants.kTargetFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;
-        logger = Logger.getInstance();
+        currentOdometry = drivetrain.getPose();
+
+        speakerPoseX = 0;
+        speakerPoseY = 0;
 
         addRequirements(drivetrain);
+       
     }
 
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
-        logger.logEvent("Started Target Command", true);
-        initialTime = Timer.getFPGATimestamp();
-        currentTime = Timer.getFPGATimestamp();
+        logger.logEvent("Started Hybrid Target Command", true);
+
+        if(DriverStation.getAlliance().get() == Alliance.Red){
+            speakerPoseX = LimelightConstants.kRedSpeakerPositionX;
+            speakerPoseY = LimelightConstants.kRedSpeakerPositionY;
+        }
+        else{
+            speakerPoseX = LimelightConstants.kBlueSpeakerPositionX;
+            speakerPoseY = LimelightConstants.kBlueSpeakerPositionY;
+        }
     }
 
     @Override
     public void execute() {
-        currentTime = Timer.getFPGATimestamp();
-        if (limelightShooter.hasTarget()) {
-            error = limelightShooter.getTxAverage();
-            if (error < -turnThreshold) {
-                turnInput = turnPIDController.calculate(error) + turnFF;
-            } else if (error > turnThreshold) {
-                turnInput = turnPIDController.calculate(error) - turnFF;
-            } else {
-                turnInput = 0;
-            }
-        } else {
-            turnInput = 0;
-        }
-
-        drivetrain.drive(oi.getSwerveTranslation(), turnInput * 2, true, oi.getCenterOfRotation());
+        
+        
     }
 
     @Override
     public void end(boolean interrupted) {
-        drivetrain.stop();
-        logger.logEvent("Started Target Command", false);
+       
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(error) < turnThreshold || (currentTime - initialTime > 1.0);
+        return true;
     }
 }

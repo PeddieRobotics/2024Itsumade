@@ -179,8 +179,7 @@ public final class Constants {
     // speaker april tag height because that is what will be used the most
     public static final double kSpeakerAprilTagHeight = 57.125;
 
-    public static final int kShooterAprilTagPipeline = 3;
-    public static final int kShooterTargetingPipeline = 4;
+    public static final int kShooterPipeline = 0;
 
     public static final int kIntakeNotePipeline = 0;
   }

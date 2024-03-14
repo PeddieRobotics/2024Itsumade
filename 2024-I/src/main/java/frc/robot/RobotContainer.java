@@ -56,7 +56,7 @@ public class RobotContainer {
     shuffleboard = ShuffleboardMain.getInstance();
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand());
-    limelightShooter.setPipeline(LimelightConstants.kShooterAprilTagPipeline);
+    limelightShooter.setPipeline(LimelightConstants.kShooterPipeline);
   }
 
   public void resetGyro() {

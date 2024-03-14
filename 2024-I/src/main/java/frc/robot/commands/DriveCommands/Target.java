@@ -46,7 +46,6 @@ public class Target extends Command {
     public void initialize() {
         oi = DriverOI.getInstance();
         logger.logEvent("Started Target Command", true);
-        limelightShooter.setPipeline(LimelightConstants.kShooterTargetingPipeline);
     }
 
     @Override
@@ -81,7 +80,6 @@ public class Target extends Command {
         // SmartDashboard.putBoolean("Targetting", false);
         drivetrain.stop();
         logger.logEvent("Started Target Command", false);
-        limelightShooter.setPipeline(LimelightConstants.kShooterAprilTagPipeline);
     }
 
     @Override

@@ -713,6 +713,10 @@ public class LimelightHelper {
         setLimelightNTDoubleArray(limelightName, "llrobot", outgoingPythonData);
     }
 
+    public static void setPriorityTag(String limelightName, int tagID){
+        // setLimelightNTDouble(limelightName, , 0);
+    }
+
     public static double[] getPythonScriptData(String limelightName) {
         return getLimelightNTDoubleArray(limelightName, "llpython");
     }
