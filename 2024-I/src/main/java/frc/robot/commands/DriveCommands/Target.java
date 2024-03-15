@@ -30,31 +30,33 @@ public class Target extends Command {
 
         turnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
                 LimelightConstants.kTargetD);
+        turnPIDController.setIZone(4.0);
+
         turnFF = LimelightConstants.kTargetFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;
         logger = Logger.getInstance();
 
         addRequirements(drivetrain);
-        SmartDashboard.putNumber("Target P", LimelightConstants.kTargetP);
-        SmartDashboard.putNumber("Target I", LimelightConstants.kTargetI);
-        SmartDashboard.putNumber("Target D", LimelightConstants.kTargetD);
-        SmartDashboard.putNumber("Target FF", LimelightConstants.kTargetFF);
+        // SmartDashboard.putNumber("Target P", 0);
+        // SmartDashboard.putNumber("Target I", 0);
+        // SmartDashboard.putNumber("Target D", 0);
+        // SmartDashboard.putNumber("Target FF", 0);
     }
 
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
         logger.logEvent("Started Target Command", true);
+        limelightShooter.setPipeline(LimelightConstants.kShooterPipeline);
     }
 
     @Override
     public void execute() {
-        turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
-        turnPIDController.setI(SmartDashboard.getNumber("Target I", 0));
-        turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
-        turnPIDController.setIZone(4.0);
-        turnFF = (SmartDashboard.getNumber("Target FF", 0));
+        // turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
+        // turnPIDController.setI(SmartDashboard.getNumber("Target I", 0));
+        // turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
+        // turnFF = (SmartDashboard.getNumber("Target FF", 0));
 
         if (limelightShooter.hasTarget()) {
             error = limelightShooter.getTxAverage();
@@ -68,10 +70,6 @@ public class Target extends Command {
         } else {
             turnInput = 0;
         }
-        // SmartDashboard.putBoolean("Targetting", true);
-        // SmartDashboard.putNumber("Target Turn Input", turnInput);
-        // SmartDashboard.putBoolean("Limelight has target",
-        // limelightShooter.hasTarget());
         drivetrain.drive(oi.getSwerveTranslation(), turnInput * 2, true, oi.getCenterOfRotation());
     }
 
