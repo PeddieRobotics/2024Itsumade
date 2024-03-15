@@ -471,8 +471,8 @@ public class Superstructure extends SubsystemBase {
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.reset();
-                    drivetrain.setIsForcingCalibration(true);
                     if (!DriverStation.isAutonomous()) {
+                        drivetrain.setIsForcingCalibration(true);
                         requestState(SuperstructureState.STOW);
                     }
                     break;
@@ -540,8 +540,8 @@ public class Superstructure extends SubsystemBase {
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.reset();
-                    drivetrain.setIsForcingCalibration(true);
                     if (!DriverStation.isAutonomous()) {
+                        drivetrain.setIsForcingCalibration(true);
                         requestState(SuperstructureState.STOW);
                     }
                     break;
