@@ -60,7 +60,7 @@ public final class Constants {
     public static final double kHeadingCorrectionP = 0.1;
     public static final double kHeadingCorrectionTolerance = 1.0;
 
-    public static final boolean kUseMegaTag = false;
+    public static final boolean kUseMegaTag = true; // Enable megatag botpose updates in teleop. Force calibrate works no matter what this is set to (in both auto and teleop).
   }
 
   public static class ModuleConstants {
@@ -125,9 +125,8 @@ public final class Constants {
   }
 
   public static class LimelightConstants {
-    public static final double kLimelightHeight = 17.88;
-    public static final double kLimelightPanningAngle = 25;
-    public static final double kLimelightAngle = 0;
+    public static final double kLimelightHeight = 17.88; // height in inches
+    public static final double kLimelightPanningAngle = 25; // mounting angle in degrees
 
     // drive to target command constants
     public static final double kDriveToTargetTurnP = 0;
@@ -170,17 +169,20 @@ public final class Constants {
     public static final double kHorizontalAlignD = 0.0;
     public static final double kHorizontalAlignFF = 0.0;
 
-    // TODO: Replace these with actual speaker values, these are approximated from pathplanner
-    public static final double kRedSpeakerPositionX = 16.1;
-    public static final double kRedSpeakerPositionY = 5.53; 
+    // Speaker coordinates in meters using blue coordinate system
+    // THESE NUMBERS MUST BE ADJUSTED IF FMAP IS ADJUSTED ON X or Y AXIS
+    public static final double kRedSpeakerPositionX = 16.61795; // 2* 8.308975 (distance from midline to April Tag)
+    public static final double kRedSpeakerPositionY = 5.548249; 
     
-    public static final double kBlueSpeakerPositionX = 0.48;
-    public static final double kBlueSpeakerPositionY = 5.53; 
+    public static final double kBlueSpeakerPositionX = 0.0;
+    public static final double kBlueSpeakerPositionY = 5.548249; // 4.105656 (dist between field wall and midline) + 1.442593 (.fmap offset from midline to tag) 
 
-    public static final double kTargetAngleThreshold = 1.0;
-
-    // speaker april tag height because that is what will be used the most
+    // center of speaker april tag height in inches (used for LL distance calculations)
+    // THIS MUST BE ADJUSTED IF FMAP IS ADJUSTED ON Z AXIS
     public static final double kSpeakerAprilTagHeight = 57.125;
+  
+    // Threshold (in degrees) for convergence on all speaker targeting algorithms
+    public static final double kTargetAngleThreshold = 1.0;
 
     //amp rotation -- degrees, this never changes really
     public static final double kAmpOdometryHeading = 90; //angle of amp relative to odometry
