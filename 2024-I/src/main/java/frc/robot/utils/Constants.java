@@ -46,9 +46,6 @@ public final class Constants {
     // public static final double kMaxFloorSpeed = 4.0; // meters per second
     // public static final double kMaxAngularSpeed = Math.PI; // radians per second
 
-    public static final int kDriveCurrentLimit = 30;
-    public static final int kTurningCurrentLimit = 20;
-
     public static final double kWheelRadius = 2.0;
 
     // Steps to doing offsets for swerves:
