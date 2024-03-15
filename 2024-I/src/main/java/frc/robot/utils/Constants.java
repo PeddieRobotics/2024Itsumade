@@ -41,13 +41,8 @@ public final class Constants {
     );
 
     // TODO: Change this value
-    public static final double kMaxFloorSpeed = 4.5; // meters per second
+    public static final double kMaxFloorSpeed = 5.0; // meters per second
     public static final double kMaxAngularSpeed = (3.0 / 2.0) * Math.PI; // radians per second
-    // public static final double kMaxFloorSpeed = 4.0; // meters per second
-    // public static final double kMaxAngularSpeed = Math.PI; // radians per second
-
-    public static final int kDriveCurrentLimit = 30;
-    public static final int kTurningCurrentLimit = 20;
 
     public static final double kWheelRadius = 2.0;
 
