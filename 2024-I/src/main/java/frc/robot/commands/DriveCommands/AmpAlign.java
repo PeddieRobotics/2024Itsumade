@@ -68,14 +68,15 @@ public class AmpAlign extends Command {
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
-        txError = limelightShooter.getTxAverage();
         logger.logEvent("Amp Align Command", true);
         if(DriverStation.getAlliance().get() == Alliance.Red){
             limelightShooter.setPriorityTag(5);
         } else {
             limelightShooter.setPriorityTag(6);
         }
-        hasRotated = false;
+        hasRotated = true;
+
+        txError = limelightShooter.getTxAverage();
     }
 
     @Override
@@ -102,17 +103,21 @@ public class AmpAlign extends Command {
             hasRotated = true;
         }
         
-        if (hasRotated) { //use tx to fix translation
+        if (Math.abs(txError) > horizontalThreshold && hasRotated) { //use tx to fix translation
             if (txError < -horizontalThreshold) {
                 horizontalInput = horizontalAlignPIDController.calculate(txError) + horizontalFF;
             } else if (txError > horizontalThreshold) {
                 horizontalInput = horizontalAlignPIDController.calculate(txError) - horizontalFF;
             } 
+
             if(DriverStation.getAlliance().get() == Alliance.Red){
                 horizontalInput = -horizontalInput;
             } 
-            SmartDashboard.putNumber("Horizontal Align Input", horizontalInput);
+
             drivetrain.drive(new Translation2d(horizontalInput, oi.getSwerveTranslation().getY()), oi.getRotation(), true, oi.getCenterOfRotation());
+        }
+        else if(hasRotated){
+            drivetrain.drive(new Translation2d(0, oi.getSwerveTranslation().getY()), oi.getRotation(), true, oi.getCenterOfRotation());
         }
     }
 
@@ -130,6 +135,6 @@ public class AmpAlign extends Command {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(txError) < horizontalThreshold); //potentially check if you have a target
+        return false; // hasRotated && (Math.abs(txError) < horizontalThreshold);
     }
 }

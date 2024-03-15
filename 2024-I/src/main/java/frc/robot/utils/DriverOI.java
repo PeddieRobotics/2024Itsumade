@@ -17,6 +17,7 @@ import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.ForcedCalibration;
 import frc.robot.commands.DriveCommands.AmpAlign;
 import frc.robot.commands.DriveCommands.OdometryTarget;
+import frc.robot.commands.DriveCommands.PIDToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
 import frc.robot.commands.DriveCommands.RotateToAngle;
@@ -94,6 +95,7 @@ public class DriverOI {
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // L1Bumper.whileTrue(new ConditionalCommand(new AmpAlign(), new Target(), this::isUsingOdometryTarget));
         L1Bumper.whileTrue(new AmpAlign());
+        // L1Bumper.whileTrue(new PIDToPoint(14.69, 7.34, 90));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new RetractClimber());

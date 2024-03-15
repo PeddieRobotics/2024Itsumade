@@ -129,20 +129,18 @@ public final class Constants {
     public static final double kLimelightPanningAngle = 25; // mounting angle in degrees
 
     // drive to target command constants
-    public static final double kDriveToTargetTurnP = 0;
-    public static final double kDriveToTargetTurnI = 0;
-    public static final double kDriveToTargetTurnD = 0;
-    public static final double kDriveToTargetIZone = 0;
+    public static final double kDriveToTargetTurnP = 0.05;
+    public static final double kDriveToTargetTurnI = 0.0002;
+    public static final double kDriveToTargetTurnD = 0.0;
+    public static final double kDriveToTargetIZone = 5;
     public static final double kDriveToTargetTurnFF = 0;
-    public static final double kDriveToTargetTurnThreshold = 0;
+    public static final double kDriveToTargetTurnThreshold = 1.5;
 
-    public static final double kDriveToTargetMoveP = 0;
-    public static final double kDriveToTargetMoveI = 0;
-    public static final double kDriveToTargetMoveD = 0;
-    public static final double kDriveToTargetMoveFF = 0;
-    public static final double kDriveToTargetMoveThreshhold = 0;
-
-    
+    public static final double kDriveToTargetMoveP = 0.058;
+    public static final double kDriveToTargetMoveI = 0.0025;
+    public static final double kDriveToTargetMoveD = 0.005;
+    public static final double kDriveToTargetMoveFF = 0.03;
+    public static final double kDriveToTargetMoveThreshold = 1.5;
 
     // follow note command constants
     public static final double kFollowNoteTurnP = 0.05;
