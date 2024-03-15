@@ -93,7 +93,7 @@ public class Robot extends TimedRobot {
     if(DriverStation.getAlliance().get() == Alliance.Red){
       LimelightShooter.getInstance().setPriorityTag(4);
     } else {
-      LimelightShooter.getInstance().setPriorityTag(7);
+      LimelightShooter.getInstance().setPriorityTag(8);
     }
 
     // schedule the autonomous command (example)
@@ -127,7 +127,7 @@ public class Robot extends TimedRobot {
     if(DriverStation.getAlliance().get() == Alliance.Red){
       LimelightShooter.getInstance().setPriorityTag(4);
     } else {
-      LimelightShooter.getInstance().setPriorityTag(7);
+      LimelightShooter.getInstance().setPriorityTag(8);
     }
 
     logger.logEvent("TeleOp Mode", true);

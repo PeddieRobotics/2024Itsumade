@@ -143,6 +143,8 @@ public final class Constants {
     public static final double kDriveToTargetMoveFF = 0;
     public static final double kDriveToTargetMoveThreshhold = 0;
 
+    
+
     // follow note command constants
     public static final double kFollowNoteTurnP = 0.05;
     public static final double kFollowNoteTurnI = 0;
@@ -162,6 +164,12 @@ public final class Constants {
     public static final double kOdometryTargetD = 0.0;
     public static final double kOdometryTargetFF = 0.04;
 
+    //align to amp (horizontal)
+    public static final double kHorizontalAlignP = 0.0;
+    public static final double kHorizontalAlignI = 0.0;
+    public static final double kHorizontalAlignD = 0.0;
+    public static final double kHorizontalAlignFF = 0.0;
+
     // TODO: Replace these with actual speaker values, these are approximated from pathplanner
     public static final double kRedSpeakerPositionX = 16.1;
     public static final double kRedSpeakerPositionY = 5.53; 
@@ -173,6 +181,9 @@ public final class Constants {
 
     // speaker april tag height because that is what will be used the most
     public static final double kSpeakerAprilTagHeight = 57.125;
+
+    //amp rotation -- degrees, this never changes really
+    public static final double kAmpOdometryHeading = 90; //angle of amp relative to odometry
 
     public static final int kShooterPipeline = 0;
     public static final int kIntakeNotePipeline = 0;

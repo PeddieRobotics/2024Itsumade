@@ -15,7 +15,7 @@ import frc.robot.commands.ClimbCommands.RetractClimber;
 import frc.robot.commands.DriveCommands.FollowNote;
 import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.ForcedCalibration;
-import frc.robot.commands.DriveCommands.HybridTarget;
+import frc.robot.commands.DriveCommands.AmpTarget;
 import frc.robot.commands.DriveCommands.OdometryTarget;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
@@ -92,7 +92,7 @@ public class DriverOI {
         muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.whileTrue(new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget));
+        L1Bumper.whileTrue(new ConditionalCommand(new AmpTarget(), new Target(), this::isUsingOdometryTarget));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new RetractClimber());
