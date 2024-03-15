@@ -38,10 +38,10 @@ public class Target extends Command {
         logger = Logger.getInstance();
 
         addRequirements(drivetrain);
-        // SmartDashboard.putNumber("Target P", 0);
-        // SmartDashboard.putNumber("Target I", 0);
-        // SmartDashboard.putNumber("Target D", 0);
-        // SmartDashboard.putNumber("Target FF", 0);
+        // SmartDashboard.putNumber("Target P", LimelightConstants.kTargetP);
+        // SmartDashboard.putNumber("Target I", LimelightConstants.kTargetI);
+        // SmartDashboard.putNumber("Target D", LimelightConstants.kTargetD);
+        // SmartDashboard.putNumber("Target FF", LimelightConstants.kTargetFF);
     }
 
     @Override
