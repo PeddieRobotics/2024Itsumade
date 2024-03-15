@@ -54,7 +54,7 @@ public class OdometryTarget extends Command {
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
-        logger.logEvent("Started Odometry Target Command", true);
+        logger.logEvent("Odometry Target Command", true);
         
         if(DriverStation.getAlliance().get() == Alliance.Red){
             speakerPoseX = LimelightConstants.kRedSpeakerPositionX;
@@ -113,7 +113,7 @@ public class OdometryTarget extends Command {
     public void end(boolean interrupted) {
         // SmartDashboard.putBoolean("Targetting", false);
         drivetrain.stop();
-        logger.logEvent("Started Odometry Target Command", false);
+        logger.logEvent("Odometry Target Command", false);
     }
 
     @Override

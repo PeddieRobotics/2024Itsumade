@@ -164,10 +164,10 @@ public final class Constants {
     public static final double kOdometryTargetFF = 0.04;
 
     //align to amp (horizontal)
-    public static final double kHorizontalAlignP = 0.0;
+    public static final double kHorizontalAlignP = 0.04;
     public static final double kHorizontalAlignI = 0.0;
     public static final double kHorizontalAlignD = 0.0;
-    public static final double kHorizontalAlignFF = 0.0;
+    public static final double kHorizontalAlignFF = 0.1;
 
     // Speaker coordinates in meters using blue coordinate system
     // THESE NUMBERS MUST BE ADJUSTED IF FMAP IS ADJUSTED ON X or Y AXIS
@@ -183,6 +183,9 @@ public final class Constants {
   
     // Threshold (in degrees) for convergence on all speaker targeting algorithms
     public static final double kTargetAngleThreshold = 1.0;
+    
+    //threshold (in degrees) for the amp align rotation
+    public static final double kAmpAlignAngleThreshold = 1.0;
 
     //amp rotation -- degrees, this never changes really
     public static final double kAmpOdometryHeading = 90; //angle of amp relative to odometry

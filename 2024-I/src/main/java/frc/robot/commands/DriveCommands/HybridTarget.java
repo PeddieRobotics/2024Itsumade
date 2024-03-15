@@ -54,7 +54,7 @@ public class HybridTarget extends Command {
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
-        logger.logEvent("Started Hybrid Target Command", true);
+        logger.logEvent("Hybrid Target Command", true);
 
         if (DriverStation.getAlliance().get() == Alliance.Red) {
             speakerPoseX = LimelightConstants.kRedSpeakerPositionX;
@@ -102,7 +102,7 @@ public class HybridTarget extends Command {
     @Override
     public void end(boolean interrupted) {
         drivetrain.stop();
-        logger.logEvent("Started Hybrid Target Command", false);
+        logger.logEvent("Hybrid Target Command", false);
     }
 
     @Override

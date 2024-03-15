@@ -44,7 +44,7 @@ public class TargetInAuto extends Command {
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
-        logger.logEvent("Started Target Command", true);
+        logger.logEvent("Target Command", true);
         initialTime = Timer.getFPGATimestamp();
         currentTime = Timer.getFPGATimestamp();
     }
@@ -71,7 +71,7 @@ public class TargetInAuto extends Command {
     @Override
     public void end(boolean interrupted) {
         drivetrain.stop();
-        logger.logEvent("Started Target Command", false);
+        logger.logEvent("Target Command", false);
     }
 
     @Override
