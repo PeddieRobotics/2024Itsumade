@@ -450,8 +450,16 @@ public class LimelightHelper {
         return getLimelightNTDouble(limelightName, "tx");
     }
 
+    public static double getTX_NoCrosshair(String limelightName) {
+        return getLimelightNTDouble(limelightName, "txnc");
+    }
+
     public static double getTY(String limelightName) {
         return getLimelightNTDouble(limelightName, "ty");
+    }
+
+    public static double getTY_NoCrosshair(String limelightName) {
+        return getLimelightNTDouble(limelightName, "tync");
     }
 
     public static double getTA(String limelightName) {
