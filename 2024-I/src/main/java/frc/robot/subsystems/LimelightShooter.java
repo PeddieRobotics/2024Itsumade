@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.Constants.LimelightConstants;
+import frc.robot.utils.LimelightHelper.LimelightResults;
+import frc.robot.utils.LimelightHelper.LimelightTarget_Fiducial;
 import frc.robot.utils.Constants;
 import frc.robot.utils.LimelightHelper;
 import frc.robot.utils.Logger;
@@ -51,6 +53,11 @@ public class LimelightShooter extends Limelight {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("LL Distance", getDistance());
+        SmartDashboard.putNumber("LL ty", getTy());
+        SmartDashboard.putNumber("LL tx", getTx());
+        //LimelightTarget_Fiducial[] fiducials = LimelightHelper.getLatestResults(limelightName).targetingResults.targets_Fiducials;
+        //SmartDashboard.putNumber("LL results ty", fiducials[0].ty);
+        //SmartDashboard.putNumber("LL results ty diff", fiducials[0].ty-getTy());
         if(hasTarget()) lastDistance=getDistance();
         updateRollingAverages();
     }
@@ -92,7 +99,11 @@ public class LimelightShooter extends Limelight {
 
     // Tx is the Horizontal Offset From Crosshair To Target
     public double getTx() {
-        return LimelightHelper.getTX(limelightName);
+        double value = LimelightHelper.getTX(limelightName);
+        if(value != 0.0){
+            return value+1.09; 
+        }
+        return value;
     }
 
     public double getTx_NoCrosshair() {
@@ -101,7 +112,11 @@ public class LimelightShooter extends Limelight {
 
     // Ty is the Vertical Offset From Crosshair To Target
     public double getTy() {
-        return LimelightHelper.getTY(limelightName);
+        double value = LimelightHelper.getTY(limelightName);
+        if(value != 0.0){
+            return value-1.46; 
+        }
+        return value;
     }
 
     public double getTy_NoCrosshair() {
@@ -154,7 +169,7 @@ public class LimelightShooter extends Limelight {
             // tan(a1 + a2) = h/d
             // d = h/tan(a1+a2)
             return (LimelightConstants.kSpeakerAprilTagHeight - LimelightConstants.kLimelightHeight) /
-                    (Math.tan(Math.toRadians(LimelightConstants.kLimelightPanningAngle + getTy_NoCrosshair())));
+                    (Math.tan(Math.toRadians(LimelightConstants.kLimelightPanningAngle + getTy())));
         }
     }
 
@@ -227,6 +242,13 @@ public class LimelightShooter extends Limelight {
         }
     }
     
+    // Gets the total latency of the limelight capture + pipeline processing for the current image, in milliseconds (MS)
+    public double getTotalLatencyInMS(){
+        double tl = LimelightHelper.getLatency_Pipeline(limelightName);
+        double cl = LimelightHelper.getLatency_Capture(limelightName);
+        return tl + cl;
+    }
+
     public void setPriorityTag(int tagID){
         LimelightHelper.setPriorityTag(limelightName, tagID);
     }

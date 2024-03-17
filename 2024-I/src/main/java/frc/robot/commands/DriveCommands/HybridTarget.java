@@ -63,11 +63,17 @@ public class HybridTarget extends Command {
             speakerPoseX = LimelightConstants.kBlueSpeakerPositionX;
             speakerPoseY = LimelightConstants.kBlueSpeakerPositionY;
         }
+
+        if(DriverStation.getAlliance().get() == Alliance.Red){
+            LimelightShooter.getInstance().setPriorityTag(4);
+        } else {
+            LimelightShooter.getInstance().setPriorityTag(8);
+        }
     }
 
     @Override
     public void execute() {
-        if (limelightShooter.hasTarget() && Math.abs(limelightShooter.getTxAverage()) < 13.0) {
+        if (limelightShooter.hasTarget() && Math.abs(limelightShooter.getTxAverage()) < 20.0) {
 
             error = limelightShooter.getTxAverage();
             if (error < -turnThreshold) {
@@ -95,7 +101,7 @@ public class HybridTarget extends Command {
                 turnInput = 0;
             }
         }
-        drivetrain.drive(oi.getSwerveTranslation(), turnInput * 2, true, oi.getCenterOfRotation());
+        drivetrain.drive(oi.getSwerveTranslation(), turnInput, true, oi.getCenterOfRotation());
 
     }
 

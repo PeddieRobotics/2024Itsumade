@@ -21,14 +21,16 @@ public class AmpAlign extends Command {
     private LimelightShooter limelightShooter;
     private DriverOI oi;
 
-    private double odometryError, txError, odometryThreshold, horizontalThreshold, horizontalFF, odometryTurnFF, turnInput, horizontalInput;
+    private double odometryAngleError, txError, odometryAngleThreshold, horizontalThreshold, horizontalFF, odometryTurnFF, turnInput, horizontalInput;
+    
     // Odometry Target Values
     private double targetAngle, currentAngle;
+
     private Pose2d currentOdometry;
 
     private PIDController horizontalAlignPIDController, odometryTurnPIDController;
 
-    private boolean hasRotated;
+    private boolean hasRotated, acquiredTarget;
 
     private Logger logger;
 
@@ -43,15 +45,19 @@ public class AmpAlign extends Command {
 
         horizontalFF = LimelightConstants.kHorizontalAlignFF;
         odometryTurnFF = LimelightConstants.kOdometryTargetFF;
-        odometryThreshold = LimelightConstants.kAmpAlignAngleThreshold;
+
+        odometryAngleThreshold = LimelightConstants.kAmpAlignAngleThreshold;
         horizontalThreshold = LimelightConstants.kAmpAlignAngleThreshold;
-        turnInput = 0;
+
+        turnInput = 0.0;
         horizontalInput = 0.0;
+
         currentOdometry = drivetrain.getPose();
         currentAngle = 0.0;
-        odometryError = 0.0;
+        odometryAngleError = 0.0;
         txError = 0.0;
         hasRotated = false;
+        acquiredTarget = false;
 
         targetAngle = LimelightConstants.kAmpOdometryHeading;
 
@@ -59,7 +65,6 @@ public class AmpAlign extends Command {
         SmartDashboard.putNumber("Horizontal Align I", LimelightConstants.kHorizontalAlignI);
         SmartDashboard.putNumber("Horizontal Align D", LimelightConstants.kHorizontalAlignD);
         SmartDashboard.putNumber("Horizontal Align FF", LimelightConstants.kHorizontalAlignFF);
-        SmartDashboard.putNumber("Horizontal Align Input", horizontalInput);
 
         addRequirements(drivetrain);
 
@@ -74,51 +79,62 @@ public class AmpAlign extends Command {
         } else {
             limelightShooter.setPriorityTag(6);
         }
-        hasRotated = true;
+        hasRotated = false;
+        acquiredTarget = false;
 
         txError = limelightShooter.getTxAverage();
     }
 
     @Override
     public void execute() {
-        //update pid values
-        horizontalAlignPIDController.setP(SmartDashboard.getNumber("Horizontal Align P", 0));
-        horizontalAlignPIDController.setI(SmartDashboard.getNumber("Horizontal Align I", 0));
-        horizontalAlignPIDController.setD(SmartDashboard.getNumber("Horizontal Align D", 0));
-        horizontalFF = SmartDashboard.getNumber("Horizontal Align FF", 0);
-        
         currentOdometry = drivetrain.getPose();
         currentAngle = currentOdometry.getRotation().getDegrees();
-        odometryError = currentAngle - targetAngle;
+        
+        odometryAngleError = currentAngle - targetAngle;
         txError = limelightShooter.getTxAverage();
 
-        if(Math.abs(odometryError) > odometryThreshold && !hasRotated){ //correct rotation
-            if (odometryError < -odometryThreshold) {
-                turnInput = odometryTurnPIDController.calculate(odometryError) + odometryTurnFF;
-            } else if (odometryError > odometryThreshold) {
-                turnInput = odometryTurnPIDController.calculate(odometryError) - odometryTurnFF;
-            } 
-            drivetrain.drive(oi.getSwerveTranslation(), turnInput, true, oi.getCenterOfRotation());
-        } else {
+        if (odometryAngleError < -odometryAngleThreshold) {
+            turnInput = odometryTurnPIDController.calculate(odometryAngleError) + odometryTurnFF;
+        } else if (odometryAngleError > odometryAngleThreshold) {
+            turnInput = odometryTurnPIDController.calculate(odometryAngleError) - odometryTurnFF;
+        } else{
+            turnInput = 0;
             hasRotated = true;
         }
-        
-        if (Math.abs(txError) > horizontalThreshold && hasRotated) { //use tx to fix translation
-            if (txError < -horizontalThreshold) {
-                horizontalInput = horizontalAlignPIDController.calculate(txError) + horizontalFF;
-            } else if (txError > horizontalThreshold) {
-                horizontalInput = horizontalAlignPIDController.calculate(txError) - horizontalFF;
-            } 
 
-            if(DriverStation.getAlliance().get() == Alliance.Red){
-                horizontalInput = -horizontalInput;
-            } 
+        if(hasRotated && limelightShooter.hasTarget() && (limelightShooter.getTargetID() == 5 || limelightShooter.getTargetID() == 6) && Math.abs(txError) < horizontalThreshold){
+            acquiredTarget = true;
+        }
 
-            drivetrain.drive(new Translation2d(horizontalInput, oi.getSwerveTranslation().getY()), oi.getRotation(), true, oi.getCenterOfRotation());
+        if(!hasRotated){
+            drivetrain.drive(oi.getSwerveTranslation(), turnInput, true, oi.getCenterOfRotation());
         }
-        else if(hasRotated){
-            drivetrain.drive(new Translation2d(0, oi.getSwerveTranslation().getY()), oi.getRotation(), true, oi.getCenterOfRotation());
+        else{
+            if(limelightShooter.hasTarget() && Math.abs(txError) < 25.0){
+                if (txError < -horizontalThreshold) {
+                    horizontalInput = horizontalAlignPIDController.calculate(txError) + horizontalFF;
+                } else if (txError > horizontalThreshold) {
+                    horizontalInput = horizontalAlignPIDController.calculate(txError) - horizontalFF;
+                } else{
+                    horizontalInput = 0;
+                }
+
+                if(DriverStation.getAlliance().get() == Alliance.Red){
+                    horizontalInput = -horizontalInput;
+                } 
+
+            } else{
+                if(acquiredTarget){
+                    horizontalInput = 0;
+                }
+                else{
+                    horizontalInput = oi.getSwerveTranslation().getX();
+                }
+            }
+
+            drivetrain.drive(new Translation2d(horizontalInput, oi.getSwerveTranslation().getY()), turnInput, true, oi.getCenterOfRotation());
         }
+
     }
 
 
@@ -128,9 +144,9 @@ public class AmpAlign extends Command {
         logger.logEvent("Amp Align Command", false);
         if(DriverStation.getAlliance().get() == Alliance.Red){
             LimelightShooter.getInstance().setPriorityTag(4);
-          } else {
+        } else {
             LimelightShooter.getInstance().setPriorityTag(8);
-          }
+        }
     }
 
     @Override

@@ -19,9 +19,8 @@ import frc.robot.utils.Logger;
 import frc.robot.utils.Constants.LimelightConstants;
 
 //Turn to target using PID
-public class OdometryTarget extends Command {
+public class TargetCornerWhilePassing extends Command {
     private Drivetrain drivetrain;
-    private LimelightShooter limelightShooter; 
     private DriverOI oi;
 
     private double error, turnThreshold, turnFF, turnInput, speakerPoseX, speakerPoseY, targetAngle, currentAngle;
@@ -29,9 +28,8 @@ public class OdometryTarget extends Command {
     private Logger logger;
     private Pose2d currentOdometry;
 
-    public OdometryTarget() {
+    public TargetCornerWhilePassing() {
         drivetrain = Drivetrain.getInstance();
-        limelightShooter = LimelightShooter.getInstance();
         logger = Logger.getInstance();
 
         turnPIDController = new PIDController(LimelightConstants.kOdometryTargetP, LimelightConstants.kOdometryTargetI, LimelightConstants.kOdometryTargetD);
@@ -45,40 +43,26 @@ public class OdometryTarget extends Command {
         speakerPoseY = 0;
 
         addRequirements(drivetrain);
-        // SmartDashboard.putNumber("Target P", 0);
-        // SmartDashboard.putNumber("Target I", 0);
-        // SmartDashboard.putNumber("Target D", 0);
-        // SmartDashboard.putNumber("Target FF", 0);
     }
 
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
-        logger.logEvent("Odometry Target Command", true);
+        logger.logEvent("Target Corner While Passing Command", true);
         
         if(DriverStation.getAlliance().get() == Alliance.Red){
-            speakerPoseX = LimelightConstants.kRedSpeakerPositionX;
-            speakerPoseY = LimelightConstants.kRedSpeakerPositionY;
+            speakerPoseX = LimelightConstants.kRedCornerPassingX;
+            speakerPoseY = LimelightConstants.kRedCornerPassingY;
         }
         else{
-            speakerPoseX = LimelightConstants.kBlueSpeakerPositionX;
-            speakerPoseY = LimelightConstants.kBlueSpeakerPositionY;
+            speakerPoseX = LimelightConstants.kBlueCornerPassingX;
+            speakerPoseY = LimelightConstants.kBlueCornerPassingY;
         }
 
-        if(DriverStation.getAlliance().get() == Alliance.Red){
-            LimelightShooter.getInstance().setPriorityTag(4);
-        } else {
-            LimelightShooter.getInstance().setPriorityTag(8);
-        }
     }
 
     @Override
     public void execute() {
-        // turnPIDController.setP(SmartDashboard.getNumber("Target P", 0));
-        // turnPIDController.setI(SmartDashboard.getNumber("Target I", 0));
-        // turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
-        // turnFF = SmartDashboard.getNumber("Target FF", 0);
-
         currentOdometry = drivetrain.getPose();
         double deltaX = speakerPoseX - currentOdometry.getX();
         double deltaY = speakerPoseY - currentOdometry.getY();
@@ -97,28 +81,14 @@ public class OdometryTarget extends Command {
         }
 
         drivetrain.drive(oi.getSwerveTranslation(), turnInput * 2, true, oi.getCenterOfRotation());
-        // SmartDashboard.putBoolean("Targetting", true);
-        // SmartDashboard.putNumber("Target Turn Input", turnInput);
-        // SmartDashboard.putBoolean("Limelight has target",
-        // limelightShooter.hasTarget());    }
 
-        SmartDashboard.putNumber("ODOMETRY TARGET: Current Odometry X", currentOdometry.getX());
-        SmartDashboard.putNumber("ODOMETRY TARGET: Current Odometry Y", currentOdometry.getY());
-        SmartDashboard.putNumber("ODOMETRY TARGET: Current Odometry Theta", currentAngle);
-
-        SmartDashboard.putNumber("ODOMETRY TARGET: Speaker Odometry X", speakerPoseX);
-        SmartDashboard.putNumber("ODOMETRY TARGET: Speaker Odometry Y", speakerPoseY);
-
-        SmartDashboard.putNumber("ODOMETRY TARGET: Target Angle Radians", Math.toRadians(targetAngle));
-        SmartDashboard.putNumber("ODOMETRY TARGET: Target Angle Degrees", targetAngle);
-        SmartDashboard.putNumber("ODOMETRY TARGET: Angle Error", error);
     }
 
     @Override
     public void end(boolean interrupted) {
         // SmartDashboard.putBoolean("Targetting", false);
         drivetrain.stop();
-        logger.logEvent("Odometry Target Command", false);
+        logger.logEvent("Target Corner While Passing Command", false);
     }
 
     @Override

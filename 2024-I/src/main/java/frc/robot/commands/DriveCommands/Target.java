@@ -3,6 +3,7 @@ package frc.robot.commands.DriveCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
@@ -17,7 +18,7 @@ import frc.robot.utils.Constants.LimelightConstants;
 //Turn to target using PID
 public class Target extends Command {
     private Drivetrain drivetrain;
-    private LimelightShooter limelightShooter; // TODO: figure out front or back LL
+    private LimelightShooter limelightShooter;
     private DriverOI oi;
 
     private double error, turnThreshold, turnFF, turnInput;
@@ -49,6 +50,12 @@ public class Target extends Command {
         oi = DriverOI.getInstance();
         logger.logEvent("Target Command", true);
         limelightShooter.setPipeline(LimelightConstants.kShooterPipeline);
+
+        if(DriverStation.getAlliance().get() == Alliance.Red){
+            LimelightShooter.getInstance().setPriorityTag(4);
+        } else {
+            LimelightShooter.getInstance().setPriorityTag(8);
+        }
     }
 
     @Override
@@ -70,7 +77,7 @@ public class Target extends Command {
         } else {
             turnInput = 0;
         }
-        drivetrain.drive(oi.getSwerveTranslation(), turnInput * 2, true, oi.getCenterOfRotation());
+        drivetrain.drive(oi.getSwerveTranslation(), turnInput, true, oi.getCenterOfRotation());
     }
 
     @Override

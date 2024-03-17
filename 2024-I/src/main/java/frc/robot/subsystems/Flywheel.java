@@ -125,6 +125,11 @@ public class Flywheel extends SubsystemBase {
                 ScoringConstants.kRightFlywheelLLShootingRPM + rpmDelta);
     }
 
+    public void runFlywheelLobPass() {
+        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLobPassRPM * SmartDashboard.getNumber("Lob Pass Speed Multiplier", 0),
+                ScoringConstants.kRightFlywheelLobPassRPM * SmartDashboard.getNumber("Lob Pass Speed Multiplier", 0));
+    }
+
     public double getFlywheelLeftRPM() {
         return flywheelLeftMotor.getRPM();
     }
@@ -140,7 +145,7 @@ public class Flywheel extends SubsystemBase {
     public void putSmartDashboard() {
         // SmartDashboard.putBoolean("Update Flywheel PID", false);
         SmartDashboard.putNumber("AMP Shot Offset RPM", 0);
-
+        SmartDashboard.putNumber("Lob Pass Speed Multiplier", ScoringConstants.kLobPassSpeedMultiplier);
         // SmartDashboard.putNumber("Flywheel S", FlywheelConstants.kFlywheelS);
         // SmartDashboard.putNumber("Flywheel V", FlywheelConstants.kFlywheelV);
         // SmartDashboard.putNumber("Flywheel A", FlywheelConstants.kFlywheelA);

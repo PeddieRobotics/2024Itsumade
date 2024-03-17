@@ -149,23 +149,29 @@ public final class Constants {
     public static final double kFollowNoteTurnFF = 0;
     public static final double kFollowNoteAngleThreshold = 1;
 
-    // target apriltag command constants
-    public static final double kTargetP = 0.012;
+    // target speaker apriltag command (use tx from limelight) constants
+    public static final double kTargetP = 0.02;
     public static final double kTargetI = 0.0015;
     public static final double kTargetD = 0.002;
-    public static final double kTargetFF = 0.05;
+    public static final double kTargetFF = 0.03;
 
-    // target apriltag command constants
+    // target speaker apriltag (snap with gyro using one-time tx calculation) command constants
+    public static final double kSnapToSpeakerP = 0.05;
+    public static final double kSnapToSpeakerI = 0.01;
+    public static final double kSnapToSpeakerD = 0.0;
+    public static final double kSnapToSpeakerFF = 0.03;
+
+    // general targeting using odometry (use current odometry to turn to an expected goal location) command constants
     public static final double kOdometryTargetP = 0.03;
-    public static final double kOdometryTargetI = 0.0;
+    public static final double kOdometryTargetI = 0.001;
     public static final double kOdometryTargetD = 0.0;
-    public static final double kOdometryTargetFF = 0.04;
+    public static final double kOdometryTargetFF = 0.02;
 
-    //align to amp (horizontal)
-    public static final double kHorizontalAlignP = 0.04;
+    // align to amp AprilTag (horizontal)
+    public static final double kHorizontalAlignP = 0.02;
     public static final double kHorizontalAlignI = 0.0;
     public static final double kHorizontalAlignD = 0.0;
-    public static final double kHorizontalAlignFF = 0.1;
+    public static final double kHorizontalAlignFF = 0.0;
 
     // Speaker coordinates in meters using blue coordinate system
     // THESE NUMBERS MUST BE ADJUSTED IF FMAP IS ADJUSTED ON X or Y AXIS
@@ -174,6 +180,14 @@ public final class Constants {
     
     public static final double kBlueSpeakerPositionX = 0.0;
     public static final double kBlueSpeakerPositionY = 5.548249; // 4.105656 (dist between field wall and midline) + 1.442593 (.fmap offset from midline to tag) 
+
+    // Corner to target while passing using blue coordinate system
+    public static final double kRedCornerPassingX = 15.65;
+    public static final double kRedCornerPassingY = 6.7; 
+    
+    public static final double kBlueCornerPassingX = 0.85;
+    public static final double kBlueCornerPassingY = 6.7;
+
 
     // center of speaker april tag height in inches (used for LL distance calculations)
     // THIS MUST BE ADJUSTED IF FMAP IS ADJUSTED ON Z AXIS
@@ -214,14 +228,14 @@ public final class Constants {
     public static final double kArmForwardSoftLimit = 0.3; // in mechanism rotations
     public static final double kArmReverseSoftLimit = -0.1; // in mechanism rotations
 
-    public static final double kArmMagnetOffset = 0.237315444; // see spreadsheet "FIRST Calculations" for reference
+    public static final double kArmMagnetOffset = 0.237315444; // see spreadsheet "FIRST Calculations" or mechanisms sheet for reference
 
     // TOTAL NET gear reduction from motor ALL THE WAY to shoulder pivot
     public static final double kRotorToArmGearReduction = 16384.0 / 125;
 
     // gear reduction from motor to CANCoder Shaft
     public static final double kRotorToSensorRatio = (kRotorToArmGearReduction / 2);
-    public static final double kArmSensorToMechanismRatio = 2.0; // dependednt on feedback device
+    public static final double kArmSensorToMechanismRatio = 2.0; // dependent on feedback device
     // hypothetical values for the arm when going to these various positions
 
     public static final double kArmIntakeHPPosition = 70; // in deg
@@ -233,9 +247,10 @@ public final class Constants {
     public static final double kArmStowPosition = 0;
     public static final double kArmIntakePositionFromGround = 32;
     public static final double kArmPodiumShotPosition = 62;
+    public static final double kArmLobPassPosition = 38;
 
     //multiplier to arm angle for lookuptable since real field is different from lab
-    public static final double kArmLLDistMultiplier = 0.97;
+    public static final double kArmLLDistMultiplier = 1.0; // 0.97;
 
   }
 
@@ -248,8 +263,8 @@ public final class Constants {
     public static final double kClimberI = 0.0;
     public static final double kClimberD = 0.0;
     public static final double kClimberFF = 0.0;
-    public static final double kClimberRetractPercentOutput = -1; // percent putput the climber would
-    public static final double kClimberDeployPercentOutput = 1; // percent putput the climber would (was .7)
+    public static final double kClimberRetractPercentOutput = -1;
+    public static final double kClimberDeployPercentOutput = 1;
     public static final double kClimberDeployPosition = 140.0;
     public static final double kClimberRetractPosition = 0.0;
     public static final double kClimberAngleTolerance = 2.0;
@@ -271,9 +286,9 @@ public final class Constants {
     public static final double kFlywheelSensorThreshold = 0;
 
     public static final double kFlywheelS = 3.5;
-    public static final double kFlywheelV = 0; // 0.00225;
+    public static final double kFlywheelV = 0;
     public static final double kFlywheelA = 0;
-    public static final double kFlywheelP = 5; // could be changed later... crap tune
+    public static final double kFlywheelP = 5;
     public static final double kFlywheelI = 5;
     public static final double kFlywheelD = 0;
     public static final double kFlywheelFF = 0;
@@ -284,12 +299,16 @@ public final class Constants {
     public static final double kRightFlywheelLLShootingRPM = 3200;
     public static final double kLeftFlywheelLayupRPM = 3500;
     public static final double kRightFlywheelLayupRPM = 2500;
-    public static final double kLeftFlywheelAmpRPM = 3000; //if ok, maybe revert if spin is not useful
-    public static final double kRightFlywheelAmpRPM = 2000; //was 750
+    public static final double kLeftFlywheelAmpRPM = 3000;
+    public static final double kRightFlywheelAmpRPM = 2000;
+    public static final double kLeftFlywheelLobPassRPM = 2680;
+    public static final double kRightFlywheelLobPassRPM = 2000;
     public static final double kLeftFlywheelHPIntakeRPM = -750;
     public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 1.0;
+
+    public static final double kLobPassSpeedMultiplier = 1.06;
 
         // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
     // needs more tuning/initial values only
@@ -318,7 +337,8 @@ public final class Constants {
     public static final double kFeedFlywheelAmpSpeed = 0.5;
     public static final double kFeedFlywheelLayupSpeed = 0.5;
     public static final double kFeedFlywheelSpeakerSpeed = 0.5;
-    public static final double kFeedFlywheelPodiumSpeed = 0.5; 
+    public static final double kFeedFlywheelPodiumSpeed = 0.5;
+    public static final double kFeedFlywheelLobPassSpeed = 0.5; 
   }
 
 }

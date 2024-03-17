@@ -82,6 +82,8 @@ public class Arm extends SubsystemBase {
         gravityFeedForward = 0;
 
         // putSmartDashboard();
+        SmartDashboard.putNumber("Lob Pass Angle", ArmConstants.kArmLobPassPosition);
+
     }
 
     public void configureCANcoder() {
@@ -249,6 +251,10 @@ public class Arm extends SubsystemBase {
         setArmAngle(getAngleFromDist(limelightShooter.getLastDistance()) + armDelta);
     }
 
+    public void setLobPassPosition() {
+        setArmAngle(SmartDashboard.getNumber("Lob Pass Angle", ArmConstants.kArmLobPassPosition));
+    }
+
     public void setStowPosition() {
         setArmAngle(ArmConstants.kArmStowPosition);
     }
@@ -278,4 +284,5 @@ public class Arm extends SubsystemBase {
         angle.update(getAbsoluteCANCoderPosition());
         updateSmartDashboard();
     }
+
 }

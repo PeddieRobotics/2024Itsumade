@@ -53,6 +53,9 @@ public class Drivetrain extends SubsystemBase {
 
     private Field2d field;
 
+    private Pose2d[] poseHistory;
+    private double[] gyroHistory;
+
     // logistic function for if two apriltags are seen
     private double S2 = 18.0; // maximum
     private double I2 = 0.1; // minimum
@@ -133,6 +136,9 @@ public class Drivetrain extends SubsystemBase {
                 new Pose2d());
         field = new Field2d();
 
+        poseHistory = new Pose2d[10]; // Keep track of the last 20ms * 10 = 200 ms of pose history
+        gyroHistory = new double[10]; // Keep track of the last 20ms * 10 = 200 ms of gyro history
+
         timer = new Timer();
         timer.start();
         previousTime = 0.0;
@@ -181,6 +187,9 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+        // updatePoseHistory();
+        updateGyroHistory();
+        
         // S2 = SmartDashboard.getNumber("Logistic S2", S2);
         // I2 = SmartDashboard.getNumber("Logistic I2", I2);
         // K2 = SmartDashboard.getNumber("Logistic K2", K2);
@@ -425,6 +434,25 @@ public class Drivetrain extends SubsystemBase {
 
     public double getAutoAdjustAngle(){
         return autoAdjustAngle;
+    }
+
+    public double getPastHeading(double latency){
+        int latencyIndexToNearestTwentyMS = (int)(Math.round(latency/20.0)) - 1;
+        return gyroHistory[latencyIndexToNearestTwentyMS];
+    }
+    
+    public void updatePoseHistory(){
+        for(int i = 0; i < poseHistory.length-1; i++){
+            poseHistory[i+1] = poseHistory[i];
+        }
+        poseHistory[0] = odometry.getEstimatedPosition();
+    }
+
+    public void updateGyroHistory(){
+        for(int i = 0; i < gyroHistory.length-1; i++){
+            gyroHistory[i+1] = gyroHistory[i];
+        }
+        gyroHistory[0] = getHeading();
     }
 
 }

@@ -97,6 +97,7 @@ public class OperatorOI {
         shareButton.onTrue(new InstantCommand(() -> DriverOI.getInstance().toggleUseOdometryTarget()));
 
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
+        dpadUpTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LOB_PASS_PREP)));
 
         Trigger dpadLeftTrigger = new Trigger(() -> controller.getPOV() == 270);
 

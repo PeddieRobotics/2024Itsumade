@@ -25,6 +25,7 @@ import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Constants.ArmConstants;
+import frc.robot.utils.Constants.FlywheelConstants;
 
 public class OperatorTab extends ShuffleboardTabBase {
         private SendableChooser<Command> autoChooser;
@@ -149,7 +150,7 @@ public class OperatorTab extends ShuffleboardTabBase {
                         flywheelLeftRPMEntry.setDouble(flywheel.getFlywheelLeftRPM());
                         flywheelRightRPMEntry.setDouble(flywheel.getFlywheelRightRPM());
 
-                        arm.setLLDistanceMultiplier(llDistanceMultiplierEntry.getDouble(1.0));
+                        arm.setLLDistanceMultiplier(llDistanceMultiplierEntry.getDouble(ArmConstants.kArmLLDistMultiplier));
                         arm.setAmpScoringAngle(ampAngleEntry.getDouble(ArmConstants.kArmAmpPosition));
 
                         // isIndexedOverrideEntry.getBoolean(false); // Return to this later

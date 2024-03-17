@@ -21,8 +21,11 @@ import frc.robot.commands.DriveCommands.OdometryTarget;
 import frc.robot.commands.DriveCommands.PIDToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
+import frc.robot.commands.DriveCommands.SnapToSpeaker;
 import frc.robot.commands.DriveCommands.RotateToAngle;
+import frc.robot.commands.DriveCommands.SnapToAmp;
 import frc.robot.commands.DriveCommands.Target;
+import frc.robot.commands.DriveCommands.TargetCornerWhilePassing;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimelightShooter;
@@ -78,8 +81,8 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
-        // circleButton.whileTrue(new OdometryTarget());
+        // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
+        circleButton.onTrue(new SnapToAmp());
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
@@ -94,14 +97,13 @@ public class DriverOI {
         muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.whileTrue(new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget));
-        // L1Bumper.whileTrue(new AmpAlign());
-        // L1Bumper.whileTrue(new Target());
-        // L1Bumper.whileTrue(new PIDToPoint(14.69, 7.34, 90));
+        L1Bumper.whileTrue(new ConditionalCommand(new TargetCornerWhilePassing(),
+            new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
+            superstructure::isPassing));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new RetractClimber());
-
+        
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
@@ -110,6 +112,7 @@ public class DriverOI {
         ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
+        optionButton.onTrue(new SnapToSpeaker());
 
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
