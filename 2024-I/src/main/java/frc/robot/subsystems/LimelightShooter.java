@@ -100,9 +100,6 @@ public class LimelightShooter extends Limelight {
     // Tx is the Horizontal Offset From Crosshair To Target
     public double getTx() {
         double value = LimelightHelper.getTX(limelightName);
-        if(value != 0.0){
-            return value+1.09; 
-        }
         return value;
     }
 
@@ -113,9 +110,6 @@ public class LimelightShooter extends Limelight {
     // Ty is the Vertical Offset From Crosshair To Target
     public double getTy() {
         double value = LimelightHelper.getTY(limelightName);
-        if(value != 0.0){
-            return value-1.46; 
-        }
         return value;
     }
 
