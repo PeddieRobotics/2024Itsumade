@@ -22,9 +22,11 @@ public class Logger {
     private static Logger instance;
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
     private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, intakeSpeedEntry, hopperCurrentEntry, 
-                leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,LLDistanceEntry, armCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition, climberLeftArmCurrent, climberRightArmCurrent;
+                leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,
+                LLDistanceEntry, armCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
+                climberLeftArmCurrent, climberRightArmCurrent, numOfApriltagEntry, stdDevEntry;;
     private StringLogEntry robotStateEntry, commandEntry;
-    private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
+    private DoubleArrayLogEntry fieldPositionEntry, botposeFieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
     private double lastTeleopEnable;
     private Pose2d fieldPosition;
@@ -61,9 +63,12 @@ public class Logger {
         // Drivetrain Logs
         gyroAngleEntry = new DoubleLogEntry(log, "/Drivetrain/Gyro Angle");
         drivetrainSpeedEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Speed");
-        fieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Postion");
+        fieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Position");
+        botposeFieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Botpose position");
         moduleSpeedsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Speeds");
         modulePositionsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Positions");
+        numOfApriltagEntry = new DoubleLogEntry(log, "/Drivetrain/Number of Apriltags");
+        stdDevEntry = new DoubleLogEntry(log, "/Drivetrain/Megatag stddev");
 
         // Intake Logs
         intakeSensorEntry = new BooleanLogEntry(log, "/Intake/Intake Sensor");
@@ -154,6 +159,10 @@ public class Logger {
                 drivetrain.getPose().getRotation().getDegrees() };
         fieldPositionEntry.append(pose);
 
+        Pose2d botpose = limelightShooter.getCalculatedBotpose();
+        double[] botposePose = { botpose.getX(), botpose.getY(), botpose.getRotation().getDegrees() };
+        botposeFieldPositionEntry.append(botposePose);
+
         SwerveModuleState[] moduleStates = drivetrain.getSwerveModuleState();
         double[] swerveModulePositions = { moduleStates[0].angle.getDegrees(), moduleStates[1].angle.getDegrees(),
                 moduleStates[2].angle.getDegrees(), moduleStates[3].angle.getDegrees() };
@@ -161,6 +170,9 @@ public class Logger {
                 moduleStates[2].speedMetersPerSecond, moduleStates[3].speedMetersPerSecond };
         modulePositionsEntry.append(swerveModulePositions);
         moduleSpeedsEntry.append(swerveModuleSpeeds);
+
+        numOfApriltagEntry.append(drivetrain.getNumApriltags());
+        stdDevEntry.append(drivetrain.getStandardDeviation());
     }
 
     public void signalRobotEnable() {

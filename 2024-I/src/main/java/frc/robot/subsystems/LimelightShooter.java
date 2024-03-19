@@ -22,6 +22,8 @@ public class LimelightShooter extends Limelight {
 
     private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage, distAverage;
 
+    private Pose2d calculatedBotpose;
+
     private String limelightName = "limelight-shooter";
     private double lastDistance;
 
@@ -148,6 +150,10 @@ public class LimelightShooter extends Limelight {
     public double getRYAverage(){
         return ryAverage.getAverage(); 
     }
+    
+    public Pose2d getCalculatedBotpose() {
+        return calculatedBotpose;
+    }
 
     // Class ID of primary neural detector result or neural classifier result
     public double getNeuralClassID() {
@@ -232,7 +238,8 @@ public class LimelightShooter extends Limelight {
             double cl = LimelightHelper.getLatency_Capture(limelightName);
             // Calculate a latency-compensated timestamp for the vision measurement (in seconds)
             double timestampLatencyComp = Timer.getFPGATimestamp() - (tl/1000.0) - (cl/1000.0);
-            odometry.addVisionMeasurement(this.getBotpose(), timestampLatencyComp);
+            calculatedBotpose = this.getBotpose();
+            odometry.addVisionMeasurement(calculatedBotpose, timestampLatencyComp);
         }
     }
     

@@ -88,29 +88,8 @@ public class Drivetrain extends SubsystemBase {
     // automatically turned off in autonomousInit and teleopInit
     private boolean isParkedAuto;
 
-    public boolean getUseMegaTag() {
-        return useMegaTag;
-    }
-
-    public void setUseMegaTag(boolean useMegaTag) {
-        this.useMegaTag = useMegaTag;
-    }
-
-    public boolean getIsForcingCalibration() {
-        return isForcingCalibration;
-    }
-
-    public void setIsForcingCalibration(boolean isForcingCalibration) {
-        this.isForcingCalibration = isForcingCalibration;
-    }
-
-    public boolean getIsParkedAuto() {
-        return isParkedAuto;
-    }
-
-    public void setIsParkedAuto(boolean isParked) {
-        this.isParkedAuto = isParked;
-    }
+    private double stdDev;
+    private int numAprilTag;
 
     public Drivetrain() {
         frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
@@ -213,19 +192,14 @@ public class Drivetrain extends SubsystemBase {
         }
 
         double distance = Units.inchesToMeters(limelightShooter.getDistance());
-        int numAprilTag = LimelightHelper.getNumberOfAprilTagsSeen(limelightShooter.getLimelightName());
+        numAprilTag = LimelightHelper.getNumberOfAprilTagsSeen(limelightShooter.getLimelightName());
         // SmartDashboard.putNumber("Number of Tags Seems", numAprilTag);
 
         if (numAprilTag >= 2) {
             // if forcing calibration make visionstd minimal otherwise choose between
             // function for 3 and 2 based on number of tags seen
-            double stdDev = isForcingCalibration ? 0.0001
+            stdDev = isForcingCalibration ? 0.0001
                     : (numAprilTag >= 3 ? sigmoid3(distance) : sigmoid2(distance));
-            
-            Logger.getInstance().logEvent(
-                "Botpose update with stddev " + stdDev + ", distance " + distance + " with " + numAprilTag + " apriltags",
-                true
-            );
 
             Matrix<N3, N1> visionStdDevs = VecBuilder.fill(stdDev, stdDev, isForcingCalibration ? 0.0001 : 30);
             odometry.setVisionMeasurementStdDevs(visionStdDevs);
@@ -445,6 +419,40 @@ public class Drivetrain extends SubsystemBase {
         int latencyIndexToNearestTwentyMS = (int)(Math.round(latency/20.0)) - 1;
         return gyroHistory[latencyIndexToNearestTwentyMS];
     }
+
+    public double getStandardDeviation() {
+        return stdDev;
+    }
+    public int getNumApriltags() {
+        return numAprilTag;
+    }
+    
+
+    public boolean getUseMegaTag() {
+        return useMegaTag;
+    }
+
+    public void setUseMegaTag(boolean useMegaTag) {
+        this.useMegaTag = useMegaTag;
+    }
+
+    public boolean getIsForcingCalibration() {
+        return isForcingCalibration;
+    }
+
+    public void setIsForcingCalibration(boolean isForcingCalibration) {
+        this.isForcingCalibration = isForcingCalibration;
+    }
+
+    public boolean getIsParkedAuto() {
+        return isParkedAuto;
+    }
+
+    public void setIsParkedAuto(boolean isParked) {
+        this.isParkedAuto = isParked;
+    }
+
+
     
     public void updatePoseHistory(){
         for(int i = 0; i < poseHistory.length-1; i++){
