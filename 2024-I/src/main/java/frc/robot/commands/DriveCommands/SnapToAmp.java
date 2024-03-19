@@ -22,7 +22,6 @@ public class SnapToAmp extends Command {
     private DriverOI oi;
 
     private double odometryAngleError, odometryAngleThreshold, odometryTurnFF, turnInput;
-    
     // Odometry Target Values
     private double targetAngle, currentAngle;
 
@@ -56,7 +55,6 @@ public class SnapToAmp extends Command {
         currentTime = 0.0;
 
         addRequirements(drivetrain);
-
     }
 
     @Override
@@ -74,8 +72,11 @@ public class SnapToAmp extends Command {
 
         currentOdometry = drivetrain.getPose();
         currentAngle = currentOdometry.getRotation().getDegrees();
-        
         odometryAngleError = currentAngle - targetAngle;
+
+        if(odometryAngleError <= -180){
+            odometryAngleError += 360;
+        }
 
         if (odometryAngleError < -odometryAngleThreshold) {
             turnInput = odometryTurnPIDController.calculate(odometryAngleError) + odometryTurnFF;
@@ -84,9 +85,7 @@ public class SnapToAmp extends Command {
         } else{
             turnInput = 0;
         }
-
         drivetrain.drive(oi.getSwerveTranslation(), turnInput, true, oi.getCenterOfRotation());
-
     }
 
 
