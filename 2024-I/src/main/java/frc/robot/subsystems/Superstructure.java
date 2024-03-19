@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.DriveCommands.OdometryTarget;
+import frc.robot.subsystems.Lights.LightState;
 import frc.robot.utils.LimelightHelper;
 import frc.robot.utils.Logger;
 import frc.robot.utils.Constants.IntakeConstants;
@@ -21,6 +22,7 @@ public class Superstructure extends SubsystemBase {
     private final Flywheel flywheel;
     private final Hopper hopper;
     private final Drivetrain drivetrain;
+    private final Lights lights;
     // private final CANdle candle;
 
     private double stateDuration;
@@ -61,6 +63,7 @@ public class Superstructure extends SubsystemBase {
         intake = Intake.getInstance();
         hopper = Hopper.getInstance();
         drivetrain = Drivetrain.getInstance();
+        lights = Lights.getInstance();
 
         timer = new Timer();
 
@@ -82,6 +85,8 @@ public class Superstructure extends SubsystemBase {
 
         SmartDashboard.putBoolean("LL Shot Move Arm", false);
         SmartDashboard.putNumber("LL Shot Angle", 0);
+
+        lights.requestState(LightState.IDLE);
     }
 
     public static Superstructure getInstance() {
@@ -185,11 +190,12 @@ public class Superstructure extends SubsystemBase {
                 break;
 
             case GROUND_INTAKE:
+                lights.requestState(LightState.INTAKING);
                 arm.setGroundIntakePosition();
                 hopper.runHopperGroundIntake();
 
                 if (arm.isAtGroundIntakeAngle()) {
-                    if(intake.getSensor()){
+                    if (intake.getSensor()) {
                         intake.runIntakeFeed();
                     } else {
                         intake.runIntake();
@@ -203,6 +209,7 @@ public class Superstructure extends SubsystemBase {
                 }
 
                 if (isGamepieceIndexed()) {
+                    lights.requestState(LightState.INTOOK);
                     intake.stopIntake();
                     hopper.stopHopper();
                     latestIntakeTime = Timer.getFPGATimestamp();
@@ -210,6 +217,8 @@ public class Superstructure extends SubsystemBase {
 
                     if (!DriverStation.isAutonomous()) {
                         requestState(SuperstructureState.STOW);
+                        lights.requestState(LightState.IDLE);
+
                         LimelightHelper.setLEDMode_ForceBlink("limelight-intake");
 
                         // candle.animate(new StrobeAnimation(125, 35, 250), 0);
@@ -286,6 +295,7 @@ public class Superstructure extends SubsystemBase {
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     requestState(SuperstructureState.STOW);
+                    lights.requestState(LightState.IDLE);
                     break;
                 }
 
@@ -407,6 +417,7 @@ public class Superstructure extends SubsystemBase {
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
                     timer.reset();
+                    lights.requestState(LightState.IDLE);
                     requestState(SuperstructureState.STOW);
                     break;
                 }
@@ -521,7 +532,7 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.LOB_PASS_PREP) {
                     nextSystemState = requestedSystemState;
-                }else if (requestedSystemState == SuperstructureState.GROUND_INTAKE) {
+                } else if (requestedSystemState == SuperstructureState.GROUND_INTAKE) {
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.OUTTAKE) {
                     nextSystemState = requestedSystemState;
@@ -543,6 +554,7 @@ public class Superstructure extends SubsystemBase {
                     timer.reset();
                     if (!DriverStation.isAutonomous()) {
                         drivetrain.setIsForcingCalibration(true);
+                        lights.requestState(LightState.IDLE);
                         requestState(SuperstructureState.STOW);
                     }
                     break;
@@ -614,6 +626,7 @@ public class Superstructure extends SubsystemBase {
                     timer.reset();
                     if (!DriverStation.isAutonomous()) {
                         drivetrain.setIsForcingCalibration(true);
+                        lights.requestState(LightState.IDLE);
                         requestState(SuperstructureState.STOW);
                     }
                     break;
@@ -666,6 +679,7 @@ public class Superstructure extends SubsystemBase {
                 intake.stopIntake();
 
                 if (arm.isAtStowAngle()) {
+                    lights.requestState(LightState.IDLE);
                     requestState(SuperstructureState.STOW);
                 }
 
@@ -742,11 +756,11 @@ public class Superstructure extends SubsystemBase {
             requestState(SuperstructureState.LAYUP_SCORING);
         } else if (systemState == SuperstructureState.SIDE_LAYUP_PREP) {
             requestState(SuperstructureState.LAYUP_SCORING);
-        } else if (systemState == SuperstructureState.PODIUM_PREP){
+        } else if (systemState == SuperstructureState.PODIUM_PREP) {
             requestState(SuperstructureState.PODIUM_SCORING);
-        } else if (systemState == SuperstructureState.LOB_PASS_PREP){
+        } else if (systemState == SuperstructureState.LOB_PASS_PREP) {
             requestState(SuperstructureState.LOB_PASSING);
-        } 
+        }
     }
 
     // private boolean hasGamepiece(){ //this has potential use cases if we want to
@@ -762,7 +776,7 @@ public class Superstructure extends SubsystemBase {
         return (hopper.isGamepieceIndexed() || isIndexedOverride);
     }
 
-    public boolean isPassing(){
+    public boolean isPassing() {
         return (systemState == SuperstructureState.LOB_PASS_PREP || systemState == SuperstructureState.LOB_PASSING);
     }
 
