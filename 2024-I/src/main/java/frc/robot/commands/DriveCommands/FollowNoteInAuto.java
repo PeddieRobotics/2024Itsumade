@@ -149,7 +149,7 @@ public class FollowNoteInAuto extends Command {
         else
             return false;
 
-        Logger.getInstance().logEvent("Finished FollowNoteInAuto, reason " + reason, false);
+        Logger.getInstance().logEvent("Follow Note in Auto, reason", false);
         return true;
         
         // return endBecauseNoNote ||
