@@ -14,10 +14,11 @@ public class Flywheel extends SubsystemBase {
     private double leftSetpoint, rightSetpoint;
 
     private Kraken flywheelLeftMotor, flywheelRightMotor;
-    private double rpmDelta;
+    private double rpmDelta, lobPassSpeedMultiplier;
 
     public Flywheel() {
         rpmDelta = 0.0;
+        lobPassSpeedMultiplier = FlywheelConstants.kFlywheelLobPassSpeedMultiplier;
 
         flywheelLeftMotor = new Kraken(RobotMap.FLYWHEEL_LEFT_MOTOR, RobotMap.CANIVORE_NAME);
         flywheelRightMotor = new Kraken(RobotMap.FLYWHEEL_RIGHT_MOTOR, RobotMap.CANIVORE_NAME);
@@ -126,8 +127,8 @@ public class Flywheel extends SubsystemBase {
     }
 
     public void runFlywheelLobPass() {
-        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLobPassRPM * SmartDashboard.getNumber("Lob Pass Speed Multiplier", 0),
-                ScoringConstants.kRightFlywheelLobPassRPM * SmartDashboard.getNumber("Lob Pass Speed Multiplier", 0));
+        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLobPassRPM * lobPassSpeedMultiplier,
+                ScoringConstants.kRightFlywheelLobPassRPM * lobPassSpeedMultiplier);
     }
 
     public double getFlywheelLeftRPM() {
@@ -142,10 +143,14 @@ public class Flywheel extends SubsystemBase {
         rpmDelta = delta;
     }
 
+    public void setFlywheelLobPassMultiplier(double multiplier){
+        lobPassSpeedMultiplier = multiplier;
+    }
+
     public void putSmartDashboard() {
         // SmartDashboard.putBoolean("Update Flywheel PID", false);
         SmartDashboard.putNumber("AMP Shot Offset RPM", 0);
-        SmartDashboard.putNumber("Lob Pass Speed Multiplier", ScoringConstants.kLobPassSpeedMultiplier);
+        //SmartDashboard.putNumber("Lob Pass Speed Multiplier", ScoringConstants.kLobPassSpeedMultiplier);
         // SmartDashboard.putNumber("Flywheel S", FlywheelConstants.kFlywheelS);
         // SmartDashboard.putNumber("Flywheel V", FlywheelConstants.kFlywheelV);
         // SmartDashboard.putNumber("Flywheel A", FlywheelConstants.kFlywheelA);

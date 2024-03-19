@@ -45,7 +45,7 @@ public class OperatorTab extends ShuffleboardTabBase {
                         flywheelAtRPMEntry, flywheelLeftRPMEntry, llDistanceMultiplierEntry, llDistanceEntry,
                         ampAngleEntry,
                         flywheelRightRPMEntry, isIndexedOverrideEntry, topSensorEntry, bottomSensorEntry,
-                        hasGamePieceEntry, useOdometryTargetEntry;
+                        hasGamePieceEntry, useOdometryTargetEntry, lobPassAngleEntry, lobPassFlywheelMultiplierEntry;
 
         public OperatorTab() {
                 arm = Arm.getInstance();
@@ -89,7 +89,7 @@ public class OperatorTab extends ShuffleboardTabBase {
                                         .withPosition(14, 1)
                                         .getEntry();
 
-                        llDistanceMultiplierEntry = tab.add("LL Dist Multiplier", 1.0)
+                        llDistanceMultiplierEntry = tab.add("LL Dist Multiplier", ArmConstants.kArmLLDistMultiplier)
                                         .withSize(1, 1)
                                         .withPosition(13, 2)
                                         .getEntry();
@@ -135,6 +135,16 @@ public class OperatorTab extends ShuffleboardTabBase {
                                         .withSize(5, 5)
                                         .withPosition(16, 0)
                                         .getEntry();
+
+                        lobPassAngleEntry = tab.add("Lob Pass Arm Angle", ArmConstants.kArmLobPassPosition)
+                                        .withSize(1,1)
+                                        .withPosition(12,3) //todo update
+                                        .getEntry();
+
+                        lobPassFlywheelMultiplierEntry = tab.add("Lob Pass Flywheel RPM Multiplier", FlywheelConstants.kFlywheelLobPassSpeedMultiplier)
+                                        .withSize(1,1)
+                                        .withPosition(12,4)
+                                        .getEntry();
                 } catch (IllegalArgumentException e) {
                 }
         }
@@ -149,9 +159,11 @@ public class OperatorTab extends ShuffleboardTabBase {
                         flywheelAtRPMEntry.getBoolean(flywheel.isAtRPM());
                         flywheelLeftRPMEntry.setDouble(flywheel.getFlywheelLeftRPM());
                         flywheelRightRPMEntry.setDouble(flywheel.getFlywheelRightRPM());
+                        flywheel.setFlywheelLobPassMultiplier(lobPassFlywheelMultiplierEntry.getDouble(FlywheelConstants.kFlywheelLobPassSpeedMultiplier));
 
                         arm.setLLDistanceMultiplier(llDistanceMultiplierEntry.getDouble(ArmConstants.kArmLLDistMultiplier));
                         arm.setAmpScoringAngle(ampAngleEntry.getDouble(ArmConstants.kArmAmpPosition));
+                        arm.setLobPassAngle(lobPassAngleEntry.getDouble(ArmConstants.kArmLobPassPosition));
 
                         // isIndexedOverrideEntry.getBoolean(false); // Return to this later
                         stateEntry.setString(superstructure.getRobotState());
