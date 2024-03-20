@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ClimbCommands.DeployClimber;
 import frc.robot.commands.ClimbCommands.RetractClimber;
 import frc.robot.commands.DriveCommands.FollowNote;
 import frc.robot.commands.DriveCommands.FollowNoteInAuto;
@@ -97,9 +98,10 @@ public class DriverOI {
         muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.whileTrue(new ConditionalCommand(new TargetCornerWhilePassing(),
-            new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
-            superstructure::isPassing));
+        // L1Bumper.whileTrue(new ConditionalCommand(new TargetCornerWhilePassing(),
+        //     new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
+        //     superstructure::isPassing));
+        L1Bumper.onTrue(new DeployClimber());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new RetractClimber());
