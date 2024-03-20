@@ -193,7 +193,6 @@ public class Drivetrain extends SubsystemBase {
 
         double distance = Units.inchesToMeters(limelightShooter.getDistance());
         numAprilTag = LimelightHelper.getNumberOfAprilTagsSeen(limelightShooter.getLimelightName());
-        // SmartDashboard.putNumber("Number of Tags Seems", numAprilTag);
 
         if (numAprilTag >= 2) {
             // if forcing calibration make visionstd minimal otherwise choose between

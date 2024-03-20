@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.opencv.calib3d.Calib3d;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -241,6 +243,8 @@ public class LimelightShooter extends Limelight {
             calculatedBotpose = this.getBotpose();
             odometry.addVisionMeasurement(calculatedBotpose, timestampLatencyComp);
         }
+        else
+            calculatedBotpose = null;
     }
     
     // Gets the total latency of the limelight capture + pipeline processing for the current image, in milliseconds (MS)

@@ -9,6 +9,7 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -160,8 +161,11 @@ public class Logger {
         fieldPositionEntry.append(pose);
 
         Pose2d botpose = limelightShooter.getCalculatedBotpose();
-        double[] botposePose = { botpose.getX(), botpose.getY(), botpose.getRotation().getDegrees() };
-        botposeFieldPositionEntry.append(botposePose);
+        if (botpose != null) {
+            double[] botposePose = { botpose.getX(), botpose.getY(),
+                            botpose.getRotation().getDegrees() };
+            botposeFieldPositionEntry.append(botposePose);
+        }
 
         SwerveModuleState[] moduleStates = drivetrain.getSwerveModuleState();
         double[] swerveModulePositions = { moduleStates[0].angle.getDegrees(), moduleStates[1].angle.getDegrees(),
@@ -173,6 +177,8 @@ public class Logger {
 
         numOfApriltagEntry.append(drivetrain.getNumApriltags());
         stdDevEntry.append(drivetrain.getStandardDeviation());
+
+        SmartDashboard.putNumber("Standard Deviation from Logger", drivetrain.getStandardDeviation());
     }
 
     public void signalRobotEnable() {
