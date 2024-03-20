@@ -30,7 +30,7 @@ public class Arm extends SubsystemBase {
     private CANcoder armCANcoder;
     private InterpolatingDoubleTreeMap LLShotMap = new InterpolatingDoubleTreeMap();
     private Rate angle;
-    private double gravityFeedForward, armAngleSetpoint, armDelta, llDistanceMultiplier, ampScoringAngle;
+    private double gravityFeedForward, armAngleSetpoint, armDelta, llDistanceMultiplier, ampScoringAngle, lobPassAngle;
     private String stringState;
 
     public enum ArmState {
@@ -44,7 +44,8 @@ public class Arm extends SubsystemBase {
 
         armDelta = 0.0;
         ampScoringAngle = ArmConstants.kArmAmpPosition;
-        llDistanceMultiplier = 1.0;
+        llDistanceMultiplier = ArmConstants.kArmLLDistMultiplier;
+        lobPassAngle = ArmConstants.kArmLobPassPosition;
 
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
         configureCANcoder();
@@ -82,8 +83,6 @@ public class Arm extends SubsystemBase {
         gravityFeedForward = 0;
 
         // putSmartDashboard();
-        SmartDashboard.putNumber("Lob Pass Angle", ArmConstants.kArmLobPassPosition);
-
     }
 
     public void configureCANcoder() {
@@ -252,11 +251,15 @@ public class Arm extends SubsystemBase {
     }
 
     public void setLobPassPosition() {
-        setArmAngle(SmartDashboard.getNumber("Lob Pass Angle", ArmConstants.kArmLobPassPosition));
+        setArmAngle(lobPassAngle);
     }
 
     public void setStowPosition() {
         setArmAngle(ArmConstants.kArmStowPosition);
+    }
+
+    public void setLobPassAngle(double angle){
+        lobPassAngle = angle;
     }
 
     public void setArmNeutralMode(){

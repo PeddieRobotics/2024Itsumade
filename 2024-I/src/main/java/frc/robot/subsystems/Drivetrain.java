@@ -213,6 +213,7 @@ public class Drivetrain extends SubsystemBase {
         // if (SmartDashboard.getBoolean("Reset Gyro", false)) {
         // gyro.setYaw(0);
         // }
+        SmartDashboard.putNumber("Gyro heading", getHeading());
         SmartDashboard.putNumber("Odometry X", odometry.getEstimatedPosition().getX());
         SmartDashboard.putNumber("Odometry Y", odometry.getEstimatedPosition().getY());
         SmartDashboard.putNumber("Odometry Theta", odometry.getEstimatedPosition().getRotation().getDegrees());
