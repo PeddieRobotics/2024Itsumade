@@ -190,7 +190,6 @@ public class Superstructure extends SubsystemBase {
                 break;
 
             case GROUND_INTAKE:
-                lights.requestState(LightState.INTAKING);
                 arm.setGroundIntakePosition();
                 hopper.runHopperGroundIntake();
 
@@ -208,8 +207,13 @@ public class Superstructure extends SubsystemBase {
                     flywheel.runFlywheelLimelight();
                 }
 
-                if (isGamepieceIndexed()) {
+                if(intake.getSensor()){
                     lights.requestState(LightState.INTOOK);
+                } else if (lights.getLightState() != LightState.INTOOK){
+                    lights.requestState(LightState.INTAKING);
+                }
+
+                if (isGamepieceIndexed()) {
                     intake.stopIntake();
                     hopper.stopHopper();
                     latestIntakeTime = Timer.getFPGATimestamp();
@@ -217,7 +221,6 @@ public class Superstructure extends SubsystemBase {
 
                     if (!DriverStation.isAutonomous()) {
                         requestState(SuperstructureState.STOW);
-                        lights.requestState(LightState.IDLE);
 
                         LimelightHelper.setLEDMode_ForceBlink("limelight-intake");
 

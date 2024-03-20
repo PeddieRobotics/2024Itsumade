@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
@@ -27,6 +28,7 @@ public class Lights extends SubsystemBase {
   public static Lights lights;
   private final CANdle candle;
   private boolean isClimbing;
+  private double lastIntook;
 
   public enum LightState {
     IDLE,
@@ -48,6 +50,8 @@ public class Lights extends SubsystemBase {
     requestedSystemState = LightState.IDLE;
 
     candle = new CANdle(0);
+
+    SmartDashboard.putString("LED state", systemState.toString());
   }
 
   public static Lights getInstance() {
@@ -59,26 +63,40 @@ public class Lights extends SubsystemBase {
   }
 
   public void requestState(LightState request) {
+    if(request == LightState.INTOOK){
+      lastIntook = Timer.getFPGATimestamp();
+    }
+    candle.clearAnimation(0);
+    candle.setLEDs(0,0,0);
     requestedSystemState = request;
+  }
+
+  public LightState getLightState(){
+    return systemState;
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putString("LED state", systemState.toString());
     switch (systemState) {
       case IDLE:
-        candle.clearAnimation(0);
+        candle.setLEDs(0,0,0);
         break;
 
       case INTAKING:
-        candle.animate(new StrobeAnimation(255, 0, 0), 0);
+        //candle.animate(new StrobeAnimation(255, 0, 0,0,1,8), 0);
+        candle.setLEDs(255,0,0);
         break;
 
       case INTOOK:
-        candle.animate(new StrobeAnimation(0, 153, 0), 0);
+        candle.animate(new StrobeAnimation(0, 153, 0,0,0.3,8), 0);
+        if(Timer.getFPGATimestamp() - lastIntook > 1.5){
+          requestState(LightState.IDLE);
+        }
         break;
 
       case HAS_TARGET:
-        candle.animate(new StrobeAnimation(0, 0, 255), 0);
+        candle.animate(new StrobeAnimation(0, 0, 255,0,0.3,8), 0);
         break;
 
       case CLIMBING:
@@ -86,15 +104,33 @@ public class Lights extends SubsystemBase {
         break;
 
       case TARGETED:
-        candle.animate(new LarsonAnimation(255, 0, 127), 0);
+        candle.setLEDs(0,0,255);
         break;
-
-      
     }
 
     systemState = requestedSystemState;
 
   }
+
+  public String stateAsString(){
+    switch (systemState) {
+      case IDLE:
+        return "IDLE";
+      case INTAKING:
+        return "INTAKING";
+      case INTOOK: 
+        return "INTOOK";
+      case HAS_TARGET:
+        return "HAS_TARGET";
+      case CLIMBING:
+        return "CLIMBING";
+      case TARGETED:
+        return "TARGETED";
+
+  }
+  return "";
+  }
+
 
   public void setIsClimbing(boolean climbing){
     isClimbing = climbing;
