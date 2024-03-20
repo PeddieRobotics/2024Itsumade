@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.opencv.calib3d.Calib3d;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -21,6 +23,8 @@ public class LimelightShooter extends Limelight {
     private static LimelightShooter limelightShooter;
 
     private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage, distAverage;
+
+    private Pose2d calculatedBotpose;
 
     private String limelightName = "limelight-shooter";
     private double lastDistance;
@@ -148,6 +152,10 @@ public class LimelightShooter extends Limelight {
     public double getRYAverage(){
         return ryAverage.getAverage(); 
     }
+    
+    public Pose2d getCalculatedBotpose() {
+        return calculatedBotpose;
+    }
 
     // Class ID of primary neural detector result or neural classifier result
     public double getNeuralClassID() {
@@ -232,8 +240,11 @@ public class LimelightShooter extends Limelight {
             double cl = LimelightHelper.getLatency_Capture(limelightName);
             // Calculate a latency-compensated timestamp for the vision measurement (in seconds)
             double timestampLatencyComp = Timer.getFPGATimestamp() - (tl/1000.0) - (cl/1000.0);
-            odometry.addVisionMeasurement(this.getBotpose(), timestampLatencyComp);
+            calculatedBotpose = this.getBotpose();
+            odometry.addVisionMeasurement(calculatedBotpose, timestampLatencyComp);
         }
+        else
+            calculatedBotpose = null;
     }
     
     // Gets the total latency of the limelight capture + pipeline processing for the current image, in milliseconds (MS)
