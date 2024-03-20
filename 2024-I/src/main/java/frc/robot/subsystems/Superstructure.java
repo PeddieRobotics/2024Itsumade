@@ -189,7 +189,7 @@ public class Superstructure extends SubsystemBase {
                 hopper.runHopperGroundIntake();
 
                 if (arm.isAtGroundIntakeAngle()) {
-                    if(intake.getSensor()){
+                    if (intake.getSensor()) {
                         intake.runIntakeFeed();
                     } else {
                         intake.runIntake();
@@ -243,10 +243,9 @@ public class Superstructure extends SubsystemBase {
 
             case OUTTAKE:
                 arm.setGroundIntakePosition();
-
+                intake.reverseIntake();
                 if (arm.isAtGroundIntakeAngle()) {
                     hopper.runHopperOuttake();
-                    intake.reverseIntake();
                 }
 
                 if (!DriverStation.isAutonomous()) {
@@ -315,7 +314,7 @@ public class Superstructure extends SubsystemBase {
                 break;
 
             case AMP_PREP:
-                arm.setAmpPosition();
+                arm.setAmpPrepPosition();
                 flywheel.runFlywheelAmp();
                 hopper.stopHopper();
                 intake.stopIntake();
@@ -343,7 +342,8 @@ public class Superstructure extends SubsystemBase {
                 break;
 
             case AMP_SCORING:
-                if (!timer.hasElapsed(ScoringConstants.kShootingStateTime)) { // stop this once the piece is scored
+                arm.setAmpPosition();    
+                if (!timer.hasElapsed(ScoringConstants.kShootingStateTime) && arm.isAtAmpScoringAngle()) { // stop this once the piece is scored
                     flywheel.runFlywheelAmp();
                     hopper.feedFlywheelAmp();
                     intake.stopIntake();
@@ -521,7 +521,7 @@ public class Superstructure extends SubsystemBase {
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.LOB_PASS_PREP) {
                     nextSystemState = requestedSystemState;
-                }else if (requestedSystemState == SuperstructureState.GROUND_INTAKE) {
+                } else if (requestedSystemState == SuperstructureState.GROUND_INTAKE) {
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.OUTTAKE) {
                     nextSystemState = requestedSystemState;
@@ -742,11 +742,11 @@ public class Superstructure extends SubsystemBase {
             requestState(SuperstructureState.LAYUP_SCORING);
         } else if (systemState == SuperstructureState.SIDE_LAYUP_PREP) {
             requestState(SuperstructureState.LAYUP_SCORING);
-        } else if (systemState == SuperstructureState.PODIUM_PREP){
+        } else if (systemState == SuperstructureState.PODIUM_PREP) {
             requestState(SuperstructureState.PODIUM_SCORING);
-        } else if (systemState == SuperstructureState.LOB_PASS_PREP){
+        } else if (systemState == SuperstructureState.LOB_PASS_PREP) {
             requestState(SuperstructureState.LOB_PASSING);
-        } 
+        }
     }
 
     // private boolean hasGamepiece(){ //this has potential use cases if we want to
@@ -762,7 +762,7 @@ public class Superstructure extends SubsystemBase {
         return (hopper.isGamepieceIndexed() || isIndexedOverride);
     }
 
-    public boolean isPassing(){
+    public boolean isPassing() {
         return (systemState == SuperstructureState.LOB_PASS_PREP || systemState == SuperstructureState.LOB_PASSING);
     }
 

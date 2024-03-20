@@ -198,6 +198,11 @@ public class Arm extends SubsystemBase {
                 getArmAngleDegrees() - ArmConstants.kArmFrontLayupPosition) < ArmConstants.kArmPositionEpsilon;
     }
 
+    public boolean isAtAmpScoringAngle(){
+        return Math.abs(
+                getArmAngleDegrees() - ampScoringAngle) < ArmConstants.kArmPositionEpsilon;
+    }
+
     public boolean isAtSideLayupAngle() {
         return Math.abs(
                 getArmAngleDegrees() - ArmConstants.kArmSideLayupPosition) < ArmConstants.kArmPositionEpsilon;
@@ -232,6 +237,10 @@ public class Arm extends SubsystemBase {
 
     public void setAmpPosition() {
         setArmAngle(ampScoringAngle);
+    }
+
+    public void setAmpPrepPosition(){
+        setArmAngle(ArmConstants.kArmAmpPrepPosition);
     }
 
     public void setPodiumPosition() {
