@@ -23,6 +23,7 @@ import frc.robot.commands.AutoCommands.SideLayupPrep;
 import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
+import frc.robot.commands.DriveCommands.SnapToSpeaker;
 import frc.robot.commands.DriveCommands.Target;
 import frc.robot.commands.DriveCommands.TargetInAuto;
 // import frc.robot.commands.DriveCommands.ForcedCalibration;
