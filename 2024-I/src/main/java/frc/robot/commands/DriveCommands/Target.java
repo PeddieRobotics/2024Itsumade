@@ -69,6 +69,13 @@ public class Target extends Command {
         // turnPIDController.setD(SmartDashboard.getNumber("Target D", 0));
         // turnFF = (SmartDashboard.getNumber("Target FF", 0));
 
+        //if you have or don't have a target, do certain light modes
+        if(!limelightShooter.hasTarget()){
+            lights.requestState(LightState.FAILED);
+        } else if(limelightShooter.hasTarget() && lights.getLightState() != LightState.TARGETED){
+            lights.requestState(LightState.HAS_TARGET);
+        } 
+
         if (limelightShooter.hasTarget()) {
             error = limelightShooter.getTxAverage();
             if (error < -turnThreshold) {
@@ -89,7 +96,13 @@ public class Target extends Command {
         // SmartDashboard.putBoolean("Targetting", false);
         drivetrain.stop();
         logger.logEvent("Target Command", false);
-        lights.requestState(LightState.TARGETED);
+
+        //only turn lights on if actually targeted
+        if(Math.abs(error) < turnThreshold && limelightShooter.hasTarget()){
+            lights.requestState(LightState.TARGETED);
+        } else {
+            lights.requestState(LightState.IDLE);
+        }
     }
 
     @Override

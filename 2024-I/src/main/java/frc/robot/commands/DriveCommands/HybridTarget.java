@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Lights.LightState;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightIntake;
 import frc.robot.subsystems.LimelightShooter;
@@ -20,6 +22,7 @@ public class HybridTarget extends Command {
     private Drivetrain drivetrain;
     private LimelightShooter limelightShooter;
     private DriverOI oi;
+    private Lights lights;
 
     private double error, turnThreshold, llTurnFF, odometryTurnFF, turnInput;
     // Odometry Target Values
@@ -33,6 +36,7 @@ public class HybridTarget extends Command {
         drivetrain = Drivetrain.getInstance();
         limelightShooter = LimelightShooter.getInstance();
         logger = Logger.getInstance();
+        lights = Lights.getInstance();
 
         llTurnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
                 LimelightConstants.kTargetD);
@@ -73,6 +77,13 @@ public class HybridTarget extends Command {
 
     @Override
     public void execute() {
+
+        if(!limelightShooter.hasTarget()){
+            lights.requestState(LightState.FAILED);
+        } else if(limelightShooter.hasTarget() && lights.getLightState() != LightState.TARGETED){
+            lights.requestState(LightState.HAS_TARGET);
+        } 
+        
         if (limelightShooter.hasTarget() && Math.abs(limelightShooter.getTxAverage()) < 20.0) {
 
             error = limelightShooter.getTxAverage();
@@ -109,6 +120,12 @@ public class HybridTarget extends Command {
     public void end(boolean interrupted) {
         drivetrain.stop();
         logger.logEvent("Hybrid Target Command", false);
+        
+        if(Math.abs(error) < turnThreshold && limelightShooter.hasTarget()){
+            lights.requestState(LightState.TARGETED);
+        } else {
+            lights.requestState(LightState.IDLE);
+        }
     }
 
     @Override

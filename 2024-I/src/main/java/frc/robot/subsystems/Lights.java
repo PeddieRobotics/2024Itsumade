@@ -5,22 +5,16 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.ColorFlowAnimation;
 import com.ctre.phoenix.led.LarsonAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
+import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Superstructure.SuperstructureState;
-import frc.robot.utils.Constants;
-import frc.robot.utils.RobotMap;
-import frc.robot.utils.Constants.IntakeConstants;
 
 public class Lights extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -37,7 +31,8 @@ public class Lights extends SubsystemBase {
     HAS_TARGET,
     CLIMBING,
     TARGETED,
-    DONE_CLIMBING
+    DONE_CLIMBING,
+    FAILED
   }
 
   LightState systemState;
@@ -96,15 +91,23 @@ public class Lights extends SubsystemBase {
         break;
 
       case HAS_TARGET:
-        candle.animate(new StrobeAnimation(0, 0, 255,0,0.3,8), 0);
+        candle.setLEDs(0,0,255);
         break;
 
       case CLIMBING:
+        candle.animate(new ColorFlowAnimation(255, 255, 0, 0, 0.3, 8, Direction.Forward), 0);
+        break;
+      
+      case DONE_CLIMBING:
         candle.animate(new RainbowAnimation(), 0);
         break;
 
       case TARGETED:
         candle.setLEDs(0,255,0);
+        break;
+
+      case FAILED:
+        candle.setLEDs(255,0,0);
         break;
     }
 
@@ -128,6 +131,8 @@ public class Lights extends SubsystemBase {
         return "TARGETED";
       case DONE_CLIMBING:
         return "DONE_CLIMBING";
+      case FAILED:
+        return "FAILED";
     }
     return "";
   }

@@ -3,6 +3,7 @@ package frc.robot.commands.ClimbCommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Lights.LightState;
 import frc.robot.utils.Logger;
 
 public class RetractClimber extends Command{
@@ -31,6 +32,7 @@ public class RetractClimber extends Command{
     public void end(boolean interrupted){
       climber.stopClimber();
       Logger.getInstance().logEvent("Retract Climber", false);
+      lights.requestState(LightState.DONE_CLIMBING);
     }
 
     @Override

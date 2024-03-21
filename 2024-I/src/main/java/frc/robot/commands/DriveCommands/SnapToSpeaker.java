@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Lights.LightState;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightIntake;
 import frc.robot.subsystems.LimelightShooter;
@@ -22,6 +24,7 @@ public class SnapToSpeaker extends Command {
     private Drivetrain drivetrain;
     private LimelightShooter limelightShooter;
     private DriverOI oi;
+    private Lights lights;
 
     private double error, turnThreshold, turnFF, turnInput;
     private PIDController turnPIDController;
@@ -45,6 +48,7 @@ public class SnapToSpeaker extends Command {
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;
         logger = Logger.getInstance();
+        lights = Lights.getInstance();
 
         pastHeading = drivetrain.getHeading();
         currentHeading = drivetrain.getHeading();
@@ -83,6 +87,12 @@ public class SnapToSpeaker extends Command {
     public void execute() {
         currentTime = Timer.getFPGATimestamp();
 
+        if(!limelightShooter.hasTarget()){
+            lights.requestState(LightState.FAILED);
+        } else if(limelightShooter.hasTarget() && lights.getLightState() != LightState.TARGETED){
+            lights.requestState(LightState.HAS_TARGET);
+        } 
+
         if (limelightShooter.hasTarget()) {
             currentHeading = drivetrain.getHeading();
             error = currentHeading - setpoint;
@@ -104,6 +114,12 @@ public class SnapToSpeaker extends Command {
     @Override
     public void end(boolean interrupted) {
         drivetrain.stop();
+        if(Math.abs(error) < turnThreshold && limelightShooter.hasTarget()){
+            lights.requestState(LightState.TARGETED);
+        } else {
+            lights.requestState(LightState.IDLE);
+        }
+        
         logger.logEvent("Snap to Speaker Command", false);
     }
 

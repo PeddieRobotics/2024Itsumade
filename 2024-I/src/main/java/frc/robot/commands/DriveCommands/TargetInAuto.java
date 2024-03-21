@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Lights.LightState;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightIntake;
 import frc.robot.subsystems.LimelightShooter;
@@ -19,6 +21,7 @@ import frc.robot.utils.Constants.LimelightConstants;
 public class TargetInAuto extends Command {
     private Drivetrain drivetrain;
     private LimelightShooter limelightShooter;
+    private Lights lights;
     private DriverOI oi;
 
     private double error, turnThreshold, turnFF, turnInput, initialTime, currentTime;
@@ -28,6 +31,7 @@ public class TargetInAuto extends Command {
     public TargetInAuto() {
         drivetrain = Drivetrain.getInstance();
         limelightShooter = LimelightShooter.getInstance();
+        lights = Lights.getInstance();
 
         turnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
                 LimelightConstants.kTargetD);
@@ -54,6 +58,12 @@ public class TargetInAuto extends Command {
 
     @Override
     public void execute() {
+        if(!limelightShooter.hasTarget()){
+            lights.requestState(LightState.FAILED);
+        } else if(limelightShooter.hasTarget() && lights.getLightState() != LightState.TARGETED){
+            lights.requestState(LightState.HAS_TARGET);
+        } 
+
         currentTime = Timer.getFPGATimestamp();
         if (limelightShooter.hasTarget()) {
             error = limelightShooter.getTxAverage();
@@ -75,6 +85,11 @@ public class TargetInAuto extends Command {
     public void end(boolean interrupted) {
         drivetrain.stop();
         logger.logEvent("Target Command", false);
+        if(Math.abs(error) < turnThreshold && limelightShooter.hasTarget()){
+            lights.requestState(LightState.TARGETED);
+        } else {
+            lights.requestState(LightState.IDLE);
+        }
     }
 
     @Override
