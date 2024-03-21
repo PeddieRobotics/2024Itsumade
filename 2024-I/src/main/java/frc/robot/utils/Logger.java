@@ -15,6 +15,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure;
 
@@ -22,9 +23,11 @@ public class Logger {
     private static Logger instance;
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
     private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, intakeSpeedEntry, hopperCurrentEntry, 
-                leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,LLDistancEntry, armCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition, climberLeftArmCurrent, climberRightArmCurrent;
-    private StringLogEntry robotStateEntry, commandEntry;
-    private DoubleArrayLogEntry fieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
+                leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,
+                LLDistancEntry, armCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
+                climberLeftArmCurrent, climberRightArmCurrent, numOfApriltagEntry, stdDevEntry;
+    private StringLogEntry robotStateEntry, commandEntry, lightStateEntry;
+    private DoubleArrayLogEntry fieldPositionEntry, botposeFieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
     private double lastTeleopEnable;
     private Pose2d fieldPosition;
@@ -37,6 +40,7 @@ public class Logger {
     private LimelightShooter limelightShooter;
     private Hopper hopper;
     private Superstructure superstructure;
+    private Lights lights;
 
     public static Logger getInstance() {
         if (instance == null) {
@@ -54,6 +58,7 @@ public class Logger {
         hopper = Hopper.getInstance();
         superstructure = Superstructure.getInstance();
         climber = Climber.getInstance();
+        lights = Lights.getInstance();
 
         // Superstructure Logs
         robotStateEntry = new StringLogEntry(log, "/Superstructure/Robot State");
@@ -97,6 +102,9 @@ public class Logger {
         LLDistancEntry = new DoubleLogEntry(log, "/Limelight/Distance");
 
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
+
+        //light states
+        lightStateEntry = new StringLogEntry(log, "/Lights/Light State");
     }
 
     public void logEvent(String event, Boolean isStart) {
@@ -107,6 +115,9 @@ public class Logger {
     public void updateLogs() {
         // Superstructure
         robotStateEntry.append(superstructure.getRobotState());
+
+        // Lights
+        lightStateEntry.append(lights.getLightStateAsString());
 
         // Drivetrain
         updateDrivetrainLogs();

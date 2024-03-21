@@ -741,11 +741,19 @@ public class Superstructure extends SubsystemBase {
             case PODIUM_PREP:
                 return "PODIUM_PREP";
             case PODIUM_SCORING:
-                return "PODIUM SCORING";
+                return "PODIUM_SCORING";
             case LOB_PASS_PREP:
                 return "LOB_PASS_PREP";
             case LOB_PASSING:
                 return "LOB PASSING";
+            case CUSTOM_SHOT_PREP:
+                return "CUSTOM_SHOT_PREP";
+            case LL_TEST:
+                return "LL_TEST";
+            case OUTTAKE:
+                return "OUTTAKE";
+            case POST_SCORING:
+                return "POST_SCORING";
         }
         return "";
     }

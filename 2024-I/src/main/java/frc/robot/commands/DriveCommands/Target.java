@@ -7,9 +7,11 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightIntake;
 import frc.robot.subsystems.LimelightShooter;
+import frc.robot.subsystems.Lights.LightState;
 import frc.robot.utils.Constants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Logger;
@@ -20,6 +22,7 @@ public class Target extends Command {
     private Drivetrain drivetrain;
     private LimelightShooter limelightShooter;
     private DriverOI oi;
+    private Lights lights;
 
     private double error, turnThreshold, turnFF, turnInput;
     private PIDController turnPIDController;
@@ -37,6 +40,7 @@ public class Target extends Command {
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;
         logger = Logger.getInstance();
+        lights = Lights.getInstance();
 
         addRequirements(drivetrain);
         // SmartDashboard.putNumber("Target P", LimelightConstants.kTargetP);
@@ -85,6 +89,7 @@ public class Target extends Command {
         // SmartDashboard.putBoolean("Targetting", false);
         drivetrain.stop();
         logger.logEvent("Target Command", false);
+        lights.requestState(LightState.TARGETED);
     }
 
     @Override

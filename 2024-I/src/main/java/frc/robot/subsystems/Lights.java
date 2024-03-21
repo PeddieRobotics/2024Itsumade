@@ -37,16 +37,14 @@ public class Lights extends SubsystemBase {
     HAS_TARGET,
     CLIMBING,
     TARGETED,
-
+    DONE_CLIMBING
   }
 
   LightState systemState;
-  LightState nextSystemState;
   LightState requestedSystemState;
 
   public Lights() {
     systemState = LightState.IDLE;
-    nextSystemState = LightState.IDLE;
     requestedSystemState = LightState.IDLE;
 
     candle = new CANdle(0);
@@ -66,6 +64,8 @@ public class Lights extends SubsystemBase {
     if(request == LightState.INTOOK){
       lastIntook = Timer.getFPGATimestamp();
     }
+
+    //reset animation so easy to change
     candle.clearAnimation(0);
     candle.setLEDs(0,0,0);
     requestedSystemState = request;
@@ -104,7 +104,7 @@ public class Lights extends SubsystemBase {
         break;
 
       case TARGETED:
-        candle.setLEDs(0,0,255);
+        candle.setLEDs(0,255,0);
         break;
     }
 
@@ -126,18 +126,14 @@ public class Lights extends SubsystemBase {
         return "CLIMBING";
       case TARGETED:
         return "TARGETED";
-
-  }
-  return "";
-  }
-
-
-  public void setIsClimbing(boolean climbing){
-    isClimbing = climbing;
+      case DONE_CLIMBING:
+        return "DONE_CLIMBING";
+    }
+    return "";
   }
 
-  public boolean getIsClimbing(){
-    return isClimbing;
+  public String getLightStateAsString(){
+    return systemState.toString();
   }
 
   @Override
