@@ -255,10 +255,9 @@ public class Superstructure extends SubsystemBase {
 
             case OUTTAKE:
                 arm.setGroundIntakePosition();
-
+                intake.reverseIntake();
                 if (arm.isAtGroundIntakeAngle()) {
                     hopper.runHopperOuttake();
-                    intake.reverseIntake();
                 }
 
                 if (!DriverStation.isAutonomous()) {
@@ -328,7 +327,7 @@ public class Superstructure extends SubsystemBase {
                 break;
 
             case AMP_PREP:
-                arm.setAmpPosition();
+                arm.setAmpPrepPosition();
                 flywheel.runFlywheelAmp();
                 hopper.stopHopper();
                 intake.stopIntake();
@@ -356,7 +355,8 @@ public class Superstructure extends SubsystemBase {
                 break;
 
             case AMP_SCORING:
-                if (!timer.hasElapsed(ScoringConstants.kShootingStateTime)) { // stop this once the piece is scored
+                arm.setAmpPosition();    
+                if (!timer.hasElapsed(ScoringConstants.kShootingStateTime) && arm.isAtAmpScoringAngle()) { // stop this once the piece is scored
                     flywheel.runFlywheelAmp();
                     hopper.feedFlywheelAmp();
                     intake.stopIntake();

@@ -221,9 +221,9 @@ public final class Constants {
     public static final double kArmIZone = 0;
     public static final double kArmG = 8.5;
 
-    public static final double kCancoderCruiseVelocityRPS = .5;
-    public static final double kCancoderCruiseMaxAccel = 1; // rot/s^2
-    public static final double kCancoderCruiseMaxJerk = 10; // rot/s^3
+    public static final double kCancoderCruiseVelocityRPS = 0.65;
+    public static final double kCancoderCruiseMaxAccel = 1.3; // rot/s^2
+    public static final double kCancoderCruiseMaxJerk = 13; // rot/s^3
 
     public static final double kArmForwardSoftLimit = 0.3; // in mechanism rotations
     public static final double kArmReverseSoftLimit = -0.1; // in mechanism rotations
@@ -242,6 +242,7 @@ public final class Constants {
     public static final double kArmPositionEpsilon = 3; // in deg
     public static final double kArmStowPositionEpsilon = 10; // in deg
     public static final double kArmAmpPosition = 134; //124 in lab, 140 at comp 134 IS LAST USED ANGLE AT HATBORO
+    public static final double kArmAmpPrepPosition = 110;
     public static final double kArmFrontLayupPosition = 38; // 38
     public static final double kArmSideLayupPosition = 35;
     public static final double kArmStowPosition = 0;
