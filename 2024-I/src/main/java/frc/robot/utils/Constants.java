@@ -221,9 +221,9 @@ public final class Constants {
     public static final double kArmIZone = 0;
     public static final double kArmG = 8.5;
 
-    public static final double kCancoderCruiseVelocityRPS = 0.65;
-    public static final double kCancoderCruiseMaxAccel = 1.3; // rot/s^2
-    public static final double kCancoderCruiseMaxJerk = 13; // rot/s^3
+    public static final double kCancoderCruiseVelocityRPS = 0.7;
+    public static final double kCancoderCruiseMaxAccel = 1.6; // rot/s^2
+    public static final double kCancoderCruiseMaxJerk = 16; // rot/s^3
 
     public static final double kArmForwardSoftLimit = 0.3; // in mechanism rotations
     public static final double kArmReverseSoftLimit = -0.1; // in mechanism rotations
@@ -309,7 +309,7 @@ public final class Constants {
     public static final double kLeftFlywheelHPIntakeRPM = -750;
     public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;
-    public static final double kShootingStateTime = 1.0;
+    public static final double kShootingStateTime = 0.1;
 
     public static final double kLobPassSpeedMultiplier = 1.06;
 
