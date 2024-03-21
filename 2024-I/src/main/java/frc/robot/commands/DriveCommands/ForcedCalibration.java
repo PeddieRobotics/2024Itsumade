@@ -17,7 +17,7 @@ public class ForcedCalibration extends Command {
 
     @Override
     public void initialize() {
-        Logger.getInstance().logEvent("Forced calibration command", true);
+        //Logger.getInstance().logEvent("Forced calibration command", true);
         drivetrain.setIsForcingCalibration(true);
         cycles = 0;
     }
@@ -29,7 +29,7 @@ public class ForcedCalibration extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        Logger.getInstance().logEvent("Forced calibration command", false);
+        //Logger.getInstance().logEvent("Forced calibration command", false);
         drivetrain.setIsForcingCalibration(false);
     }
 
