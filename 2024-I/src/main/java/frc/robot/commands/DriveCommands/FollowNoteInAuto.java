@@ -50,7 +50,7 @@ public class FollowNoteInAuto extends Command {
     }
 
     @Override
-    public void initialize() {
+    public void initialize() { 
         doNotSeeFrameCount = 0;
         totalFrameCount = 0;
         endBecauseNoNote = false;
@@ -149,7 +149,7 @@ public class FollowNoteInAuto extends Command {
         else
             return false;
 
-        Logger.getInstance().logEvent("Follow Note in Auto, reason", false);
+        Logger.getInstance().logEvent("Finished FollowNoteInAuto, reason " + reason, false);
         return true;
         
         // return endBecauseNoNote ||
