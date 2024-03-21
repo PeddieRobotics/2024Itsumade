@@ -35,6 +35,7 @@ public class OdometryTarget extends Command {
         logger = Logger.getInstance();
 
         turnPIDController = new PIDController(LimelightConstants.kOdometryTargetP, LimelightConstants.kOdometryTargetI, LimelightConstants.kOdometryTargetD);
+        turnPIDController.enableContinuousInput(-180, 180);
         turnFF = LimelightConstants.kOdometryTargetFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;

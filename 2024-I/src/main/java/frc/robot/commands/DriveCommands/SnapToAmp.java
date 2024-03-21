@@ -38,7 +38,7 @@ public class SnapToAmp extends Command {
         logger = Logger.getInstance();
 
         odometryTurnPIDController = new PIDController(LimelightConstants.kOdometryTargetP, LimelightConstants.kOdometryTargetI, LimelightConstants.kOdometryTargetD);
-
+        odometryTurnPIDController.enableContinuousInput(-180, 180);
         odometryTurnFF = LimelightConstants.kOdometryTargetFF;
 
         odometryAngleThreshold = LimelightConstants.kAmpAlignAngleThreshold;
@@ -74,9 +74,6 @@ public class SnapToAmp extends Command {
         currentAngle = currentOdometry.getRotation().getDegrees();
         odometryAngleError = currentAngle - targetAngle;
 
-        if(odometryAngleError <= -180){
-            odometryAngleError += 360;
-        }
 
         if (odometryAngleError < -odometryAngleThreshold) {
             turnInput = odometryTurnPIDController.calculate(odometryAngleError) + odometryTurnFF;

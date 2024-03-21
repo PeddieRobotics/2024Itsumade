@@ -221,9 +221,9 @@ public final class Constants {
     public static final double kArmIZone = 0;
     public static final double kArmG = 8.5;
 
-    public static final double kCancoderCruiseVelocityRPS = .5;
-    public static final double kCancoderCruiseMaxAccel = 1; // rot/s^2
-    public static final double kCancoderCruiseMaxJerk = 10; // rot/s^3
+    public static final double kCancoderCruiseVelocityRPS = 0.7;
+    public static final double kCancoderCruiseMaxAccel = 1.6; // rot/s^2
+    public static final double kCancoderCruiseMaxJerk = 16; // rot/s^3
 
     public static final double kArmForwardSoftLimit = 0.3; // in mechanism rotations
     public static final double kArmReverseSoftLimit = -0.1; // in mechanism rotations
@@ -242,6 +242,7 @@ public final class Constants {
     public static final double kArmPositionEpsilon = 3; // in deg
     public static final double kArmStowPositionEpsilon = 10; // in deg
     public static final double kArmAmpPosition = 134; //124 in lab, 140 at comp 134 IS LAST USED ANGLE AT HATBORO
+    public static final double kArmAmpPrepPosition = 110;
     public static final double kArmFrontLayupPosition = 38; // 38
     public static final double kArmSideLayupPosition = 35;
     public static final double kArmStowPosition = 0;
@@ -308,7 +309,7 @@ public final class Constants {
     public static final double kLeftFlywheelHPIntakeRPM = -750;
     public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;
-    public static final double kShootingStateTime = 1.0;
+    public static final double kShootingStateTime = 0.1;
 
     public static final double kLobPassSpeedMultiplier = 1.06;
 

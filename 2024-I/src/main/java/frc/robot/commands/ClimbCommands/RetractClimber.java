@@ -2,13 +2,16 @@ package frc.robot.commands.ClimbCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Lights;
 import frc.robot.utils.Logger;
 
 public class RetractClimber extends Command{
    
     private Climber climber;
+    private Lights lights;
     
     public RetractClimber(){
+        lights = Lights.getInstance();
         climber = Climber.getInstance();
         addRequirements(climber);
     }

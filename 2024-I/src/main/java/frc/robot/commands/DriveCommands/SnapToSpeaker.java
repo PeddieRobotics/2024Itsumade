@@ -38,7 +38,8 @@ public class SnapToSpeaker extends Command {
 
         turnPIDController = new PIDController(LimelightConstants.kSnapToSpeakerP, LimelightConstants.kSnapToSpeakerI,
                 LimelightConstants.kSnapToSpeakerD);
-        turnPIDController.setIZone(4.0);
+        turnPIDController.enableContinuousInput(-180, 180);
+                turnPIDController.setIZone(4.0);
 
         turnFF = LimelightConstants.kSnapToSpeakerFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;

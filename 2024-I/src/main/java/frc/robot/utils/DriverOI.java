@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ClimbCommands.DeployClimber;
 import frc.robot.commands.ClimbCommands.RetractClimber;
 import frc.robot.commands.DriveCommands.FollowNote;
 import frc.robot.commands.DriveCommands.FollowNoteInAuto;
@@ -81,8 +82,8 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        //circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
-        circleButton.onTrue(new SnapToAmp());
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.AMP_PREP)));
+        // circleButton.onTrue(new SnapToAmp());
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
@@ -100,6 +101,7 @@ public class DriverOI {
         L1Bumper.whileTrue(new ConditionalCommand(new TargetCornerWhilePassing(),
             new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
             superstructure::isPassing));
+        // L1Bumper.onTrue(new DeployClimber());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new RetractClimber());
