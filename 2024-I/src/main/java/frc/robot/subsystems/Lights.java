@@ -80,7 +80,7 @@ public class Lights extends SubsystemBase {
 
       case INTAKING:
         //candle.animate(new StrobeAnimation(255, 0, 0,0,1,8), 0);
-        candle.setLEDs(255,0,0);
+        candle.setLEDs(255,153,51);
         break;
 
       case INTOOK:
