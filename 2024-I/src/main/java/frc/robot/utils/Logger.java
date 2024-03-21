@@ -71,7 +71,6 @@ public class Logger {
         botposeFieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Botpose position");
         moduleSpeedsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Speeds");
         modulePositionsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Positions");
-        numOfApriltagEntry = new DoubleLogEntry(log, "/Drivetrain/Number of Apriltags");
         stdDevEntry = new DoubleLogEntry(log, "/Drivetrain/Megatag stddev");
 
         // Intake Logs
@@ -104,7 +103,9 @@ public class Logger {
 
         //LL logs
         LLDistanceEntry = new DoubleLogEntry(log, "/Limelight/Distance");
+        numOfApriltagEntry = new DoubleLogEntry(log, "/Limelight/Number of Apriltags");
 
+        //commands used
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
 
         //light states
@@ -150,6 +151,7 @@ public class Logger {
 
         //limelight
         LLDistanceEntry.append(limelightShooter.getDistance());
+        numOfApriltagEntry.append(drivetrain.getNumApriltags());
 
         //Climber
         climberLeftArmCurrent.append(climber.getLeftArmCurrent());
@@ -184,7 +186,6 @@ public class Logger {
         modulePositionsEntry.append(swerveModulePositions);
         moduleSpeedsEntry.append(swerveModuleSpeeds);
 
-        numOfApriltagEntry.append(drivetrain.getNumApriltags());
         stdDevEntry.append(drivetrain.getStandardDeviation());
 
         SmartDashboard.putNumber("Standard Deviation from Logger", drivetrain.getStandardDeviation());

@@ -37,7 +37,7 @@ public class HybridTarget extends Command {
         llTurnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
                 LimelightConstants.kTargetD);
         odometryTurnPIDController = new PIDController(LimelightConstants.kOdometryTargetP, LimelightConstants.kOdometryTargetI, LimelightConstants.kOdometryTargetD);
-
+        odometryTurnPIDController.enableContinuousInput(-180, 180);
         llTurnFF = LimelightConstants.kTargetFF;
         odometryTurnFF = LimelightConstants.kOdometryTargetFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;

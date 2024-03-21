@@ -42,7 +42,7 @@ public class AmpAlign extends Command {
         horizontalAlignPIDController = new PIDController(LimelightConstants.kHorizontalAlignP, LimelightConstants.kHorizontalAlignI,
                 LimelightConstants.kHorizontalAlignD);
         odometryTurnPIDController = new PIDController(LimelightConstants.kOdometryTargetP, LimelightConstants.kOdometryTargetI, LimelightConstants.kOdometryTargetD);
-
+        odometryTurnPIDController.enableContinuousInput(-180, 180);
         horizontalFF = LimelightConstants.kHorizontalAlignFF;
         odometryTurnFF = LimelightConstants.kOdometryTargetFF;
 
