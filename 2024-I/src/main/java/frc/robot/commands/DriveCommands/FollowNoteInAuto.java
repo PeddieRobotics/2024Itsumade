@@ -140,8 +140,8 @@ public class FollowNoteInAuto extends Command {
         String reason = null;
         // if (endBecauseNoNote)
         //     reason = "no notes seen";
-        if (consecutiveNoNote >= 5) //tune maybe
-            reason = "no note for 5 frames";
+        if (consecutiveNoNote >= 10) //tune maybe
+            reason = "no note for 10 frames";
         else if (Timer.getFPGATimestamp() - startTime >= timeLimit)
             reason = "timeout";
         else if (intake.hasGamepiece())
