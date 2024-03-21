@@ -104,7 +104,7 @@ public class DriverOI {
         // L1Bumper.onTrue(new DeployClimber());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.onTrue(new RetractClimber());
+        R1Bumper.onTrue(new RetractClimber()); 
         
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
