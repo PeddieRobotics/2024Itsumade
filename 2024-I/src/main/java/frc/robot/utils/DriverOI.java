@@ -82,14 +82,15 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.AMP_PREP)));
+        circleButton.whileTrue(new HybridTarget());
         // circleButton.onTrue(new SnapToAmp());
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new FollowNote());
+        // squareButton.whileTrue(new FollowNote());
+        squareButton.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
@@ -104,7 +105,7 @@ public class DriverOI {
         // L1Bumper.onTrue(new DeployClimber());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.onTrue(new RetractClimber());
+        R1Bumper.onTrue(new RetractClimber()); 
         
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
@@ -114,7 +115,7 @@ public class DriverOI {
         ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
-        optionButton.onTrue(new SnapToSpeaker());
+        // optionButton.onTrue(new SnapToSpeaker());
 
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
