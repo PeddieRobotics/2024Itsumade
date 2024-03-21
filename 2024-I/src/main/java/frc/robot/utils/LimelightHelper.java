@@ -789,6 +789,7 @@ public class LimelightHelper {
         return results;
     }
 
+    // TODO: faster way that does not require json dumping
     public static int getNumberOfAprilTagsSeen(String limelightName){
         LimelightResults results = getLatestResults(limelightName);
         return results.targetingResults.targets_Fiducials.length;

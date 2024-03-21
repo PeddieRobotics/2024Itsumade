@@ -9,6 +9,7 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -24,7 +25,7 @@ public class Logger {
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
     private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, intakeSpeedEntry, hopperCurrentEntry, 
                 leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,
-                LLDistancEntry, armCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
+                LLDistanceEntry, armCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
                 climberLeftArmCurrent, climberRightArmCurrent, numOfApriltagEntry, stdDevEntry;
     private StringLogEntry robotStateEntry, commandEntry, lightStateEntry;
     private DoubleArrayLogEntry fieldPositionEntry, botposeFieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
@@ -66,9 +67,12 @@ public class Logger {
         // Drivetrain Logs
         gyroAngleEntry = new DoubleLogEntry(log, "/Drivetrain/Gyro Angle");
         drivetrainSpeedEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Speed");
-        fieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Postion");
+        fieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Position");
+        botposeFieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Botpose position");
         moduleSpeedsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Speeds");
         modulePositionsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Positions");
+        numOfApriltagEntry = new DoubleLogEntry(log, "/Drivetrain/Number of Apriltags");
+        stdDevEntry = new DoubleLogEntry(log, "/Drivetrain/Megatag stddev");
 
         // Intake Logs
         intakeSensorEntry = new BooleanLogEntry(log, "/Intake/Intake Sensor");
@@ -99,7 +103,7 @@ public class Logger {
         climberRightArmCurrent = new DoubleLogEntry(log, "/Climber/Right Arm Motor Current");
 
         //LL logs
-        LLDistancEntry = new DoubleLogEntry(log, "/Limelight/Distance");
+        LLDistanceEntry = new DoubleLogEntry(log, "/Limelight/Distance");
 
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
 
@@ -145,7 +149,7 @@ public class Logger {
         armAngleSetpointEntry.append(arm.getArmAngleSetpoint());
 
         //limelight
-        LLDistancEntry.append(limelightShooter.getDistance());
+        LLDistanceEntry.append(limelightShooter.getDistance());
 
         //Climber
         climberLeftArmCurrent.append(climber.getLeftArmCurrent());
@@ -165,6 +169,13 @@ public class Logger {
                 drivetrain.getPose().getRotation().getDegrees() };
         fieldPositionEntry.append(pose);
 
+        Pose2d botpose = limelightShooter.getCalculatedBotpose();
+        if (botpose != null) {
+            double[] botposePose = { botpose.getX(), botpose.getY(),
+                            botpose.getRotation().getDegrees() };
+            botposeFieldPositionEntry.append(botposePose);
+        }
+
         SwerveModuleState[] moduleStates = drivetrain.getSwerveModuleState();
         double[] swerveModulePositions = { moduleStates[0].angle.getDegrees(), moduleStates[1].angle.getDegrees(),
                 moduleStates[2].angle.getDegrees(), moduleStates[3].angle.getDegrees() };
@@ -172,6 +183,11 @@ public class Logger {
                 moduleStates[2].speedMetersPerSecond, moduleStates[3].speedMetersPerSecond };
         modulePositionsEntry.append(swerveModulePositions);
         moduleSpeedsEntry.append(swerveModuleSpeeds);
+
+        numOfApriltagEntry.append(drivetrain.getNumApriltags());
+        stdDevEntry.append(drivetrain.getStandardDeviation());
+
+        SmartDashboard.putNumber("Standard Deviation from Logger", drivetrain.getStandardDeviation());
     }
 
     public void signalRobotEnable() {

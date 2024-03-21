@@ -66,7 +66,7 @@ public class SnapToSpeaker extends Command {
         if(DriverStation.getAlliance().get() == Alliance.Red){
             LimelightShooter.getInstance().setPriorityTag(4);
         } else {
-            LimelightShooter.getInstance().setPriorityTag(8);
+            LimelightShooter.getInstance().setPriorityTag(7);
         }
 
         latency = limelightShooter.getTotalLatencyInMS();
