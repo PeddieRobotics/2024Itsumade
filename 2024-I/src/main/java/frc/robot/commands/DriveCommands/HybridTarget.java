@@ -78,10 +78,11 @@ public class HybridTarget extends Command {
     @Override
     public void execute() {
 
-        if(!limelightShooter.hasTarget()){
-            lights.requestState(LightState.FAILED);
-        } else if(limelightShooter.hasTarget() && lights.getLightState() != LightState.TARGETED){
-            lights.requestState(LightState.HAS_TARGET);
+        if(limelightShooter.hasTarget()){
+            if (Math.abs(error) >= 3 * turnThreshold)
+                lights.requestState(LightState.HAS_TARGET);
+            else
+                lights.requestState(LightState.TARGETED);
         } 
         
         if (limelightShooter.hasTarget() && Math.abs(limelightShooter.getTxAverage()) < 20.0) {
@@ -120,16 +121,11 @@ public class HybridTarget extends Command {
     public void end(boolean interrupted) {
         drivetrain.stop();
         logger.logEvent("Hybrid Target Command", false);
-        
-        if(Math.abs(error) < turnThreshold && limelightShooter.hasTarget()){
-            lights.requestState(LightState.TARGETED);
-        } else {
-            lights.requestState(LightState.IDLE);
-        }
+        lights.requestState(LightState.IDLE);
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(error) < turnThreshold && oi.getSwerveTranslation() == new Translation2d(0, 0);
+        return false;
     }
 }

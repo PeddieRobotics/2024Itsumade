@@ -58,10 +58,11 @@ public class TargetInAuto extends Command {
 
     @Override
     public void execute() {
-        if(!limelightShooter.hasTarget()){
-            lights.requestState(LightState.FAILED);
-        } else if(limelightShooter.hasTarget() && lights.getLightState() != LightState.TARGETED){
-            lights.requestState(LightState.HAS_TARGET);
+        if(limelightShooter.hasTarget()){
+            if (Math.abs(error) >= 3 * turnThreshold)
+                lights.requestState(LightState.HAS_TARGET);
+            else
+                lights.requestState(LightState.TARGETED);
         } 
 
         currentTime = Timer.getFPGATimestamp();
@@ -85,11 +86,7 @@ public class TargetInAuto extends Command {
     public void end(boolean interrupted) {
         drivetrain.stop();
         logger.logEvent("Target Command", false);
-        if(Math.abs(error) < turnThreshold && limelightShooter.hasTarget()){
-            lights.requestState(LightState.TARGETED);
-        } else {
-            lights.requestState(LightState.IDLE);
-        }
+        lights.requestState(LightState.IDLE);
     }
 
     @Override

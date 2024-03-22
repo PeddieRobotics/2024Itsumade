@@ -87,10 +87,11 @@ public class SnapToSpeaker extends Command {
     public void execute() {
         currentTime = Timer.getFPGATimestamp();
 
-        if(!limelightShooter.hasTarget()){
-            lights.requestState(LightState.FAILED);
-        } else if(limelightShooter.hasTarget() && lights.getLightState() != LightState.TARGETED){
-            lights.requestState(LightState.HAS_TARGET);
+        if(limelightShooter.hasTarget()){
+            if (Math.abs(error) >= 3 * turnThreshold)
+                lights.requestState(LightState.HAS_TARGET);
+            else
+                lights.requestState(LightState.TARGETED);
         } 
 
         if (limelightShooter.hasTarget()) {
@@ -114,13 +115,8 @@ public class SnapToSpeaker extends Command {
     @Override
     public void end(boolean interrupted) {
         drivetrain.stop();
-        if(Math.abs(error) < turnThreshold && limelightShooter.hasTarget()){
-            lights.requestState(LightState.TARGETED);
-        } else {
-            lights.requestState(LightState.IDLE);
-        }
-        
         logger.logEvent("Snap to Speaker Command", false);
+        lights.requestState(LightState.IDLE);
     }
 
     @Override

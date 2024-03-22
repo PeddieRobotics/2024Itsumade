@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.Lights.LightState;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightIntake;
 import frc.robot.subsystems.LimelightShooter;
@@ -27,6 +29,7 @@ public class TargetCornerWhilePassing extends Command {
     private PIDController turnPIDController;
     private Logger logger;
     private Pose2d currentOdometry;
+    private Lights lights;
 
     public TargetCornerWhilePassing() {
         drivetrain = Drivetrain.getInstance();
@@ -42,6 +45,8 @@ public class TargetCornerWhilePassing extends Command {
         
         speakerPoseX = 0;
         speakerPoseY = 0;
+
+        lights = Lights.getInstance();
 
         addRequirements(drivetrain);
     }
@@ -72,6 +77,11 @@ public class TargetCornerWhilePassing extends Command {
         currentAngle = currentOdometry.getRotation().getDegrees();
 
         error = currentAngle - targetAngle;
+
+        if (Math.abs(error) >= 3 * turnThreshold)
+            lights.requestState(LightState.HAS_TARGET);
+        else
+            lights.requestState(LightState.TARGETED);
         
         if (error > turnThreshold) {
             turnInput = turnPIDController.calculate(error) + turnFF;
@@ -90,10 +100,11 @@ public class TargetCornerWhilePassing extends Command {
         // SmartDashboard.putBoolean("Targetting", false);
         drivetrain.stop();
         logger.logEvent("Target Corner While Passing Command", false);
+        lights.requestState(LightState.IDLE);
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(error) < turnThreshold && oi.getSwerveTranslation() == new Translation2d(0, 0);
+        return false;
     }
 }

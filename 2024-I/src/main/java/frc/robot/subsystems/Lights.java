@@ -56,13 +56,27 @@ public class Lights extends SubsystemBase {
   }
 
   public void requestState(LightState request) {
-    if(request == LightState.INTOOK){
-      lastIntook = Timer.getFPGATimestamp();
-    }
-
     //reset animation so easy to change
     candle.clearAnimation(0);
     candle.setLEDs(0,0,0);
+
+    switch (request) {
+      case HAS_TARGET:
+        candle.setLEDs(0,0,255);
+        break;
+      case TARGETED:
+        candle.setLEDs(0,255,0);
+        break;
+      case FAILED:
+        candle.setLEDs(255,0,0);
+        break;
+      case INTOOK:
+        lastIntook = Timer.getFPGATimestamp();
+        break;
+      default:
+        break;
+    }
+
     requestedSystemState = request;
   }
 
@@ -80,18 +94,17 @@ public class Lights extends SubsystemBase {
 
       case INTAKING:
         //candle.animate(new StrobeAnimation(255, 0, 0,0,1,8), 0);
-        candle.setLEDs(255,153,51);
+        candle.setLEDs(255,0,255);
         break;
 
       case INTOOK:
-        candle.animate(new StrobeAnimation(0, 153, 0,0,0.3,8), 0);
+        candle.animate(new StrobeAnimation(0, 255, 0,0,0.3,8), 0);
         if(Timer.getFPGATimestamp() - lastIntook > 1.5){
           requestState(LightState.IDLE);
         }
         break;
 
       case HAS_TARGET:
-        candle.setLEDs(0,0,255);
         break;
 
       case CLIMBING:
@@ -103,11 +116,9 @@ public class Lights extends SubsystemBase {
         break;
 
       case TARGETED:
-        candle.setLEDs(0,255,0);
         break;
 
       case FAILED:
-        candle.setLEDs(255,0,0);
         break;
     }
 
