@@ -28,7 +28,6 @@ public class Superstructure extends SubsystemBase {
     private double stateDuration;
     private double internalStateTimer;
     private double customShotAngle;
-    private double latestIntakeTime;
     private boolean isIndexedOverride, hasGamepieceOverride, justIntaked;
     private Timer timer;
 
@@ -81,7 +80,6 @@ public class Superstructure extends SubsystemBase {
         SmartDashboard.putString("STATE", systemState.toString());
         stateDuration = 0;
         internalStateTimer = 0;
-        latestIntakeTime = 0;
 
         SmartDashboard.putBoolean("LL Shot Move Arm", false);
         SmartDashboard.putNumber("LL Shot Angle", 0);
@@ -151,12 +149,6 @@ public class Superstructure extends SubsystemBase {
                     flywheel.runFlywheelLimelight();
                 } else {
                     flywheel.stopFlywheel();
-
-                    if (Math.abs(Timer.getFPGATimestamp() - latestIntakeTime) > 1.0) {
-                        LimelightHelper.setLEDMode_PipelineControl("limelight-intake");
-                        // candle.clearAnimation(0);
-                        justIntaked = false;
-                    }
                 }
                 intake.stopIntake();
                 hopper.stopHopper();
@@ -216,13 +208,12 @@ public class Superstructure extends SubsystemBase {
                 if (isGamepieceIndexed()) {
                     intake.stopIntake();
                     hopper.stopHopper();
-                    latestIntakeTime = Timer.getFPGATimestamp();
                     justIntaked = true;
 
                     if (!DriverStation.isAutonomous()) {
                         requestState(SuperstructureState.STOW);
 
-                        LimelightHelper.setLEDMode_ForceBlink("limelight-intake");
+                        // LimelightHelper.setLEDMode_ForceBlink("limelight-intake");
 
                         // candle.animate(new StrobeAnimation(125, 35, 250), 0);
                         // candle.setLEDs(125, 35, 250);
@@ -230,24 +221,35 @@ public class Superstructure extends SubsystemBase {
                 }
 
                 if (requestedSystemState == SuperstructureState.STOW) {
+                    if (lights.getLightState() != LightState.INTOOK)
+                        lights.requestState(LightState.IDLE);
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.AMP_PREP) {
+                    lights.requestState(LightState.IDLE);
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.LL_PREP) {
+                    lights.requestState(LightState.IDLE);
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.FRONT_LAYUP_PREP) {
+                    lights.requestState(LightState.IDLE);
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.SIDE_LAYUP_PREP) {
+                    lights.requestState(LightState.IDLE);
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.PODIUM_PREP) {
+                    lights.requestState(LightState.IDLE);
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.LOB_PASS_PREP) {
+                    lights.requestState(LightState.IDLE);
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+                    lights.requestState(LightState.IDLE);
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.OUTTAKE) {
+                    lights.requestState(LightState.IDLE);
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.CUSTOM_SHOT_PREP) {
+                    lights.requestState(LightState.IDLE);
                     nextSystemState = requestedSystemState;
                 }
 

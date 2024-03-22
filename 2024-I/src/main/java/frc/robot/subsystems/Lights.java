@@ -12,9 +12,11 @@ import com.ctre.phoenix.led.StrobeAnimation;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.LimelightHelper;
 
 public class Lights extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -99,7 +101,13 @@ public class Lights extends SubsystemBase {
 
       case INTOOK:
         candle.animate(new StrobeAnimation(0, 255, 0,0,0.3,8), 0);
+        if (!DriverStation.isAutonomous()) {
+          LimelightHelper.setLEDMode_ForceBlink("limelight-intake");
+          LimelightHelper.setLEDMode_ForceBlink("limelight-shooter");
+        }
         if(Timer.getFPGATimestamp() - lastIntook > 1.5){
+          LimelightHelper.setLEDMode_PipelineControl("limelight-intake");
+          LimelightHelper.setLEDMode_PipelineControl("limelight-shooter");
           requestState(LightState.IDLE);
         }
         break;
