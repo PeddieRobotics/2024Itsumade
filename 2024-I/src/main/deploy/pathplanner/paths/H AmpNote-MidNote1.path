@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.7662964416823987,
-        "y": 6.921929480222598
+        "x": 3.0003800949114017,
+        "y": 7.003080254377342
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9106263198409636,
-        "y": 7.035976267890252
+        "x": 4.144709973069967,
+        "y": 7.117127042044996
       },
       "isLocked": false,
       "linkedName": "AmpNote"
     },
     {
       "anchor": {
-        "x": 5.537113381919073,
-        "y": 7.084464938160646
+        "x": 7.2,
+        "y": 7.003080254377342
       },
       "prevControl": {
-        "x": 4.718104408370293,
-        "y": 7.024046243390654
-      },
-      "nextControl": {
-        "x": 6.246917891535181,
-        "y": 7.136827565919211
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 8.378792911431978,
-        "y": 7.459408764971376
-      },
-      "prevControl": {
-        "x": 7.761437845254984,
-        "y": 7.354946334640237
+        "x": 5.466796191224337,
+        "y": 6.909393562011091
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,22 +30,40 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.55,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 3.5,
     "maxAngularVelocity": 520.0,
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -160.0,
+    "velocity": 2.0,
+    "rotation": -172.9987324425047,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Path Segments",
   "previewStartingState": {
-    "rotation": -160.0,
+    "rotation": -152.19,
     "velocity": 0
   },
   "useDefaultConstraints": false

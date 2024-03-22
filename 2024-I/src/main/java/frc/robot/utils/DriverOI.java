@@ -6,19 +6,30 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ClimbCommands.DeployClimber;
+import frc.robot.commands.ClimbCommands.RetractClimber;
 import frc.robot.commands.DriveCommands.FollowNote;
 import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.ForcedCalibration;
+import frc.robot.commands.DriveCommands.HybridTarget;
+import frc.robot.commands.DriveCommands.AmpAlign;
+import frc.robot.commands.DriveCommands.OdometryTarget;
+import frc.robot.commands.DriveCommands.PIDToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
+import frc.robot.commands.DriveCommands.SnapToSpeaker;
 import frc.robot.commands.DriveCommands.RotateToAngle;
+import frc.robot.commands.DriveCommands.SnapToAmp;
 import frc.robot.commands.DriveCommands.Target;
+import frc.robot.commands.DriveCommands.TargetCornerWhilePassing;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.OIConstants;
@@ -45,10 +56,14 @@ public class DriverOI {
 
     private Superstructure superstructure;
     private Drivetrain drivetrain;
+    
+    private boolean odometryTarget;
 
     public DriverOI() {
         drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
+
+        odometryTarget = true;
         configureController();
     }
 
@@ -67,25 +82,31 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
+        circleButton.whileTrue(new HybridTarget());
+        // circleButton.onTrue(new SnapToAmp());
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new FollowNote());
+        // squareButton.whileTrue(new FollowNote());
+        squareButton.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger muteButton = new JoystickButton(controller, 15);
+        muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.whileTrue(new Target());
+        L1Bumper.whileTrue(new ConditionalCommand(new TargetCornerWhilePassing(),
+            new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
+            superstructure::isPassing));
+        // L1Bumper.onTrue(new DeployClimber());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.onTrue(new Target());
-
+        R1Bumper.onTrue(new RetractClimber()); 
+        
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
@@ -94,6 +115,7 @@ public class DriverOI {
         ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
+        // optionButton.onTrue(new SnapToSpeaker());
 
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 
@@ -228,6 +250,22 @@ public class DriverOI {
 
     public Translation2d fromPolar(Rotation2d direction, double magnitude) {
         return new Translation2d(direction.getCos() * magnitude, direction.getSin() * magnitude);
+    }
+
+    public boolean isUsingOdometryTarget(){
+        return odometryTarget;
+    }
+
+    public void setUsingOdometryTarget(boolean use){
+        odometryTarget = use;
+    }
+
+    public void toggleUseOdometryTarget(){
+        if(odometryTarget){
+            odometryTarget = false;
+        } else {
+            odometryTarget = true;
+        }
     }
 
 }

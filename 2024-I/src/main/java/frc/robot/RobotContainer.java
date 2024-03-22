@@ -11,6 +11,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure;
@@ -30,7 +31,8 @@ public class RobotContainer {
   private final LimelightShooter limelightShooter;
   private final Flywheel flywheel;
   private final Superstructure superstructure;
-  private ShuffleboardMain shuffleboard;
+  private final Lights lights;
+  private final ShuffleboardMain shuffleboard;
   private final OperatorOI operatorOI;
   private final DriverOI driverOI;
 
@@ -50,13 +52,13 @@ public class RobotContainer {
     limelightShooter = LimelightShooter.getInstance();
     flywheel = Flywheel.getInstance();
     superstructure = Superstructure.getInstance();
+    lights = Lights.getInstance();
     shuffleboard = ShuffleboardMain.getInstance();
     operatorOI = OperatorOI.getInstance();
     driverOI = DriverOI.getInstance();
-    shuffleboard = ShuffleboardMain.getInstance();
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand());
-    limelightShooter.setPipeline(LimelightConstants.kShooterAprilTagPipeline);
+    limelightShooter.setPipeline(LimelightConstants.kShooterPipeline);
   }
 
   public void resetGyro() {

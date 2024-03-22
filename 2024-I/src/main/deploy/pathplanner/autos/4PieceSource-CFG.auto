@@ -36,15 +36,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "sequential",
           "data": {
-            "name": "LL Prep"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Score"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "LL Prep"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Score"
+                }
+              }
+            ]
           }
         },
         {

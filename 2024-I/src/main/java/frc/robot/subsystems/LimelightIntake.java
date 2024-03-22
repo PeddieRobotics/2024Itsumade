@@ -203,16 +203,4 @@ public class LimelightIntake extends Limelight {
         return LimelightHelper.getJSONDump(limelightName);
     }
 
-    public void checkForAprilTagUpdates(SwerveDrivePoseEstimator odometry) {
-        int tagsSeen = LimelightHelper.getNumberOfAprilTagsSeen(limelightName);
-        if (tagsSeen > 1 && this.getBotpose().relativeTo(odometry.getEstimatedPosition()).getTranslation().getNorm() < 0.5) {
-            odometry.addVisionMeasurement(this.getBotpose(), Timer.getFPGATimestamp());
-        }
-    }
-
-    public void forceAprilTagLocalization(SwerveDrivePoseEstimator odometry){
-        if(getTv()){
-            odometry.addVisionMeasurement(this.getBotpose(), Timer.getFPGATimestamp());
-        }
-    }
 }

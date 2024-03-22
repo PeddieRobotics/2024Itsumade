@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.378792911431978,
-        "y": 7.459408764971376
+        "x": 8.164859011601047,
+        "y": 7.424670370025476
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.080716409935247,
-        "y": 7.311269465404329
+        "x": 6.866782510104317,
+        "y": 7.276531070458429
       },
       "isLocked": false,
-      "linkedName": "MidNote1"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -30,10 +30,28 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.45,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "LL Prep"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 3.5,
     "maxAngularVelocity": 520.0,
     "maxAngularAcceleration": 540.0
   },
@@ -45,7 +63,7 @@
   "reversed": false,
   "folder": "Path Segments",
   "previewStartingState": {
-    "rotation": -160.0,
+    "rotation": 180.0,
     "velocity": 0
   },
   "useDefaultConstraints": false

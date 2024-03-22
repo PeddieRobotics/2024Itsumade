@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -23,7 +24,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.RollingAverage;
 import frc.robot.utils.Constants.DriveConstants;
+import frc.robot.utils.Constants;
 import frc.robot.utils.LimelightHelper;
+import frc.robot.utils.Logger;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -50,6 +53,9 @@ public class Drivetrain extends SubsystemBase {
     private final LimelightIntake limelightIntake;
 
     private Field2d field;
+
+    private Pose2d[] poseHistory;
+    private double[] gyroHistory;
 
     // logistic function for if two apriltags are seen
     private double S2 = 18.0; // maximum
@@ -82,29 +88,8 @@ public class Drivetrain extends SubsystemBase {
     // automatically turned off in autonomousInit and teleopInit
     private boolean isParkedAuto;
 
-    public boolean getUseMegaTag() {
-        return useMegaTag;
-    }
-
-    public void setUseMegaTag(boolean useMegaTag) {
-        this.useMegaTag = useMegaTag;
-    }
-
-    public boolean getIsForcingCalibration() {
-        return isForcingCalibration;
-    }
-
-    public void setIsForcingCalibration(boolean isForcingCalibration) {
-        this.isForcingCalibration = isForcingCalibration;
-    }
-
-    public boolean getIsParkedAuto() {
-        return isParkedAuto;
-    }
-
-    public void setIsParkedAuto(boolean isParked) {
-        this.isParkedAuto = isParked;
-    }
+    private double stdDev;
+    private int numAprilTag;
 
     public Drivetrain() {
         frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
@@ -130,6 +115,9 @@ public class Drivetrain extends SubsystemBase {
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, gyro.getRotation2d(), swerveModulePositions,
                 new Pose2d());
         field = new Field2d();
+
+        poseHistory = new Pose2d[10]; // Keep track of the last 20ms * 10 = 200 ms of pose history
+        gyroHistory = new double[10]; // Keep track of the last 20ms * 10 = 200 ms of gyro history
 
         timer = new Timer();
         timer.start();
@@ -167,6 +155,7 @@ public class Drivetrain extends SubsystemBase {
         // SmartDashboard.putNumber("Correct Heading P", DriveConstants.kHeadingCorrectionP);
 
         isForcingCalibration = false;
+        useMegaTag = Constants.DriveConstants.kUseMegaTag;
     }
 
     public static Drivetrain getInstance() {
@@ -178,6 +167,9 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+        // updatePoseHistory();
+        updateGyroHistory();
+        
         // S2 = SmartDashboard.getNumber("Logistic S2", S2);
         // I2 = SmartDashboard.getNumber("Logistic I2", I2);
         // K2 = SmartDashboard.getNumber("Logistic K2", K2);
@@ -191,7 +183,7 @@ public class Drivetrain extends SubsystemBase {
         // useMegaTag = SmartDashboard.getBoolean("Megatag updates", useMegaTag);
 
         field.setRobotPose(getPose());
-        // SmartDashboard.putData(field);
+        SmartDashboard.putData(field);
 
         // Updating the odometry
         for (int i = 0; i < 4; i++) {
@@ -200,17 +192,13 @@ public class Drivetrain extends SubsystemBase {
         }
 
         double distance = Units.inchesToMeters(limelightShooter.getDistance());
-        int numAprilTag = LimelightHelper.getNumberOfAprilTagsSeen(limelightShooter.getLimelightName());
-        // SmartDashboard.putNumber("Number of Tags Seems", numAprilTag);
+        numAprilTag = LimelightHelper.getNumberOfAprilTagsSeen(limelightShooter.getLimelightName());
 
         if (numAprilTag >= 2) {
             // if forcing calibration make visionstd minimal otherwise choose between
             // function for 3 and 2 based on number of tags seen
-            double stdDev = isForcingCalibration ? 0.0001
+            stdDev = isForcingCalibration ? 0.0001
                     : (numAprilTag >= 3 ? sigmoid3(distance) : sigmoid2(distance));
-
-            // SmartDashboard.putNumber("distance", distance);
-            // SmartDashboard.putNumber("standard deviation", stdDev);
 
             Matrix<N3, N1> visionStdDevs = VecBuilder.fill(stdDev, stdDev, isForcingCalibration ? 0.0001 : 30);
             odometry.setVisionMeasurementStdDevs(visionStdDevs);
@@ -225,6 +213,7 @@ public class Drivetrain extends SubsystemBase {
         // if (SmartDashboard.getBoolean("Reset Gyro", false)) {
         // gyro.setYaw(0);
         // }
+        SmartDashboard.putNumber("Gyro heading", getHeading());
         SmartDashboard.putNumber("Odometry X", odometry.getEstimatedPosition().getX());
         SmartDashboard.putNumber("Odometry Y", odometry.getEstimatedPosition().getY());
         SmartDashboard.putNumber("Odometry Theta", odometry.getEstimatedPosition().getRotation().getDegrees());
@@ -238,9 +227,19 @@ public class Drivetrain extends SubsystemBase {
 
     public void updateOdometry() {
         odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
-        // if (useMegaTag || isForcingCalibration) {
-        // limelightShooter.checkForAprilTagUpdates(odometry);
-        // }
+        //Logger.getInstance().logEvent("isForcingCalibration variable", isForcingCalibration);
+        //Logger.getInstance().logEvent("useMegaTag variable", useMegaTag);
+        if(DriverStation.isAutonomous()){
+            if (isForcingCalibration) {
+                limelightShooter.checkForAprilTagUpdates(odometry);
+            }
+        }
+        else{
+            if (useMegaTag || isForcingCalibration) {
+                limelightShooter.checkForAprilTagUpdates(odometry);
+                isForcingCalibration = false;
+            }
+        }
     }
 
     public void setSwerveModuleStates(SwerveModuleState[] swerveModuleStates) {
@@ -414,6 +413,59 @@ public class Drivetrain extends SubsystemBase {
 
     public double getAutoAdjustAngle(){
         return autoAdjustAngle;
+    }
+
+    public double getPastHeading(double latency){
+        int latencyIndexToNearestTwentyMS = (int)(Math.round(latency/20.0)) - 1;
+        return gyroHistory[latencyIndexToNearestTwentyMS];
+    }
+
+    public double getStandardDeviation() {
+        return stdDev;
+    }
+    public int getNumApriltags() {
+        return numAprilTag;
+    }
+    
+
+    public boolean getUseMegaTag() {
+        return useMegaTag;
+    }
+
+    public void setUseMegaTag(boolean useMegaTag) {
+        this.useMegaTag = useMegaTag;
+    }
+
+    public boolean getIsForcingCalibration() {
+        return isForcingCalibration;
+    }
+
+    public void setIsForcingCalibration(boolean isForcingCalibration) {
+        this.isForcingCalibration = isForcingCalibration;
+    }
+
+    public boolean getIsParkedAuto() {
+        return isParkedAuto;
+    }
+
+    public void setIsParkedAuto(boolean isParked) {
+        this.isParkedAuto = isParked;
+    }
+
+
+    
+    public void updatePoseHistory(){
+        for(int i = 0; i < poseHistory.length-1; i++){
+            poseHistory[i+1] = poseHistory[i];
+        }
+        poseHistory[0] = odometry.getEstimatedPosition();
+    }
+
+    public void updateGyroHistory(){
+        for(int i = 0; i < gyroHistory.length-1; i++){
+            gyroHistory[i+1] = gyroHistory[i];
+        }
+        gyroHistory[0] = getHeading();
     }
 
 }

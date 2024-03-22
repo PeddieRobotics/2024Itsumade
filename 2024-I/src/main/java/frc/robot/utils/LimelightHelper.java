@@ -450,8 +450,16 @@ public class LimelightHelper {
         return getLimelightNTDouble(limelightName, "tx");
     }
 
+    public static double getTX_NoCrosshair(String limelightName) {
+        return getLimelightNTDouble(limelightName, "txnc");
+    }
+
     public static double getTY(String limelightName) {
         return getLimelightNTDouble(limelightName, "ty");
+    }
+
+    public static double getTY_NoCrosshair(String limelightName) {
+        return getLimelightNTDouble(limelightName, "tync");
     }
 
     public static double getTA(String limelightName) {
@@ -713,6 +721,10 @@ public class LimelightHelper {
         setLimelightNTDoubleArray(limelightName, "llrobot", outgoingPythonData);
     }
 
+    public static void setPriorityTag(String limelightName, int tagID){
+        setLimelightNTDouble(limelightName, "priorityid", tagID);
+    }
+
     public static double[] getPythonScriptData(String limelightName) {
         return getLimelightNTDoubleArray(limelightName, "llpython");
     }
@@ -777,6 +789,7 @@ public class LimelightHelper {
         return results;
     }
 
+    // TODO: faster way that does not require json dumping
     public static int getNumberOfAprilTagsSeen(String limelightName){
         LimelightResults results = getLatestResults(limelightName);
         return results.targetingResults.targets_Fiducials.length;

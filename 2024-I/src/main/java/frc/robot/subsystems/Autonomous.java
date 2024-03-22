@@ -16,9 +16,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AutoCommands.LLPrep;
+import frc.robot.commands.AutoCommands.LayupPrep;
+import frc.robot.commands.AutoCommands.Score;
+import frc.robot.commands.AutoCommands.SideLayupPrep;
 import frc.robot.commands.DriveCommands.FollowNoteInAuto;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
+import frc.robot.commands.DriveCommands.SnapToSpeaker;
 import frc.robot.commands.DriveCommands.Target;
 import frc.robot.commands.DriveCommands.TargetInAuto;
 // import frc.robot.commands.DriveCommands.ForcedCalibration;
@@ -85,26 +90,11 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("Intake", new InstantCommand(
             () -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)
         ));
-        NamedCommands.registerCommand("LL Prep", new ParallelDeadlineGroup(
-            new WaitCommand(AutoConstants.kLimelightPrepDeadlineTime),
-            new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP))
-        ));
-        NamedCommands.registerCommand("Layup Prep", new ParallelDeadlineGroup( //refactor to 'front layup prep' after hatboro
-            new WaitCommand(AutoConstants.kLayupPrepDeadlineTime),
-            new InstantCommand(() -> superstructure.requestState(SuperstructureState.FRONT_LAYUP_PREP))
-        ));
-        NamedCommands.registerCommand("Side Layup Prep", new ParallelDeadlineGroup(
-            new WaitCommand(AutoConstants.kLayupPrepDeadlineTime),
-            new InstantCommand(() -> superstructure.requestState(SuperstructureState.SIDE_LAYUP_PREP))
-        ));
-        NamedCommands.registerCommand("O Path Shot Prep", new ParallelDeadlineGroup(
-            new WaitCommand(AutoConstants.kLayupPrepDeadlineTime),
-            new InstantCommand(() -> superstructure.requestState(SuperstructureState.CUSTOM_SHOT_PREP,52)) //tune val i guess
-        ));
-        NamedCommands.registerCommand("Score", new ParallelDeadlineGroup(
-            new WaitCommand(AutoConstants.kScoreDeadlineTime),
-            new InstantCommand(() -> superstructure.sendToScore())
-        ));
+
+        NamedCommands.registerCommand("LL Prep", new LLPrep());
+        NamedCommands.registerCommand("Layup Prep", new LayupPrep());
+        NamedCommands.registerCommand("Side Layup Prep", new SideLayupPrep());
+        NamedCommands.registerCommand("Score", new Score());
         NamedCommands.registerCommand("Target", new TargetInAuto());
 
         // NamedCommands.registerCommand("Set Odom", new ForcedCalibration());

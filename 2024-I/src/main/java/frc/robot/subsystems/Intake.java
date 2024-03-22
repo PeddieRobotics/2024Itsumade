@@ -32,6 +32,7 @@ public class Intake extends SubsystemBase {
 
     config = new TalonSRXConfiguration();
     config.continuousCurrentLimit = IntakeConstants.kIntakeCurrentLimit;
+    config.openloopRamp = IntakeConstants.kIntakeOpenLoopRampRate;
     intakeMotor.configAllSettings(config);
 
     intakeMotor.enableCurrentLimit(true);
@@ -56,8 +57,16 @@ public class Intake extends SubsystemBase {
     setIntake(IntakeConstants.kIntakeSpeed);
   }
 
+  public void runIntakeFeed(){
+    setIntake(IntakeConstants.kIntakeFeedSpeed);
+  }
+
   public void reverseIntake(){
     setIntake(-IntakeConstants.kIntakeSpeed);
+  }
+
+  public double getIntakeSpeed(){
+    return intakeMotor.getMotorOutputPercent();
   }
 
   public boolean hasGamepiece(){
@@ -72,6 +81,7 @@ public class Intake extends SubsystemBase {
   public double getMotorCurrent() {
     return intakeMotor.getSupplyCurrent();
   }
+
 
   @Override
   public void periodic() {

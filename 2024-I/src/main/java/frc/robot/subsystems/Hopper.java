@@ -67,8 +67,16 @@ public class Hopper extends SubsystemBase {
     setHopper(HopperConstants.kFeedFlywheelAmpSpeed);
   }
 
-    public void feedFlywheelSpeaker() {
+  public void feedFlywheelSpeaker() {
     setHopper(HopperConstants.kFeedFlywheelSpeakerSpeed);
+  }
+
+  public void feedFlywheelPodium() {
+    setHopper(HopperConstants.kFeedFlywheelPodiumSpeed);
+  }
+  
+  public void feedFlywheelLobPass() {
+      setHopper(HopperConstants.kFeedFlywheelLobPassSpeed);
   }
 
   public void setHopper(double speed) {
@@ -94,7 +102,6 @@ public class Hopper extends SubsystemBase {
 
   public boolean isGamepieceIndexed(){
     return getTopSensor();
-    // return (getTopSensor() && getBottomSensor());
   }
 
   public double getMotorCurrent(){
@@ -119,4 +126,5 @@ public class Hopper extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
 }

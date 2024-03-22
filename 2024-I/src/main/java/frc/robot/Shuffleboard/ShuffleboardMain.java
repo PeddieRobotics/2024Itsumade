@@ -2,6 +2,8 @@ package frc.robot.Shuffleboard;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Shuffleboard.tabs.*;
@@ -66,7 +68,7 @@ public class ShuffleboardMain {
     }
 
     public double getGyroOffsetForTeleop(){
-        return operatorTab.getGyroOffsetForTeleop();
+        return operatorTab.getGyroOffsetForTeleop() * (DriverStation.getAlliance().get()==Alliance.Red? 1 : -1);
     }
 
     public void setUpAutoSelectors() {

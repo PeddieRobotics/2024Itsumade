@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.opencv.calib3d.Calib3d;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -10,6 +12,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.Constants.LimelightConstants;
+import frc.robot.utils.LimelightHelper.LimelightResults;
+import frc.robot.utils.LimelightHelper.LimelightTarget_Fiducial;
 import frc.robot.utils.Constants;
 import frc.robot.utils.LimelightHelper;
 import frc.robot.utils.Logger;
@@ -20,7 +24,10 @@ public class LimelightShooter extends Limelight {
 
     private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage, distAverage;
 
+    private Pose2d calculatedBotpose;
+
     private String limelightName = "limelight-shooter";
+    private double lastDistance;
 
     public LimelightShooter() {
         txAverage = new RollingAverage();
@@ -32,7 +39,8 @@ public class LimelightShooter extends Limelight {
         xAverage = new RollingAverage(4,getBotpose().getX());
         distAverage = new RollingAverage();
 
-        setPipeline(Constants.LimelightConstants.kShooterAprilTagPipeline);
+        setPipeline(Constants.LimelightConstants.kShooterPipeline);
+        lastDistance=0;
     }
 
     public static LimelightShooter getInstance() {
@@ -49,6 +57,12 @@ public class LimelightShooter extends Limelight {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("LL Distance", getDistance());
+        SmartDashboard.putNumber("LL ty", getTy());
+        SmartDashboard.putNumber("LL tx", getTx());
+        //LimelightTarget_Fiducial[] fiducials = LimelightHelper.getLatestResults(limelightName).targetingResults.targets_Fiducials;
+        //SmartDashboard.putNumber("LL results ty", fiducials[0].ty);
+        //SmartDashboard.putNumber("LL results ty diff", fiducials[0].ty-getTy());
+        if(hasTarget()) lastDistance=getDistance();
         updateRollingAverages();
     }
 
@@ -60,30 +74,17 @@ public class LimelightShooter extends Limelight {
         return xAverage.getAverage();
     }
 
-    public Translation2d getBotXY() {
-        double[] result;
-        if(DriverStation.getAlliance().get() == Alliance.Red){
-            result = LimelightHelper.getBotPose_wpiRed(limelightName);
-        }
-        else{
-            result = LimelightHelper.getBotPose_wpiBlue(limelightName);
-        }
-        
-        if (result.length > 0.0) {
-            return new Translation2d(result[0], result[1]);
-        }
-        return new Translation2d(0, 0);
-    }
-
     public Pose2d getBotpose() {
         double[] result;
         try {
-            if(DriverStation.getAlliance().get() == Alliance.Red){
-                result = LimelightHelper.getBotPose_wpiRed(limelightName);
-            }
-            else{
-                result = LimelightHelper.getBotPose_wpiBlue(limelightName);
-            }
+            // Use blue coordinates by default for all odometry
+            result = LimelightHelper.getBotPose_wpiBlue(limelightName);
+            // if(DriverStation.getAlliance().get() == Alliance.Red){
+            //     result = LimelightHelper.getBotPose_wpiRed(limelightName);
+            // }
+            // else{
+            //     result = LimelightHelper.getBotPose_wpiBlue(limelightName);
+            // }
         } catch (java.util.NoSuchElementException e) {
             return new Pose2d();
         }
@@ -102,12 +103,22 @@ public class LimelightShooter extends Limelight {
 
     // Tx is the Horizontal Offset From Crosshair To Target
     public double getTx() {
-        return LimelightHelper.getTX(limelightName);
+        double value = LimelightHelper.getTX(limelightName);
+        return value;
+    }
+
+    public double getTx_NoCrosshair() {
+        return LimelightHelper.getTX_NoCrosshair(limelightName);
     }
 
     // Ty is the Vertical Offset From Crosshair To Target
     public double getTy() {
-        return LimelightHelper.getTY(limelightName);
+        double value = LimelightHelper.getTY(limelightName);
+        return value;
+    }
+
+    public double getTy_NoCrosshair() {
+        return LimelightHelper.getTY_NoCrosshair(limelightName);
     }
 
     public double getTa() {
@@ -141,6 +152,10 @@ public class LimelightShooter extends Limelight {
     public double getRYAverage(){
         return ryAverage.getAverage(); 
     }
+    
+    public Pose2d getCalculatedBotpose() {
+        return calculatedBotpose;
+    }
 
     // Class ID of primary neural detector result or neural classifier result
     public double getNeuralClassID() {
@@ -171,7 +186,6 @@ public class LimelightShooter extends Limelight {
     public boolean hasTarget() {
         return getTv();
     }
-
 
     public void updateRollingAverages() {
         if (hasTarget()) {
@@ -221,13 +235,30 @@ public class LimelightShooter extends Limelight {
         // }
 
         if (tagsSeen > 1) {
-            odometry.addVisionMeasurement(this.getBotpose(), Timer.getFPGATimestamp());
+            // Get pipeline and capture latency (in milliseconds)
+            double tl = LimelightHelper.getLatency_Pipeline(limelightName);
+            double cl = LimelightHelper.getLatency_Capture(limelightName);
+            // Calculate a latency-compensated timestamp for the vision measurement (in seconds)
+            double timestampLatencyComp = Timer.getFPGATimestamp() - (tl/1000.0) - (cl/1000.0);
+            calculatedBotpose = this.getBotpose();
+            odometry.addVisionMeasurement(calculatedBotpose, timestampLatencyComp);
         }
+        else
+            calculatedBotpose = null;
+    }
+    
+    // Gets the total latency of the limelight capture + pipeline processing for the current image, in milliseconds (MS)
+    public double getTotalLatencyInMS(){
+        double tl = LimelightHelper.getLatency_Pipeline(limelightName);
+        double cl = LimelightHelper.getLatency_Capture(limelightName);
+        return tl + cl;
     }
 
-    public void forceAprilTagLocalization(SwerveDrivePoseEstimator odometry){
-        if(getTv()){
-            odometry.addVisionMeasurement(this.getBotpose(), Timer.getFPGATimestamp());
-        }
+    public void setPriorityTag(int tagID){
+        LimelightHelper.setPriorityTag(limelightName, tagID);
+    }
+
+    public double getLastDistance(){
+        return lastDistance;
     }
 }
