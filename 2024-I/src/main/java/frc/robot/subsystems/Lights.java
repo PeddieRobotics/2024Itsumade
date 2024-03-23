@@ -61,6 +61,9 @@ public class Lights extends SubsystemBase {
     //reset animation so easy to change
     candle.clearAnimation(0);
     candle.setLEDs(0,0,0);
+    
+    LimelightHelper.setLEDMode_PipelineControl("limelight-intake");
+    LimelightHelper.setLEDMode_PipelineControl("limelight-shooter");
 
     switch (request) {
       case HAS_TARGET:

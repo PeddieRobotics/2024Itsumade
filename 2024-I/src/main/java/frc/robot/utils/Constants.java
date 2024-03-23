@@ -241,7 +241,7 @@ public final class Constants {
     public static final double kArmIntakeHPPosition = 70; // in deg
     public static final double kArmPositionEpsilon = 3; // in deg
     public static final double kArmStowPositionEpsilon = 10; // in deg
-    public static final double kArmAmpPosition = 134; //124 in lab, 140 at comp 134 IS LAST USED ANGLE AT HATBORO
+    public static final double kArmAmpPosition = 133; //124 in lab, 140 at comp 134 IS LAST USED ANGLE AT HATBORO
     public static final double kArmAmpPrepPosition = 110;
     public static final double kArmFrontLayupPosition = 38; // 38
     public static final double kArmSideLayupPosition = 35;
@@ -251,7 +251,7 @@ public final class Constants {
     public static final double kArmLobPassPosition = 38;
 
     //multiplier to arm angle for lookuptable since real field is different from lab
-    public static final double kArmLLDistMultiplier = 1.0; // 0.97;
+    public static final double kArmLLDistMultiplier = 0.98; // 0.97;
 
   }
 
