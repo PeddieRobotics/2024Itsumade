@@ -625,7 +625,7 @@ public class Superstructure extends SubsystemBase {
                     timer.start();
                 } else if (!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)) {
                     Logger.getInstance()
-                            .logEvent("LL shot finished, distance " + LimelightShooter.getInstance().getDistance() +
+                            .logEvent("LL shot finished, distance " + LimelightShooter.getInstance().getDistanceForLogging() +
                                     ", arm angle " + arm.getArmAngleDegrees(), false);
                     flywheel.stopFlywheel();
                     hopper.stopHopper();

@@ -30,7 +30,7 @@ public class Arm extends SubsystemBase {
     private CANcoder armCANcoder;
     private InterpolatingDoubleTreeMap LLShotMap = new InterpolatingDoubleTreeMap();
     private Rate angle;
-    private double gravityFeedForward, armAngleSetpoint, armDelta, llDistanceMultiplier, ampScoringAngle, lobPassAngle;
+    private double gravityFeedForward, armAngleSetpoint, llDistanceMultiplier, ampScoringAngle, lobPassAngle;
     private String stringState;
 
     public enum ArmState {
@@ -42,7 +42,6 @@ public class Arm extends SubsystemBase {
     public Arm() {
         limelightShooter = LimelightShooter.getInstance();
 
-        armDelta = 0.0;
         ampScoringAngle = ArmConstants.kArmAmpPosition;
         llDistanceMultiplier = ArmConstants.kArmLLDistMultiplier;
         lobPassAngle = ArmConstants.kArmLobPassPosition;
@@ -106,10 +105,6 @@ public class Arm extends SubsystemBase {
 
     public void stopArm() {
         // armMotor.setMotor(0);
-    }
-
-    public void setArmDelta(double delta){
-        armDelta = delta;
     }
 
     public void putSmartDashboard() {
@@ -244,19 +239,19 @@ public class Arm extends SubsystemBase {
     }
 
     public void setPodiumPosition() {
-        setArmAngle(ArmConstants.kArmPodiumShotPosition + armDelta);
+        setArmAngle((ArmConstants.kArmPodiumShotPosition) * ArmConstants.kArmLLDistMultiplier);
     }
 
     public void setFrontLayupPosition() {
-        setArmAngle(ArmConstants.kArmFrontLayupPosition + armDelta);
+        setArmAngle(ArmConstants.kArmFrontLayupPosition);
     }
 
     public void setSideLayupPosition() {
-        setArmAngle(ArmConstants.kArmSideLayupPosition + armDelta);
+        setArmAngle(ArmConstants.kArmSideLayupPosition);
     }
 
     public void setLLPosition() {
-        setArmAngle(getAngleFromDist(limelightShooter.getLastDistance()) + armDelta);
+        setArmAngle(getAngleFromDist(limelightShooter.getLastDistance()));
     }
 
     public void setLobPassPosition() {

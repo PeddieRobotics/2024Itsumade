@@ -261,4 +261,10 @@ public class LimelightShooter extends Limelight {
     public double getLastDistance(){
         return lastDistance;
     }
+
+    public double getDistanceForLogging() {
+        if (hasTarget())
+            return getDistance();
+        return getLastDistance();
+    }
 }

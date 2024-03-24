@@ -34,7 +34,7 @@ public class LiveTuningTab extends ShuffleboardTabBase{
     private Superstructure superstructure;
 
     private GenericEntry stateEntry, armAngleEntry,
-    flywheelAtRPMEntry, armDeltaEntry, flywheelDeltaEntry, flywheelLeftRPMEntry, 
+    flywheelAtRPMEntry, flywheelDeltaEntry, flywheelLeftRPMEntry, 
     flywheelRightRPMEntry, isIndexedOverrideEntry, 
     isGamePieceIndexedEntry, stowAfterShootOverrideEntry, topSensorEntry, bottomSensorEntry,
     hasGamePieceEntry;

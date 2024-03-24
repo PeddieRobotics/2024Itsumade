@@ -82,7 +82,9 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.whileTrue(new HybridTarget());
+        circleButton.whileTrue(new ConditionalCommand(new TargetCornerWhilePassing(),
+            new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
+            superstructure::isPassing));
         // circleButton.onTrue(new SnapToAmp());
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
