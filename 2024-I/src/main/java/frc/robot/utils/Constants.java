@@ -246,12 +246,12 @@ public final class Constants {
     public static final double kArmFrontLayupPosition = 38; // 38
     public static final double kArmSideLayupPosition = 35;
     public static final double kArmStowPosition = 0;
-    public static final double kArmIntakePositionFromGround = 32;
+    public static final double kArmIntakePositionFromGround = 34;
     public static final double kArmPodiumShotPosition = 64; //was 62
     public static final double kArmLobPassPosition = 38;
 
     //multiplier to arm angle for lookuptable since real field is different from lab
-    public static final double kArmLLDistMultiplier = 1.03; // 0.97; 0.98; 1.00
+    public static final double kArmLLDistMultiplier = 1.04; // 0.97; 0.98; 1.00; 1.03
 
   }
 

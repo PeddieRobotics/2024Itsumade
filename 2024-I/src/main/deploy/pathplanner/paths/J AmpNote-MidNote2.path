@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.88626393695027,
-        "y": 5.81225168120074
+        "x": 3.0003800949114017,
+        "y": 7.003080254377342
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.9235103377482075,
-        "y": 6.440960100179829
+        "x": 4.144709973069967,
+        "y": 7.117127042044996
       },
       "isLocked": false,
-      "linkedName": "MidNote2"
+      "linkedName": "AmpNote"
     },
     {
       "anchor": {
-        "x": 3.1174884603692163,
-        "y": 6.323851734722014
+        "x": 6.572185241374762,
+        "y": 5.972526638348569
       },
       "prevControl": {
-        "x": 4.522788845862998,
-        "y": 6.75715268691593
+        "x": 5.483077442617081,
+        "y": 6.663465994549678
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "MidNote2Score"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.35,
+      "waypointRelativePos": 0.55,
       "command": {
         "type": "parallel",
         "data": {
@@ -41,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "LL Prep"
+                "name": "Intake"
               }
             }
           ]
@@ -56,14 +56,14 @@
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -170.23164983236435,
+    "velocity": 2.0,
+    "rotation": 163.495638618245,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Path Segments",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": -152.19,
     "velocity": 0
   },
   "useDefaultConstraints": false
