@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.71,
-      "y": 4.46
+      "x": 1.33,
+      "y": 5.56
     },
-    "rotation": 120.0
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Side Layup Prep"
+            "name": "Layup Prep"
           }
         },
         {
@@ -26,50 +26,111 @@
         {
           "type": "named",
           "data": {
-            "name": "Stow"
+            "name": "Intake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L SourceSpeaker-MidNote5"
+            "pathName": "Q CenterSpeaker-SourceNote"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "X SeekNote"
+            "name": "LL Prep"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "P MidNote5-Score"
+            "pathName": "F SourceNote-CenterNote"
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "Target"
+                  "name": "LL Prep"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Score"
+                  "name": "Target"
                 }
               }
             ]
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Q Score-MidNote4"
+            "pathName": "G CenterNote-AmpNote"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "LL Prep"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Target"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "H AmpNote-MidNote1"
           }
         },
         {
@@ -81,7 +142,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R MidNote4-Score"
+            "pathName": "I MidNote1-Score"
           }
         },
         {
@@ -93,12 +154,6 @@
                 "data": {
                   "name": "Target"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Score"
-                }
               }
             ]
           }
@@ -106,31 +161,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Stow"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "S Score-MidNote3"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "X SeekNote"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stow"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "T MidNote3-Score"
+            "name": "Score"
           }
         }
       ]
