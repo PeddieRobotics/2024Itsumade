@@ -67,7 +67,7 @@ public class PathPlannerToShoot extends Command {
 
         // pathplanner on the fly pathfinding
         PathConstraints constraints = new PathConstraints(
-            1.5, 1.5, Units.degreesToRadians(720), Units.degreesToRadians(720)
+            3.5, 3.5, Units.degreesToRadians(520), Units.degreesToRadians(540)
         );
 
         Pose2d targetPose = new Pose2d(xTarget, yTarget, Rotation2d.fromDegrees(turnTarget));
@@ -82,11 +82,8 @@ public class PathPlannerToShoot extends Command {
     int test = 0;
     @Override
     public void execute() {
-        if (followPathCommand != null) {
+        if (followPathCommand != null)
             followPathCommand.execute();
-            SmartDashboard.putNumber("OTF dummy test", test);
-            test++;
-        }
     }
 
     @Override
@@ -97,9 +94,8 @@ public class PathPlannerToShoot extends Command {
 
     @Override
     public boolean isFinished() {
-        return false;
-        // return followPathCommand == null || 
-        //     followPathCommand.isFinished() ||
+        // return false;
+        return followPathCommand == null || followPathCommand.isFinished();
         //     Timer.getFPGATimestamp() - startTime >= timeLimit; 
     }
 }

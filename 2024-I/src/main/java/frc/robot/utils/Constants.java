@@ -106,10 +106,9 @@ public final class Constants {
     // designated shooting coordinates (for ToClosestShooting command)
     // blue coordinates (x, y, theta)
     public static final double[][] shootingPositions = {
-        { 3.95, 6.88, -160.00 },
-        { 3.81, 5.31, 175.00 },
-        { 2.21, 4.47, 125.00 },
-        { 3.19, 2.68, 135.00 }
+        { 4.98, 1.86, 154.51 },
+        { 3.88, 2.74, 149.16 },
+        { 2.70, 2.71, -152.58 },
     };
 
     public static final double kFollowNoteEarlyEndMinDuration = 0.10;
