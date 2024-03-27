@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ManualArmControl;
+import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ClimbCommands.DeployClimber;
 import frc.robot.commands.ClimbCommands.ManualClimberControl;
 import frc.robot.commands.ClimbCommands.RetractClimber;
@@ -89,7 +90,7 @@ public class OperatorOI {
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
-        ps5Button.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
+        ps5Button.whileTrue(new OuttakeCommand());
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
 
