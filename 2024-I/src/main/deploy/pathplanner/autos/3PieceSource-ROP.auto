@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.73,
-      "y": 6.616167853492605
+      "x": 0.71,
+      "y": 4.46
     },
-    "rotation": -120.0
+    "rotation": 120.0
   },
   "command": {
     "type": "sequential",
@@ -24,19 +24,49 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "A AmpSpeaker-AmpNote"
+            "name": "Stow"
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R SourceSpeaker-MidNote4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "X SeekNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "O MidNote4-Score"
+          }
+        },
+        {
+          "type": "sequential",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
                   "name": "Target"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Score"
                 }
               }
             ]
@@ -45,67 +75,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Score"
+            "name": "Intake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "H AmpNote-MidNote1"
+            "pathName": "S Score-MidNote3"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "X SeekNote"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "I MidNote1-Score"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Target"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Score"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": null
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "X SeekNote"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "V MidNote2-Score"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Target"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Score"
           }
         }
       ]
