@@ -89,7 +89,7 @@ public class OperatorOI {
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
-        ps5Button.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
+        ps5Button.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
 
