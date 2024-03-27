@@ -30,12 +30,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Intake"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "R SourceSpeaker-MidNote4"
@@ -73,12 +67,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Intake"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "S Score-MidNote3"
@@ -88,6 +76,31 @@
           "type": "named",
           "data": {
             "name": "X SeekNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "T MidNote3-Score"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Target"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Score"
+                }
+              }
+            ]
           }
         }
       ]

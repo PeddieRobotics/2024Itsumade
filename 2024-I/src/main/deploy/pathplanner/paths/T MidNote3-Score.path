@@ -3,37 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.71,
-        "y": 4.46
+        "x": 7.38,
+        "y": 3.48
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6495379144604458,
-        "y": 2.7331431585940105
+        "x": 6.119263007756786,
+        "y": 0.4736132549188178
       },
       "isLocked": false,
-      "linkedName": "Source Speaker"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.15,
-        "y": 2.024337866857552
+        "x": 2.1103565174320065,
+        "y": 3.2556125597272594
       },
       "prevControl": {
-        "x": 3.9189347609464464,
-        "y": 1.1248314804321928
+        "x": 4.1064066743518115,
+        "y": 1.489908364432114
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "MidNote4"
+      "linkedName": "MidNote4Score"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Intake",
-      "waypointRelativePos": 0.4,
+      "name": "LL Prep",
+      "waypointRelativePos": 0.35,
       "command": {
         "type": "parallel",
         "data": {
@@ -41,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake"
+                "name": "LL Prep"
               }
             }
           ]
@@ -57,13 +57,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -164.78056665743358,
+    "rotation": 133.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Path Segments",
   "previewStartingState": {
-    "rotation": 120.0,
+    "rotation": -142.25,
     "velocity": 0
   },
   "useDefaultConstraints": true
