@@ -41,6 +41,8 @@ public class Autonomous extends SubsystemBase {
     private Drivetrain drivetrain;
     private Superstructure superstructure;
 
+    private boolean[] midlineNoteAvailability;
+
     public Autonomous() {
         drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
@@ -48,6 +50,8 @@ public class Autonomous extends SubsystemBase {
         registerNamedCommands();
         configureAutoBuilder();
         autoChooser = AutoBuilder.buildAutoChooser();
+
+        midlineNoteAvailability = new boolean[5];
     }
 
     public void configureAutoBuilder() {
@@ -118,6 +122,14 @@ public class Autonomous extends SubsystemBase {
 
     public SendableChooser<Command> getAutoChooser() {
         return autoChooser;
+    }
+
+    public boolean[] getMidlineNoteAvailability() {
+        return midlineNoteAvailability;
+    }
+    
+    public void setMidlineNoteAvailability(int index, boolean availability) {
+        midlineNoteAvailability[index] = availability;
     }
 
     public static Autonomous getInstance() {

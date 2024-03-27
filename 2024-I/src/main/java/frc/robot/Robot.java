@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Shuffleboard.ShuffleboardMain;
+import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure;
@@ -106,6 +107,9 @@ public class Robot extends TimedRobot {
 
     Drivetrain.getInstance().setIsParkedAuto(false);
     Drivetrain.getInstance().setUseMegaTag(false);
+
+    for (int i = 0; i < 5; i++)
+      Autonomous.getInstance().setMidlineNoteAvailability(i, true);
   }
 
   /** This function is called periodically during autonomous. */

@@ -45,9 +45,9 @@ public class PathPlannerToShoot extends Command {
         double currentY = currentOdometry.getY();
 
         double minDistance = Integer.MAX_VALUE;
-        double[] point = Constants.AutoConstants.shootingPositions[0];
+        double[] point = Constants.AutoConstants.kShootingPositions[0];
 
-        for (double[] shootingPoint : Constants.AutoConstants.shootingPositions) {
+        for (double[] shootingPoint : Constants.AutoConstants.kShootingPositions) {
             // distance formula
             double distance = Math.sqrt(Math.pow(shootingPoint[0] - currentX, 2) + Math.pow(shootingPoint[1] - currentY, 2));
             // compare against current minimum
