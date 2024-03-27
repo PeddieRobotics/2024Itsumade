@@ -103,6 +103,8 @@ public final class Constants {
     public static final double kThetaI = 0.0;
     public static final double kThetaD = 0.0;
 
+    public static final int kCMAConsecutiveFrameThreshold = 5;
+
     // designated shooting coordinates (for ToClosestShooting command)
     // blue coordinates (x, y, theta)
     public static final double[][] kShootingPositions = {

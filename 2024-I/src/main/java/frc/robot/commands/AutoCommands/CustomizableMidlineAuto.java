@@ -38,6 +38,8 @@ public class CustomizableMidlineAuto extends Command {
     private int[] targets;
     private int currentNote;
 
+    private int consecutiveSeeNoteFrames;
+
     CMAState state;
 
     public CustomizableMidlineAuto(int[] notes) {
@@ -48,6 +50,7 @@ public class CustomizableMidlineAuto extends Command {
 
         targets = notes;
         currentNote = -1;
+        consecutiveSeeNoteFrames = 0;
 
         addRequirements(drivetrain);
    }
@@ -55,6 +58,7 @@ public class CustomizableMidlineAuto extends Command {
     @Override
     public void initialize() {
         currentNote = -1;
+        consecutiveSeeNoteFrames = 0;
         pathFindToNote();
         noteSeekingCommand = null;
         targetingAndScoringCommand = null;
@@ -68,10 +72,17 @@ public class CustomizableMidlineAuto extends Command {
                 // make the note seeking command, initialize it and execute it
                 // by switching to the note seeking state
                 if (limelightIntake.hasTarget()) {
-                    noteSeekingCommand = new FollowNoteInAuto(1);
-                    noteSeekingCommand.initialize();
-                    state = CMAState.SEEKING_NOTE;
+                    consecutiveSeeNoteFrames++;
+                    if (consecutiveSeeNoteFrames >= AutoConstants.kCMAConsecutiveFrameThreshold) {
+                        consecutiveSeeNoteFrames = 0;
+                        noteSeekingCommand = new FollowNoteInAuto(1);
+                        noteSeekingCommand.initialize();
+                        state = CMAState.SEEKING_NOTE;
+                    }
                 }
+                else
+                    consecutiveSeeNoteFrames = 0;
+                
                 if (pathFollowingCommand != null) {
                     // if there actually is a note there, this code should not execute
                     // we should have switched to the seeking note state
