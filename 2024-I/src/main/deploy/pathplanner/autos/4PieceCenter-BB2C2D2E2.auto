@@ -56,7 +56,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "b CenterNote-MidNote3"
+            "pathName": "B2 CenterNote-MidNote3"
           }
         },
         {
@@ -68,7 +68,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "c MidNote3-Score"
+            "pathName": "C2 MidNote3-Score"
           }
         },
         {
@@ -92,7 +92,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "d PodiumNote"
+            "pathName": "D2 PodiumNote"
           }
         },
         {
@@ -104,7 +104,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "e PodiumNote-Score"
+            "pathName": "E2 PodiumNote-Score"
           }
         },
         {
