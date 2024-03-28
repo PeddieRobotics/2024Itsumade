@@ -32,7 +32,7 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
+      "name": "LL Prep",
       "waypointRelativePos": 0.35,
       "command": {
         "type": "parallel",
