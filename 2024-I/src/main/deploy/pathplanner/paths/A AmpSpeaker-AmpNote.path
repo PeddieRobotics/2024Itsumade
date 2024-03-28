@@ -8,27 +8,38 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5255732329646479,
-        "y": 6.595423372664927
+        "x": 2.0540825697036027,
+        "y": 7.489009593403803
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.0003800949114017,
-        "y": 7.003080254377342
+        "x": 6.9,
+        "y": 7.15
       },
       "prevControl": {
-        "x": 2.3660253716551067,
-        "y": 6.3780542770526605
+        "x": 6.265645276743705,
+        "y": 6.524974022675319
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "AmpNote"
+      "linkedName": "MidNote1"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.2,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 0.3,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
