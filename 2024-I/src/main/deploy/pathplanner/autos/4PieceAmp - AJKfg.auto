@@ -99,7 +99,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "f ScoreAmpSide-MidNote3"
+            "pathName": "F2 ScoreAmpSide-MidNote3"
           }
         },
         {
@@ -111,7 +111,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "g MidNote3-ScoreAmpSide"
+            "pathName": "G2 MidNote3-ScoreAmpSide"
           }
         },
         {
