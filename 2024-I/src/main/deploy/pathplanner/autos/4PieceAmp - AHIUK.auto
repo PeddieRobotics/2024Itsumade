@@ -1,0 +1,141 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.73,
+      "y": 6.616167853492605
+    },
+    "rotation": -120.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Side Layup Prep"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A AmpSpeaker-AmpNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LL Prep"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "H AmpNote-MidNote1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "X SeekNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "I MidNote1-Score"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Target"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Score"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "U Score-MidNote2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "X SeekNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "K MidNote2-Score"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Target"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Score"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": "AutoRoutines",
+  "choreoAuto": false
+}
