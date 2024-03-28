@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.73,
-      "y": 6.616167853492605
+      "x": 1.33,
+      "y": 5.56
     },
-    "rotation": -120.0
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Side Layup Prep"
+            "name": "Layup Prep"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "A AmpSpeaker-AmpNote"
+            "pathName": "B CenterSpeaker-CenterNote"
           }
         },
         {
@@ -50,13 +50,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Intake"
+            "name": "Stow"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "H AmpNote-MidNote1"
+            "pathName": "B2 CenterNote-MidNote3"
           }
         },
         {
@@ -68,26 +68,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "I MidNote1-Score"
+            "pathName": "C2 MidNote3-Score"
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Target"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Score"
-                }
-              }
-            ]
+            "name": "Target"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
           }
         },
         {
@@ -99,7 +92,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "U Score-MidNote2"
+            "pathName": "D2 PodiumNote"
           }
         },
         {
@@ -111,26 +104,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "K MidNote2-Score"
+            "pathName": "E2 PodiumNote-Score"
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Target"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Score"
-                }
-              }
-            ]
+            "name": "Target"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
           }
         }
       ]
