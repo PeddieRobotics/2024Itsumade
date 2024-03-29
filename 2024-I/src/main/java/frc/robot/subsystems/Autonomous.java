@@ -26,7 +26,7 @@ import frc.robot.commands.DriveCommands.PathPlannerToShoot;
 import frc.robot.commands.DriveCommands.SnapToSpeaker;
 import frc.robot.commands.DriveCommands.Target;
 import frc.robot.commands.DriveCommands.TargetInAuto;
-// import frc.robot.commands.DriveCommands.ForcedCalibration;
+import frc.robot.commands.DriveCommands.ForcedCalibration;
 // import frc.robot.commands.DriveCommands.TurnOffMegatag;
 // import frc.robot.commands.DriveCommands.TurnOnMegatag;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
@@ -97,7 +97,7 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("Score", new Score());
         NamedCommands.registerCommand("Target", new TargetInAuto());
 
-        // NamedCommands.registerCommand("Set Odom", new ForcedCalibration());
+        NamedCommands.registerCommand("Force Calibrate", new ForcedCalibration());
         // NamedCommands.registerCommand("Turn on MegaTag", new TurnOnMegatag());
         // NamedCommands.registerCommand("Turn off MegaTag", new TurnOffMegatag());
 

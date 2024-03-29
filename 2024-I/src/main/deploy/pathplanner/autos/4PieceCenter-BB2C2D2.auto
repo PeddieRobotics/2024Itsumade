@@ -80,6 +80,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Force Calibrate"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Score"
           }
         },
@@ -93,18 +99,6 @@
           "type": "path",
           "data": {
             "pathName": "D2 PodiumNote"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "X SeekNote"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "E2 PodiumNote-Score"
           }
         },
         {
