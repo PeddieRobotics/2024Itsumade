@@ -27,7 +27,8 @@ public class TargetWhileMoving extends Command {
     private Drivetrain drivetrain;
     private LimelightShooter limelightShooter;
 
-    private double turnThreshold, turnFF;
+    private boolean hasShot;
+    private double turnThreshold, turnFF, turnInput;
     private PIDController turnPIDController;
     private Logger logger;
 
@@ -38,6 +39,8 @@ public class TargetWhileMoving extends Command {
         turnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
                 LimelightConstants.kTargetD);
         turnPIDController.setIZone(4.0);
+
+        hasShot = false;
 
         turnFF = LimelightConstants.kTargetFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
@@ -57,12 +60,18 @@ public class TargetWhileMoving extends Command {
             LimelightShooter.getInstance().setPriorityTag(7);
         }
 
+        hasShot = true;
+        turnInput = Integer.MAX_VALUE;
+
         PPHolonomicDriveController.setRotationTargetOverride(this::calculateRotation);
     }
 
     @Override
     public void execute() {
-
+        if (turnInput == 0) {
+            // SHOOT HERE
+            hasShot = true;
+        }
     }
 
     @Override
@@ -74,20 +83,19 @@ public class TargetWhileMoving extends Command {
 
     @Override
     public boolean isFinished() {
-        // FIX THIS!
-        return false;
+        return hasShot;
     }
 
     private Optional<Rotation2d> calculateRotation() {
-        double angle = 0;
+        turnInput = 0;
         if (limelightShooter.hasTarget()) {
             double error = limelightShooter.getTxAverage();
             if (error < -turnThreshold)
-                angle = turnPIDController.calculate(error) + turnFF;
+                turnInput = turnPIDController.calculate(error) + turnFF;
             else if (error > turnThreshold)
-                angle = turnPIDController.calculate(error) - turnFF;
+                turnInput = turnPIDController.calculate(error) - turnFF;
         }
-        return Optional.of(Rotation2d.fromDegrees(angle));
+        return Optional.of(Rotation2d.fromDegrees(turnInput));
     }
 
     private Optional<Rotation2d> resetRotation() {
