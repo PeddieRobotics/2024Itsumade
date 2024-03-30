@@ -91,8 +91,8 @@ public class DriverOI {
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new FollowNote());
-        // squareButton.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
+        // squareButton.whileTrue(new FollowNote());
+        squareButton.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));

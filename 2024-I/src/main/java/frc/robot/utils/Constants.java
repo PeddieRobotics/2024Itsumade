@@ -315,7 +315,10 @@ public final class Constants {
 
         // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
     // needs more tuning/initial values only
-    public static final double[][] treeMapValues = new double[][] { { 44.0, 42.0 }, { 47.5, 43 }, { 60, 50 }, { 65.0, 53.0 }, { 70.1, 55.0 }, { 80, 56 }, { 85.2, 60.0 },
+    public static final double[][] treeMapValues = new double[][] {{75.83, 54.0}, {80.5, 57.2}, {87.9, 59.5}, {95.0, 61.5}, {107.9, 64.0}, {116.3, 65.75}, {126.3, 67.0}, {128.44, 67.5},
+        {137.4, 68.0}, {142.2, 68.5}, {148.5, 69.0}, {160.0, 69.75}, {170.1, 70.75}, {177.3, 71.1}, {182.8, 71.15}, {206.19, 71.17}};
+
+    public static final double[][] treeMapValuesOld = new double[][] { { 44.0, 42.0 }, { 47.5, 43 }, { 60, 50 }, { 65.0, 53.0 }, { 70.1, 55.0 }, { 80, 56 }, { 85.2, 60.0 },
         { 93.8, 61 }, { 108.2, 65.6 }, { 112.5, 66 }, { 130, 68 }, { 134.6, 69.0 }, { 147.8, 69.5 }, { 154.5, 70.5 }, { 158.6, 70.5 }, { 166.2, 71.5}, { 175.6, 72 }, { 179.6, 72.3 },
         { 213, 73.0 } };
   }
