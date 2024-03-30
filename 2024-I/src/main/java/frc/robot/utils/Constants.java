@@ -228,7 +228,7 @@ public final class Constants {
     public static final double kArmForwardSoftLimit = 0.3; // in mechanism rotations
     public static final double kArmReverseSoftLimit = -0.1; // in mechanism rotations
 
-    public static final double kArmMagnetOffset = 0.237315444; // see spreadsheet "FIRST Calculations" or mechanisms sheet for reference
+    public static final double kArmMagnetOffset = 0.11280345; // see spreadsheet "FIRST Calculations" or mechanisms sheet for reference
 
     // TOTAL NET gear reduction from motor ALL THE WAY to shoulder pivot
     public static final double kRotorToArmGearReduction = 16384.0 / 125;
