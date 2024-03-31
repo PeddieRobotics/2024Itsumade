@@ -26,7 +26,7 @@ public class HybridTarget extends Command {
 
     private double error, turnThreshold, llTurnFF, odometryTurnFF, turnInput;
     // Odometry Target Values
-    private double speakerPoseX, speakerPoseY, targetAngle, currentAngle;
+    private double speakerPoseX, speakerPoseY, targetAngle, currentAngle, target;
     private Pose2d currentOdometry;
 
     private PIDController llTurnPIDController, odometryTurnPIDController;
@@ -43,16 +43,17 @@ public class HybridTarget extends Command {
         odometryTurnPIDController = new PIDController(LimelightConstants.kOdometryTargetP, LimelightConstants.kOdometryTargetI, LimelightConstants.kOdometryTargetD);
         odometryTurnPIDController.enableContinuousInput(-180, 180);
         llTurnFF = LimelightConstants.kTargetFF;
+        llTurnPIDController.setIZone(LimelightConstants.kTargetIZone);
         odometryTurnFF = LimelightConstants.kOdometryTargetFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;
         currentOdometry = drivetrain.getPose();
+        target = LimelightConstants.kTargetTarget;
 
         speakerPoseX = 0;
         speakerPoseY = 0;
 
         addRequirements(drivetrain);
-
     }
 
     @Override
@@ -77,7 +78,6 @@ public class HybridTarget extends Command {
 
     @Override
     public void execute() {
-
         if(limelightShooter.hasTarget()){
             if (Math.abs(error) >= 3 * turnThreshold)
                 lights.requestState(LightState.HAS_TARGET);
@@ -85,9 +85,9 @@ public class HybridTarget extends Command {
                 lights.requestState(LightState.TARGETED);
         } 
         
-        if (limelightShooter.hasTarget() && Math.abs(limelightShooter.getTxAverage()) < 20.0) {
+        if (limelightShooter.hasTarget() && Math.abs(limelightShooter.getTxAverage() - target) < 20.0) {
 
-            error = limelightShooter.getTxAverage();
+            error = limelightShooter.getTxAverage() - target;
             if (error < -turnThreshold) {
                 turnInput = llTurnPIDController.calculate(error) + llTurnFF;
             } else if (error > turnThreshold) {
@@ -103,7 +103,7 @@ public class HybridTarget extends Command {
 
             currentAngle = currentOdometry.getRotation().getDegrees();
 
-            error = currentAngle - targetAngle;
+            error = currentAngle - targetAngle - target;
 
             if (error > turnThreshold) {
                 turnInput = odometryTurnPIDController.calculate(error) + odometryTurnFF;

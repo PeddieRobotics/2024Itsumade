@@ -35,7 +35,7 @@ public class TargetInAuto extends Command {
 
         turnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
                 LimelightConstants.kTargetD);
-        turnPIDController.setIZone(4.0);
+        turnPIDController.setIZone(LimelightConstants.kTargetIZone);
 
         turnFF = LimelightConstants.kTargetFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
@@ -67,7 +67,7 @@ public class TargetInAuto extends Command {
 
         currentTime = Timer.getFPGATimestamp();
         if (limelightShooter.hasTarget()) {
-            error = limelightShooter.getTxAverage();
+            error = limelightShooter.getTxAverage() - LimelightConstants.kTargetTarget;
             if (error < -turnThreshold) {
                 turnInput = turnPIDController.calculate(error) + turnFF;
             } else if (error > turnThreshold) {

@@ -12,7 +12,7 @@ public class Flywheel extends SubsystemBase {
 
     private static Flywheel instance;
     private double leftSetpoint, rightSetpoint;
-
+    
     private Kraken flywheelLeftMotor, flywheelRightMotor;
     private double rpmDelta, lobPassSpeedMultiplier;
 
@@ -117,13 +117,19 @@ public class Flywheel extends SubsystemBase {
     }
 
     public void runFlywheelLayup() {
-        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLayupRPM + rpmDelta,
-                ScoringConstants.kRightFlywheelLayupRPM + rpmDelta);
+        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLayupRPM,
+                ScoringConstants.kRightFlywheelLayupRPM);
     }
 
     public void runFlywheelLimelight() {
-        runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLLShootingRPM + rpmDelta,
-                ScoringConstants.kRightFlywheelLLShootingRPM + rpmDelta);
+        if (LimelightShooter.getInstance().getFilteredDistance() >= ScoringConstants.kFastFlywheelLimit) {
+            runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLLShootingRPM * ScoringConstants.kFastFlywheelMultiply,
+                    ScoringConstants.kRightFlywheelLLShootingRPM * ScoringConstants.kFastFlywheelMultiply);
+        }
+        else {
+            runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLLShootingRPM,
+                    ScoringConstants.kRightFlywheelLLShootingRPM);
+        }
     }
 
     public void runFlywheelLobPass() {
@@ -137,10 +143,6 @@ public class Flywheel extends SubsystemBase {
 
     public double getFlywheelRightRPM() {
         return flywheelRightMotor.getRPM();
-    }
-
-    public void setRPMDelta(double delta){
-        rpmDelta = delta;
     }
 
     public void setFlywheelLobPassMultiplier(double multiplier){

@@ -251,7 +251,8 @@ public class Arm extends SubsystemBase {
     }
 
     public void setLLPosition() {
-        setArmAngle(getAngleFromDist(limelightShooter.getLastDistance()));
+        SmartDashboard.putNumber("ARM LL Setpoint", getAngleFromDist(limelightShooter.getFilteredDistance()));
+        setArmAngle(getAngleFromDist(limelightShooter.getFilteredDistance()));
     }
 
     public void setLobPassPosition() {

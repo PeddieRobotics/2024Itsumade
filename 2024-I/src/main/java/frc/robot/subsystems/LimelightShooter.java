@@ -4,6 +4,8 @@ import org.opencv.calib3d.Calib3d;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -22,7 +24,8 @@ import frc.robot.utils.RollingAverage;
 public class LimelightShooter extends Limelight {
     private static LimelightShooter limelightShooter;
 
-    private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage, distAverage;
+    private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage;
+    private LinearFilter distFilter;
 
     private Pose2d calculatedBotpose;
 
@@ -37,7 +40,7 @@ public class LimelightShooter extends Limelight {
         rxAverage = new RollingAverage(); 
         ryAverage = new RollingAverage(); 
         xAverage = new RollingAverage(4,getBotpose().getX());
-        distAverage = new RollingAverage();
+        distFilter = LinearFilter.singlePoleIIR(0.24, 0.02);
 
         setPipeline(Constants.LimelightConstants.kShooterPipeline);
         lastDistance=0;
@@ -57,6 +60,7 @@ public class LimelightShooter extends Limelight {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("LL Distance", getDistance());
+        SmartDashboard.putNumber("LL Average Distance", getFilteredDistance());
         SmartDashboard.putNumber("LL ty", getTy());
         SmartDashboard.putNumber("LL tx", getTx());
         //LimelightTarget_Fiducial[] fiducials = LimelightHelper.getLatestResults(limelightName).targetingResults.targets_Fiducials;
@@ -175,8 +179,8 @@ public class LimelightShooter extends Limelight {
         }
     }
 
-    public double getAverageDistance(){
-        return distAverage.getAverage();
+    public double getFilteredDistance(){
+        return distFilter.lastValue();
     }
 
     public int getTagsSeen() {
@@ -192,7 +196,9 @@ public class LimelightShooter extends Limelight {
             txAverage.add(getTx());
             tyAverage.add(getTy());
             taAverage.add(getTa());
-            distAverage.add(getDistance());
+            double dist = getDistance();
+            if (dist != 0)
+                distFilter.calculate(dist);
             
             // rotationAverage.add(getBotpose().getRotation().getDegrees());//based on alliance of driverstation, awaiting testing 
             rotationAverage.add(getBotpose().getRotation().getDegrees()); 
@@ -262,6 +268,7 @@ public class LimelightShooter extends Limelight {
         return lastDistance;
     }
 
+    // TODO if use average distance then change to average distance
     public double getDistanceForLogging() {
         if (hasTarget())
             return getDistance();

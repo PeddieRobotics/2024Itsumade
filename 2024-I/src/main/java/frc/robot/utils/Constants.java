@@ -150,10 +150,12 @@ public final class Constants {
     public static final double kFollowNoteAngleThreshold = 1;
 
     // target speaker apriltag command (use tx from limelight) constants
-    public static final double kTargetP = 0.02;
-    public static final double kTargetI = 0.0015;
-    public static final double kTargetD = 0.002;
-    public static final double kTargetFF = 0.03;
+    public static final double kTargetP = 0.026;
+    public static final double kTargetI = 0.02;
+    public static final double kTargetD = 0.0025;
+    public static final double kTargetFF = 0.065;
+    public static final double kTargetIZone = 1;
+    public static final double kTargetTarget = 4;
 
     // target speaker apriltag (snap with gyro using one-time tx calculation) command constants
     public static final double kSnapToSpeakerP = 0.05;
@@ -166,6 +168,7 @@ public final class Constants {
     public static final double kOdometryTargetI = 0.001;
     public static final double kOdometryTargetD = 0.0;
     public static final double kOdometryTargetFF = 0.02;
+
 
     // align to amp AprilTag (horizontal)
     public static final double kHorizontalAlignP = 0.02;
@@ -194,7 +197,7 @@ public final class Constants {
     public static final double kSpeakerAprilTagHeight = 57.125;
   
     // Threshold (in degrees) for convergence on all speaker targeting algorithms
-    public static final double kTargetAngleThreshold = 1.0;
+    public static final double kTargetAngleThreshold = 0.2;
     
     //threshold (in degrees) for the amp align rotation
     public static final double kAmpAlignAngleThreshold = 1.0;
@@ -300,6 +303,10 @@ public final class Constants {
   public static class ScoringConstants {
     public static final double kLeftFlywheelLLShootingRPM = 4300;
     public static final double kRightFlywheelLLShootingRPM = 3200;
+
+    public static final double kFastFlywheelMultiply = 1.25;
+    public static final double kFastFlywheelLimit = 180;
+
     public static final double kLeftFlywheelLayupRPM = 3500;
     public static final double kRightFlywheelLayupRPM = 2500;
     public static final double kLeftFlywheelAmpRPM = 3000;
@@ -315,8 +322,13 @@ public final class Constants {
 
         // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
     // needs more tuning/initial values only
+    public static final double[][] treeMapValues = new double[][] {{75.83, 54.0}, {80.5, 57.2}, {87.9, 59.5}, {95.0, 61.5}, {107.9, 64.0}, {116.3, 65.75}, {126.3, 66.5}, {128.44, 67.0},
+        {137.4, 67.5}, {142.2, 68.0}, {148.5, 68.5}, {160.7, 69.75}, {170.1, 70.42}, {177.3, 70.6}, {180.0, 70.725}, {182.8, 71.7}, {200.9, 72.2}};
+
+    /*
     public static final double[][] treeMapValues = new double[][] {{75.83, 54.0}, {80.5, 57.2}, {87.9, 59.5}, {95.0, 61.5}, {107.9, 64.0}, {116.3, 65.75}, {126.3, 67.0}, {128.44, 67.5},
         {137.4, 68.0}, {142.2, 68.5}, {148.5, 69.0}, {160.0, 69.75}, {170.1, 70.75}, {177.3, 71.1}, {182.8, 71.15}, {206.19, 71.17}};
+     */
 
     public static final double[][] treeMapValuesOld = new double[][] { { 44.0, 42.0 }, { 47.5, 43 }, { 60, 50 }, { 65.0, 53.0 }, { 70.1, 55.0 }, { 80, 56 }, { 85.2, 60.0 },
         { 93.8, 61 }, { 108.2, 65.6 }, { 112.5, 66 }, { 130, 68 }, { 134.6, 69.0 }, { 147.8, 69.5 }, { 154.5, 70.5 }, { 158.6, 70.5 }, { 166.2, 71.5}, { 175.6, 72 }, { 179.6, 72.3 },
