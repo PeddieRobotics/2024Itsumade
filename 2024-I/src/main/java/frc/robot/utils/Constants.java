@@ -254,7 +254,7 @@ public final class Constants {
     public static final double kArmLobPassPosition = 38;
 
     //multiplier to arm angle for lookuptable since real field is different from lab
-    public static final double kArmLLDistMultiplier = 1.04; // 0.97; 0.98; 1.00; 1.03
+    public static final double kArmLLDistMultiplier = 1.00; // 1.04; // 0.97; 0.98; 1.00; 1.03
 
   }
 
