@@ -321,6 +321,9 @@ public final class Constants {
     public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 0.1;
 
+    public static final double kRevUpLeftFlywheelRPM = 2500;
+    public static final double kRevUpRightFlywheelRPM = 1750;
+
     public static final double kLobPassSpeedMultiplier = 1.06;
 
         // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
