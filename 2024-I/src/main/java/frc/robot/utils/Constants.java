@@ -157,6 +157,13 @@ public final class Constants {
     public static final double kTargetIZone = 1;
     public static final double kTargetTarget = 4;
 
+    public static final double kTargetAutoP = 0.02;
+    public static final double kTargetAutoI = 0.0015;
+    public static final double kTargetAutoD = 0.002;
+    public static final double kTargetAutoFF = 0.03;
+    public static final double kTargetAutoIZone = 4.0;
+    public static final double kTargetAutoTarget = 4;
+
     // target speaker apriltag (snap with gyro using one-time tx calculation) command constants
     public static final double kSnapToSpeakerP = 0.05;
     public static final double kSnapToSpeakerI = 0.01;
@@ -308,7 +315,7 @@ public final class Constants {
     public static final double kRightFlywheelLLShootingFastRPM = 4100;
 
     public static final double kFastFlywheelMultiply = 1.25;
-    public static final double kFastFlywheelLimit = 90.0;
+    public static final double kFastFlywheelLimit = 140.0;
 
     public static final double kLeftFlywheelLayupRPM = 3500;
     public static final double kRightFlywheelLayupRPM = 2500;
@@ -328,7 +335,8 @@ public final class Constants {
 
         // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
     // needs more tuning/initial values only
-    public static final double[][] treeMapValues = new double[][] {{50, 44.0}, {59.5, 49.0}, {70.0, 54.0}, {80.0, 57.0}, {90.0, 60.5}, {99.5, 63.0}, {109.7, 65.5}, {120.3, 66.3}, {130.2, 68.0}, {140.6, 69.1}, {150.3, 70.0}, {160.5, 70.7}, {170.15, 71.6}, {180.1, 72.15}, {185.5, 72.35}};
+    public static final double[][] treeMapValues = new double[][] {{ 44.0, 42.0 }, { 47.5, 43 }, { 60, 50 }, { 65.0, 53.0 }, { 70.1, 55.0 }, { 80, 56 }, { 85.2, 60.0 },
+        { 93.8, 61 }, { 108.2, 65.6 }, { 112.5, 66 }, { 130, 68 }, { 134.6, 69.0 }, {140.6, 69.1}, {150.3, 70.0}, {160.5, 70.7}, {170.15, 71.6}, {180.1, 72.15}, {185.5, 72.35}};
 
     public static final double[][] treeMapValuesOld = new double[][] { { 44.0, 42.0 }, { 47.5, 43 }, { 60, 50 }, { 65.0, 53.0 }, { 70.1, 55.0 }, { 80, 56 }, { 85.2, 60.0 },
         { 93.8, 61 }, { 108.2, 65.6 }, { 112.5, 66 }, { 130, 68 }, { 134.6, 69.0 }, { 147.8, 69.5 }, { 154.5, 70.5 }, { 158.6, 70.5 }, { 166.2, 71.5}, { 175.6, 72 }, { 179.6, 72.3 },
@@ -350,7 +358,7 @@ public final class Constants {
 
   public static class HopperConstants {
     public static final double kHPIntakeHopperSpeed = 0; // if used, needs to be negative
-    public static final double kGroundIntakeHopperSpeed = 0.75;
+    public static final double kGroundIntakeHopperSpeed = 0.5;
     public static final double kOuttakeHopperSpeed = -0.5;
     public static final double kFeedFlywheelAmpSpeed = 0.5;
     public static final double kFeedFlywheelLayupSpeed = 0.5;

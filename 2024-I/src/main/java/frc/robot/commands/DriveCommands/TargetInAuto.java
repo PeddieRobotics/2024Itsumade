@@ -33,11 +33,11 @@ public class TargetInAuto extends Command {
         limelightShooter = LimelightShooter.getInstance();
         lights = Lights.getInstance();
 
-        turnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
-                LimelightConstants.kTargetD);
-        turnPIDController.setIZone(LimelightConstants.kTargetIZone);
+        turnPIDController = new PIDController(LimelightConstants.kTargetAutoP, LimelightConstants.kTargetAutoI,
+                LimelightConstants.kTargetAutoD);
+        turnPIDController.setIZone(LimelightConstants.kTargetAutoIZone);
 
-        turnFF = LimelightConstants.kTargetFF;
+        turnFF = LimelightConstants.kTargetAutoFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;
         logger = Logger.getInstance();

@@ -147,8 +147,6 @@ public class Superstructure extends SubsystemBase {
 
                 if (DriverStation.isAutonomous()) {
                     flywheel.runFlywheelLimelight();
-                } else if (hopper.hasGamepiece() && !DriverStation.isAutonomous()){
-                    flywheel.revUpFlywheel();
                 } else {
                     flywheel.stopFlywheel();
                 }

@@ -27,7 +27,6 @@ public class Score extends Command {
     public void initialize() {
         initialTime = Timer.getFPGATimestamp();
         superstructure.sendToScore();
-        
     }
 
     @Override
@@ -40,6 +39,6 @@ public class Score extends Command {
 
     @Override
     public boolean isFinished() {
-        return (!hopper.getTopSensor() && !hopper.getBottomSensor()) || Timer.getFPGATimestamp() - initialTime > AutoConstants.kScoreDeadlineTime;
+        return (!hopper.getTopSensor()) || Timer.getFPGATimestamp() - initialTime > AutoConstants.kScoreDeadlineTime;
     }
 }
