@@ -321,23 +321,14 @@ public final class Constants {
     public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 0.1;
 
-    public static final double kRevUpLeftFlywheelRPM = 2500;
-    public static final double kRevUpRightFlywheelRPM = 1750;
+    public static final double kRevUpLeftFlywheelRPM = 3000;
+    public static final double kRevUpRightFlywheelRPM = 2000;
 
     public static final double kLobPassSpeedMultiplier = 1.06;
 
         // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
     // needs more tuning/initial values only
     public static final double[][] treeMapValues = new double[][] {{50, 44.0}, {59.5, 49.0}, {70.0, 54.0}, {80.0, 57.0}, {90.0, 60.5}, {99.5, 63.0}, {109.7, 65.5}, {120.3, 66.3}, {130.2, 68.0}, {140.6, 69.1}, {150.3, 70.0}, {160.5, 70.7}, {170.15, 71.6}, {180.1, 72.15}, {185.5, 72.35}};
-
-
-    // public static final double[][] treeMapValues = new double[][] {{75.83, 54.0}, {80.5, 57.2}, {87.9, 59.5}, {95.0, 61.5}, {107.9, 64.0}, {116.3, 65.75}, {126.3, 66.5}, {128.44, 67.0},
-    //     {137.4, 67.5}, {142.2, 68.0}, {148.5, 68.5}, {160.7, 69.75}, {170.1, 70.42}, {177.3, 70.6}, {180.0, 70.725}, {182.8, 71.7}, {200.9, 72.2}};
-
-    /*
-    public static final double[][] treeMapValues = new double[][] {{75.83, 54.0}, {80.5, 57.2}, {87.9, 59.5}, {95.0, 61.5}, {107.9, 64.0}, {116.3, 65.75}, {126.3, 67.0}, {128.44, 67.5},
-        {137.4, 68.0}, {142.2, 68.5}, {148.5, 69.0}, {160.0, 69.75}, {170.1, 70.75}, {177.3, 71.1}, {182.8, 71.15}, {206.19, 71.17}};
-     */
 
     public static final double[][] treeMapValuesOld = new double[][] { { 44.0, 42.0 }, { 47.5, 43 }, { 60, 50 }, { 65.0, 53.0 }, { 70.1, 55.0 }, { 80, 56 }, { 85.2, 60.0 },
         { 93.8, 61 }, { 108.2, 65.6 }, { 112.5, 66 }, { 130, 68 }, { 134.6, 69.0 }, { 147.8, 69.5 }, { 154.5, 70.5 }, { 158.6, 70.5 }, { 166.2, 71.5}, { 175.6, 72 }, { 179.6, 72.3 },
