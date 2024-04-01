@@ -123,8 +123,8 @@ public class Flywheel extends SubsystemBase {
 
     public void runFlywheelLimelight() {
         if (LimelightShooter.getInstance().getFilteredDistance() >= ScoringConstants.kFastFlywheelLimit) {
-            runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLLShootingRPM * ScoringConstants.kFastFlywheelMultiply,
-                    ScoringConstants.kRightFlywheelLLShootingRPM * ScoringConstants.kFastFlywheelMultiply);
+            runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLLShootingFastRPM,
+                    ScoringConstants.kRightFlywheelLLShootingFastRPM);
         }
         else {
             runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLLShootingRPM,

@@ -82,17 +82,17 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.whileTrue(new ConditionalCommand(new TargetCornerWhilePassing(),
-            new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
-            superstructure::isPassing));
-        // circleButton.onTrue(new SnapToAmp());
+        // circleButton.whileTrue(new ConditionalCommand(new TargetCornerWhilePassing(),
+        //     new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
+        //     superstructure::isPassing));
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         // squareButton.whileTrue(new FollowNote());
-        squareButton.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_PREP)));
+        squareButton.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.LL_TEST)));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
