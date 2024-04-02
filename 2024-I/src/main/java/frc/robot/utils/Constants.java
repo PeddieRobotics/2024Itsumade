@@ -289,7 +289,7 @@ public final class Constants {
     public static final int kFlywheelLeftCurrentLimit = 30;
     public static final int kFlywheelRightCurrentLimit = 30;
 
-    public static final int kFlywheelForwardTorqueCurrentLimit = 40;
+    public static final int kFlywheelForwardTorqueCurrentLimit = 80;
     public static final int kFlywheelReverseTorqueCurrentLimit = 0;
 
     public static final double kFlywheelGearReduction = 30.0 / 24.0;
@@ -311,11 +311,11 @@ public final class Constants {
     public static final double kLeftFlywheelLLShootingRPM = 4300;
     public static final double kRightFlywheelLLShootingRPM = 3200;
 
-    public static final double kLeftFlywheelLLShootingFastRPM = 5500;
-    public static final double kRightFlywheelLLShootingFastRPM = 4100;
+    public static final double kLeftFlywheelLLShootingFastRPM = 5200;
+    public static final double kRightFlywheelLLShootingFastRPM = 3900;
 
     public static final double kFastFlywheelMultiply = 1.25;
-    public static final double kFastFlywheelLimit = 140.0;
+    public static final double kFastFlywheelLimit = 90.0;
 
     public static final double kLeftFlywheelLayupRPM = 3500;
     public static final double kRightFlywheelLayupRPM = 2500;
