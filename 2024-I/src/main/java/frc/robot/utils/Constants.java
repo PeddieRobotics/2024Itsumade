@@ -192,12 +192,11 @@ public final class Constants {
     public static final double kBlueSpeakerPositionY = 5.548249; // 4.105656 (dist between field wall and midline) + 1.442593 (.fmap offset from midline to tag) 
 
     // Corner to target while passing using blue coordinate system
-    public static final double kRedCornerPassingX = 15.65;
-    public static final double kRedCornerPassingY = 6.7; 
+    public static final double kRedCornerPassingX = 16.61;
+    public static final double kRedCornerPassingY = 8.0; 
     
-    public static final double kBlueCornerPassingX = 0.85;
-    public static final double kBlueCornerPassingY = 6.7;
-
+    public static final double kBlueCornerPassingX = 0;
+    public static final double kBlueCornerPassingY = 8.0;
 
     // center of speaker april tag height in inches (used for LL distance calculations)
     // THIS MUST BE ADJUSTED IF FMAP IS ADJUSTED ON Z AXIS
