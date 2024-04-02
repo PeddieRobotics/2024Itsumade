@@ -113,6 +113,7 @@ public class Superstructure extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putString("STATE", systemState.toString());
+        SmartDashboard.putString("REQUESTED STATE", requestedSystemState.toString());
         SmartDashboard.putBoolean("INDEXED?", isGamepieceIndexed());
 
         switch (systemState) {
@@ -395,7 +396,8 @@ public class Superstructure extends SubsystemBase {
 
                 if (requestedSystemState == SuperstructureState.STOW) {
                     nextSystemState = requestedSystemState;
-                } else if (requestedSystemState == SuperstructureState.PODIUM_SCORING && flywheel.isAtRPM()) {
+                } else if (requestedSystemState == SuperstructureState.PODIUM_SCORING && (flywheel.isAtRPM() ||
+                           (DriverStation.isAutonomous() && timer.hasElapsed(ScoringConstants.kForceShootTime)))) {
                     timer.reset();
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.LL_PREP) {
@@ -504,7 +506,8 @@ public class Superstructure extends SubsystemBase {
 
                 if (requestedSystemState == SuperstructureState.STOW) {
                     nextSystemState = requestedSystemState;
-                } else if (requestedSystemState == SuperstructureState.LAYUP_SCORING && flywheel.isAtRPM()) {
+                } else if (requestedSystemState == SuperstructureState.LAYUP_SCORING && (flywheel.isAtRPM() ||
+                           (DriverStation.isAutonomous() && timer.hasElapsed(ScoringConstants.kForceShootTime)))) {
                     timer.reset();
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.LL_PREP) {
@@ -528,7 +531,8 @@ public class Superstructure extends SubsystemBase {
 
                 if (requestedSystemState == SuperstructureState.STOW) {
                     nextSystemState = requestedSystemState;
-                } else if (requestedSystemState == SuperstructureState.LAYUP_SCORING && flywheel.isAtRPM()) {
+                } else if (requestedSystemState == SuperstructureState.LAYUP_SCORING && (flywheel.isAtRPM() ||
+                           (DriverStation.isAutonomous() && timer.hasElapsed(ScoringConstants.kForceShootTime)))) {
                     timer.reset();
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.LL_PREP) {
@@ -596,7 +600,8 @@ public class Superstructure extends SubsystemBase {
                 // removed conditions for gamepiece to be indexed and for arm to be at the right
                 // angle
                 // Look into this, for now just make sure flywheel is at the right RPM
-                else if (requestedSystemState == SuperstructureState.LL_SCORING && flywheel.isAtRPM()) {
+                else if (requestedSystemState == SuperstructureState.LL_SCORING && (flywheel.isAtRPM() ||
+                         (DriverStation.isAutonomous() && timer.hasElapsed(ScoringConstants.kForceShootTime)))) {
                     timer.reset();
                     nextSystemState = requestedSystemState;
                 } else if (requestedSystemState == SuperstructureState.AMP_PREP) {
@@ -766,12 +771,16 @@ public class Superstructure extends SubsystemBase {
         if (systemState == SuperstructureState.AMP_PREP) {
             requestState(SuperstructureState.AMP_SCORING);
         } else if (systemState == SuperstructureState.LL_PREP) {
+            timer.restart();
             requestState(SuperstructureState.LL_SCORING);
         } else if (systemState == SuperstructureState.FRONT_LAYUP_PREP) {
+            timer.restart();
             requestState(SuperstructureState.LAYUP_SCORING);
         } else if (systemState == SuperstructureState.SIDE_LAYUP_PREP) {
+            timer.restart();
             requestState(SuperstructureState.LAYUP_SCORING);
         } else if (systemState == SuperstructureState.PODIUM_PREP) {
+            timer.restart();
             requestState(SuperstructureState.PODIUM_SCORING);
         } else if (systemState == SuperstructureState.LOB_PASS_PREP) {
             requestState(SuperstructureState.LOB_PASSING);

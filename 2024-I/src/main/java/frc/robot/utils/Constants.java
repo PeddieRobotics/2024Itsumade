@@ -327,6 +327,7 @@ public final class Constants {
     public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 0.1;
+    public static final double kForceShootTime = 0.8;
 
     public static final double kRevUpLeftFlywheelRPM = 3000;
     public static final double kRevUpRightFlywheelRPM = 2000;

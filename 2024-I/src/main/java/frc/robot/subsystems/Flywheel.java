@@ -232,6 +232,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     public boolean isAtRPM() {
+        //return false;
         return (isLeftAtRPM() && isRightAtRPM());
     }
 
