@@ -24,7 +24,7 @@ public class TargetInAuto extends Command {
     private Lights lights;
     private DriverOI oi;
 
-    private double error, turnThreshold, turnFF, turnInput, initialTime, currentTime;
+    private double error, turnThreshold, turnFF, turnInput, initialTime, currentTime, target;
     private PIDController turnPIDController;
     private Logger logger;
 
@@ -32,6 +32,7 @@ public class TargetInAuto extends Command {
         drivetrain = Drivetrain.getInstance();
         limelightShooter = LimelightShooter.getInstance();
         lights = Lights.getInstance();
+        logger = Logger.getInstance();
 
         turnPIDController = new PIDController(LimelightConstants.kTargetAutoP, LimelightConstants.kTargetAutoI,
                 LimelightConstants.kTargetAutoD);
@@ -40,7 +41,9 @@ public class TargetInAuto extends Command {
         turnFF = LimelightConstants.kTargetAutoFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;
-        logger = Logger.getInstance();
+        target = LimelightConstants.kTargetTarget;
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+            target *= -1;
 
         initialTime = 0.0;
         currentTime = 0.0;
@@ -67,7 +70,7 @@ public class TargetInAuto extends Command {
 
         currentTime = Timer.getFPGATimestamp();
         if (limelightShooter.hasTarget()) {
-            error = limelightShooter.getTxAverage() - LimelightConstants.kTargetTarget;
+            error = limelightShooter.getTxAverage() - target;
             if (error < -turnThreshold) {
                 turnInput = turnPIDController.calculate(error) + turnFF;
             } else if (error > turnThreshold) {

@@ -49,6 +49,8 @@ public class HybridTarget extends Command {
         turnInput = 0;
         currentOdometry = drivetrain.getPose();
         target = LimelightConstants.kTargetTarget;
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+            target *= -1;
 
         speakerPoseX = 0;
         speakerPoseY = 0;

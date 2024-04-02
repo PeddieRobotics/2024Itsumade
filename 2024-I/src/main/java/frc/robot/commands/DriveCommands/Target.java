@@ -24,13 +24,15 @@ public class Target extends Command {
     private DriverOI oi;
     private Lights lights;
 
-    private double error, turnThreshold, turnFF, turnInput;
+    private double error, turnThreshold, turnFF, turnInput, target;
     private PIDController turnPIDController;
     private Logger logger;
 
     public Target() {
         drivetrain = Drivetrain.getInstance();
         limelightShooter = LimelightShooter.getInstance();
+        logger = Logger.getInstance();
+        lights = Lights.getInstance();
 
         turnPIDController = new PIDController(LimelightConstants.kTargetP, LimelightConstants.kTargetI,
                 LimelightConstants.kTargetD);
@@ -39,8 +41,9 @@ public class Target extends Command {
         turnFF = LimelightConstants.kTargetFF;
         turnThreshold = LimelightConstants.kTargetAngleThreshold;
         turnInput = 0;
-        logger = Logger.getInstance();
-        lights = Lights.getInstance();
+        target = LimelightConstants.kTargetTarget;
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+            target *= -1;
 
         addRequirements(drivetrain);
         // SmartDashboard.putNumber("Target P", LimelightConstants.kTargetP);
@@ -77,7 +80,7 @@ public class Target extends Command {
         } 
 
         if (limelightShooter.hasTarget()) {
-            error = limelightShooter.getTxAverage() - LimelightConstants.kTargetTarget;
+            error = limelightShooter.getTxAverage() - target;
             if (error < -turnThreshold) {
                 turnInput = turnPIDController.calculate(error) + turnFF;
             } else if (error > turnThreshold) {
