@@ -45,7 +45,7 @@ public class SnapToSpeaker extends Command {
                 turnPIDController.setIZone(4.0);
 
         turnFF = LimelightConstants.kSnapToSpeakerFF;
-        turnThreshold = LimelightConstants.kTargetAngleThreshold;
+        turnThreshold = LimelightConstants.kTargetThreshold;
         turnInput = 0;
         logger = Logger.getInstance();
         lights = Lights.getInstance();

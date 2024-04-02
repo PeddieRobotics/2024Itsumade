@@ -203,7 +203,8 @@ public final class Constants {
     public static final double kSpeakerAprilTagHeight = 57.125;
   
     // Threshold (in degrees) for convergence on all speaker targeting algorithms
-    public static final double kTargetAngleThreshold = 0.2;
+    public static final double kTargetThreshold = 0.2;
+    public static final double kTargetAutoThreshold = 1.0;
     
     //threshold (in degrees) for the amp align rotation
     public static final double kAmpAlignAngleThreshold = 1.0;

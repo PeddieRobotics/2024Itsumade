@@ -39,7 +39,7 @@ public class TargetInAuto extends Command {
         turnPIDController.setIZone(LimelightConstants.kTargetAutoIZone);
 
         turnFF = LimelightConstants.kTargetAutoFF;
-        turnThreshold = LimelightConstants.kTargetAngleThreshold;
+        turnThreshold = LimelightConstants.kTargetAutoThreshold;
         turnInput = 0;
         target = LimelightConstants.kTargetTarget;
         if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)

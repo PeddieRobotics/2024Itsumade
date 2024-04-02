@@ -37,7 +37,7 @@ public class OdometryTarget extends Command {
         turnPIDController = new PIDController(LimelightConstants.kOdometryTargetP, LimelightConstants.kOdometryTargetI, LimelightConstants.kOdometryTargetD);
         turnPIDController.enableContinuousInput(-180, 180);
         turnFF = LimelightConstants.kOdometryTargetFF;
-        turnThreshold = LimelightConstants.kTargetAngleThreshold;
+        turnThreshold = LimelightConstants.kTargetThreshold;
         turnInput = 0;
 
         currentOdometry = drivetrain.getPose();

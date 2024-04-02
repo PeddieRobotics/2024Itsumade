@@ -13,11 +13,13 @@ import frc.robot.utils.Constants.AutoConstants;
 public class Score extends Command {
 
     private Superstructure superstructure;
+    private Arm arm;
     private Hopper hopper;
     private double initialTime;
 
     public Score() {
         superstructure = Superstructure.getInstance();
+        arm = Arm.getInstance();
         hopper = Hopper.getInstance();
 
         addRequirements(superstructure);
@@ -31,6 +33,9 @@ public class Score extends Command {
 
     @Override
     public void execute() {
+        // if(arm.isAtLLAngle()){
+        //     superstructure.sendToScore();
+        // }
     }
 
     @Override

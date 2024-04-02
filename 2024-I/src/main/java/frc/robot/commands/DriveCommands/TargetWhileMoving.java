@@ -43,7 +43,7 @@ public class TargetWhileMoving extends Command {
         hasShot = false;
 
         turnFF = LimelightConstants.kTargetFF;
-        turnThreshold = LimelightConstants.kTargetAngleThreshold;
+        turnThreshold = LimelightConstants.kTargetThreshold;
         logger = Logger.getInstance();
 
         addRequirements(drivetrain);
