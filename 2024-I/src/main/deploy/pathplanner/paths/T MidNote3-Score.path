@@ -1,0 +1,70 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.053183798675292,
+        "y": 3.996111838377523
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.792446806432078,
+        "y": 0.9897250932963408
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.1103565174320065,
+        "y": 3.2556125597272594
+      },
+      "prevControl": {
+        "x": 4.1064066743518115,
+        "y": 1.489908364432114
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "MidNote4Score"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "LL Prep",
+      "waypointRelativePos": 0.35,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "LL Prep"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 520.0,
+    "maxAngularAcceleration": 540.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 133.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Path Segments",
+  "previewStartingState": {
+    "rotation": -142.25,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
