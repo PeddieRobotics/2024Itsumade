@@ -3,6 +3,7 @@ package frc.robot.commands.DriveCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,9 +42,9 @@ public class TargetInAuto extends Command {
         turnFF = LimelightConstants.kTargetAutoFF;
         turnThreshold = LimelightConstants.kTargetAutoThreshold;
         turnInput = 0;
-        target = LimelightConstants.kTargetTarget;
+        target = LimelightConstants.kRedTargetTarget;
         if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
-            target *= -1;
+            target = LimelightConstants.kBlueTargetTarget;
 
         initialTime = 0.0;
         currentTime = 0.0;
@@ -57,6 +58,14 @@ public class TargetInAuto extends Command {
         logger.logEvent("Target Command", true);
         initialTime = Timer.getFPGATimestamp();
         currentTime = Timer.getFPGATimestamp();
+
+        if(DriverStation.getAlliance().get() == Alliance.Red){
+            target = LimelightConstants.kRedTargetTarget;
+            LimelightShooter.getInstance().setPriorityTag(4);
+        } else {
+            target = LimelightConstants.kBlueTargetTarget;
+            LimelightShooter.getInstance().setPriorityTag(7);
+        }
     }
 
     @Override

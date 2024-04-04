@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.1103565174320065,
-        "y": 3.2556125597272594
+        "x": 3.3517051912848466,
+        "y": 2.6583598958924024
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.440812990042526,
-        "y": 1.8737338473250418
+        "x": 5.272282384793014,
+        "y": 1.487276241314252
       },
       "isLocked": false,
       "linkedName": "MidNote4Score"
     },
     {
       "anchor": {
-        "x": 6.79469113574461,
-        "y": 4.180768646843998
+        "x": 7.4622088188541555,
+        "y": 3.056528338448973
       },
       "prevControl": {
-        "x": 4.123696023589469,
-        "y": 4.180768646843998
+        "x": 6.572185241374762,
+        "y": 1.5809629336805036
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.9,
+      "waypointRelativePos": 0.6,
       "command": {
         "type": "parallel",
         "data": {
@@ -57,13 +57,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": -125.44571032759826,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Path Segments",
   "previewStartingState": {
-    "rotation": 133.0,
+    "rotation": 140.4798978971645,
     "velocity": 0
   },
   "useDefaultConstraints": false

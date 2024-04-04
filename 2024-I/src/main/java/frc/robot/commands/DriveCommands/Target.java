@@ -41,9 +41,9 @@ public class Target extends Command {
         turnFF = LimelightConstants.kTargetFF;
         turnThreshold = LimelightConstants.kTargetThreshold;
         turnInput = 0;
-        target = LimelightConstants.kTargetTarget;
+        target = LimelightConstants.kRedTargetTarget;
         if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
-            target *= -1;
+            target = LimelightConstants.kBlueTargetTarget;
 
         addRequirements(drivetrain);
         // SmartDashboard.putNumber("Target P", LimelightConstants.kTargetP);
@@ -59,8 +59,10 @@ public class Target extends Command {
         limelightShooter.setPipeline(LimelightConstants.kShooterPipeline);
 
         if(DriverStation.getAlliance().get() == Alliance.Red){
+            target = LimelightConstants.kRedTargetTarget;
             LimelightShooter.getInstance().setPriorityTag(4);
         } else {
+            target = LimelightConstants.kBlueTargetTarget;
             LimelightShooter.getInstance().setPriorityTag(7);
         }
     }

@@ -155,7 +155,8 @@ public final class Constants {
     public static final double kTargetD = 0.0025;
     public static final double kTargetFF = 0.065;
     public static final double kTargetIZone = 1;
-    public static final double kTargetTarget = 4;
+    public static final double kRedTargetTarget = 4.0;
+    public static final double kBlueTargetTarget = -2.0;
 
     public static final double kTargetAutoP = 0.02;
     public static final double kTargetAutoI = 0.0015;
@@ -193,10 +194,10 @@ public final class Constants {
 
     // Corner to target while passing using blue coordinate system
     public static final double kRedCornerPassingX = 16.61;
-    public static final double kRedCornerPassingY = 8.0; 
+    public static final double kRedCornerPassingY = 7.35; 
     
     public static final double kBlueCornerPassingX = 0;
-    public static final double kBlueCornerPassingY = 8.0;
+    public static final double kBlueCornerPassingY = 7.35;
 
     // center of speaker april tag height in inches (used for LL distance calculations)
     // THIS MUST BE ADJUSTED IF FMAP IS ADJUSTED ON Z AXIS
@@ -251,7 +252,7 @@ public final class Constants {
     public static final double kArmIntakeHPPosition = 70; // in deg
     public static final double kArmPositionEpsilon = 3; // in deg
     public static final double kArmStowPositionEpsilon = 10; // in deg
-    public static final double kArmAmpPosition = 133; //124 in lab, 140 at comp 134 IS LAST USED ANGLE AT HATBORO
+    public static final double kArmAmpPosition = 135; //124 in lab, 140 at comp 134 IS LAST USED ANGLE AT HATBORO
     public static final double kArmAmpPrepPosition = 110;
     public static final double kArmFrontLayupPosition = 38; // 38
     public static final double kArmSideLayupPosition = 35;
@@ -261,7 +262,7 @@ public final class Constants {
     public static final double kArmLobPassPosition = 38;
 
     //multiplier to arm angle for lookuptable since real field is different from lab
-    public static final double kArmLLDistMultiplier = 1.00; // 1.04; // 0.97; 0.98; 1.00; 1.03
+    public static final double kArmLLDistMultiplier = 1.03; // 1.04; // 0.97; 0.98; 1.00; 1.03
 
   }
 
@@ -304,7 +305,7 @@ public final class Constants {
     public static final double kFlywheelD = 0;
     public static final double kFlywheelFF = 0;
 
-    public static final double kFlywheelLobPassSpeedMultiplier = 1.0;
+    public static final double kFlywheelLobPassSpeedMultiplier = 0.9;
   }
 
   public static class ScoringConstants {
@@ -337,7 +338,7 @@ public final class Constants {
         // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -
     // needs more tuning/initial values only
     public static final double[][] treeMapValues = new double[][]  {{50, 44.0}, {59.5, 49.0}, {70.0, 54.0}, {80.0, 57.0}, {89.05, 59.6}, {93.0, 61.5},  {100.45, 63.2}, {110.8, 65.5},
-     {120.01, 66.5}, {130.2, 68.0}, {140.6, 69.1}, {150.6, 70.0}, {160.5, 70.5}, {170.3, 71.6}, {180.1, 72.15}, {185.5, 72.4}, {190, 72.6}};
+     {120.01, 66.5}, {130.2, 68.0}, {140.6, 69.1}, {150.6, 69.7}, {160.5, 70.5}, {170.3, 71.6}, {180.1, 72.15}, {185.5, 72.4}, {190, 72.6}};
 
     public static final double[][] treeMapValuesOld = new double[][] { { 44.0, 42.0 }, { 47.5, 43 }, { 60, 50 }, { 65.0, 53.0 }, { 70.1, 55.0 }, { 80, 56 }, { 85.2, 60.0 },
         { 93.8, 61 }, { 108.2, 65.6 }, { 112.5, 66 }, { 130, 68 }, { 134.6, 69.0 }, { 147.8, 69.5 }, { 154.5, 70.5 }, { 158.6, 70.5 }, { 166.2, 71.5}, { 175.6, 72 }, { 179.6, 72.3 },

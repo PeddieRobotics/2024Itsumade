@@ -48,9 +48,9 @@ public class HybridTarget extends Command {
         turnThreshold = LimelightConstants.kTargetThreshold;
         turnInput = 0;
         currentOdometry = drivetrain.getPose();
-        target = LimelightConstants.kTargetTarget;
+        target = LimelightConstants.kRedTargetTarget;
         if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
-            target *= -1;
+            target = LimelightConstants.kBlueTargetTarget;
 
         speakerPoseX = 0;
         speakerPoseY = 0;
@@ -64,9 +64,11 @@ public class HybridTarget extends Command {
         logger.logEvent("Hybrid Target Command", true);
 
         if (DriverStation.getAlliance().get() == Alliance.Red) {
+            target = LimelightConstants.kRedTargetTarget;
             speakerPoseX = LimelightConstants.kRedSpeakerPositionX;
             speakerPoseY = LimelightConstants.kRedSpeakerPositionY;
         } else {
+            target = LimelightConstants.kBlueTargetTarget;
             speakerPoseX = LimelightConstants.kBlueSpeakerPositionX;
             speakerPoseY = LimelightConstants.kBlueSpeakerPositionY;
         }
