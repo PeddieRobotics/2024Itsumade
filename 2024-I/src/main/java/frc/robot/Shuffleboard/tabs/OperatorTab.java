@@ -26,6 +26,7 @@ import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Constants.FlywheelConstants;
+import frc.robot.utils.Constants.LimelightConstants;
 
 public class OperatorTab extends ShuffleboardTabBase {
         private SendableChooser<Command> autoChooser;
@@ -42,9 +43,9 @@ public class OperatorTab extends ShuffleboardTabBase {
         private LimelightShooter limelightShooter;
 
         private GenericEntry stateEntry, armAngleEntry,
-                        flywheelAtRPMEntry, flywheelLeftRPMEntry, llDistanceMultiplierEntry, llDistanceEntry,
+                        flywheelAtRPMEntry, redTargetingOffsetEntry, llDistanceMultiplierEntry, llDistanceEntry,
                         ampAngleEntry,
-                        flywheelRightRPMEntry, isIndexedOverrideEntry, topSensorEntry, bottomSensorEntry,
+                        blueTargetingOffsetEntry, isIndexedOverrideEntry, topSensorEntry, bottomSensorEntry,
                         hasGamePieceEntry, useOdometryTargetEntry, lobPassAngleEntry, lobPassFlywheelMultiplierEntry;
 
         public OperatorTab() {
@@ -99,12 +100,12 @@ public class OperatorTab extends ShuffleboardTabBase {
                                         .withPosition(14, 2)
                                         .getEntry();
 
-                        flywheelLeftRPMEntry = tab.add("F-L RPM", 0.0)
+                        redTargetingOffsetEntry = tab.add("Red Target", LimelightConstants.kRedTargetTarget)
                                         .withSize(1, 1)
                                         .withPosition(12, 0)
                                         .getEntry();
 
-                        flywheelRightRPMEntry = tab.add("F-R RPM", 0.0)
+                        blueTargetingOffsetEntry = tab.add("Blue Target", LimelightConstants.kBlueTargetTarget)
                                         .withSize(1, 1)
                                         .withPosition(13, 0)
                                         .getEntry();
@@ -157,8 +158,10 @@ public class OperatorTab extends ShuffleboardTabBase {
                         useOdometryTargetEntry.setBoolean(DriverOI.getInstance().isUsingOdometryTarget());
 
                         flywheelAtRPMEntry.getBoolean(flywheel.isAtRPM());
-                        flywheelLeftRPMEntry.setDouble(flywheel.getFlywheelLeftRPM());
-                        flywheelRightRPMEntry.setDouble(flywheel.getFlywheelRightRPM());
+                        
+                        limelightShooter.setRedTargetingOffset(redTargetingOffsetEntry.getDouble(LimelightConstants.kRedTargetTarget));
+                        limelightShooter.setBlueTargetingOffset(blueTargetingOffsetEntry.getDouble(LimelightConstants.kBlueTargetTarget));
+
                         flywheel.setFlywheelLobPassMultiplier(lobPassFlywheelMultiplierEntry.getDouble(FlywheelConstants.kFlywheelLobPassSpeedMultiplier));
 
                         arm.setLLDistanceMultiplier(llDistanceMultiplierEntry.getDouble(ArmConstants.kArmLLDistMultiplier));

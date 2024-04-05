@@ -63,20 +63,16 @@ public class HybridTarget extends Command {
         oi = DriverOI.getInstance();
         logger.logEvent("Hybrid Target Command", true);
 
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
-            target = LimelightConstants.kRedTargetTarget;
+        if(DriverStation.getAlliance().get() == Alliance.Red){
+            LimelightShooter.getInstance().setPriorityTag(4);
+            target = limelightShooter.getRedTargetingOffset();
             speakerPoseX = LimelightConstants.kRedSpeakerPositionX;
             speakerPoseY = LimelightConstants.kRedSpeakerPositionY;
         } else {
-            target = LimelightConstants.kBlueTargetTarget;
+            LimelightShooter.getInstance().setPriorityTag(7);
+            target = limelightShooter.getBlueTargetingOffset();
             speakerPoseX = LimelightConstants.kBlueSpeakerPositionX;
             speakerPoseY = LimelightConstants.kBlueSpeakerPositionY;
-        }
-
-        if(DriverStation.getAlliance().get() == Alliance.Red){
-            LimelightShooter.getInstance().setPriorityTag(4);
-        } else {
-            LimelightShooter.getInstance().setPriorityTag(7);
         }
     }
 

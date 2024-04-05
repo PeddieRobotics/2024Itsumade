@@ -27,6 +27,8 @@ public class LimelightShooter extends Limelight {
     private RollingAverage txAverage, tyAverage, taAverage, xAverage, rotationAverage, rxAverage, ryAverage;
     private LinearFilter distFilter;
 
+    private double redTargetOffset, blueTargetOffset;
+
     private Pose2d calculatedBotpose;
 
     private String limelightName = "limelight-shooter";
@@ -44,6 +46,10 @@ public class LimelightShooter extends Limelight {
 
         setPipeline(Constants.LimelightConstants.kShooterPipeline);
         lastDistance=0;
+        redTargetOffset = LimelightConstants.kRedTargetTarget;
+        blueTargetOffset = LimelightConstants.kBlueTargetTarget;
+        // SmartDashboard.putNumber("Red Targeting Offset", redTargetOffset);
+        // SmartDashboard.putNumber("Blue Targeting Offset", blueTargetOffset);
     }
 
     public static LimelightShooter getInstance() {
@@ -63,6 +69,9 @@ public class LimelightShooter extends Limelight {
         SmartDashboard.putNumber("LL Average Distance", getFilteredDistance());
         SmartDashboard.putNumber("LL ty", getTy());
         SmartDashboard.putNumber("LL tx", getTx());
+
+        // setRedTargetingOffset(SmartDashboard.getNumber("Red Targeting Offset", redTargetOffset));
+        // setBlueTargetingOffset(SmartDashboard.getNumber("Blue Targeting Offset", blueTargetOffset));
         //LimelightTarget_Fiducial[] fiducials = LimelightHelper.getLatestResults(limelightName).targetingResults.targets_Fiducials;
         //SmartDashboard.putNumber("LL results ty", fiducials[0].ty);
         //SmartDashboard.putNumber("LL results ty diff", fiducials[0].ty-getTy());
@@ -155,6 +164,22 @@ public class LimelightShooter extends Limelight {
 
     public double getRYAverage(){
         return ryAverage.getAverage(); 
+    }
+
+    public void setRedTargetingOffset(double offset){
+        redTargetOffset = offset;
+    }
+
+    public void setBlueTargetingOffset(double offset){
+        blueTargetOffset = offset;
+    }
+
+    public double getRedTargetingOffset(){
+        return redTargetOffset;
+    }
+
+    public double getBlueTargetingOffset(){
+        return blueTargetOffset;
     }
     
     public Pose2d getCalculatedBotpose() {

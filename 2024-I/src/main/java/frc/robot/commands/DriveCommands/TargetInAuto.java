@@ -60,10 +60,10 @@ public class TargetInAuto extends Command {
         currentTime = Timer.getFPGATimestamp();
 
         if(DriverStation.getAlliance().get() == Alliance.Red){
-            target = LimelightConstants.kRedTargetTarget;
+            target = limelightShooter.getRedTargetingOffset();
             LimelightShooter.getInstance().setPriorityTag(4);
         } else {
-            target = LimelightConstants.kBlueTargetTarget;
+            target = limelightShooter.getBlueTargetingOffset();
             LimelightShooter.getInstance().setPriorityTag(7);
         }
     }

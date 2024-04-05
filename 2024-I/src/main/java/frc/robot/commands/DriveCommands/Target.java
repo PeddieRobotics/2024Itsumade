@@ -59,10 +59,10 @@ public class Target extends Command {
         limelightShooter.setPipeline(LimelightConstants.kShooterPipeline);
 
         if(DriverStation.getAlliance().get() == Alliance.Red){
-            target = LimelightConstants.kRedTargetTarget;
+            target = limelightShooter.getRedTargetingOffset();
             LimelightShooter.getInstance().setPriorityTag(4);
         } else {
-            target = LimelightConstants.kBlueTargetTarget;
+            target = limelightShooter.getBlueTargetingOffset();
             LimelightShooter.getInstance().setPriorityTag(7);
         }
     }

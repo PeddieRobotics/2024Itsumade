@@ -155,8 +155,8 @@ public final class Constants {
     public static final double kTargetD = 0.0025;
     public static final double kTargetFF = 0.065;
     public static final double kTargetIZone = 1;
-    public static final double kRedTargetTarget = 4.0;
-    public static final double kBlueTargetTarget = -2.0;
+    public static final double kRedTargetTarget = 0.0;
+    public static final double kBlueTargetTarget = 0.0;
 
     public static final double kTargetAutoP = 0.02;
     public static final double kTargetAutoI = 0.0015;
@@ -262,7 +262,7 @@ public final class Constants {
     public static final double kArmLobPassPosition = 38;
 
     //multiplier to arm angle for lookuptable since real field is different from lab
-    public static final double kArmLLDistMultiplier = 1.03; // 1.04; // 0.97; 0.98; 1.00; 1.03
+    public static final double kArmLLDistMultiplier = 0.99; // 1.04; // 0.97; 0.98; 1.00; 1.03 dcmp thursday
 
   }
 
