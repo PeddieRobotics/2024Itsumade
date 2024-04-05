@@ -194,10 +194,10 @@ public final class Constants {
 
     // Corner to target while passing using blue coordinate system
     public static final double kRedCornerPassingX = 16.61;
-    public static final double kRedCornerPassingY = 7.35; 
+    public static final double kRedCornerPassingY = 7.6; 
     
     public static final double kBlueCornerPassingX = 0;
-    public static final double kBlueCornerPassingY = 7.35;
+    public static final double kBlueCornerPassingY = 7.6;
 
     // center of speaker april tag height in inches (used for LL distance calculations)
     // THIS MUST BE ADJUSTED IF FMAP IS ADJUSTED ON Z AXIS
