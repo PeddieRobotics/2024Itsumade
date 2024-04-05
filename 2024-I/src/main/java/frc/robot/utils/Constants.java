@@ -305,7 +305,7 @@ public final class Constants {
     public static final double kFlywheelD = 0;
     public static final double kFlywheelFF = 0;
 
-    public static final double kFlywheelLobPassSpeedMultiplier = 0.9;
+    public static final double kFlywheelLobPassSpeedMultiplier = 1.1;
   }
 
   public static class ScoringConstants {
