@@ -20,6 +20,7 @@ import frc.robot.commands.DriveCommands.HybridTarget;
 import frc.robot.commands.DriveCommands.AmpAlign;
 import frc.robot.commands.DriveCommands.OdometryTarget;
 import frc.robot.commands.DriveCommands.PIDToPoint;
+import frc.robot.commands.DriveCommands.PassingTarget;
 import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.commands.DriveCommands.PathPlannerToShoot;
 import frc.robot.commands.DriveCommands.SnapToSpeaker;
@@ -82,9 +83,10 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.whileTrue(new ConditionalCommand(new TargetCornerWhilePassing(),
-            new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
-            superstructure::isPassing));
+        // circleButton.whileTrue(new ConditionalCommand(new TargetCornerWhilePassing(),
+        //     new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
+        //     superstructure::isPassing));
+        circleButton.whileTrue(new PassingTarget());
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));

@@ -199,6 +199,10 @@ public final class Constants {
     public static final double kBlueCornerPassingX = 0;
     public static final double kBlueCornerPassingY = 7.35;
 
+    public static final double kRedCornerPassingGyroAngle = -142.5;
+    public static final double kBlueCornerPassingGyroAngle = 152.0;
+
+
     // center of speaker april tag height in inches (used for LL distance calculations)
     // THIS MUST BE ADJUSTED IF FMAP IS ADJUSTED ON Z AXIS
     public static final double kSpeakerAprilTagHeight = 57.125;

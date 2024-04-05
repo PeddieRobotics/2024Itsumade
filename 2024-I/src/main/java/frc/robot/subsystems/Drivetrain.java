@@ -357,6 +357,10 @@ public class Drivetrain extends SubsystemBase {
         return Math.IEEEremainder(heading, 360);
     }
 
+    public double getAdjustedGyroHeading(){
+        return getHeadingAsRotation2d().plus(new Rotation2d(Math.toRadians(autoAdjustAngle))).getDegrees();
+    }
+
     public Rotation2d getHeadingAsRotation2d() {
         Rotation2d rotation = gyro.getRotation2d();
         // return rotation.times(-1.0);
