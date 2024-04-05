@@ -132,11 +132,6 @@ public class Flywheel extends SubsystemBase {
         }
     }
 
-    public void revUpFlywheel(){
-        runFlywheelVelocitySetpoint(ScoringConstants.kRevUpLeftFlywheelRPM, 
-            ScoringConstants.kRevUpRightFlywheelRPM);
-    }
-
     public void runFlywheelLobPass() {
         runFlywheelVelocitySetpoint(ScoringConstants.kLeftFlywheelLobPassRPM * lobPassSpeedMultiplier,
                 ScoringConstants.kRightFlywheelLobPassRPM * lobPassSpeedMultiplier);
