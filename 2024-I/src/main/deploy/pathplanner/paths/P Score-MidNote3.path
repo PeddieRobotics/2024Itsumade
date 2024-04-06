@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.272282384793014,
-        "y": 1.487276241314252
+        "x": 5.166884855880981,
+        "y": 1.3350353662190912
       },
       "isLocked": false,
       "linkedName": "MidNote4Score"
@@ -50,13 +50,13 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 520.0,
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 2.0,
     "rotation": -125.44571032759826,
     "rotateFast": false
   },
