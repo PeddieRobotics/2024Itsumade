@@ -101,7 +101,7 @@ public class DriverOI {
         muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.whileTrue(new ConditionalCommand(new TargetCornerWhilePassing(),
+        L1Bumper.whileTrue(new ConditionalCommand(new PassingTarget(),
             new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
             superstructure::isPassing));
 
