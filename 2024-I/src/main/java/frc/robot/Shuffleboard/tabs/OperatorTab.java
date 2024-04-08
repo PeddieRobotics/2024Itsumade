@@ -18,6 +18,7 @@ import frc.robot.Shuffleboard.ShuffleboardTabBase;
 
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -41,12 +42,13 @@ public class OperatorTab extends ShuffleboardTabBase {
         private Intake intake;
         private Superstructure superstructure;
         private LimelightShooter limelightShooter;
+        private Drivetrain drivetrain;
 
         private GenericEntry stateEntry, armAngleEntry,
                         flywheelAtRPMEntry, redTargetingOffsetEntry, llDistanceMultiplierEntry, llDistanceEntry,
                         ampAngleEntry,
                         blueTargetingOffsetEntry, isIndexedOverrideEntry, topSensorEntry, bottomSensorEntry,
-                        hasGamePieceEntry, useOdometryTargetEntry, lobPassAngleEntry, lobPassFlywheelMultiplierEntry;
+                        hasGamePieceEntry, useOdometryTargetEntry, lobPassAngleEntry, lobPassFlywheelMultiplierEntry, passTargetEntry;
 
         public OperatorTab() {
                 arm = Arm.getInstance();
@@ -56,6 +58,7 @@ public class OperatorTab extends ShuffleboardTabBase {
                 intake = Intake.getInstance();
                 superstructure = Superstructure.getInstance();
                 limelightShooter = LimelightShooter.getInstance();
+                drivetrain = Drivetrain.getInstance();
         }
 
         public void createEntries() {
@@ -92,7 +95,7 @@ public class OperatorTab extends ShuffleboardTabBase {
 
                         llDistanceMultiplierEntry = tab.add("LL Dist Multiplier", ArmConstants.kArmLLDistMultiplier)
                                         .withSize(1, 1)
-                                        .withPosition(13, 2)
+                                        .withPosition(15, 2)
                                         .getEntry();
 
                         ampAngleEntry = tab.add("Amp Angle", ArmConstants.kArmAmpPosition)
@@ -113,6 +116,10 @@ public class OperatorTab extends ShuffleboardTabBase {
                         flywheelAtRPMEntry = tab.add("Flywheel At RPM?", false)
                                         .withSize(1, 1)
                                         .withPosition(15, 1)
+                                        .getEntry();
+                        passTargetEntry = tab.add("Pass Tgt Angle", LimelightConstants.kCornerPassingGyroAngle)
+                                        .withSize(1,1)
+                                        .withPosition(13, 2)
                                         .getEntry();
 
                         // Return to this later
@@ -137,7 +144,7 @@ public class OperatorTab extends ShuffleboardTabBase {
                                         .withPosition(16, 0)
                                         .getEntry();
 
-                        lobPassAngleEntry = tab.add("Pass Angle", ArmConstants.kArmLobPassPosition)
+                        lobPassAngleEntry = tab.add("Pass Arm Angle", ArmConstants.kArmLobPassPosition)
                                         .withSize(1,1)
                                         .withPosition(12,2) //todo update
                                         .getEntry();
@@ -168,6 +175,8 @@ public class OperatorTab extends ShuffleboardTabBase {
                         arm.setAmpScoringAngle(ampAngleEntry.getDouble(ArmConstants.kArmAmpPosition));
                         arm.setLobPassAngle(lobPassAngleEntry.getDouble(ArmConstants.kArmLobPassPosition));
 
+                        drivetrain.setPassingGyroAngle(passTargetEntry.getDouble(LimelightConstants.kCornerPassingGyroAngle));
+
                         // isIndexedOverrideEntry.getBoolean(false); // Return to this later
                         stateEntry.setString(superstructure.getRobotState());
 
@@ -175,6 +184,7 @@ public class OperatorTab extends ShuffleboardTabBase {
                         bottomSensorEntry.setBoolean(hopper.getBottomSensor());
 
                         hasGamePieceEntry.setBoolean(hopper.hasGamepiece());
+
                 } catch (IllegalArgumentException e) {
                 }
         }

@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.RollingAverage;
 import frc.robot.utils.Constants.DriveConstants;
+import frc.robot.utils.Constants.LimelightConstants;
 import frc.robot.utils.Constants;
 import frc.robot.utils.LimelightHelper;
 import frc.robot.utils.Logger;
@@ -62,6 +63,8 @@ public class Drivetrain extends SubsystemBase {
     private double I2 = 0.1; // minimum
     private double K2 = 4.0; // growth rate
     private double H2 = 3.3; // midpoint
+
+    private double passingGyroAngle;
 
     private double sigmoid2(double dist) {
         return (S2 - I2) / (1.0 + Math.exp(-K2 * (dist - H2))) + I2;
@@ -130,6 +133,8 @@ public class Drivetrain extends SubsystemBase {
 
         limelightShooter = LimelightShooter.getInstance();
         limelightIntake = LimelightIntake.getInstance();
+
+        passingGyroAngle = LimelightConstants.kCornerPassingGyroAngle;
 
         // SmartDashboard.putBoolean("Reset Gyro", false);
 
@@ -396,6 +401,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void resetGyro() {
+        autoAdjustAngle = 180;
         resetPose(odometry.getEstimatedPosition());
     }
 
@@ -417,6 +423,14 @@ public class Drivetrain extends SubsystemBase {
 
     public double getAutoAdjustAngle(){
         return autoAdjustAngle;
+    }
+
+    public void setPassingGyroAngle(double angle){
+        passingGyroAngle = angle;
+    }
+
+    public double getPassingGyroAngle(){
+        return passingGyroAngle;
     }
 
     public double getPastHeading(double latency){
