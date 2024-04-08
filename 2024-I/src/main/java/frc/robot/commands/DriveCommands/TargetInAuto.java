@@ -25,8 +25,9 @@ public class TargetInAuto extends Command {
     private Lights lights;
     private DriverOI oi;
 
+    private double speakerPoseX, speakerPoseY, odometryTurnFF;
     private double error, turnThreshold, turnFF, turnInput, initialTime, currentTime, target;
-    private PIDController turnPIDController;
+    private PIDController turnPIDController, odometryTurnPIDController;
     private Logger logger;
 
     public TargetInAuto() {
@@ -39,7 +40,12 @@ public class TargetInAuto extends Command {
                 LimelightConstants.kTargetAutoD);
         turnPIDController.setIZone(LimelightConstants.kTargetAutoIZone);
 
+        odometryTurnPIDController = new PIDController(LimelightConstants.kOdometryTargetP, LimelightConstants.kOdometryTargetI,
+                LimelightConstants.kOdometryTargetD);
+        odometryTurnPIDController.enableContinuousInput(-180, 180);
+
         turnFF = LimelightConstants.kTargetAutoFF;
+        odometryTurnFF = LimelightConstants.kOdometryTargetFF;
         turnThreshold = LimelightConstants.kTargetAutoThreshold;
         turnInput = 0;
         target = LimelightConstants.kRedTargetTarget;
@@ -62,9 +68,13 @@ public class TargetInAuto extends Command {
         if(DriverStation.getAlliance().get() == Alliance.Red){
             target = limelightShooter.getRedTargetingOffset();
             LimelightShooter.getInstance().setPriorityTag(4);
+            speakerPoseX = LimelightConstants.kRedSpeakerPositionX;
+            speakerPoseY = LimelightConstants.kRedSpeakerPositionY;
         } else {
             target = limelightShooter.getBlueTargetingOffset();
             LimelightShooter.getInstance().setPriorityTag(7);
+            speakerPoseX = LimelightConstants.kBlueSpeakerPositionX;
+            speakerPoseY = LimelightConstants.kBlueSpeakerPositionY;
         }
     }
 
@@ -87,11 +97,30 @@ public class TargetInAuto extends Command {
             } else {
                 turnInput = 0;
             }
+            // it was turnInput * 2 before in this command
+            // but odometry was not in HybridTarget
+            // so we multiply here to keep things as before
+            turnInput *= 2;
         } else {
-            turnInput = 0;
+            var currentOdometry = drivetrain.getPose();
+            double deltaX = speakerPoseX - currentOdometry.getX();
+            double deltaY = speakerPoseY - currentOdometry.getY();
+            double targetAngle = Math.toDegrees(Math.atan2(deltaY, deltaX));
+
+            double currentAngle = currentOdometry.getRotation().getDegrees();
+
+            error = currentAngle - targetAngle - target;
+
+            if (error > turnThreshold) {
+                turnInput = odometryTurnPIDController.calculate(error) + odometryTurnFF;
+            } else if (error < -turnThreshold) {
+                turnInput = odometryTurnPIDController.calculate(error) - odometryTurnFF;
+            } else {
+                turnInput = 0;
+            }
         }
 
-        drivetrain.drive(oi.getSwerveTranslation(), turnInput * 2, true, oi.getCenterOfRotation());
+        drivetrain.drive(oi.getSwerveTranslation(), turnInput, true, oi.getCenterOfRotation());
     }
 
     @Override
