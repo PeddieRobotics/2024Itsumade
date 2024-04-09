@@ -331,6 +331,7 @@ public final class Constants {
     public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 0.1;
+    public static final double kAmpShootingStateTime = 0.5;
     public static final double kForceShootTime = 0.8;
 
         // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -

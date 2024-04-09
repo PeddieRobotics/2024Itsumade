@@ -360,12 +360,12 @@ public class Superstructure extends SubsystemBase {
 
             case AMP_SCORING:
                 arm.setAmpPosition();    
-                if (isGamepieceIndexed() && arm.isAtAmpScoringAngle()) { // stop this once the piece is scored
+                if (arm.isAtAmpScoringAngle()) { // stop this once the piece is scored
                     flywheel.runFlywheelAmp();
                     hopper.feedFlywheelAmp();
                     intake.stopIntake();
                     timer.start();
-                } else if (!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kShootingStateTime)) {
+                } else if (!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kAmpShootingStateTime)) {
                     Logger.getInstance().logEvent("Amp shot finished, arm angle " + arm.getArmAngleDegrees(), false);
                     flywheel.stopFlywheel();
                     hopper.stopHopper();
