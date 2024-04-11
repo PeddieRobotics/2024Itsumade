@@ -140,6 +140,14 @@ public class SwerveModule extends SubsystemBase {
     steerEncoder.getConfigurator().apply(canCoderConfiguration);
   }
 
+  public double getDriveMotorSupplyCurrent(){
+    return driveMotor.getSupplyCurrent();
+  }
+
+  public double getSteerMotorSupplyCurrent(){
+    return steerMotor.getSupplyCurrent();
+  }
+
   @Override
   public void periodic() {
     updateSmartdashBoard();

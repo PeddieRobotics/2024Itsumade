@@ -27,6 +27,8 @@ public class Logger {
                 leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,
                 LLDistanceEntry, armCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
                 climberLeftArmCurrent, climberRightArmCurrent, numOfApriltagEntry, stdDevEntry;
+
+    private DoubleLogEntry frontLeftDrivecurrent, frontLeftSteercurrent, frontRightDrivecurrent,frontRightSteercurrent, backLeftDrivecurrent,backLeftSteercurrent,backRightDrivecurrent, backRightSteercurrent;
     private StringLogEntry robotStateEntry, commandEntry, lightStateEntry;
     private DoubleArrayLogEntry fieldPositionEntry, botposeFieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
@@ -72,6 +74,16 @@ public class Logger {
         moduleSpeedsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Speeds");
         modulePositionsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Positions");
         stdDevEntry = new DoubleLogEntry(log, "/Drivetrain/Megatag stddev");
+
+        //swerve module logs
+        frontLeftDrivecurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Drive Current");
+        frontLeftSteercurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Steer Current");
+        frontRightDrivecurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Drive Current");
+        frontRightSteercurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Steer Current");
+        backLeftDrivecurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Drive Current");
+        backLeftSteercurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Steer Current");
+        backRightDrivecurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Drive Current");
+        backRightSteercurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Steer Current");
 
         // Intake Logs
         intakeSensorEntry = new BooleanLogEntry(log, "/Intake/Intake Sensor");
@@ -159,6 +171,7 @@ public class Logger {
 
         climberLeftArmPosition.append(climber.getLeftArmPosition());
         climberRightArmPosition.append(climber.getRightArmPosition());
+
     }
 
     //put pose to log for field visualization
@@ -187,6 +200,19 @@ public class Logger {
         moduleSpeedsEntry.append(swerveModuleSpeeds);
 
         stdDevEntry.append(drivetrain.getStandardDeviation());
+
+        //Swerve modules
+        frontLeftDrivecurrent.append(drivetrain.getFrontLeftDriveCurrent());
+        frontLeftSteercurrent.append(drivetrain.getFrontLeftSteerCurrent());
+        
+        frontRightDrivecurrent.append(drivetrain.getFrontRightDriveCurrent());
+        frontRightSteercurrent.append(drivetrain.getFrontRightSteerCurrent());
+        
+        backLeftDrivecurrent.append(drivetrain.getBackLeftDriveCurrent());
+        backLeftSteercurrent.append(drivetrain.getBackLeftSteerCurrent());
+        
+        backRightDrivecurrent.append(drivetrain.getBackRightDriveCurrent());
+        backRightSteercurrent.append(drivetrain.getBackRightSteerCurrent());
 
         SmartDashboard.putNumber("Standard Deviation from Logger", drivetrain.getStandardDeviation());
     }

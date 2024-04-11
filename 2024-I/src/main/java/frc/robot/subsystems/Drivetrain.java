@@ -486,4 +486,35 @@ public class Drivetrain extends SubsystemBase {
         gyroHistory[0] = getHeading();
     }
 
+    public double getFrontLeftDriveCurrent() {
+        return frontLeftModule.getDriveMotorSupplyCurrent();
+    }
+
+    public double getFrontLeftSteerCurrent() {
+        return frontLeftModule.getSteerMotorSupplyCurrent();
+    }
+
+    public double getFrontRightDriveCurrent() {
+        return frontRightModule.getDriveMotorSupplyCurrent();
+    }
+
+    public double getFrontRightSteerCurrent() {
+        return frontRightModule.getSteerMotorSupplyCurrent();
+    }
+
+    public double getBackLeftDriveCurrent() {
+        return backLeftModule.getDriveMotorSupplyCurrent();
+    }
+
+    public double getBackLeftSteerCurrent() {
+        return backLeftModule.getSteerMotorSupplyCurrent();
+    }
+
+    public double getBackRightDriveCurrent() {
+        return backRightModule.getDriveMotorSupplyCurrent();
+    }
+
+    public double getBackRightSteerCurrent() {
+        return backRightModule.getSteerMotorSupplyCurrent();
+    }
 }
