@@ -78,15 +78,24 @@ public class Logger {
         modulePositionsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Positions");
         stdDevEntry = new DoubleLogEntry(log, "/Drivetrain/Megatag stddev");
 
-        //swerve module logs
-        frontLeftDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Drive Current");
-        frontLeftSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Steer Current");
-        frontRightDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Drive Current");
-        frontRightSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Steer Current");
-        backLeftDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Drive Current");
-        backLeftSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Steer Current");
-        backRightDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Drive Current");
-        backRightSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Steer Current");
+        //swerve module current logs
+        frontLeftDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Drive Supply Current");
+        frontLeftSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Steer Supply Current");
+        frontRightDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Drive Supply Current");
+        frontRightSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Steer Supply Current");
+        backLeftDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Drive Supply Current");
+        backLeftSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Steer Supply Current");
+        backRightDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Drive Supply Current");
+        backRightSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Steer Supply Current");
+
+        frontLeftDriveStatorCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Drive Stator Current");
+        frontLeftSteerStatorCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Steer Stator Current");
+        frontRightDriveStatorCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Drive Stator Current");
+        frontRightSteerStatorCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Steer Stator Current");
+        backLeftDriveStatorCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Drive Stator Current");
+        backLeftSteerStatorCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Steer Stator Current");
+        backRightDriveStatorCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Drive Stator Current");
+        backRightSteerStatorCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Steer Stator Current");
 
         // Intake Logs
         intakeSensorEntry = new BooleanLogEntry(log, "/Intake/Intake Sensor");
@@ -205,6 +214,7 @@ public class Logger {
         stdDevEntry.append(drivetrain.getStandardDeviation());
 
         //Swerve modules
+        //supply currents
         frontLeftDriveSupplyCurrent.append(drivetrain.getFrontLeftDriveSupplyCurrent());
         frontLeftSteerSupplyCurrent.append(drivetrain.getFrontLeftSteerSupplyCurrent());
         
@@ -217,7 +227,7 @@ public class Logger {
         backRightDriveSupplyCurrent.append(drivetrain.getBackRightDriveSupplyCurrent());
         backRightSteerSupplyCurrent.append(drivetrain.getBackRightSteerSupplyCurrent());
 
-        
+        //stator currents
         frontLeftDriveStatorCurrent.append(drivetrain.getFrontLeftDriveStatorCurrent());
         frontLeftSteerStatorCurrent.append(drivetrain.getFrontLeftSteerStatorCurrent());
 
