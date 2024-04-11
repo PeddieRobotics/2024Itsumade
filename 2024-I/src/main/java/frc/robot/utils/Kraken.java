@@ -346,13 +346,19 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    // get the current supplied by TalonFX motor controller to motor
+    // get the current supplied by battery to motor
     public double getSupplyCurrent() {
         return talon.getSupplyCurrent().getValueAsDouble();
     }
 
+    //get stator current used by motor (for voltage control modes)
     public double getStatorCurrent() {
         return talon.getStatorCurrent().getValueAsDouble();
+    }
+
+    //get torque current (for torqueCurrent control modes)
+    public double getTorqueCurrent(){
+        return talon.getTorqueCurrent().getValueAsDouble();
     }
 
     // get the temperature of the motor

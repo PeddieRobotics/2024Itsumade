@@ -104,7 +104,7 @@ public class Hopper extends SubsystemBase {
     return getTopSensor();
   }
 
-  public double getMotorCurrent(){
+  public double getMotorSupplyCurrent(){
     return hopperMotor.getSupplyCurrent();
   }
 

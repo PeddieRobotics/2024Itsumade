@@ -78,7 +78,7 @@ public class Intake extends SubsystemBase {
     return !intakeSensor.get();
   }
 
-  public double getMotorCurrent() {
+  public double getMotorSupplyCurrent() {
     return intakeMotor.getSupplyCurrent();
   }
 
@@ -88,7 +88,7 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     // intakeMotor.set(TalonSRXControlMode.PercentOutput,SmartDashboard.getNumber("Intake
     // speed", 0));
-    SmartDashboard.putNumber("Intake Motor Current", getMotorCurrent());
+    SmartDashboard.putNumber("Intake Motor Current", getMotorSupplyCurrent());
     SmartDashboard.putBoolean("Intake Sensor Status", getSensor());
   }
 

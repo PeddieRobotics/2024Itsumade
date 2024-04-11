@@ -24,9 +24,9 @@ public class Logger {
     private static Logger instance;
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
     private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, intakeSpeedEntry, hopperCurrentEntry, 
-                leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,
-                LLDistanceEntry, armCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
-                climberLeftArmCurrent, climberRightArmCurrent, numOfApriltagEntry, stdDevEntry;
+                leftFlywheelSupplyCurrentEntry,rightFlywheelSupplyCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,
+                LLDistanceEntry, armSupplyCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
+                climberLeftArmCurrent, climberRightArmCurrent, numOfApriltagEntry, stdDevEntry, armTorqueCurrentEntry, rightFlywheelTorqueCurrentEntry, leftFlywheelTorqueCurrentEntry;
     private DoubleLogEntry frontLeftDriveSupplyCurrent, frontLeftSteerSupplyCurrent, frontRightDriveSupplyCurrent,frontRightSteerSupplyCurrent,
                 backLeftDriveSupplyCurrent,backLeftSteerSupplyCurrent,backRightDriveSupplyCurrent, backRightSteerSupplyCurrent;
     private DoubleLogEntry frontLeftDriveStatorCurrent, frontLeftSteerStatorCurrent, frontRightDriveStatorCurrent,frontRightSteerStatorCurrent,
@@ -108,16 +108,20 @@ public class Logger {
         hopperCurrentEntry = new DoubleLogEntry(log, "/Hopper/Hopper Current");
 
         //flywheel Loges
-        rightFlywheelCurrentEntry = new DoubleLogEntry(log, "/Flywheel/Right Motor Current");
-        leftFlywheelCurrentEntry = new DoubleLogEntry(log, "/Flywheel/Left Motor Current");
+        rightFlywheelSupplyCurrentEntry = new DoubleLogEntry(log, "/Flywheel/Right Motor Supply Current");
+        leftFlywheelSupplyCurrentEntry = new DoubleLogEntry(log, "/Flywheel/Left Motor Supply Current");
+
+        rightFlywheelTorqueCurrentEntry = new DoubleLogEntry(log, "/Flywheel/Right Motor Torque Current");
+        leftFlywheelTorqueCurrentEntry = new DoubleLogEntry(log, "/Flywheel/Left Motor Torque Current");
 
         rightFlywheelRPMEntry = new DoubleLogEntry(log, "/Flywheel/Right RPM");
         leftFlywheelRPMEntry = new DoubleLogEntry(log, "/Flywheel/Left RPM");
 
         //arm logs
         armAngleEntry = new DoubleLogEntry(log, "/Arm/Angle Degrees");
-        armCurrentEntry = new DoubleLogEntry(log, "/Arm/Current");
+        armSupplyCurrentEntry = new DoubleLogEntry(log, "/Arm/Supply Current");
         armAngleSetpointEntry = new DoubleLogEntry(log, "/Arm/Angle Setpoint");
+        armTorqueCurrentEntry = new DoubleLogEntry(log, "/Arm/Torque Current");
 
         //climber logs
         climberLeftArmPosition = new DoubleLogEntry(log, "/Climber/Left Arm Motor Position");
@@ -153,33 +157,37 @@ public class Logger {
 
         // Intake
         intakeSensorEntry.append(intake.getSensor());
-        intakeCurrentEntry.append(intake.getMotorCurrent());
+        intakeCurrentEntry.append(intake.getMotorSupplyCurrent());
         intakeSpeedEntry.append(intake.getIntakeSpeed());
 
         // Hopper
         hopperBottomSensorEntry.append(hopper.getBottomSensor());
         hopperTopSensorEntry.append(hopper.getTopSensor());
-        hopperCurrentEntry.append(hopper.getMotorCurrent());
+        hopperCurrentEntry.append(hopper.getMotorSupplyCurrent());
 
         //Flywheel
-        rightFlywheelCurrentEntry.append(flywheel.getRightMotorCurrent());
-        leftFlywheelCurrentEntry.append(flywheel.getLeftMotorCurrent());
+        rightFlywheelSupplyCurrentEntry.append(flywheel.getRightMotorSupplyCurrent());
+        leftFlywheelSupplyCurrentEntry.append(flywheel.getLeftMotorSupplyCurrent());
+
+        rightFlywheelTorqueCurrentEntry.append(flywheel.getRightMotorTorqueCurrent());
+        leftFlywheelTorqueCurrentEntry.append(flywheel.getLeftMotorTorqueCurrent());
 
         rightFlywheelRPMEntry.append(flywheel.getFlywheelRightRPM());
         leftFlywheelRPMEntry.append(flywheel.getFlywheelLeftRPM());
 
         //Arm
         armAngleEntry.append(arm.getArmAngleDegrees());
-        armCurrentEntry.append(arm.getSupplyCurrent());
+        armSupplyCurrentEntry.append(arm.getMotorSupplyCurrent());
         armAngleSetpointEntry.append(arm.getArmAngleSetpoint());
+        armTorqueCurrentEntry.append(arm.getMotorTorqueCurrent());
 
         //limelight
         LLDistanceEntry.append(limelightShooter.getDistance());
         numOfApriltagEntry.append(drivetrain.getNumApriltags());
 
         //Climber
-        climberLeftArmCurrent.append(climber.getLeftArmCurrent());
-        climberRightArmCurrent.append(climber.getRightArmCurrent());
+        climberLeftArmCurrent.append(climber.getLeftArmSupplyCurrent());
+        climberRightArmCurrent.append(climber.getRightArmSupplyCurrent());
 
         climberLeftArmPosition.append(climber.getLeftArmPosition());
         climberRightArmPosition.append(climber.getRightArmPosition());

@@ -222,8 +222,12 @@ public class Arm extends SubsystemBase {
         setArmAngle(ArmConstants.kArmIntakePositionFromGround);
     }
 
-    public double getSupplyCurrent(){
+    public double getMotorSupplyCurrent(){
         return armMotor.getSupplyCurrent();
+    }
+
+    public double getMotorTorqueCurrent(){
+        return armMotor.getTorqueCurrent();
     }
 
     public void setHPIntakePosition() {

@@ -117,11 +117,11 @@ public class Climber extends SubsystemBase {
     return rightClimber.getPosition() > ClimberConstants.kClimberDeployPosition;
   }
 
-  public double getLeftArmCurrent(){
+  public double getLeftArmSupplyCurrent(){
     return leftClimber.getSupplyCurrent();
   }
 
-  public double getRightArmCurrent(){
+  public double getRightArmSupplyCurrent(){
     return rightClimber.getSupplyCurrent();
   }
 

@@ -79,12 +79,20 @@ public class Flywheel extends SubsystemBase {
         flywheelRightMotor.setMotor(speed);
     }
 
-    public double getLeftMotorCurrent(){
+    public double getLeftMotorSupplyCurrent(){
         return flywheelLeftMotor.getSupplyCurrent();
     }
 
-    public double getRightMotorCurrent(){
+    public double getRightMotorSupplyCurrent(){
         return flywheelRightMotor.getSupplyCurrent();
+    }
+
+    public double getLeftMotorTorqueCurrent(){
+        return flywheelLeftMotor.getTorqueCurrent();
+    }
+    
+    public double getRightMotorTorqueCurrent(){
+        return flywheelRightMotor.getTorqueCurrent();
     }
 
     public void stopFlywheel() {
