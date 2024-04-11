@@ -486,35 +486,68 @@ public class Drivetrain extends SubsystemBase {
         gyroHistory[0] = getHeading();
     }
 
-    public double getFrontLeftDriveCurrent() {
+    public double getFrontLeftDriveSupplyCurrent() {
         return frontLeftModule.getDriveMotorSupplyCurrent();
     }
 
-    public double getFrontLeftSteerCurrent() {
+    public double getFrontLeftSteerSupplyCurrent() {
         return frontLeftModule.getSteerMotorSupplyCurrent();
     }
 
-    public double getFrontRightDriveCurrent() {
+    public double getFrontRightDriveSupplyCurrent() {
         return frontRightModule.getDriveMotorSupplyCurrent();
     }
 
-    public double getFrontRightSteerCurrent() {
+    public double getFrontRightSteerSupplyCurrent() {
         return frontRightModule.getSteerMotorSupplyCurrent();
     }
 
-    public double getBackLeftDriveCurrent() {
+    public double getBackLeftDriveSupplyCurrent() {
         return backLeftModule.getDriveMotorSupplyCurrent();
     }
 
-    public double getBackLeftSteerCurrent() {
+    public double getBackLeftSteerSupplyCurrent() {
         return backLeftModule.getSteerMotorSupplyCurrent();
     }
 
-    public double getBackRightDriveCurrent() {
+    public double getBackRightDriveSupplyCurrent() {
         return backRightModule.getDriveMotorSupplyCurrent();
     }
 
-    public double getBackRightSteerCurrent() {
+    public double getBackRightSteerSupplyCurrent() {
         return backRightModule.getSteerMotorSupplyCurrent();
+    }
+    
+
+    public double getFrontLeftDriveStatorCurrent() {
+        return frontLeftModule.getDriveMotorStatorCurrent();
+    }
+    
+    public double getFrontLeftSteerStatorCurrent() {
+        return frontLeftModule.getSteerMotorStatorCurrent();
+    }
+    
+    public double getFrontRightDriveStatorCurrent() {
+        return frontRightModule.getDriveMotorStatorCurrent();
+    }
+    
+    public double getFrontRightSteerStatorCurrent() {
+        return frontRightModule.getSteerMotorStatorCurrent();
+    }
+    
+    public double getBackLeftDriveStatorCurrent() {
+        return backLeftModule.getDriveMotorStatorCurrent();
+    }
+    
+    public double getBackLeftSteerStatorCurrent() {
+        return backLeftModule.getSteerMotorStatorCurrent();
+    }
+    
+    public double getBackRightDriveStatorCurrent() {
+        return backRightModule.getDriveMotorStatorCurrent();
+    }
+    
+    public double getBackRightSteerStatorCurrent() {
+        return backRightModule.getSteerMotorStatorCurrent();
     }
 }

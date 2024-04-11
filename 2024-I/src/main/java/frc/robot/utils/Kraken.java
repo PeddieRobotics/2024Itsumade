@@ -351,6 +351,10 @@ public class Kraken {
         return talon.getSupplyCurrent().getValueAsDouble();
     }
 
+    public double getStatorCurrent() {
+        return talon.getStatorCurrent().getValueAsDouble();
+    }
+
     // get the temperature of the motor
     public double getMotorTemperature() {
         return talon.getDeviceTemp().getValueAsDouble();

@@ -27,8 +27,11 @@ public class Logger {
                 leftFlywheelCurrentEntry,rightFlywheelCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,
                 LLDistanceEntry, armCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
                 climberLeftArmCurrent, climberRightArmCurrent, numOfApriltagEntry, stdDevEntry;
+    private DoubleLogEntry frontLeftDriveSupplyCurrent, frontLeftSteerSupplyCurrent, frontRightDriveSupplyCurrent,frontRightSteerSupplyCurrent,
+                backLeftDriveSupplyCurrent,backLeftSteerSupplyCurrent,backRightDriveSupplyCurrent, backRightSteerSupplyCurrent;
+    private DoubleLogEntry frontLeftDriveStatorCurrent, frontLeftSteerStatorCurrent, frontRightDriveStatorCurrent,frontRightSteerStatorCurrent,
+                backLeftDriveStatorCurrent,backLeftSteerStatorCurrent,backRightDriveStatorCurrent, backRightSteerStatorCurrent;
 
-    private DoubleLogEntry frontLeftDrivecurrent, frontLeftSteercurrent, frontRightDrivecurrent,frontRightSteercurrent, backLeftDrivecurrent,backLeftSteercurrent,backRightDrivecurrent, backRightSteercurrent;
     private StringLogEntry robotStateEntry, commandEntry, lightStateEntry;
     private DoubleArrayLogEntry fieldPositionEntry, botposeFieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     private DataLog log = DataLogManager.getLog();
@@ -76,14 +79,14 @@ public class Logger {
         stdDevEntry = new DoubleLogEntry(log, "/Drivetrain/Megatag stddev");
 
         //swerve module logs
-        frontLeftDrivecurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Drive Current");
-        frontLeftSteercurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Steer Current");
-        frontRightDrivecurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Drive Current");
-        frontRightSteercurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Steer Current");
-        backLeftDrivecurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Drive Current");
-        backLeftSteercurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Steer Current");
-        backRightDrivecurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Drive Current");
-        backRightSteercurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Steer Current");
+        frontLeftDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Drive Current");
+        frontLeftSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Left Steer Current");
+        frontRightDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Drive Current");
+        frontRightSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Front Right Steer Current");
+        backLeftDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Drive Current");
+        backLeftSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Left Steer Current");
+        backRightDriveSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Drive Current");
+        backRightSteerSupplyCurrent = new DoubleLogEntry(log, "/Drivetrain/Back Right Steer Current");
 
         // Intake Logs
         intakeSensorEntry = new BooleanLogEntry(log, "/Intake/Intake Sensor");
@@ -202,17 +205,30 @@ public class Logger {
         stdDevEntry.append(drivetrain.getStandardDeviation());
 
         //Swerve modules
-        frontLeftDrivecurrent.append(drivetrain.getFrontLeftDriveCurrent());
-        frontLeftSteercurrent.append(drivetrain.getFrontLeftSteerCurrent());
+        frontLeftDriveSupplyCurrent.append(drivetrain.getFrontLeftDriveSupplyCurrent());
+        frontLeftSteerSupplyCurrent.append(drivetrain.getFrontLeftSteerSupplyCurrent());
         
-        frontRightDrivecurrent.append(drivetrain.getFrontRightDriveCurrent());
-        frontRightSteercurrent.append(drivetrain.getFrontRightSteerCurrent());
+        frontRightDriveSupplyCurrent.append(drivetrain.getFrontRightDriveSupplyCurrent());
+        frontRightSteerSupplyCurrent.append(drivetrain.getFrontRightSteerSupplyCurrent());
         
-        backLeftDrivecurrent.append(drivetrain.getBackLeftDriveCurrent());
-        backLeftSteercurrent.append(drivetrain.getBackLeftSteerCurrent());
+        backLeftDriveSupplyCurrent.append(drivetrain.getBackLeftDriveSupplyCurrent());
+        backLeftSteerSupplyCurrent.append(drivetrain.getBackLeftSteerSupplyCurrent());
         
-        backRightDrivecurrent.append(drivetrain.getBackRightDriveCurrent());
-        backRightSteercurrent.append(drivetrain.getBackRightSteerCurrent());
+        backRightDriveSupplyCurrent.append(drivetrain.getBackRightDriveSupplyCurrent());
+        backRightSteerSupplyCurrent.append(drivetrain.getBackRightSteerSupplyCurrent());
+
+        
+        frontLeftDriveStatorCurrent.append(drivetrain.getFrontLeftDriveStatorCurrent());
+        frontLeftSteerStatorCurrent.append(drivetrain.getFrontLeftSteerStatorCurrent());
+
+        frontRightDriveStatorCurrent.append(drivetrain.getFrontRightDriveStatorCurrent());
+        frontRightSteerStatorCurrent.append(drivetrain.getFrontRightSteerStatorCurrent());
+
+        backLeftDriveStatorCurrent.append(drivetrain.getBackLeftDriveStatorCurrent());
+        backLeftSteerStatorCurrent.append(drivetrain.getBackLeftSteerStatorCurrent());
+
+        backRightDriveStatorCurrent.append(drivetrain.getBackRightDriveStatorCurrent());
+        backRightSteerStatorCurrent.append(drivetrain.getBackRightSteerStatorCurrent());
 
         SmartDashboard.putNumber("Standard Deviation from Logger", drivetrain.getStandardDeviation());
     }
