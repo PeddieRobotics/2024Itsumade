@@ -25,7 +25,7 @@ public class Logger {
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
     private DoubleLogEntry gyroAngleEntry, adjustedGyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, intakeSpeedEntry, hopperCurrentEntry, 
                 leftFlywheelSupplyCurrentEntry,rightFlywheelSupplyCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,
-                LLDistanceEntry, armSupplyCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
+                LLDistanceEntry, LLTxEntry, armSupplyCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
                 climberLeftArmCurrent, climberRightArmCurrent, numOfApriltagEntry, stdDevEntry, armTorqueCurrentEntry, rightFlywheelTorqueCurrentEntry, leftFlywheelTorqueCurrentEntry;
     private DoubleLogEntry frontLeftDriveSupplyCurrent, frontLeftSteerSupplyCurrent, frontRightDriveSupplyCurrent,frontRightSteerSupplyCurrent,
                 backLeftDriveSupplyCurrent,backLeftSteerSupplyCurrent,backRightDriveSupplyCurrent, backRightSteerSupplyCurrent;
@@ -133,6 +133,7 @@ public class Logger {
         //LL logs
         LLDistanceEntry = new DoubleLogEntry(log, "/Limelight/Distance");
         numOfApriltagEntry = new DoubleLogEntry(log, "/Limelight/Number of Apriltags");
+        LLTxEntry = new DoubleLogEntry(log, "/Limelight/Tx");
 
         //commands used
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
@@ -185,6 +186,7 @@ public class Logger {
         //limelight
         LLDistanceEntry.append(limelightShooter.getDistance());
         numOfApriltagEntry.append(drivetrain.getNumApriltags());
+        LLTxEntry.append(limelightShooter.getTx());
 
         //Climber
         climberLeftArmCurrent.append(climber.getLeftArmSupplyCurrent());

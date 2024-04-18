@@ -120,7 +120,7 @@ public class HybridTarget extends Command {
     @Override
     public void end(boolean interrupted) {
         drivetrain.stop();
-        logger.logEvent("Hybrid Target Command, offset " + target, false);
+        logger.logEvent("Hybrid Target Command, offset " + target + " error " + error, false);
         lights.requestState(LightState.IDLE);
     }
 

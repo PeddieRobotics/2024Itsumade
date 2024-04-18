@@ -100,7 +100,7 @@ public class Target extends Command {
     public void end(boolean interrupted) {
         // SmartDashboard.putBoolean("Targetting", false);
         drivetrain.stop();
-        logger.logEvent("Target Command, offset " + target, false);
+        logger.logEvent("Target Command, offset " + target + " error " + error, false);
         lights.requestState(LightState.IDLE);
     }
 
