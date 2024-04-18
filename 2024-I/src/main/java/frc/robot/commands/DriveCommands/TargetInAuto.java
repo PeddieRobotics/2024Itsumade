@@ -126,7 +126,7 @@ public class TargetInAuto extends Command {
     @Override
     public void end(boolean interrupted) {
         drivetrain.stop();
-        logger.logEvent("Target Command", false);
+        logger.logEvent("Target Command, offset " + target, false);
         lights.requestState(LightState.IDLE);
     }
 

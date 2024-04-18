@@ -199,7 +199,7 @@ public final class Constants {
     public static final double kBlueCornerPassingX = 0;
     public static final double kBlueCornerPassingY = 7.6;
 
-    public static final double kCornerPassingGyroAngle = 142.5;
+    public static final double kCornerPassingGyroAngle = 135; // 142.5
 
 
     // center of speaker april tag height in inches (used for LL distance calculations)
@@ -308,7 +308,7 @@ public final class Constants {
     public static final double kFlywheelD = 0;
     public static final double kFlywheelFF = 0;
 
-    public static final double kFlywheelLobPassSpeedMultiplier = 1.1;
+    public static final double kFlywheelLobPassSpeedMultiplier = 1.0; // 1.1
   }
 
   public static class ScoringConstants {
@@ -331,7 +331,7 @@ public final class Constants {
     public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;
     public static final double kShootingStateTime = 0.1;
-    public static final double kAmpShootingStateTime = 0.5;
+    public static final double kAmpShootingStateTime = 0.1;
     public static final double kForceShootTime = 0.8;
 
         // Distance (horizontal inches to goal as estimated by LL), Angle (degrees) -

@@ -214,11 +214,6 @@ public class Superstructure extends SubsystemBase {
 
                     if (!DriverStation.isAutonomous()) {
                         requestState(SuperstructureState.STOW);
-
-                        // LimelightHelper.setLEDMode_ForceBlink("limelight-intake");
-
-                        // candle.animate(new StrobeAnimation(125, 35, 250), 0);
-                        // candle.setLEDs(125, 35, 250);
                     }
                 }
 
@@ -365,7 +360,8 @@ public class Superstructure extends SubsystemBase {
                     hopper.feedFlywheelAmp();
                     intake.stopIntake();
                     timer.start();
-                } else if (!isGamepieceIndexed() && timer.hasElapsed(ScoringConstants.kAmpShootingStateTime)) {
+                }
+                if (!hopper.hasGamepiece() && timer.hasElapsed(ScoringConstants.kAmpShootingStateTime)) {
                     Logger.getInstance().logEvent("Amp shot finished, arm angle " + arm.getArmAngleDegrees(), false);
                     flywheel.stopFlywheel();
                     hopper.stopHopper();

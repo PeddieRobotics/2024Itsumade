@@ -23,7 +23,7 @@ import frc.robot.subsystems.Superstructure;
 public class Logger {
     private static Logger instance;
     private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
-    private DoubleLogEntry gyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, intakeSpeedEntry, hopperCurrentEntry, 
+    private DoubleLogEntry gyroAngleEntry, adjustedGyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, intakeSpeedEntry, hopperCurrentEntry, 
                 leftFlywheelSupplyCurrentEntry,rightFlywheelSupplyCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,
                 LLDistanceEntry, armSupplyCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
                 climberLeftArmCurrent, climberRightArmCurrent, numOfApriltagEntry, stdDevEntry, armTorqueCurrentEntry, rightFlywheelTorqueCurrentEntry, leftFlywheelTorqueCurrentEntry;
@@ -71,6 +71,7 @@ public class Logger {
 
         // Drivetrain Logs
         gyroAngleEntry = new DoubleLogEntry(log, "/Drivetrain/Gyro Angle");
+        adjustedGyroAngleEntry = new DoubleLogEntry(log, "/Drivetrain/Adjusted Gyro Angle");
         drivetrainSpeedEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Speed");
         fieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Position");
         botposeFieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Botpose position");
@@ -198,6 +199,7 @@ public class Logger {
     //put swerve module speeds and positions to log
     public void updateDrivetrainLogs() {
         gyroAngleEntry.append(drivetrain.getHeading());
+        adjustedGyroAngleEntry.append(drivetrain.getAdjustedGyroHeading());
         drivetrainSpeedEntry.append(drivetrain.getSpeed());
 
         double[] pose = { drivetrain.getPose().getX(), drivetrain.getPose().getY(),
