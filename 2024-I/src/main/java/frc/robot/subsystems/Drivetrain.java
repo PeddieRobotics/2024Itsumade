@@ -64,7 +64,8 @@ public class Drivetrain extends SubsystemBase {
     private double K2 = 4.0; // growth rate
     private double H2 = 3.3; // midpoint
 
-    private double passingGyroAngle;
+    private double redPassingGyroAngle;
+    private double bluePassingGyroAngle;
 
     private double sigmoid2(double dist) {
         return (S2 - I2) / (1.0 + Math.exp(-K2 * (dist - H2))) + I2;
@@ -134,7 +135,8 @@ public class Drivetrain extends SubsystemBase {
         limelightShooter = LimelightShooter.getInstance();
         limelightIntake = LimelightIntake.getInstance();
 
-        passingGyroAngle = LimelightConstants.kCornerPassingGyroAngle;
+        redPassingGyroAngle = LimelightConstants.kRedCornerPassingGyroAngle;
+        bluePassingGyroAngle = LimelightConstants.kBlueCornerPassingGyroAngle;
 
         // SmartDashboard.putBoolean("Reset Gyro", false);
 
@@ -405,6 +407,18 @@ public class Drivetrain extends SubsystemBase {
         resetPose(odometry.getEstimatedPosition());
     }
 
+    public double getGyroXAcceleration(){
+        return gyro.getAccelerationX().getValueAsDouble();
+    }
+
+    public double getGyroYAcceleration(){
+        return gyro.getAccelerationY().getValueAsDouble();
+    }
+
+    public double getGyroZAcceleration(){
+        return gyro.getAccelerationZ().getValueAsDouble();
+    }
+
     public double[] getModuleRotations() {
         double[] positions = { frontLeftModule.getRotations(),
                 backLeftModule.getRotations(),
@@ -425,12 +439,20 @@ public class Drivetrain extends SubsystemBase {
         return autoAdjustAngle;
     }
 
-    public void setPassingGyroAngle(double angle){
-        passingGyroAngle = angle;
+    public void setRedPassingGyroAngle(double angle){
+        redPassingGyroAngle = angle;
     }
 
-    public double getPassingGyroAngle(){
-        return passingGyroAngle;
+    public double getRedPassingGyroAngle(){
+        return redPassingGyroAngle;
+    }
+
+    public void setBluePassingGyroAngle(double angle){
+        bluePassingGyroAngle = angle;
+    }
+
+    public double getBluePassingGyroAngle(){
+        return bluePassingGyroAngle;
     }
 
     public double getPastHeading(double latency){

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -86,7 +87,7 @@ public class DriverOI {
         circleButton.whileTrue(new ConditionalCommand(new PassingTarget(),
             new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
             superstructure::isPassing));
-        //circleButton.whileTrue(new PassingTarget());
+        // circleButton.whileTrue(new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
@@ -95,7 +96,11 @@ public class DriverOI {
         squareButton.whileTrue(new FollowNote());
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
-        touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
+        touchpadButton.onTrue(
+            new ParallelCommandGroup(
+                new InstantCommand(() -> superstructure.requestState(SuperstructureState.LOB_PASS_PREP)),
+                new PassingTarget()
+            ));
 
         Trigger muteButton = new JoystickButton(controller, 15);
         muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));
@@ -104,6 +109,7 @@ public class DriverOI {
         L1Bumper.whileTrue(new ConditionalCommand(new PassingTarget(),
             new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
             superstructure::isPassing));
+        //L1Bumper.whileTrue(new PassingTarget());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new RetractClimber()); 
@@ -116,7 +122,7 @@ public class DriverOI {
         ps5Button.onTrue(new InstantCommand(() -> drivetrain.resetGyro()));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
-        // optionButton.onTrue(new SnapToSpeaker());
+        optionButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
 

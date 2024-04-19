@@ -31,6 +31,7 @@ public class PassingTarget extends Command {
 
     private double setpoint;
 
+
     public PassingTarget() {
         drivetrain = Drivetrain.getInstance();
 
@@ -64,9 +65,9 @@ public class PassingTarget extends Command {
         initialHeading = drivetrain.getAdjustedGyroHeading();
 
         if(DriverStation.getAlliance().get() == Alliance.Red){
-            setpoint = -drivetrain.getPassingGyroAngle(); 
+            setpoint = drivetrain.getRedPassingGyroAngle(); 
         } else {
-            setpoint = drivetrain.getPassingGyroAngle();
+            setpoint = drivetrain.getBluePassingGyroAngle();
         }
     }
 

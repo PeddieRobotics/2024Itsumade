@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 5.842988609054142,
+        "x": 6.35,
         "y": 1.8747191340536533
       },
       "prevControl": {
-        "x": 3.6119233700005884,
+        "x": 4.118934760946446,
         "y": 0.9752127476282941
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "MidNote4"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],

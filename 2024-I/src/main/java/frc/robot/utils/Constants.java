@@ -199,7 +199,8 @@ public final class Constants {
     public static final double kBlueCornerPassingX = 0;
     public static final double kBlueCornerPassingY = 7.6;
 
-    public static final double kCornerPassingGyroAngle = 135; // 142.5
+    public static final double kBlueCornerPassingGyroAngle = 138; // 142.5
+    public static final double kRedCornerPassingGyroAngle = -133;
 
 
     // center of speaker april tag height in inches (used for LL distance calculations)
@@ -308,7 +309,7 @@ public final class Constants {
     public static final double kFlywheelD = 0;
     public static final double kFlywheelFF = 0;
 
-    public static final double kFlywheelLobPassSpeedMultiplier = 1.0; // 1.1
+    public static final double kFlywheelLobPassSpeedMultiplier = 1.03; // was 1.1 -> 1.0
   }
 
   public static class ScoringConstants {

@@ -48,7 +48,7 @@ public class OperatorTab extends ShuffleboardTabBase {
                         flywheelAtRPMEntry, redTargetingOffsetEntry, llDistanceMultiplierEntry, llDistanceEntry,
                         ampAngleEntry,
                         blueTargetingOffsetEntry, isIndexedOverrideEntry, topSensorEntry, bottomSensorEntry,
-                        hasGamePieceEntry, useOdometryTargetEntry, lobPassAngleEntry, lobPassFlywheelMultiplierEntry, passTargetEntry;
+                        hasGamePieceEntry, useOdometryTargetEntry, lobPassAngleEntry, lobPassFlywheelMultiplierEntry, bluePassTargetEntry, redPassTargetEntry;
 
         public OperatorTab() {
                 arm = Arm.getInstance();
@@ -100,7 +100,7 @@ public class OperatorTab extends ShuffleboardTabBase {
 
                         ampAngleEntry = tab.add("Amp Angle", ArmConstants.kArmAmpPosition)
                                         .withSize(1, 1)
-                                        .withPosition(14, 2)
+                                        .withPosition(15, 3)
                                         .getEntry();
 
                         redTargetingOffsetEntry = tab.add("Red Target", LimelightConstants.kRedTargetTarget)
@@ -117,9 +117,13 @@ public class OperatorTab extends ShuffleboardTabBase {
                                         .withSize(1, 1)
                                         .withPosition(15, 1)
                                         .getEntry();
-                        passTargetEntry = tab.add("Pass Tgt Angle", LimelightConstants.kCornerPassingGyroAngle)
+                        bluePassTargetEntry = tab.add("Blue Pass Angle", LimelightConstants.kBlueCornerPassingGyroAngle)
                                         .withSize(1,1)
                                         .withPosition(13, 2)
+                                        .getEntry();
+                        redPassTargetEntry = tab.add("Red Pass Angle", LimelightConstants.kRedCornerPassingGyroAngle)
+                                        .withSize(1,1)
+                                        .withPosition(14, 2)
                                         .getEntry();
 
                         // Return to this later
@@ -175,7 +179,8 @@ public class OperatorTab extends ShuffleboardTabBase {
                         arm.setAmpScoringAngle(ampAngleEntry.getDouble(ArmConstants.kArmAmpPosition));
                         arm.setLobPassAngle(lobPassAngleEntry.getDouble(ArmConstants.kArmLobPassPosition));
 
-                        drivetrain.setPassingGyroAngle(passTargetEntry.getDouble(LimelightConstants.kCornerPassingGyroAngle));
+                        drivetrain.setBluePassingGyroAngle(bluePassTargetEntry.getDouble(LimelightConstants.kBlueCornerPassingGyroAngle));
+                        drivetrain.setRedPassingGyroAngle(redPassTargetEntry.getDouble(LimelightConstants.kRedCornerPassingGyroAngle));
 
                         // isIndexedOverrideEntry.getBoolean(false); // Return to this later
                         stateEntry.setString(superstructure.getRobotState());

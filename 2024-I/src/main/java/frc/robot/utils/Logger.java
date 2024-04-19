@@ -17,16 +17,18 @@ import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.LimelightIntake;
 import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure;
 
 public class Logger {
     private static Logger instance;
-    private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry;
+    private BooleanLogEntry intakeSensorEntry, hopperBottomSensorEntry, hopperTopSensorEntry, LLIntakeHasTargetEntry;
     private DoubleLogEntry gyroAngleEntry, adjustedGyroAngleEntry, drivetrainSpeedEntry, intakeCurrentEntry, intakeSpeedEntry, hopperCurrentEntry, 
                 leftFlywheelSupplyCurrentEntry,rightFlywheelSupplyCurrentEntry,armAngleEntry,leftFlywheelRPMEntry,rightFlywheelRPMEntry,
-                LLDistanceEntry, LLTxEntry, armSupplyCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
-                climberLeftArmCurrent, climberRightArmCurrent, numOfApriltagEntry, stdDevEntry, armTorqueCurrentEntry, rightFlywheelTorqueCurrentEntry, leftFlywheelTorqueCurrentEntry;
+                LLShooterDistanceEntry, LLShooterTxEntry, LLIntakeTxEntry, armSupplyCurrentEntry, armAngleSetpointEntry, climberLeftArmPosition, climberRightArmPosition,
+                climberLeftArmCurrent, climberRightArmCurrent, LLShooterNumOfApriltagEntry, stdDevEntry, armTorqueCurrentEntry, rightFlywheelTorqueCurrentEntry, leftFlywheelTorqueCurrentEntry,
+                gyroXAccelEntry, gyroYAccelEntry, gyroZAccelEntry;
     private DoubleLogEntry frontLeftDriveSupplyCurrent, frontLeftSteerSupplyCurrent, frontRightDriveSupplyCurrent,frontRightSteerSupplyCurrent,
                 backLeftDriveSupplyCurrent,backLeftSteerSupplyCurrent,backRightDriveSupplyCurrent, backRightSteerSupplyCurrent;
     private DoubleLogEntry frontLeftDriveStatorCurrent, frontLeftSteerStatorCurrent, frontRightDriveStatorCurrent,frontRightSteerStatorCurrent,
@@ -44,6 +46,7 @@ public class Logger {
     private Arm arm;
     private Climber climber;
     private LimelightShooter limelightShooter;
+    private LimelightIntake limelightIntake;
     private Hopper hopper;
     private Superstructure superstructure;
     private Lights lights;
@@ -60,7 +63,8 @@ public class Logger {
         intake = Intake.getInstance();
         arm = Arm.getInstance();
         flywheel = Flywheel.getInstance();
-        limelightShooter=LimelightShooter.getInstance();
+        limelightShooter = LimelightShooter.getInstance();
+        limelightIntake = LimelightIntake.getInstance();
         hopper = Hopper.getInstance();
         superstructure = Superstructure.getInstance();
         climber = Climber.getInstance();
@@ -72,6 +76,11 @@ public class Logger {
         // Drivetrain Logs
         gyroAngleEntry = new DoubleLogEntry(log, "/Drivetrain/Gyro Angle");
         adjustedGyroAngleEntry = new DoubleLogEntry(log, "/Drivetrain/Adjusted Gyro Angle");
+
+        gyroXAccelEntry = new DoubleLogEntry(log, "/Drivetrain/Gyro X Accel");
+        gyroYAccelEntry = new DoubleLogEntry(log, "/Drivetrain/Gyro Y Accel");
+        gyroZAccelEntry = new DoubleLogEntry(log, "/Drivetrain/Gyro Z Accel");
+
         drivetrainSpeedEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Speed");
         fieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Position");
         botposeFieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Botpose position");
@@ -131,9 +140,12 @@ public class Logger {
         climberRightArmCurrent = new DoubleLogEntry(log, "/Climber/Right Arm Motor Current");
 
         //LL logs
-        LLDistanceEntry = new DoubleLogEntry(log, "/Limelight/Distance");
-        numOfApriltagEntry = new DoubleLogEntry(log, "/Limelight/Number of Apriltags");
-        LLTxEntry = new DoubleLogEntry(log, "/Limelight/Tx");
+        LLShooterDistanceEntry = new DoubleLogEntry(log, "/Limelight Shooter/Distance");
+        LLShooterNumOfApriltagEntry = new DoubleLogEntry(log, "/Limelight Shooter/Number of Apriltags");
+        LLShooterTxEntry = new DoubleLogEntry(log, "/Limelight Shooter/Tx");
+        
+        LLIntakeHasTargetEntry = new BooleanLogEntry(log, "/Limelight Intake/Has Target");
+        LLIntakeTxEntry = new DoubleLogEntry(log, "/Limelight Intake/Tx");
 
         //commands used
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
@@ -184,9 +196,12 @@ public class Logger {
         armTorqueCurrentEntry.append(arm.getMotorTorqueCurrent());
 
         //limelight
-        LLDistanceEntry.append(limelightShooter.getDistance());
-        numOfApriltagEntry.append(drivetrain.getNumApriltags());
-        LLTxEntry.append(limelightShooter.getTx());
+        LLShooterDistanceEntry.append(limelightShooter.getDistance());
+        LLShooterNumOfApriltagEntry.append(drivetrain.getNumApriltags());
+        LLShooterTxEntry.append(limelightShooter.getTx());
+
+        LLIntakeHasTargetEntry.append(limelightIntake.hasTarget());
+        LLIntakeTxEntry.append(limelightIntake.getTx());
 
         //Climber
         climberLeftArmCurrent.append(climber.getLeftArmSupplyCurrent());
@@ -202,6 +217,11 @@ public class Logger {
     public void updateDrivetrainLogs() {
         gyroAngleEntry.append(drivetrain.getHeading());
         adjustedGyroAngleEntry.append(drivetrain.getAdjustedGyroHeading());
+
+        gyroXAccelEntry.append(drivetrain.getGyroXAcceleration());
+        gyroYAccelEntry.append(drivetrain.getGyroYAcceleration());
+        gyroZAccelEntry.append(drivetrain.getGyroZAcceleration());
+
         drivetrainSpeedEntry.append(drivetrain.getSpeed());
 
         double[] pose = { drivetrain.getPose().getX(), drivetrain.getPose().getY(),
