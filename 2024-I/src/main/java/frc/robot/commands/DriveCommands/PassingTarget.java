@@ -17,7 +17,9 @@ import frc.robot.subsystems.LimelightShooter;
 import frc.robot.utils.Constants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Logger;
+import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.LimelightConstants;
+import frc.robot.utils.Constants.OIConstants;
 
 // Turns to target by precalculating a gyro angle to goal based on Limelight TX
 public class PassingTarget extends Command {
@@ -93,6 +95,7 @@ public class PassingTarget extends Command {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(Math.abs(currentHeading) - setpoint) < turnThreshold;
+        return Math.abs(Math.abs(currentHeading) - setpoint) < turnThreshold || Math.abs(oi.getRotation()) > OIConstants.kDrivingDeadband;
     }
 }
+
