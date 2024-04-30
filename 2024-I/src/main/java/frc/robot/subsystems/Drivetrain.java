@@ -384,6 +384,13 @@ public class Drivetrain extends SubsystemBase {
         
     }
 
+    public void resetPoseWithFlipping(double x, double y, double theta) {
+        boolean isRed = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+        theta = isRed ? theta - 180 : theta;
+        x = isRed ? 16.542 - x : x;
+        resetPose(new Pose2d(x, y, Rotation2d.fromDegrees(theta)));
+    }
+
     public double getSpeed() {
         return currentDrivetrainSpeed;
     }

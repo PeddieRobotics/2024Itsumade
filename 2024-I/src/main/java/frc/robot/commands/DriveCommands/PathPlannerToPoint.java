@@ -36,12 +36,6 @@ public class PathPlannerToPoint extends Command {
 
     @Override
     public void initialize() {
-        // if the robot is parked (we do not want it to move anymore) then do not do anything
-        if (drivetrain.getIsParkedAuto()) {
-            followPathCommand = null;
-            return;
-        }
-        
         // pathfindToPose doesn't flip coordinates for red side. Have to do that manually
         boolean isRed = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
         turnTarget = isRed ? turnTargetInitial - 180 : turnTargetInitial;
@@ -49,7 +43,7 @@ public class PathPlannerToPoint extends Command {
 
         // PathPlanner on the fly pathfinding code
         PathConstraints constraints = new PathConstraints(
-            1.5, 1.5, Units.degreesToRadians(720), Units.degreesToRadians(720)
+            1.5, 1.5, Units.degreesToRadians(520), Units.degreesToRadians(540)
         );
 
         Pose2d targetPose = new Pose2d(xTarget, yTarget, Rotation2d.fromDegrees(turnTarget));

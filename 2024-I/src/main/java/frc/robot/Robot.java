@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -14,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Shuffleboard.ShuffleboardMain;
+import frc.robot.commands.DriveCommands.PathPlannerToPoint;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightShooter;
 import frc.robot.subsystems.Superstructure;
@@ -98,7 +101,8 @@ public class Robot extends TimedRobot {
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+      Drivetrain.getInstance().resetPoseWithFlipping(6.24, 4.10, 180);
+      new PathPlannerToPoint(2.91, 5.54, 180, 10).schedule();
     }
     logger.logEvent("Autonomous Mode", true);
     logger.signalRobotEnable();

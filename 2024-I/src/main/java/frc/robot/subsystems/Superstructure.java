@@ -147,7 +147,7 @@ public class Superstructure extends SubsystemBase {
                 }
 
                 if (DriverStation.isAutonomous()) {
-                    flywheel.runFlywheelLimelight();
+                    // flywheel.runFlywheelLimelight();
                 } else {
                     flywheel.stopFlywheel();
                 }
@@ -198,7 +198,7 @@ public class Superstructure extends SubsystemBase {
                 if (!DriverStation.isAutonomous()) {
                     flywheel.stopFlywheel();
                 } else {
-                    flywheel.runFlywheelLimelight();
+                    // flywheel.runFlywheelLimelight();
                 }
 
                 if(intake.getSensor()){
@@ -262,7 +262,7 @@ public class Superstructure extends SubsystemBase {
                 if (!DriverStation.isAutonomous()) {
                     flywheel.stopFlywheel();
                 } else {
-                    flywheel.runFlywheelLimelight();
+                    // flywheel.runFlywheelLimelight();
                 }
 
                 if (requestedSystemState == SuperstructureState.STOW) {
