@@ -195,7 +195,7 @@ public class Drivetrain extends SubsystemBase {
         // Updating the odometry
         for (int i = 0; i < 4; i++) {
             swerveModulePositions[i] = swerveModules[i].getPosition();
-            swerveModules[i].putSmartDashboard();
+            // swerveModules[i].putSmartDashboard();
         }
 
         double distance = Units.inchesToMeters(limelightShooter.getDistance());

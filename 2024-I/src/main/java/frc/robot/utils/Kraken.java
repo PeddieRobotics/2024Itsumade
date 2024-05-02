@@ -99,8 +99,8 @@ public class Kraken {
     public void setSupplyCurrentLimit(double currentLimit) {
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.SupplyCurrentLimit = currentLimit;
-        // config.CurrentLimits.StatorCurrentLimitEnable = true;
-        // config.CurrentLimits.StatorCurrentLimit = currentLimit;
+        config.CurrentLimits.StatorCurrentLimitEnable = true;
+        config.CurrentLimits.StatorCurrentLimit = currentLimit;
 
         talon.getConfigurator().apply(config);
     }

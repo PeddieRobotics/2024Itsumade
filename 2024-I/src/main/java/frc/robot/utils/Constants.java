@@ -79,17 +79,17 @@ public final class Constants {
     public static final double kDrivingMotorCurrentLimit = 50;
     public static final double kTurningMotorCurrentLimit = 50;
 
-    public static final double kDrivingS = 0.05;
-    public static final double kDrivingV = 0.13;
+    public static final double kDrivingS = 0.0; // 0.05
+    public static final double kDrivingV = 0.0; // 0.13
     public static final double kDrivingA = 0.0;
-    public static final double kDrivingP = 0.11;
+    public static final double kDrivingP = 0.0; // 0.11
     public static final double kDrivingI = 0.0;
     public static final double kDrivingD = 0.0;
     public static final double kDrivingFF = 0.0;
 
-    public static final double kTurningP = 36;
+    public static final double kTurningP = 145.0;
     public static final double kTurningI = 0.0;
-    public static final double kTurningD = 0.0;
+    public static final double kTurningD = 4.7;
     public static final double kTurningFF = 0.0;
 
   }
