@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -40,6 +41,8 @@ public class Autonomous extends SubsystemBase {
     private Drivetrain drivetrain;
     private Superstructure superstructure;
 
+    private boolean[] midlineNoteAvailability;
+
     public Autonomous() {
         drivetrain = Drivetrain.getInstance();
         superstructure = Superstructure.getInstance();
@@ -47,6 +50,8 @@ public class Autonomous extends SubsystemBase {
         registerNamedCommands();
         configureAutoBuilder();
         autoChooser = AutoBuilder.buildAutoChooser();
+
+        midlineNoteAvailability = new boolean[5];
     }
 
     public void configureAutoBuilder() {
@@ -101,7 +106,11 @@ public class Autonomous extends SubsystemBase {
         // NamedCommands.registerCommand("Turn on MegaTag", new TurnOnMegatag());
         // NamedCommands.registerCommand("Turn off MegaTag", new TurnOffMegatag());
 
-        NamedCommands.registerCommand("W ToClosestShooting", new PathPlannerToShoot(4));
+        NamedCommands.registerCommand("W ToClosestShootingAndLLPrep", new ParallelCommandGroup(
+            new PathPlannerToShoot(4),
+            new LLPrep()
+        ));
+
         NamedCommands.registerCommand("X SeekNote", new FollowNoteInAuto(1));
         NamedCommands.registerCommand("Y ToTopSeekNoteLocation", new PathPlannerToPoint(6.36, 6.65, 0, 4));
         NamedCommands.registerCommand("Z ToBottomSeekNoteLocation", new PathPlannerToPoint(6.36, 1.64, 0, 4));
@@ -114,6 +123,14 @@ public class Autonomous extends SubsystemBase {
 
     public SendableChooser<Command> getAutoChooser() {
         return autoChooser;
+    }
+
+    public boolean[] getMidlineNoteAvailability() {
+        return midlineNoteAvailability;
+    }
+    
+    public void setMidlineNoteAvailability(int index, boolean availability) {
+        midlineNoteAvailability[index] = availability;
     }
 
     public static Autonomous getInstance() {

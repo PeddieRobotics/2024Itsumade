@@ -103,14 +103,25 @@ public final class Constants {
     public static final double kThetaI = 0.0;
     public static final double kThetaD = 0.0;
 
+    public static final int kCMAConsecutiveFrameThreshold = 5;
+
     // designated shooting coordinates (for ToClosestShooting command)
     // blue coordinates (x, y, theta)
-    public static final double[][] shootingPositions = {
-        { 3.95, 6.88, -160.00 },
-        { 3.81, 5.31, 175.00 },
-        { 2.21, 4.47, 125.00 },
-        { 3.19, 2.68, 135.00 }
+    public static final double[][] kShootingPositions = {
+        { 4.98, 1.86, 154.51 },
+        { 3.88, 2.74, 149.16 },
+        { 2.70, 2.71, -152.58 },
     };
+
+    public static final double[][] kNotePositions = {
+      { 8.00, 7.44 },
+      { 8.00, 5.77 },
+      { 8.00, 4.10 },
+      { 8.00, 2.43 },
+      { 8.00, 0.76 }
+    };
+
+    // public static final double kNoteSeekDistance = 1.5; // seek the note 1.5 meters away
 
     public static final double kFollowNoteEarlyEndMinDuration = 0.10;
     public static final double kFollowNoteEarlyEndMaxDuration = 0.25;
