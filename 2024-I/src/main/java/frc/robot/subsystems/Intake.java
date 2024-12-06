@@ -12,9 +12,6 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.Constants;
-import frc.robot.utils.RobotMap;
-import frc.robot.utils.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -26,16 +23,9 @@ public class Intake extends SubsystemBase {
   private DigitalInput intakeSensor;
 
   public Intake() {
-    intakeMotor = new TalonSRX(RobotMap.INTAKE_MOTOR_CAN_ID);
-    intakeSensor = new DigitalInput(RobotMap.INTAKE_SENSOR_ID);
+    intakeMotor = new TalonSRX(5);
     SmartDashboard.putNumber("Intake speed", 0);
 
-    config = new TalonSRXConfiguration();
-    config.continuousCurrentLimit = IntakeConstants.kIntakeCurrentLimit;
-    config.openloopRamp = IntakeConstants.kIntakeOpenLoopRampRate;
-    intakeMotor.configAllSettings(config);
-
-    intakeMotor.enableCurrentLimit(true);
   }
 
   public static Intake getInstance() {
@@ -45,51 +35,16 @@ public class Intake extends SubsystemBase {
     return intake;
   }
 
-  public void setIntake(double speed) {
-    intakeMotor.set(TalonSRXControlMode.PercentOutput, speed);
+  public void setSpeed(double speed){
+    SmartDashboard.putNumber("Intake setpoint", speed);
   }
-
-  public void stopIntake() {
-    intakeMotor.set(TalonSRXControlMode.PercentOutput, 0);
-  }
-
-  public void runIntake(){
-    setIntake(IntakeConstants.kIntakeSpeed);
-  }
-
-  public void runIntakeFeed(){
-    setIntake(IntakeConstants.kIntakeFeedSpeed);
-  }
-
-  public void reverseIntake(){
-    setIntake(-IntakeConstants.kIntakeSpeed);
-  }
-
-  public double getIntakeSpeed(){
-    return intakeMotor.getMotorOutputPercent();
-  }
-
-  public boolean hasGamepiece(){
-    return getSensor();
-  }
-
-  // returns if beam is broken
-  public boolean getSensor(){
-    return !intakeSensor.get();
-  }
-
-  public double getMotorSupplyCurrent() {
-    return intakeMotor.getSupplyCurrent();
-  }
-
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     // intakeMotor.set(TalonSRXControlMode.PercentOutput,SmartDashboard.getNumber("Intake
     // speed", 0));
-    SmartDashboard.putNumber("Intake Motor Current", getMotorSupplyCurrent());
-    SmartDashboard.putBoolean("Intake Sensor Status", getSensor());
+    SmartDashboard.putNumber("Intake speed", intakeMotor.getMotorOutputPercent());
   }
 
   @Override

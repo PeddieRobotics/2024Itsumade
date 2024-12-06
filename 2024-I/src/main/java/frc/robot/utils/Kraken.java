@@ -22,7 +22,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Arm;
 
 public class Kraken {
     private final TalonFX talon;
@@ -46,7 +45,7 @@ public class Kraken {
         
         orchestra = new Orchestra();
         orchestra.addInstrument(talon);
-        orchestra.loadMusic("output.chrp");
+        //orchestra.loadMusic("output.chrp");
     }
 
     // completely reset motor configuration to default
