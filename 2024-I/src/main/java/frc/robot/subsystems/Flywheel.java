@@ -18,14 +18,14 @@ public class Flywheel extends SubsystemBase{
         flywheelOrange.setSupplyCurrentLimit(Constants.FlywheelConstants.flywheel_current_limit);
         flywheelBlack.setForwardTorqueCurrentLimit(Constants.FlywheelConstants.flywheel_torque_limit);
         flywheelOrange.setForwardTorqueCurrentLimit(Constants.FlywheelConstants.flywheel_torque_limit);
-        flywheelBlack.setReverseTorqueCurrentLimit(Constants.FlywheelConstants.flywheel_torque_limit);
-        flywheelOrange.setReverseTorqueCurrentLimit(Constants.FlywheelConstants.flywheel_torque_limit);
+        flywheelBlack.setReverseTorqueCurrentLimit(-Constants.FlywheelConstants.flywheel_torque_limit);
+        flywheelOrange.setReverseTorqueCurrentLimit(-Constants.FlywheelConstants.flywheel_torque_limit);
 
         flywheelBlack.setInverted(false);
         flywheelOrange.setInverted(true);
 
-        flywheelBlack.setVelocityPIDValues(0, 0, 0, 1, 0, 0, 0);
-        flywheelOrange.setVelocityPIDValues(0, 0, 0, 1, 0, 0, 0);
+        flywheelBlack.setVelocityPIDValues(0.25, 0.124, 0, 0.3, 0, 0, 0);
+        flywheelOrange.setVelocityPIDValues(0.25, 0.124, 0, 0.3, 0, 0, 0);
 
         SmartDashboard.putNumber("flywheel P", 1);
         SmartDashboard.putNumber("flywheel kI", 0);
@@ -37,12 +37,12 @@ public class Flywheel extends SubsystemBase{
     
 
     public void runOrangeFlywheelVelocitySetpoint(double speed){
-        flywheelOrange.setVelocityTorqueFOC(speed/60);
+        flywheelOrange.setVelocity(speed/60);
         SmartDashboard.putNumber("orange flywheel setpoint", speed);
     }
 
     public void runBlackFlywheelVelocitySetpoint(double speed){
-        flywheelBlack.setVelocityTorqueFOC(speed);
+        flywheelBlack.setVelocity(speed/60);
         SmartDashboard.putNumber("black flywheel setpoint", speed);
     }
 
@@ -63,7 +63,8 @@ public class Flywheel extends SubsystemBase{
         flywheelOrange.setVelocityPIDValues(SmartDashboard.getNumber("flywheel kS", 0), 0, 0, SmartDashboard.getNumber("flywheel P", 1), SmartDashboard.getNumber("flywheel kI", 0), 0, 0);
         SmartDashboard.putBoolean("Update PID values", false);
       }
-        
+        SmartDashboard.putNumber("orange flywheel speed", flywheelOrange.getRPM()*60);
+        SmartDashboard.putNumber("black flywheel speed", flywheelBlack.getRPM()*60);
         runOrangeFlywheelVelocitySetpoint(SmartDashboard.getNumber("orange flywheel setpoint", 0));
         runBlackFlywheelVelocitySetpoint(SmartDashboard.getNumber("black flywheel setpoint", 0));
     }

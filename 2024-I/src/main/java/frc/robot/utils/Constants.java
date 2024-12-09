@@ -7,6 +7,19 @@ public final class Constants {
 
     }
 
+   public static class ArmConstants{
+        public static int armCancoderID = 52;
+        public static int armMotorID = 50;
+        public static double armMagnetOffset = 0.11280345;
+        public static int armCurrentLimit = 40;
+        public static int armTorqueLimit = 40;
+        public static double armRotorToGearReduction = 16384.0/125;
+        public static double armRotorToSensorRatio = (armRotorToGearReduction)/2;
+        public static double armSensorToMechanismRatio = 2;
+        public static double armForwardSoftLimit = 0.3;
+        public static double armReverseSoftLimit = -0.1;
+   }
+
     public static class FlywheelConstants{
         public static final int flywheel_orange = 8;
         public static final int flywheel_black = 7;
