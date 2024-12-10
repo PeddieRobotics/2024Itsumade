@@ -17,7 +17,7 @@ public class RunFlywheel extends Command {
 
     @Override
     public void initialize(){
-        superstructure.requestState(SuperstructureState.INTAKING);
+        superstructure.requestState(SuperstructureState.SHOOTING);
     }
 
     @Override
@@ -32,6 +32,6 @@ public class RunFlywheel extends Command {
 
     @Override
     public boolean isFinished(){
-        return false;
+        return true;
     }
 }

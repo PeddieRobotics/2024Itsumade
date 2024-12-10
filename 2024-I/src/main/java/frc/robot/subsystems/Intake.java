@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -24,6 +25,7 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     intakeMotor = new TalonSRX(5);
+    intakeSensor = new DigitalInput(Constants.IntakeConstants.intakeSensorID);
     SmartDashboard.putNumber("Intake speed", 0);
 
   }
@@ -33,6 +35,10 @@ public class Intake extends SubsystemBase {
       intake = new Intake();
     }
     return intake;
+  }
+
+  public boolean getSensor(){
+    return !intakeSensor.get();
   }
 
   public void setSpeed(double speed){

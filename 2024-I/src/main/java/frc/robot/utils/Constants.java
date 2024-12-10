@@ -18,6 +18,11 @@ public final class Constants {
         public static double armSensorToMechanismRatio = 2;
         public static double armForwardSoftLimit = 0.3;
         public static double armReverseSoftLimit = -0.1;
+        
+   }
+
+   public static class IntakeConstants{
+    public static final int intakeSensorID = 9;
    }
 
     public static class FlywheelConstants{
@@ -31,5 +36,7 @@ public final class Constants {
     public static class CartridgeConstants{
         public static final int cartridge_id = 6;
         public static final int cartridge_current_limit = 20;
+        public static final int cartridge_lower_sensor = 8;
+        public static final int cartridge_upper_sensor = 7;
     }
 }

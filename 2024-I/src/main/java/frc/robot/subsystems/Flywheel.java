@@ -35,6 +35,9 @@ public class Flywheel extends SubsystemBase{
         SmartDashboard.putBoolean("Update PID values", false);
     }
     
+    public double getOrangeSupplyCurrent(){
+        return flywheelOrange.getSupplyCurrent();
+    }
 
     public void runOrangeFlywheelVelocitySetpoint(double speed){
         flywheelOrange.setVelocity(speed/60);
