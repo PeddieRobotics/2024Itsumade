@@ -37,6 +37,7 @@ public class Intake extends SubsystemBase {
 
   public void setSpeed(double speed){
     SmartDashboard.putNumber("Intake setpoint", speed);
+    intakeMotor.set(TalonSRXControlMode.PercentOutput, speed);
   }
 
   @Override

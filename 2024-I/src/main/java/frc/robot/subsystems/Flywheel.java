@@ -58,15 +58,15 @@ public class Flywheel extends SubsystemBase{
       // This method will be called once per scheduler run
       // intakeMotor.set(TalonSRXControlMode.PercentOutput,SmartDashboard.getNumber("Intake
       // speed", 0));
-      if(SmartDashboard.getBoolean("Update PID values", false)){
-        flywheelBlack.setVelocityPIDValues(SmartDashboard.getNumber("flywheel kS", 0), 0, 0, SmartDashboard.getNumber("flywheel P", 1), SmartDashboard.getNumber("flywheel kI", 0), 0, 0);
-        flywheelOrange.setVelocityPIDValues(SmartDashboard.getNumber("flywheel kS", 0), 0, 0, SmartDashboard.getNumber("flywheel P", 1), SmartDashboard.getNumber("flywheel kI", 0), 0, 0);
-        SmartDashboard.putBoolean("Update PID values", false);
-      }
-        SmartDashboard.putNumber("orange flywheel speed", flywheelOrange.getRPM()*60);
-        SmartDashboard.putNumber("black flywheel speed", flywheelBlack.getRPM()*60);
-        runOrangeFlywheelVelocitySetpoint(SmartDashboard.getNumber("orange flywheel setpoint", 0));
-        runBlackFlywheelVelocitySetpoint(SmartDashboard.getNumber("black flywheel setpoint", 0));
+    //   if(SmartDashboard.getBoolean("Update PID values", false)){
+    //     flywheelBlack.setVelocityPIDValues(SmartDashboard.getNumber("flywheel kS", 0), 0, 0, SmartDashboard.getNumber("flywheel P", 1), SmartDashboard.getNumber("flywheel kI", 0), 0, 0);
+    //     flywheelOrange.setVelocityPIDValues(SmartDashboard.getNumber("flywheel kS", 0), 0, 0, SmartDashboard.getNumber("flywheel P", 1), SmartDashboard.getNumber("flywheel kI", 0), 0, 0);
+    //     SmartDashboard.putBoolean("Update PID values", false);
+    //   }
+    //     SmartDashboard.putNumber("orange flywheel speed", flywheelOrange.getRPM()*60);
+    //     SmartDashboard.putNumber("black flywheel speed", flywheelBlack.getRPM()*60);
+    //     runOrangeFlywheelVelocitySetpoint(SmartDashboard.getNumber("orange flywheel setpoint", 0));
+    //     runBlackFlywheelVelocitySetpoint(SmartDashboard.getNumber("black flywheel setpoint", 0));
     }
 
     
