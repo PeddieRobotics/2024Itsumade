@@ -55,7 +55,7 @@ public class Arm extends SubsystemBase {
         armMotor.setForwardTorqueCurrentLimit(ArmConstants.kArmForwardTorqueCurrentLimit);
         armMotor.setReverseTorqueCurrentLimit(ArmConstants.kArmReverseTorqueCurrentLimit);
         armMotor.setBrake();
-        armMotor.setEncoder(0);// wont be 0 if measurement is 0 when horizontal
+        armMotor.setEncoder(0); // overwritten by cancoder
 
         armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
         armMotor.setRotorToSensorRatio(ArmConstants.kRotorToSensorRatio);
