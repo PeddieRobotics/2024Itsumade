@@ -4,107 +4,57 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.utils.Logger;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Elevator;
 
-/**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
- * project.
- */
+/** This is a sample program to demonstrate the use of elevator simulation. */
 public class Robot extends TimedRobot {
+  //private final Joystick m_joystick = new Joystick(Constants.kJoystickPort);
+  private final PS4Controller controller;
+  private final Elevator m_elevator = new Elevator();
+  private final Trigger oButton;
 
-  private RobotContainer robotContainer;
-  private Logger logger;
-
-
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
-  @Override
-  public void robotInit() {
-    robotContainer = new RobotContainer();
-    DataLogManager.logNetworkTables(false);
-    DataLogManager.start("/media/sda1");
-
-    logger = Logger.getInstance();
-    DriverStation.startDataLog(DataLogManager.getLog());
+  public Robot() {
+    controller = new PS4Controller(0);
+    oButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
   }
 
-  /**
-   * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
-   * that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
-   */
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
-  
-  }
-
-  /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {
-
+    // Update the telemetry, including mechanism visualization, regardless of mode.
+    m_elevator.updateTelemetry();
   }
 
   @Override
-  public void disabledPeriodic() {}
-
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-  @Override
-  public void autonomousInit() {
-    // m_robotContainer.resetGyro();
-    
+  public void simulationPeriodic() {
+    // Update the simulation model.
+    m_elevator.simulationPeriodic();
   }
 
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {
-    logger.updateLogs();
-  }
-
-  @Override
-  public void teleopInit() {
-    
-  }
-
-  /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    logger.updateLogs();
+    if (oButton.getAsBoolean()) {
+      // Here, we set the constant setpoint of 0.75 meters.
+      m_elevator.reachGoal(Constants.kSetpointMeters);
+    } else {
+      // Otherwise, we update the setpoint to 0.
+      m_elevator.reachGoal(0.0);
+    }
   }
 
   @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
+  public void disabledInit() {
+    // This just makes sure that our simulation code knows that the motor's off.
+    m_elevator.stop();
   }
 
-  /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
-
-  /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {}
-
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {}
+  public void close() {
+    m_elevator.close();
+    super.close();
+  }
 }
