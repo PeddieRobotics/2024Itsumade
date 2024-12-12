@@ -24,7 +24,7 @@ public class Arm extends SubsystemBase{
         motor.setSupplyCurrentLimit(Constants.ArmConstants.armCurrentLimit);
         motor.setForwardTorqueCurrentLimit(Constants.ArmConstants.armTorqueLimit);
         motor.setReverseTorqueCurrentLimit(-Constants.ArmConstants.armTorqueLimit);
-        motor.setBrake();
+        motor.setCoast();
         motor.setEncoder(0);
 
         motor.setFeedbackDevice(Constants.ArmConstants.armCancoderID, FeedbackSensorSourceValue.FusedCANcoder);
