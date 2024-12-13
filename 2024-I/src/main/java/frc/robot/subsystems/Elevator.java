@@ -74,6 +74,7 @@ public class Elevator implements AutoCloseable {
     // Publish Mechanism2d to SmartDashboard
     // To view the Elevator visualization, select Network Tables -> SmartDashboard -> Elevator Sim
     SmartDashboard.putData("Elevator Sim", m_mech2d);
+    SmartDashboard.putNumber("elevator setpoint",0);
   }
 
   /** Advance the simulation. */
@@ -90,6 +91,8 @@ public class Elevator implements AutoCloseable {
     // SimBattery estimates loaded battery voltages
     RoboRioSim.setVInVoltage(
         BatterySim.calculateDefaultBatteryLoadedVoltage(m_elevatorSim.getCurrentDrawAmps()));
+
+    reachGoal(SmartDashboard.getNumber("elevator setpoint",0));
   }
 
   /**
