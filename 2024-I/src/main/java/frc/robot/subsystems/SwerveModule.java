@@ -99,8 +99,7 @@ public class SwerveModule extends SubsystemBase {
     SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(desiredState,
         new Rotation2d(getCANCoderReading()));
 
-    double desiredVelocity = optimizedDesiredState.speedMetersPerSecond * ModuleConstants.kDriveMotorReduction
-        / (2 * DriveConstants.kWheelRadius);
+    double desiredVelocity = optimizedDesiredState.speedMetersPerSecond;
     double desiredAngle = optimizedDesiredState.angle.getRadians() / (2 * Math.PI);
 
     SmartDashboard.putNumber(drivingCANId + " optimized desired velocity", desiredVelocity);
