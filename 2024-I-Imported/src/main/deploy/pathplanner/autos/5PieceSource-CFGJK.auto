@@ -1,0 +1,172 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.71,
+      "y": 4.46
+    },
+    "rotation": 120.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Side Layup Prep"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C SourceSpeaker-SourceNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LL Prep"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F SourceNote-CenterNote"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "LL Prep"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Target"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "G CenterNote-AmpNote"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "LL Prep"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Target"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "J AmpNote-MidNote2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "X SeekNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "K MidNote2-Score"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Target"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "AutoRoutines",
+  "choreoAuto": false
+}
