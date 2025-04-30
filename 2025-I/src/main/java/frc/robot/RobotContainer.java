@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Shuffleboard.ShuffleboardMain;
 import frc.robot.commands.DriveCommands.SwerveDriveCommand;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Autonomous;
+// import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
@@ -24,7 +24,7 @@ import frc.robot.utils.Constants.LimelightConstants;
 public class RobotContainer {
   private final Arm arm;
   private final Climber climber;
-  private final Autonomous autonomous;
+  // private final Autonomous autonomous;
   private final Drivetrain drivetrain;
   private final Hopper hopper;
   private final Intake intake;
@@ -38,7 +38,8 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autonomous.getAutonomousCommand();
+    // return Autonomous.getAutonomousCommand();
+    return null;
   }
 
   public RobotContainer() {
@@ -47,7 +48,7 @@ public class RobotContainer {
     climber = Climber.getInstance();
     drivetrain = Drivetrain.getInstance();
     hopper = Hopper.getInstance();
-    autonomous = Autonomous.getInstance();
+    // autonomous = Autonomous.getInstance();
     intake = Intake.getInstance();
     limelightShooter = LimelightShooter.getInstance();
     flywheel = Flywheel.getInstance();

@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Shuffleboard.ShuffleboardTabBase;
 
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Autonomous;
+// import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Hopper;
@@ -36,7 +36,7 @@ public class OperatorTab extends ShuffleboardTabBase {
         private ComplexWidget autoChooserWidget, autoSetupWidget, intakeCameraWidget, shooterCameraWidget;
 
         private Arm arm;
-        private Autonomous autonomous;
+        // private Autonomous autonomous;
         private Flywheel flywheel;
         private Hopper hopper;
         private Intake intake;
@@ -52,7 +52,7 @@ public class OperatorTab extends ShuffleboardTabBase {
 
         public OperatorTab() {
                 arm = Arm.getInstance();
-                autonomous = Autonomous.getInstance();
+                // autonomous = Autonomous.getInstance();
                 flywheel = Flywheel.getInstance();
                 hopper = Hopper.getInstance();
                 intake = Intake.getInstance();
@@ -195,10 +195,10 @@ public class OperatorTab extends ShuffleboardTabBase {
         }
 
         public void configureAutoSelector() {
-                autoChooser = autonomous.getAutoChooser();
-                autoChooserWidget = tab.add("Auto routine", autoChooser)
-                                .withSize(2, 1)
-                                .withPosition(11, 3);
+                // autoChooser = autonomous.getAutoChooser();
+                // autoChooserWidget = tab.add("Auto routine", autoChooser)
+                //                 .withSize(2, 1)
+                //                 .withPosition(11, 3);
         }
 
         public void configureAutoSetupSelector() {

@@ -84,23 +84,27 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.GROUND_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.whileTrue(new ConditionalCommand(new PassingTarget(),
-            new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
-            superstructure::isPassing));
+        // circleButton.whileTrue(new ConditionalCommand(new PassingTarget(),
+        //     new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget),
+        //     superstructure::isPassing));
         // circleButton.whileTrue(new ConditionalCommand(new HybridTarget(), new Target(), this::isUsingOdometryTarget));
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.AMP_PREP)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new FollowNote());
+        // squareButton.whileTrue(new FollowNote());
+        squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.FRONT_LAYUP_PREP)));
+
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
-        touchpadButton.onTrue(
-            new ParallelCommandGroup(
-                new InstantCommand(() -> superstructure.requestState(SuperstructureState.LOB_PASS_PREP)),
-                new PassingTarget()
-            ));
+        touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
+        // touchpadButton.onTrue(
+        //     new ParallelCommandGroup(
+        //         new InstantCommand(() -> superstructure.requestState(SuperstructureState.LOB_PASS_PREP)),
+        //         new PassingTarget()
+        //     ));
 
         Trigger muteButton = new JoystickButton(controller, 15);
         muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.OUTTAKE)));

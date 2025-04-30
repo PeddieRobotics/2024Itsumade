@@ -42,7 +42,7 @@ public final class Constants {
 
     // TODO: Change this value
     public static final double kMaxFloorSpeed = 5.0; // meters per second
-    public static final double kMaxAngularSpeed = (3.0 / 2.0) * Math.PI; // radians per second
+    public static final double kMaxAngularSpeed = Math.PI; // radians per second
 
     public static final double kWheelRadius = 2.0;
 
@@ -313,21 +313,40 @@ public final class Constants {
   }
 
   public static class ScoringConstants {
-    public static final double kLeftFlywheelLLShootingRPM = 4300;
-    public static final double kRightFlywheelLLShootingRPM = 3200;
+    // public static final double kLeftFlywheelLLShootingRPM = 4300;
+    // public static final double kRightFlywheelLLShootingRPM = 3200;
 
-    public static final double kLeftFlywheelLLShootingFastRPM = 5200;
-    public static final double kRightFlywheelLLShootingFastRPM = 3900;
+    // public static final double kLeftFlywheelLLShootingFastRPM = 5200;
+    // public static final double kRightFlywheelLLShootingFastRPM = 3900;
+
+    // public static final double kFastFlywheelMultiply = 1.25;
+    // public static final double kFastFlywheelLimit = 90.0;
+
+    // public static final double kLeftFlywheelLayupRPM = 3500;
+    // public static final double kRightFlywheelLayupRPM = 2500;
+    // public static final double kLeftFlywheelAmpRPM = 3000;
+    // public static final double kRightFlywheelAmpRPM = 2000;
+    // public static final double kLeftFlywheelLobPassRPM = 2680;
+    // public static final double kRightFlywheelLobPassRPM = 2000;
+
+    // Scoring on reef constants (delete)
+    public static final double kLeftFlywheelLLShootingRPM = 1000;
+    public static final double kRightFlywheelLLShootingRPM = 780;
+
+    public static final double kLeftFlywheelLLShootingFastRPM = 1000;
+    public static final double kRightFlywheelLLShootingFastRPM = 780;
 
     public static final double kFastFlywheelMultiply = 1.25;
     public static final double kFastFlywheelLimit = 90.0;
 
-    public static final double kLeftFlywheelLayupRPM = 3500;
-    public static final double kRightFlywheelLayupRPM = 2500;
-    public static final double kLeftFlywheelAmpRPM = 3000;
-    public static final double kRightFlywheelAmpRPM = 2000;
-    public static final double kLeftFlywheelLobPassRPM = 2680;
-    public static final double kRightFlywheelLobPassRPM = 2000;
+    public static final double kLeftFlywheelLayupRPM = 1000;
+    public static final double kRightFlywheelLayupRPM = 780;
+    public static final double kLeftFlywheelAmpRPM = 1000;
+    public static final double kRightFlywheelAmpRPM = 780;
+    public static final double kLeftFlywheelLobPassRPM = 1000;
+    public static final double kRightFlywheelLobPassRPM = 780;
+
+
     public static final double kLeftFlywheelHPIntakeRPM = -750;
     public static final double kRightFlywheelHPIntakeRPM = -750;
     public static final double kFlywheelShotThreshold = 100;

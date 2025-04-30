@@ -53,11 +53,11 @@ public class PathPlannerToPoint extends Command {
         );
 
         Pose2d targetPose = new Pose2d(xTarget, yTarget, Rotation2d.fromDegrees(turnTarget));
-        followPathCommand = AutoBuilder.pathfindToPose(
-            targetPose, constraints, 0.0, 0.0
-        );
+        // followPathCommand = AutoBuilder.pathfindToPose(
+        //     targetPose, constraints, 0.0, 0.0
+        // );
 
-        followPathCommand.initialize();
+        // followPathCommand.initialize();
     }
 
     @Override
